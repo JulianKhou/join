@@ -209,3 +209,6 @@ body {
   height: 100%;
   margin: 10px;
 }
+.join-text{
+    color: var(--skyBlue-default);
+}
