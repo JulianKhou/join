@@ -26,6 +26,7 @@
 --veryLightGray-default: #F4F4F4;
 --skyBlue-default: #2AABE2;
 --mainColor-default: #2A3647;
+--midnightBlue-default: #091931;
 }
 
 html {
@@ -38,14 +39,19 @@ body {
 }
 
 .sideBoard {
-  width: 250px;
-  height: 100vh;
-  background-color:var(--mainColor-default);
-  padding: 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+    width: 250px;
+    height: 100vh;
+    background-color: var(--mainColor-default);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;  
+    align-items: center;             
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
 }
 
 .navLeftTop a,
@@ -61,11 +67,18 @@ body {
     font-weight: 300;       
 }
 
+.navLeftTop a.active,
+.navLeftBottom a.active {
+    background-color: #091931;
+    color: #fff;
+    border-radius: 8px;
+}
+
 .navLeftTop {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-top: 30px;
+  margin-top: 90px;
 }
 
 .navLeftBottom {
@@ -87,7 +100,7 @@ body {
 
 .header {
   position: fixed;
-  left: 250px;
+  left: 280px;
   right: 0;
   top: 0;
   height: 10%;
