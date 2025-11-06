@@ -96,6 +96,7 @@ body {
   flex: 1;
   padding: 40px 60px;
   margin-left: 250px;
+  margin-top: 110px;
 }
 
 .header {
@@ -117,10 +118,7 @@ body {
 .header-title {
   font-size: 20px;
   font-weight: 400;
-}
-
-.mainContent {
-  margin-top: 90px;
+  color: black;
 }
 
 .privacy-title {
@@ -225,3 +223,6 @@ body {
 .join-text{
     color: var(--skyBlue-default);
 }
+
+
+
