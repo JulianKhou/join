@@ -38,14 +38,19 @@ body {
 }
 
 .sideBoard {
-  width: 250px;
-  height: 100vh;
-  background-color:var(--mainColor-default);
-  padding: 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+    width: 250px;
+    height: 100vh;
+    background-color: var(--mainColor-default);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;  
+    align-items: center;             
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
 }
 
 .navLeftTop a,
@@ -65,7 +70,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-top: 30px;
+  margin-top: 90px;
 }
 
 .navLeftBottom {
@@ -87,7 +92,7 @@ body {
 
 .header {
   position: fixed;
-  left: 250px;
+  left: 280px;
   right: 0;
   top: 0;
   height: 10%;
