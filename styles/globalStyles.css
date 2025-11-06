@@ -30,6 +30,18 @@ body {
     justify-content: space-between;
 }
 
+.navLeftTop a,
+.navLeftBottom a {
+    display: flex;
+    align-items: center;      
+    gap: 12px;                
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    padding: 8px 12px;        
+    border-radius: 8px;       
+}
+
 .navLeftTop {
     display: flex;
     flex-direction: column;
