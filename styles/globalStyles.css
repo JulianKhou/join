@@ -25,14 +25,14 @@ body {
     justify-content: space-between;
 }
 
-.navLinksTop {
+.navLeftTop {
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: 30px;
 }
 
-.navLinksBottom {
+.navLeftBottom {
     display: flex;
     flex-direction: column;
     gap: 15px;
