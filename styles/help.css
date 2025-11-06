@@ -38,6 +38,15 @@ h2{
     margin-bottom: 20px;
 }
 
-ol::marker {
-  font-weight: 700;
+
+
+ol{
+      list-style-position: outside;
+ padding-left: 2em;
+}
+li::marker {
+  gap: 20px;
+  font-weight: bold;
+  font-size: 1.4em;
+  margin-right: 15px;
 }
