@@ -8,6 +8,25 @@
 :root{
 /*grau*/
 --gray-default:#A8A8A8;
+--orange-default:#ff7a00;
+--pink-default: #FF5EB3;
+--purpleviolett-default:#6E52FF;
+--pruple-default: #9327FF;
+--cyan-default: #00BEE8;
+--aquamarine-default: #1FD7C1;
+--coral-default: #FF745E;
+--orange-default: #FFA35E;
+--magenta-default: #FC71FF;
+--yellow-default: #FFC701;
+--blue-default: #0038FF;
+--lime-default: #C3FF2B;
+--lemonyellow-default: #C3FF2B;
+--red-default: #C3FF2B;
+--amber-default: #FFBB2B;
+--lightgray-default: #D1D1D1;
+--verylightgray-default: #F4F4F4;
+--skyBlue-default: #2AABE2;
+--mainColor-default: #2A3647;
 }
 
 html {
