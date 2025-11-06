@@ -1,0 +1,41 @@
+
+
+.helpBackButton{
+    background: url(../assets/utilitys/arrowBack.svg);
+    width: 20px;
+    height: 20px;
+    position: fixed;
+    right: 120px;
+    top: 120px;
+    color: var(--skyBlue-default);
+    border: 0;
+    border-radius: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.helpBackButton:hover{
+    background-color: var(--lightGray-default);
+    width: 22px;
+    height: 22px;
+
+}
+.mainContent{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   gap: 30px;
+   overflow:scroll;
+   max-width: 80%;
+}
+
+p{
+    margin-bottom: 20px;
+}
+h2{
+    margin-bottom: 20px;
+}
+
+ol::marker {
+  font-weight: 700;
+}
