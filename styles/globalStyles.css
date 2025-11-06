@@ -26,6 +26,7 @@
 --veryLightGray-default: #F4F4F4;
 --skyBlue-default: #2AABE2;
 --mainColor-default: #2A3647;
+--midnightBlue-default: #091931;
 }
 
 html {
@@ -64,6 +65,13 @@ body {
     padding: 8px 12px;        
     border-radius: 8px;
     font-weight: 300;       
+}
+
+.navLeftTop a.active,
+.navLeftBottom a.active {
+    background-color: #091931;
+    color: #fff;
+    border-radius: 8px;
 }
 
 .navLeftTop {
