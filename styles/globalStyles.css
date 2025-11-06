@@ -5,6 +5,11 @@
     font-family: "Inter", sans-serif;
 }
 
+:root{
+/*grau*/
+--gray-default:#A8A8A8;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -97,8 +102,8 @@ body {
     margin-bottom: 40px;
 }
 
-.navLinksTop a,
-.navLinksBottom a {
+.navLeftTop a,
+.navLeftBottom a {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -108,8 +113,8 @@ body {
     padding: 8px 0 8px 8px;
 }
 
-.navLinksTop a:hover,
-.navLinksBottom a:hover {
+.navLeftTop a:hover,
+.navLeftBottom a:hover {
     background: #091931;;
     color: #fff;
 }
@@ -123,4 +128,13 @@ body {
 
 .content-wrap{
     flex: 1;
+}
+.help{
+    background: url(../assets/sideboardAssets/helpIcon.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: var(--gray-default);
+    width: 50px;
+    height: 20px;
 }
