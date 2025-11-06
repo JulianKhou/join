@@ -191,6 +191,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  top: 12%;
+  right: 3%;
 }
 .headerRight {
   width: 30%;
