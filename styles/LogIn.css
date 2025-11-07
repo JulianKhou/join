@@ -174,3 +174,9 @@
     align-items: center;
     width: 100%;
   }
+
+  .google-login {
+    margin-top: 20px; 
+    display: flex;
+    justify-content: center;
+  }
