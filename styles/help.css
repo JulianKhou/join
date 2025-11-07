@@ -1,52 +1,36 @@
-
-
-.helpBackButton{
-    background: url(../assets/utilitys/arrowBack.svg);
-    width: 20px;
-    height: 20px;
-    position: fixed;
-    right: 120px;
-    top: 120px;
-    color: var(--skyBlue-default);
-    border: 0;
-    border-radius: 50%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-.helpBackButton:hover{
-    background-color: var(--lightGray-default);
-    width: 22px;
-    height: 22px;
-
-}
-.mainContent{
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   gap: 30px;
-   max-width: 80%;
-    overflow: auto; 
-  scrollbar-width: none;
-  -ms-overflow-style: none; 
+.helpBackButton {
+  background: url(../assets/utilitys/arrowBack.svg);
+  width: 20px;
+  height: 20px;
+  color: var(--skyBlue-default);
+  border: 0;
+  border-radius: 50%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 28px;
 }
 
-p{
-    margin-bottom: 20px;
-}
-h2{
-    margin-bottom: 20px;
+.helpBackButton:hover {
+  background-color: var(--lightGray-default);
+  width: 22px;
+  height: 22px;
 }
 
-
-
-ol{
-      list-style-position: outside;
- padding-left: 2em;
+ol {
+  list-style-position: outside;
+  padding-left: 24px;
 }
+
 li::marker {
+  font-family: Arial;
   gap: 20px;
   font-weight: bold;
   font-size: 1.4em;
   margin-right: 15px;
+}
+
+.help-headline-and-button {
+  display: flex;
+  justify-content: space-between;
 }

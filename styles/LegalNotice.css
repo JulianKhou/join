@@ -1,46 +1,11 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-
   .legal-area {
     max-width: 1014px;
     padding-top: 32px;
-  }
-  
-  .legal-h1 {
-    font-size: 61px;
-    font-weight: bold;
-    width: 371px;
-    height: 73px;
-    gap: 30px;
-    line-height: 120%;
-    letter-spacing: 0%;
   }
 
   .legal-section {
     max-width: 1014px;
     margin-bottom: 16px;
-  }
-  
-  .legal-h2 {
-    font-size: 27px;
-    font-weight: 700;
-    margin: 18px 0 0 0;
-    color: black;
-  }
-
-  .legal-h2-big {
-    font-size: 27px;
-    font-weight: 700;
-    margin: 18px 0 0 0;
-    color: black;
-  }
-
-  .legal-h2.small {
-    margin-top: 20px;
-    font-size: 15px;
   }
   
   .legal-meta {
