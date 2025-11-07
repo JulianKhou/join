@@ -1,0 +1,176 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  body {
+    background: #f3f6fa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  
+  .top-nav {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    font-size: 15px;
+  }
+  
+  .signup-btn {
+    height: 49px;
+    width: 91px;
+    background: #2a3647;
+    color: white;
+    padding-top: 15px;
+    padding-right: 16px;
+    padding-left: 16px;
+    padding-bottom: 15px;
+    gap: 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+  }
+  
+  .logo {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+  }
+  
+  .logo-icon {
+    font-size: 50px;
+    color: #1d2d3a;
+  }
+
+  .icon{
+    width: 24px;
+    height: 24px;
+  }
+  
+  .login-box {
+    background: white;
+    width: 652px;
+    height: 449px;
+    padding-top: 48px;
+    padding-right: 115px;
+    padding-bottom: 48px;
+    padding-left: 115px;
+    border-radius: 30px;
+    text-align: center;
+    gap: 32px;
+    box-shadow: 4%;
+  }
+  
+  .login-box h1 {
+    font-size: 61px;
+    font-weight: bold;
+    font-weight: 700;
+    line-height: 120%;
+    letter-spacing: 0%;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .underline {
+    width: 160px;
+    height: 3px;
+    background: #29ABE2;
+    margin: 0 auto 25px;
+    border: 3px;
+  }
+  
+  .input-field {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .input-field input {
+    width: 100%;
+    padding: 12px 40px 12px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+  }
+  
+  .input-field .icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+  }
+  
+  .btn-group {
+    height: 48hug;
+    width: 322hug;
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    padding-top: 10%;
+  }
+  
+  .primary-btn,
+  .outlined-btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .primary-btn {
+    background: #2a3647;
+    color: white;
+  }
+  
+  .outlined-btn {
+    border: 1px solid #1d2d3a;
+    background: transparent;
+    color: #1d2d3a;
+  }
+  
+  footer {
+    margin-top: auto;
+    padding: 30px;
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+  }
+  
+  footer a {
+    text-decoration: none;
+    color: #c5c5c6;
+  }
+
+  .LogIn-Text{
+    color: black;
+  }
+
+  .logo img {
+    height: 121.97px;
+    width: 100.03px;
+    top: 80px;
+    left: 77px;
+    transition: transform 0.25s ease;
+  }
+
+  .Box-position {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
