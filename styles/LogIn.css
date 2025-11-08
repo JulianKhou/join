@@ -180,3 +180,21 @@
     display: flex;
     justify-content: center;
   }
+
+  .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    color: #1d2d3a;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .google-btn:hover {
+    background: #f8f9fa;
+  }

@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import {signInWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 import { getAuth, createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
-import {signInWithEmailAndPassword, GoogleAuthProvider,signInWithPopup } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
  
 
 const firebaseConfig = {
@@ -47,13 +47,14 @@ export function createUser(email, password) {
   });
 }
 
-export function signInWithEmailAndPW(auth, email, password){
+export function loginWithEmailAndPW(auth, email, password){
  
  return signInWithEmailAndPassword(auth, email, password)
  .then((userCredential) => {
  // Signed in
  const user = userCredential.user;
- // ...
+ console.log("User logged in: ", user.email);
+ 
  })
  .catch((error) => {
  const errorCode = error.code;
@@ -63,12 +64,22 @@ export function signInWithEmailAndPW(auth, email, password){
 
 
 export function signInWithGoogle() {
-  return signInWithPopup(auth, provider)
+  return signInWithRedirect(auth, provider);
+}
+
+// Prüfe nach Redirect, ob Login erfolgreich war
+export function checkRedirectResult() {
+  return getRedirectResult(auth)
     .then((result) => {
-      return result.user;
+      if (result) {
+        console.log("Google login successful:", result.user.email);
+        return result.user;
+      }
+      return null;
     })
     .catch((error) => {
-      console.log(error);
+      console.log("Google login error:", error);
       return null;
     });
 }
+

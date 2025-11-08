@@ -4,11 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy Internal</title>
+  <title>Sign Up</title>
   <link rel="stylesheet" href="./styles/LogIn.css">
   <link rel="stylesheet" href="./styles/signup.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script type="module" src="./js/userInterface.js" defer></script>
+    <script type="module" src="./js/firebase.js"></script>
+    <script type="module" src="./js/signUp.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 </head>
 
@@ -48,12 +51,12 @@
         </div>
   
         <label>
-          <input type="checkbox" name="privacy" required>
+          <input type="checkbox" name="privacy" id="privacyCheck" required>
           I accept the <span>Privacy Policy</span>
         </label>
   
         <div class="btn-group">
-          <button class="primary-btn">Sign up</button>
+          <button class="primary-btn" id="signUpBtn">Sign up</button>
         </div>
       </form>
     </div>
