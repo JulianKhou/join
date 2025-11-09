@@ -91,12 +91,17 @@ export function loginWithEmail(email, password) {
 /**
  * Google Sign-In with popup
  * Opens a popup window for Google authentication
+ * Creates or updates user profile if it doesn't exist
  * @returns {Promise} User object on successful login
  */
 export function signInWithGoogle() {
   return signInWithPopup(auth, googleProvider)
     .then((result) => {
-      return result.user;
+      const user = result.user;
+      // Use merge: true to avoid overwriting existing profiles
+      return createOrUpdateUserProfile(user.uid, user.displayName, user.email).then(
+        () => user
+      );
     })
     .catch((error) => {
       let message = "Google login failed.";
@@ -110,23 +115,27 @@ export function signInWithGoogle() {
 }
 
 /**
- * Creates a user profile in Firestore
- * Stores additional user data in the Firestore database under users/{uid}
- *
+ * Creates or updates a user profile in Firestore
+ * Uses merge to avoid overwriting existing data (e.g., createdAt)
+ * 
  * @param {string} uid - The unique user ID from Firebase Authentication
  * @param {string} username - The user's username
  * @param {string} email - The user's email address
- * @returns {Promise<void>} Promise that resolves when the profile is created
+ * @returns {Promise<void>} Promise that resolves when the profile is created/updated
  */
-export async function createUserProfile(uid, username, email) {
+export async function createOrUpdateUserProfile(uid, username, email) {
   try {
-    await setDoc(doc(db, "users", uid), {
-      username: username,
-      email: email,
-      createdAt: new Date(),
-    });
+    await setDoc(
+      doc(db, "users", uid), 
+      {
+        username: username,
+        email: email,
+        createdAt: new Date(),
+      },
+      { merge: true } // Only updates fields, doesn't overwrite entire document
+    );
   } catch (error) {
-    console.error("Error creating user profile:", error);
+    console.error("Error creating/updating user profile:", error);
     throw error;
   }
 }
