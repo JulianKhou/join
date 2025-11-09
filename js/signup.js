@@ -8,9 +8,19 @@ signUpBtn.addEventListener("click",function(event){
     console.log("Email: "+getEmailInput());
     console.log(checkCorrectPassword());
     if(checkCorrectPassword()){
-        createUser(getEmailInput(),getPasswordInput());
-        // Formular leeren nach erfolgreicher Registrierung
-        event.target.closest('form').reset();
+        createUser(getEmailInput(),getPasswordInput())
+            .then((user) => {
+                console.log("Registration successful!");
+                // Formular leeren nach erfolgreicher Registrierung
+                event.target.closest('form').reset();
+                // Optional: Weiterleitung zum Login
+                alert("Registrierung erfolgreich! Du kannst dich jetzt einloggen.");
+                window.location.href = "logIn.html";
+            })
+            .catch((error) => {
+                console.error("Registration failed:", error);
+                alert("Registrierung fehlgeschlagen: " + error.message);
+            });
     }
 });
 
