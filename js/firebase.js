@@ -6,14 +6,10 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
-import {
-  doc,
-  setDoc,
-  deleteDoc,
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -47,7 +43,7 @@ const googleProvider = new GoogleAuthProvider();
 export function createUser(email, password, username) {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      return createUserProfile(userCredential.user.uid, username, email).then(
+      return createOrUpdateUserProfile(userCredential.user.uid, username, email).then(
         () => userCredential.user
       );
     })
@@ -125,14 +121,16 @@ export function signInWithGoogle() {
  */
 export async function createOrUpdateUserProfile(uid, username, email) {
   try {
+    const userRef = doc(db, "users", uid);
     await setDoc(
-      doc(db, "users", uid), 
+      userRef,
       {
-        username: username,
-        email: email,
-        createdAt: new Date(),
+        username,
+        email,
+        updatedAt: serverTimestamp(),
+        createdAt: serverTimestamp() // Firestore überschreibt nicht wenn merge: true
       },
-      { merge: true } // Only updates fields, doesn't overwrite entire document
+      { merge: true }
     );
   } catch (error) {
     console.error("Error creating/updating user profile:", error);
@@ -163,4 +161,20 @@ export async function deleteUserProfile(uid) {
     console.error("Error deleting user:", error);
     throw error;
   }
+}
+
+/**
+ * Logs out the current user
+ * @returns {Promise<void>}
+ */
+export function logout() {
+  return auth.signOut();
+}
+
+/**
+ * Checks if a user is currently logged in
+ * @param {Function} callback - Called with user object or null
+ */
+export function onAuthChange(callback) {
+  return onAuthStateChanged(auth, callback);
 }
