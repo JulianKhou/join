@@ -8,7 +8,7 @@ signUpBtn.addEventListener("click",function(event){
     console.log("Email: "+getEmailInput());
     console.log(checkCorrectPassword());
     if(checkCorrectPassword()){
-        createUser(getEmailInput(),getPasswordInput())
+        createUser(getEmailInput(),getPasswordInput(),getUsernameInput())
             .then((user) => {
                 console.log("Registration successful!");
                 // Formular leeren nach erfolgreicher Registrierung
