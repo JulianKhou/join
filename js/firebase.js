@@ -8,8 +8,9 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, deleteDoc, serverTimestamp,getDoc } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
+
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -69,7 +70,7 @@ export function createUser(email, password, username) {
 export function loginWithEmail(email, password) {
   return signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      return userCredential.user;
+      return userCredential.user.uid;
     })
     .catch((error) => {
       let message = "Login failed.";
@@ -176,5 +177,15 @@ export function logout() {
  * @param {Function} callback - Called with user object or null
  */
 export function onAuthChange(callback) {
+  
   return onAuthStateChanged(auth, callback);
+}
+
+
+export async function getUsername(uid){
+  const myRef = doc(db,"users",uid);
+  const snapshot = await getDoc(myRef);
+  const username = snapshot.data().username;
+  console.log("Fetched username:", username);
+  return username;
 }
