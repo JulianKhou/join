@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="module" src="./js/firebase.js"></script>
-    <script type="module" src="./js/userInterface.js" defer></script>
-  <link rel ="stylesheet" href="./styles/globalStyles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add task</title>
+  <link rel="stylesheet" href="./styles/globalStyles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>Summary User</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="./assets/favicon/logoFavicon.png">
 </head>
+
 <body>
-    <nav class="sideBoard">
+  <nav class="sideBoard">
     <img src="./assets/sideboardAssets/joinLogo.svg" class="join-logo" alt="join logo">
     <div class="navLeftTop">
       <a href="summaryUser.html" class="nav-item-top">
         <img src="./assets/sideboardAssets/summary.svg" alt="Summary">
-        <span>Summary</span>
+        <span class="sidebar-span">Summary</span>
       </a>
 
-      <a href="addTask.html" class="nav-item-top">
+      <a href="addTask.html" class="active-link">
         <img src="./assets/sideboardAssets/addTask.svg" alt="Add Task">
         <span>Add Task</span>
       </a>
@@ -39,21 +43,21 @@
       <a href="legalNoticeInt.html" class="nav-item-bottom">Legal notice</a>
     </div>
   </nav>
-
-   <header class="header">
+  <header class="header">
     <span class="header-title">Kanban Project Management Tool</span>
     <div class="headerRight">
       <a href="./help.html">
         <div class="help"></div>
       </a>
 
-      <div class="userProfileInitials">
-        <div class="nameInitials" id="nameInitials"></div>
-      </div>
+      <div class="userProfileInitials"></div>
 
     </div>
   </header>
-    <button id="deleteUserBtn">delete User</button>
-    <p id="userName"></p>
+  <main class="mainContent">
+      
+  </main>
+  </div>
 </body>
+
 </html>

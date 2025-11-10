@@ -1,0 +1,249 @@
+.summary-header-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 54px;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.summary-title {
+    font-size: 61px;
+    font-weight: 700;
+    color: #2A3647;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.summary-divider {
+    width: 4px;
+    height: 65px;
+    border-radius: 4px;
+    background-color: #2AABE2;
+}
+
+.summary-subtitle {
+    font-size: 22px;
+    color: #2A3647;
+    font-weight: 400;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.summary-content-row {
+    display: flex;
+    flex-direction: row;
+    gap: 88px;
+    align-items: flex-start;
+    margin-left: 0;
+}
+
+.summary-metrics {
+    display: flex;
+    flex-direction: column;
+    height: 560px;
+    width: 100%;
+    max-width: 560px;
+    gap: 32px;
+}
+
+.summary-metrics-row-1 {
+    height: 33%;
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.summary-metrics-row-2 {
+    height: 33%;
+}
+
+.summary-metrics-row-3 {
+    height: 33%;
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.summary-metric-tile-row-1,
+.summary-metric-tile-row-2,
+.summary-metric-tile-row-3 {
+    background: #fff;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 26px 16px;
+    gap: 10px;
+    transition: box-shadow 0.2s ease;
+    text-align: center;
+}
+
+.summary-metric-tile-row-1 { width: 50%; }
+.summary-metric-tile-row-3 { width: 33%; }
+
+.summary-metric-tile:hover {
+    box-shadow: 0 8px 16px rgba(42, 54, 71, 0.1);
+}
+
+.summary-metric-horizontal {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 24px;
+}
+
+.summary-metric-wide {
+    height: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    gap: 0;
+}
+
+.summary-metric-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.summary-metric-icon img {
+    width: 32px;
+    height: 32px;
+    display: block;
+}
+
+.summary-metric-todo,
+.summary-metric-done,
+.summary-metric-urgent-icon {
+    background-color: #2A3647;
+    border-radius: 50%;
+    padding: 12px;
+}
+
+.summary-metric-urgent-icon {
+    background-color: #FF3D00;
+}
+
+.summary-metric-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.summary-metric-value {
+    font-size: 47px;
+    font-weight: 700;
+    color: #2A3647;
+    line-height: 1;
+    margin: 0;
+}
+
+.summary-metric-label {
+    font-size: 18px;
+    color: #A8A8A8;
+    font-weight: 400;
+    line-height: 1;
+    margin: 0;
+}
+
+.summary-metric-urgent {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.summary-metric-urgent-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2A3647;
+    line-height: 1;
+    margin: 0;
+}
+
+.summary-metric-urgent-label {
+    font-size: 16px;
+    color: #A8A8A8;
+    font-weight: 400;
+    line-height: 1;
+    margin: 0;
+}
+
+.summary-metric-deadline {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    flex: 1;
+}
+
+.summary-metric-divider {
+    width: 2px;
+    height: 64px;
+    border-radius: 2px;
+    background: #E6E9ED;
+    margin: 0 28px;
+    align-self: center;
+}
+
+.summary-metric-deadline-date {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2A3647;
+    line-height: 1;
+    margin: 0;
+}
+
+.summary-metric-deadline-label {
+    font-size: 15px;
+    color: #A8A8A8;
+    font-weight: 400;
+    line-height: 1;
+    margin: 0;
+}
+
+.summary-greeting {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6px;
+    margin-left: 0;
+    margin-top: 32px;
+}
+
+.summary-greeting-text {
+    font-size: 32px;
+    color: #2A3647;
+    font-weight: 400;
+    line-height: 1;
+    margin: 0;
+}
+
+.summary-greeting-user {
+    font-size: 42px;
+    color: #2AABE2;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+@media (min-width: 1440px) {
+    .summary-content-row { align-items: center; }
+    .summary-greeting { margin-top: 0; }
+}
