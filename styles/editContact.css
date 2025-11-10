@@ -8,7 +8,7 @@
   }
   
   .edit-contact-container {
-    width: 900px;
+    width: 60%;
     height: 480px;
     background: white;
     border-radius: 30px;
@@ -18,7 +18,7 @@
   }
   
   .edit-contact-left {
-    width: 40%;
+    width: 467px;
     background: #2A3647;
     color: white;
     padding: 60px 25px;
@@ -36,6 +36,12 @@
     height: 3px;
     background: #4bb1ff;
     margin-top: -20px;
+  }
+  .blue-line-add {
+    width: 60px;
+    height: 3px;
+    background: #4bb1ff;
+    margin-top: 0px;
   }
 
   .logo {
@@ -65,7 +71,6 @@
   .profile-circle {
     width: 110px;
     height: 110px;
-    angle: 0 deg;
     opacity: 1;
     border-radius: 100%;
     top: 204px;
@@ -78,6 +83,25 @@
     justify-content: center;
     font-size: 47px;
     color: white;
+    font-weight: bold;
+    flex-shrink: 0;  
+  }
+
+  .profile-circle-add {
+    width: 110px;
+    height: 110px;
+    opacity: 1;
+    border-radius: 100%;
+    top: 204px;
+    left: 550px;
+    gap: 10px;
+    border-width: 3px;
+    background-color: #A8A8A8;
+    color: white;   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 47px;
     font-weight: bold;
     flex-shrink: 0;  
   }
@@ -150,4 +174,13 @@
     letter-spacing: 0%;
     text-align: center;
     vertical-align: middle;
+  }
+
+  .icon-profile {
+    width: 64px; 
+    height: 64px;
+  }
+
+  h3 {
+    font-size: 27px;
   }
