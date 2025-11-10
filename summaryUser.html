@@ -5,10 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="./js/firebase.js"></script>
     <script type="module" src="./js/userInterface.js" defer></script>
-    <title>Document</title>
+  <link rel ="stylesheet" href="./styles/globalStyles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Summary User</title>
 </head>
 <body>
-    <button id="deleteUserBtn">delete User</button>
-    <p id="userName"></p>
+    <nav class="sideBoard">
+    <img src="./assets/sideboardAssets/joinLogo.svg" class="join-logo" alt="join logo">
+    <div class="navLeftTop">
+      <a href="summaryUser.html" class="nav-item-top">
+        <img src="./assets/sideboardAssets/summary.svg" alt="Summary">
+        <span>Summary</span>
+      </a>
+
+      <a href="addTask.html" class="nav-item-top">
+        <img src="./assets/sideboardAssets/addTask.svg" alt="Add Task">
+        <span>Add Task</span>
+      </a>
+
+      <a href="board.html" class="nav-item-top">
+        <img src="./assets/sideboardAssets/board.svg" alt="Board">
+        <span>Board</span>
+      </a>
+
+      <a href="contacts.html" class="nav-item-top">
+        <img src="./assets/sideboardAssets/contacts.svg" alt="Contacts">
+        <span>Contacts</span>
+      </a>
+    </div>
+    <div class="navLeftBottom">
+      <a href="privacyPolicyInt.html" class="nav-item-bottom">Privacy Policy</a>
+      <a href="legalNoticeInt.html" class="nav-item-bottom">Legal notice</a>
+    </div>
+  </nav>
+
+   <header class="header">
+    <span class="header-title">Kanban Project Management Tool</span>
+    <div class="headerRight">
+      <a href="./help.html">
+        <div class="help"></div>
+      </a>
+
+      <button class="userProfileInitials" id="userProfileInitialsBtn">
+        <div class="nameInitials" id="nameInitials"></div>
+      </button>
+        <div id="profileShowMore" class="profileShowMore d-none"></div>
+
+    </div>
+  </header>
 </body>
 </html>
