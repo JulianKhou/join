@@ -1,0 +1,65 @@
+
+.add-task-container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .add-task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .add-task-form {
+    display: flex;
+    gap: 40px;
+  }
+  
+  .form-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  input, textarea, select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  textarea {
+    resize: none;
+    height: 80px;
+  }
+  
+  .priority-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .add-task-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+  }
+
+  .main-content{
+    padding-top: 150px;
+  }
+
+  .cancel-btn {
+    width: 183px;
+    height: 56px;
+  }
+
+  .create-task-btn{
+    width: 126px;
+    height: 56px;
+  }
