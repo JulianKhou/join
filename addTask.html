@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-<<<<<<< HEAD
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="./js/firebase.js"></script>
@@ -10,26 +9,9 @@
     <link rel="stylesheet" href="./styles/globalStyles.css">
     <link rel="stylesheet" href="./styles/addTask.css">
     <title>Add Task</title>
-=======
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add task</title>
-  <link rel="stylesheet" href="./styles/globalStyles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-    rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="./assets/favicon/logoFavicon.png">
->>>>>>> 80eee27d53908f6cdbee7003d4da00566ff925b9
 </head>
 
 <body>
-<<<<<<< HEAD
-
-  <!-- Sidebar -->
-=======
->>>>>>> 80eee27d53908f6cdbee7003d4da00566ff925b9
   <nav class="sideBoard">
     <img src="./assets/sideboardAssets/joinLogo.svg" class="join-logo" alt="join logo">
     <div class="navLeftTop">
@@ -38,11 +20,7 @@
         <span class="sidebar-span">Summary</span>
       </a>
 
-<<<<<<< HEAD
       <a href="addTask.html" class="nav-item-top active">
-=======
-      <a href="addTask.html" class="active-link">
->>>>>>> 80eee27d53908f6cdbee7003d4da00566ff925b9
         <img src="./assets/sideboardAssets/addTask.svg" alt="Add Task">
         <span>Add Task</span>
       </a>
@@ -63,11 +41,7 @@
       <a href="legalNoticeInt.html" class="nav-item-bottom">Legal notice</a>
     </div>
   </nav>
-<<<<<<< HEAD
 
-  <!-- Header -->
-=======
->>>>>>> 80eee27d53908f6cdbee7003d4da00566ff925b9
   <header class="header">
     <span class="header-title">Kanban Project Management Tool</span>
     <div class="headerRight">
@@ -76,73 +50,59 @@
     </div>
   </header>
 
-<<<<<<< HEAD
-  <!-- MAIN CONTENT -->
   <main class="main-content">
 
-    <div class="add-task-container">
+    <div class="add-task-wrapper">
 
-      <div class="add-task-header">
-        <h2>Add Task</h2>
-      </div>
-
+      <h1>Add Task</h1>
+    
       <form class="add-task-form">
-
-        <div class="form-column">
+    
+        <div class="task-column">
           <label for="task-title">Title<span>*</span></label>
-          <input type="text" id="task-title" placeholder="Enter a title" required>
-
+          <input class="task-input" type="text" id="task-title" placeholder="Enter a title" required>
+    
           <label for="task-description">Description</label>
-          <textarea id="task-description" placeholder="Enter a Description"></textarea>
-
+          <textarea class="task-input-description id="task-description" placeholder="Enter a Description"></textarea>
+    
           <label for="task-date">Due date<span>*</span></label>
-          <input type="date" id="task-date" required>
-
+          <input class="task-input" type="date" id="task-date" required>
+    
           <p class="required-hint">*This field is required</p>
         </div>
-
-        <div class="form-column">
+    
+        <div class="task-column">
           <label>Priority</label>
           <div class="priority-buttons">
-            <button type="button" class="priority-btn urgent">Urgent</button>
-            <button type="button" class="priority-btn medium active">Medium</button>
-            <button type="button" class="priority-btn low">Low</button>
+              <img src="./assets/addTask/urgent.svg" alt="">
+              <img src="./assets/addTask/medium.svg" alt="">
+              <img src="./assets/addTask/low.svg" alt="">
           </div>
-
+    
           <label for="assigned">Assigned to</label>
-          <select id="assigned">
-            <option selected>Select contacts to assign</option>
+          <select class="task-input" id="assigned">
+            <option>Select contacts to assign</option>
           </select>
-
+    
           <label for="category">Category<span>*</span></label>
-          <select id="category" required>
-            <option selected>Select task category</option>
+          <select class="task-input" id="category" required>
+            <option>Select task category</option>
           </select>
-
+    
           <label for="subtasks">Subtasks</label>
-          <input type="text" id="subtasks" placeholder="Add new subtask">
+          <input class="task-input" type="text" id="subtasks" placeholder="Add new subtask">
         </div>
-
+    
       </form>
 
-      <div class="add-task-footer">
-        <button><img src="./assets/addTask/Secondary.svg"  class="cancel-btn"></button>
-        <button><img src="./assets/addTask/Primary check button.svg" class="create-task-btn"></button>
+      <div class="add-task-buttons">
+        <img src="./assets/addTask/Secondary.svg" alt="">
+        <img src="./assets/addTask/Primary check button.svg" alt="">
       </div>
-
+    
     </div>
   </main>
 
-=======
-      <div class="userProfileInitials"></div>
-
-    </div>
-  </header>
-  <main class="mainContent">
-      
-  </main>
-  </div>
->>>>>>> 80eee27d53908f6cdbee7003d4da00566ff925b9
 </body>
 
 </html>
