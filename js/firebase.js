@@ -12,19 +12,18 @@ import { getFirestore, doc, setDoc, deleteDoc, serverTimestamp,getDoc } from "ht
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
 
 
-// Firebase Configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCgMFf3jcbG-pl3II5aRK9r4XxfF4ysc1c",
-  authDomain: "join-44e84.firebaseapp.com",
-  projectId: "join-44e84",
-  storageBucket: "join-44e84.firebasestorage.app",
-  messagingSenderId: "80172784787",
-  appId: "1:80172784787:web:2922fbb80429f90e34c166",
-  measurementId: "G-TC3XZWJL58",
-};
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+export const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
 
 // Export Firebase Services
 export const auth = getAuth(app);
