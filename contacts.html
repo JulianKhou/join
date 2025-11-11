@@ -12,6 +12,8 @@
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="./assets/favicon/logoFavicon.png">
+  <script src="./js/firebase.js" type="module"></script>
+  <script type="module" src="./js/userInterface.js"></script>
 </head>
 
 <body>
@@ -50,7 +52,10 @@
         <div class="help"></div>
       </a>
 
-      <div class="userProfileInitials"></div>
+       <button class="userProfileInitials" id="userProfileInitialsBtn">
+        <div class="nameInitials" id="nameInitials"></div>
+      </button>
+        <div id="profileShowMore" class="profileShowMore d-none"></div>
 
     </div>
   </header>
