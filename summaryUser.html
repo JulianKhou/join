@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="module" src="./js/firebase.js"></script>
-    <script type="module" src="./js/userInterface.js" defer></script>
-  <link rel ="stylesheet" href="./styles/globalStyles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summary User</title>
+  <link rel="stylesheet" href="./styles/globalStyles.css">
+  <link rel="stylesheet" href="./styles/summaryUser.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>Summary User</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="./assets/favicon/logoFavicon.png">
 </head>
+
 <body>
-    <nav class="sideBoard">
+  <nav class="sideBoard">
     <img src="./assets/sideboardAssets/joinLogo.svg" class="join-logo" alt="join logo">
     <div class="navLeftTop">
-      <a href="summaryUser.html" class="nav-item-top">
+      <a href="summaryUser.html" class="active-link">
         <img src="./assets/sideboardAssets/summary.svg" alt="Summary">
-        <span>Summary</span>
+        <span class="sidebar-span">Summary</span>
       </a>
 
       <a href="addTask.html" class="nav-item-top">
@@ -39,20 +44,85 @@
       <a href="legalNoticeInt.html" class="nav-item-bottom">Legal notice</a>
     </div>
   </nav>
-
-   <header class="header">
+  <header class="header">
     <span class="header-title">Kanban Project Management Tool</span>
     <div class="headerRight">
       <a href="./help.html">
         <div class="help"></div>
       </a>
 
-      <button class="userProfileInitials" id="userProfileInitialsBtn">
-        <div class="nameInitials" id="nameInitials"></div>
-      </button>
-        <div id="profileShowMore" class="profileShowMore d-none"></div>
+      <div class="userProfileInitials"></div>
 
     </div>
   </header>
+  <main class="mainContent">
+    <section class="summary-header-row">
+      <h1 class="summary-title">Join 360</h1>
+      <div class="summary-divider"></div>
+      <span class="summary-subtitle">Key Metrics at a Glance</span>
+    </section>
+    <section class="summary-content-row">
+      <div class="summary-metrics">
+        <div class="summary-metrics-row-1">
+          <div class="summary-metric-tile-row-1 summary-metric-horizontal">
+            <div class="summary-metric-icon summary-metric-todo">
+              <img src="./assets/summary/todo.svg" alt="To-do">
+            </div>
+            <div class="summary-metric-info">
+              <div class="summary-metric-value">1</div>
+              <div class="summary-metric-label">To-do</div>
+            </div>
+          </div>
+          <div class="summary-metric-tile-row-1 summary-metric-horizontal">
+            <div class="summary-metric-icon summary-metric-done">
+              <img src="./assets/summary/done.svg" alt="Done">
+            </div>
+
+            <div class="summary-metric-info">
+              <div class="summary-metric-value">1</div>
+              <div class="summary-metric-label">Done</div>
+            </div>
+          </div>
+        </div>
+        <div class="summary-metrics-row-2">
+          <div class="summary-metric-tile-row-2 summary-metric-wide">
+              <div class="summary-metric-urgent">
+              <div class="summary-metric-icon summary-metric-urgent-icon">
+                <img src="./assets/summary/urgent.svg" alt="Urgent">
+              </div>
+
+              <div class="summary-metric-urgent-value">1</div>
+              <div class="summary-metric-urgent-label">Urgent</div>
+            </div>
+              <div class="summary-metric-divider"></div>
+              <div class="summary-metric-deadline">
+              <div class="summary-metric-deadline-date">October 16, 2022</div>
+              <div class="summary-metric-deadline-label">Upcoming Deadline</div>
+            </div>
+          </div>
+        </div>
+        <div class="summary-metrics-row-3">
+          <div class="summary-metric-tile-row-3">
+            <div class="summary-metric-value">5</div>
+            <div class="summary-metric-label">Tasks in Board</div>
+          </div>
+          <div class="summary-metric-tile-row-3">
+            <div class="summary-metric-value">2</div>
+            <div class="summary-metric-label">Tasks In Progress</div>
+          </div>
+          <div class="summary-metric-tile-row-3">
+            <div class="summary-metric-value">2</div>
+            <div class="summary-metric-label">Awaiting Feedback</div>
+          </div>
+        </div>
+      </div>
+      <div class="summary-greeting">
+        <div class="summary-greeting-text">Good morning,</div>
+        <div class="summary-greeting-user">Sofia Müller</div>
+      </div>
+    </section>
+  </main>
+  </div>
 </body>
+
 </html>
