@@ -1,13 +1,23 @@
+.summary-metric-icon {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 100ms ease-in-out, border 100ms ease-in-out;
+}
+.summary-metric-icon svg path,
+.summary-metric-icon svg {
+    transition: fill 100ms ease-in-out, stroke 100ms ease-in-out, color 100ms ease-in-out;
+}
 .summary-metric-tile-row-1:hover .summary-metric-icon {
     background: #fff !important;
     border: 2px solid #fff;
-    transition: background 100ms ease-in-out, border 100ms ease-in-out;
 }
 .summary-metric-tile-row-1:hover .summary-metric-icon svg path,
 .summary-metric-tile-row-1:hover .summary-metric-icon svg {
     fill: #2A3647 !important;
-
-    transition: fill 100ms ease-in-out, stroke 100ms ease-in-out, color 100ms ease-in-out;
 }
 
 a {
@@ -132,20 +142,6 @@ a {
     width: 100%;
 }
 
-.summary-metric-tile-row-1:hover {
-    color:#FFFFFF;;
-    background: #2A3647;
-}
-
-.summary-metric-tile-row-2:hover {
-    color:#FFFFFF;;
-    background: #2A3647;
-}
-
-.summary-metric-tile-row-3:hover {
-    color:#FFFFFF;;
-    background: #2A3647;
-}
 
 .summary-metric-horizontal {
     flex-direction: row;
