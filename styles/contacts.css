@@ -1,0 +1,154 @@
+.mainContent {
+    flex: 1;
+    margin-left: 230px;
+    margin-top: 95px;
+}
+
+.contacts-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* ==== LEFT COLUMN ==== */
+.contacts-left {
+    width: 460px;
+    background-color: #fff;
+    border-right: 1px solid #e2e6ec;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+}
+
+.contacts-left-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.btn-add-contact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background-color: var(--mainColor-default);
+    color: #fff;
+    border: none;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 21px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 352px;
+    height: 56px;
+}
+
+.btn-add-contact:hover {
+    background-color: var(--skyBlue-default);
+}
+
+.contacts-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 24px 40px 24px;
+}
+
+.contacts-letter {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--mainColor-default);
+    margin-top: 20px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 4px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+    border-radius: 12px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.contact-item:hover {
+    background-color: var(--veryLightGray-default);
+}
+
+.contact-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.contact-data {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: black;
+}
+
+.contact-email {
+    font-size: 14px;
+    color: var(--skyBlue-default);
+    
+}
+
+.contact-email:hover {
+    text-decoration: underline;
+}
+
+.contacts-right {
+    flex: 1;
+    background-color: #f6f7f8;
+    padding: 115px 54px;
+}
+
+.contacts-right h1 {
+    font-size: 61px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    color: black;
+    gap: 28px;
+}
+
+.contacts-right .divider {
+    width: 3px;
+    height: 60px;
+    border-radius: 3px;
+    background-color: #29ABE2;
+}
+
+.contacts-right .subtitle {
+    font-size: 27px;
+    color: #2A3647;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+
+/* Scrollbar Styling */
+.contacts-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.contacts-list::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 3px;
+}
