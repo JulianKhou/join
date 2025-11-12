@@ -6,7 +6,7 @@
 .summary-metric-tile-row-1:hover .summary-metric-icon svg path,
 .summary-metric-tile-row-1:hover .summary-metric-icon svg {
     fill: #2A3647 !important;
-    stroke: #2A3647 !important;
+
     transition: fill 100ms ease-in-out, stroke 100ms ease-in-out, color 100ms ease-in-out;
 }
 
@@ -100,7 +100,8 @@ a {
     gap: 10px;
     text-align: center;
     color: #2A3647;
-    transition: background 100ms ease-in-out, color 100ms ease-in-out, box-shadow 0.2s ease;
+    transition: background 100ms ease-in-out, color 100ms ease-in-out, box-shadow 0.2s ease, transform 100ms ease-in-out;
+    transform-origin: var(--scale-origin, top left);
 }
 
 .summary-metric-tile-row-1:hover,
@@ -109,6 +110,7 @@ a {
     background: #2A3647;
     color: #fff;
     box-shadow: 0 8px 16px rgba(42, 54, 71, 0.18);
+    transform: scale(1.05);
 }
 
 .summary-metric-tile-row-1:hover .summary-metric-value,
@@ -256,6 +258,12 @@ a {
     color: #2A3647;
     font-weight: 400;
     margin: 0;
+}
+
+.summary-metric-tile-row-2:hover .summary-metric-deadline-date,
+.summary-metric-tile-row-2:hover .summary-metric-deadline-label {
+    color: #fff;
+    transition: color 100ms ease-in-out;
 }
 
 .summary-greeting {
