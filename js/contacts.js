@@ -1,4 +1,7 @@
-import { getContactsGroupTemplate } from "./contactsTemplate.js";
+
+import { addContactTemplate,getContactsGroupTemplate } from "../templates/contactTemplates.js";
+import { initOutsideClickListener } from "./utility.js";
+
 
 const contacts = [
   { name: "Anton Mayer", email: "antonm@gmail.com", initials: "AM", color: "var(--orange-default)" },
@@ -36,3 +39,42 @@ function renderContacts() {
 
 // Execute the renderContacts function immediately when this script file loads
 renderContacts();
+
+
+const addEditBtn = document.getElementById("addEditContactBtn");
+var closeEditBtn = null; 
+
+// Prevent multiple overlays
+addEditBtn.addEventListener("click", () => {
+  console.log("Add/Edit Contact button clicked!");
+  if (document.querySelector(".edit-contact-overlay")) {
+    return;
+  }
+
+  var addContent = document.getElementById("addContact");
+addContent.insertAdjacentHTML("beforeend", addContactTemplate);
+
+
+  addEventListenerToEditContactForm();
+});
+
+function addEventListenerToEditContactForm() {
+  closeEditBtn = document.getElementById("closeEditContactBtn");
+  closeEditBtn.addEventListener("click", () => {
+    console.log("Close button clicked!");
+    closeEditContactOverlay();
+  });
+  initOutsideClickListener(
+    document.getElementById("edit-contact-container"),
+    () => {
+      closeEditContactOverlay();
+    }, true
+  );
+}
+
+function closeEditContactOverlay() {
+  var overlay = document.querySelector(".edit-contact-overlay");
+  if (overlay) {
+    overlay.remove();
+  }
+}
