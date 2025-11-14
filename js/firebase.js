@@ -201,7 +201,7 @@ export async function getUsername(uid) {
 }
 
 
-export async function editOrAddContact(nameWithoutWhitespace, name, email, phoneNumber) {
+export async function editOrAddContact(nameWithoutWhitespace, name, email, phoneNumber,color) {
     try {
     const userRef = doc(db, "contacts", nameWithoutWhitespace);
     await setDoc(
@@ -210,8 +210,10 @@ export async function editOrAddContact(nameWithoutWhitespace, name, email, phone
         name,
         email,
         phoneNumber,
+        color,
         updatedAt: serverTimestamp(),
-        createdAt: serverTimestamp(), // Firestore überschreibt nicht wenn merge: true
+        createdAt: serverTimestamp(),
+         // Firestore überschreibt nicht wenn merge: true
       },
       { merge: true }
     );

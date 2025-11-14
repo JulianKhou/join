@@ -10,13 +10,18 @@ import {editOrAddContact,getContacts} from "./firebase.js";
 
 
 const contacts = await getContacts();
-console.log("Fetched contacts:", contacts[1].name);
 
 // Groups an array of contacts alphabetically by the first letter of their name
 function groupContacts(contacts) {
   const grouped = {};
   contacts.forEach((contact) => {
     const letter = contact.name.charAt(0).toUpperCase();
+    const initials = contact.name
+      .split(" ")
+      .map((n) => n.charAt(0).toUpperCase())
+      .join("")
+      .substring(0, 2);
+    contact.initials = initials;
     if (!grouped[letter]) {
       grouped[letter] = [];
     }
@@ -101,6 +106,7 @@ function addContact(){
   const name = getName();
   const email = getEmail();
   const phoneNumber = getPhoneNumber();
+  const color = getRandomColor();
 
   if (!name || !email) {
     alert("Please provide at least a name and an email.");
@@ -118,13 +124,19 @@ editOrAddContact(
     name,
     email,
     phoneNumber,
-    getRandomColor()
+    color
   ).catch((error) => {
     console.error("Error saving contact:", error);
     alert("There was an error saving the contact. Please try again.");
     return;
   });
 
-  
+  contacts.push({
+    name,
+    email,
+    phoneNumber,
+    initials,
+    color,
+  });
   renderContacts();
 }
