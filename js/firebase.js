@@ -129,7 +129,7 @@ export function signInWithGoogle() {
  * @param {string} email - The user's email address
  * @returns {Promise<void>} Promise that resolves when the profile is created/updated
  */
-export async function createOrUpdateUserProfile(uid, username, email) {
+export async function createOrUpdateUserProfile(uid, username, email,color) {
   try {
     const userRef = doc(db, "users", uid);
     await setDoc(
@@ -138,7 +138,8 @@ export async function createOrUpdateUserProfile(uid, username, email) {
         username,
         email,
         updatedAt: serverTimestamp(),
-        createdAt: serverTimestamp(), // Firestore überschreibt nicht wenn merge: true
+        createdAt: serverTimestamp(),
+        color: color, // Firestore überschreibt nicht wenn merge: true
       },
       { merge: true }
     );

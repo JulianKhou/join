@@ -16,23 +16,23 @@ export var addContactTemplate = `
       
             <form class="edit-form">
               <div class="input-wrapper">
-                <input type="text" placeholder="Name">
+                <input type="text" id="AddContactNameInput" placeholder="Name">
                 <span class="icon"><img src="./assets/LogIn&SignUp/person.svg" alt=""></span>
               </div>
       
               <div class="input-wrapper">
-                <input type="email" placeholder="Mail">
+                <input type="email" id="AddContactEmailInput" placeholder="Mail">
                 <span class="icon"><img src="./assets/LogIn&SignUp/mail.svg" alt=""></span>
               </div>
       
               <div class="input-wrapper">
-                <input type="tel" placeholder="Phone Number">
+                <input type="tel" id="AddContactPhoneNumberInput" placeholder="Phone Number">
                 <span class="icon"><img src="./assets/LogIn&SignUp/call.svg" alt=""></span>
               </div>
       
               <div class="buttons">
                 <button class="delete-btn">Delete</button>
-                <button class="save-btn">Save ✓</button>
+                <button class="save-btn" id="saveContactBtn">Save ✓</button>
               </div>
             </form>
       

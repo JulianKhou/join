@@ -1,21 +1,56 @@
-
-import { addContactTemplate,getContactsGroupTemplate } from "../templates/contactTemplates.js";
-import { initOutsideClickListener } from "./utility.js";
-
+import {
+  addContactTemplate,
+  getContactsGroupTemplate,
+} from "../templates/contactTemplates.js";
+import {
+  initOutsideClickHandler,
+  getRandomColor
+} from "./utility.js";
+import {editOrAddContact} from "./firebase.js";
 
 const contacts = [
-  { name: "Anton Mayer", email: "antonm@gmail.com", initials: "AM", color: "var(--orange-default)" },
-  { name: "Anja Schulz", email: "schulz@hotmail.com", initials: "AS", color: "var(--purpleViolett-default)" },
-  { name: "Benedikt Ziegler", email: "benedikt@gmail.com", initials: "BZ", color: "var(--skyBlue-default)" },
-  { name: "David Eisenberg", email: "davidberg@gmail.com", initials: "DE", color: "var(--pink-default)" },
-  { name: "Eva Fischer", email: "eva@gmail.com", initials: "EF", color: "var(--yellow-default)" },
-  { name: "Emmanuel Mauer", email: "emmanuelma@gmail.com", initials: "EM", color: "var(--aquamarine-default)" },
+  {
+    name: "Anton Mayer",
+    email: "antonm@gmail.com",
+    initials: "AM",
+    color: "var(--orange-default)",
+  },
+  {
+    name: "Anja Schulz",
+    email: "schulz@hotmail.com",
+    initials: "AS",
+    color: "var(--purpleViolett-default)",
+  },
+  {
+    name: "Benedikt Ziegler",
+    email: "benedikt@gmail.com",
+    initials: "BZ",
+    color: "var(--skyBlue-default)",
+  },
+  {
+    name: "David Eisenberg",
+    email: "davidberg@gmail.com",
+    initials: "DE",
+    color: "var(--pink-default)",
+  },
+  {
+    name: "Eva Fischer",
+    email: "eva@gmail.com",
+    initials: "EF",
+    color: "var(--yellow-default)",
+  },
+  {
+    name: "Emmanuel Mauer",
+    email: "emmanuelma@gmail.com",
+    initials: "EM",
+    color: "var(--aquamarine-default)",
+  },
 ];
 
 // Groups an array of contacts alphabetically by the first letter of their name
 function groupContacts(contacts) {
   const grouped = {};
-  contacts.forEach(contact => {
+  contacts.forEach((contact) => {
     const letter = contact.name.charAt(0).toUpperCase();
     if (!grouped[letter]) {
       grouped[letter] = [];
@@ -40,9 +75,9 @@ function renderContacts() {
 // Execute the renderContacts function immediately when this script file loads
 renderContacts();
 
-
 const addEditBtn = document.getElementById("addEditContactBtn");
-var closeEditBtn = null; 
+var closeEditBtn = null;
+var saveContactBtn = null;
 
 // Prevent multiple overlays
 addEditBtn.addEventListener("click", () => {
@@ -52,8 +87,7 @@ addEditBtn.addEventListener("click", () => {
   }
 
   var addContent = document.getElementById("addContact");
-addContent.insertAdjacentHTML("beforeend", addContactTemplate);
-
+  addContent.insertAdjacentHTML("beforeend", addContactTemplate);
 
   addEventListenerToEditContactForm();
 });
@@ -64,12 +98,19 @@ function addEventListenerToEditContactForm() {
     console.log("Close button clicked!");
     closeEditContactOverlay();
   });
-  initOutsideClickListener(
-    document.getElementById("edit-contact-container"),
-    () => {
-      closeEditContactOverlay();
-    }, true
+ initOutsideClickHandler(
+    document.querySelector(".edit-contact-container"),
+    closeEditContactOverlay,
+    [closeEditBtn]
   );
+
+  saveContactBtn = document.getElementById("saveContactBtn");
+  saveContactBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    console.log("Save Contact button clicked!");
+    addContact();
+    closeEditContactOverlay();
+  });
 }
 
 function closeEditContactOverlay() {
@@ -77,4 +118,48 @@ function closeEditContactOverlay() {
   if (overlay) {
     overlay.remove();
   }
+}
+
+
+
+function getName(){
+  return document.getElementById("AddContactNameInput").value;
+}
+function getEmail(){
+  return document.getElementById("AddContactEmailInput").value;
+}
+function getPhoneNumber(){
+  return document.getElementById("AddContactPhoneNumberInput").value;
+}
+
+function addContact(){
+  const name = getName();
+  const email = getEmail();
+  const phoneNumber = getPhoneNumber();
+
+  if (!name || !email) {
+    alert("Please provide at least a name and an email.");
+    return;
+  }
+
+  const initials = name
+    .split(" ")
+    .map((n) => n.charAt(0).toUpperCase())
+    .join("")
+    .substring(0, 2);
+
+editOrAddContact(
+    name.replace(/\s+/g, ''),
+    name,
+    email,
+    phoneNumber,
+    getRandomColor()
+  ).catch((error) => {
+    console.error("Error saving contact:", error);
+    alert("There was an error saving the contact. Please try again.");
+    return;
+  });
+
+  
+  renderContacts();
 }
