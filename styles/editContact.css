@@ -1,186 +1,379 @@
 .edit-contact-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-contact-container {
+  width: 60%;
+  height: 480px;
+  background: white;
+  border-radius: 30px;
+  display: flex;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+.edit-contact-left {
+  width: 467px;
+  background: #2a3647;
+  color: white;
+  padding: 60px 25px;
+  padding-top: 100px;
+}
+
+.edit-contact-left h2 {
+  margin-top: 40px;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.blue-line {
+  width: 60px;
+  height: 3px;
+  background: #4bb1ff;
+  margin-top: -20px;
+}
+.blue-line-add {
+  width: 60px;
+  height: 3px;
+  background: #4bb1ff;
+  margin-top: 0px;
+}
+
+.logo {
+  width: 54px;
+  height: 66.5px;
+}
+
+.edit-contact-right {
+  width: 60%;
+  padding: 40px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.profile-circle {
+  width: 110px;
+  height: 110px;
+  opacity: 1;
+  border-radius: 100%;
+  top: 204px;
+  left: 550px;
+  gap: 10px;
+  border-width: 3px;
+  background: #ffcc00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 47px;
+  color: white;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.profile-circle-add {
+  width: 110px;
+  height: 110px;
+  opacity: 1;
+  border-radius: 100%;
+  top: 204px;
+  left: 550px;
+  gap: 10px;
+  border-width: 3px;
+  background-color: #a8a8a8;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 47px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.edit-form .input-wrapper {
+  position: relative;
+  margin-bottom: 18px;
+  width: 422px;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-top: 80px;
+}
+
+.edit-form input {
+  width: 85%;
+  height: 51px;
+  padding-left: 15px;
+  border: 1px solid #d1d1d1;
+  border-radius: 10px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  position: absolute;
+  right: 15%;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 5px;
+  padding-right: 180px;
+}
+
+.delete-btn,
+.save-btn {
+  padding: 12px 26px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+}
+
+.delete-btn {
+  background: white;
+  border: 2px solid #2a3647;
+  color: #2a3647;
+}
+
+.save-btn {
+  background: #1f2b3a;
+  color: white;
+}
+
+.text {
+  font-family: Inter;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 47px;
+  line-height: 120%;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.icon-profile {
+  width: 64px;
+  height: 64px;
+}
+
+h3 {
+  font-size: 27px;
+}
+
+.edit-contact-overlay {
+  transition: opacity 200ms ease, visibility 200ms;
+  opacity: 1;
+  visibility: visible;
+}
+
+.edit-contact-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 1400px) {
+  .edit-form input {
+    width: 75%;
   }
-  
-  .edit-contact-container {
-    width: 60%;
-    height: 480px;
-    background: white;
-    border-radius: 30px;
-    display: flex;
-    overflow: hidden;
-    font-family: sans-serif;
+  .icon {
+    right: 25%;
   }
-  
-  .edit-contact-left {
-    width: 467px;
-    background: #2A3647;
-    color: white;
-    padding: 60px 25px;
-    padding-top: 100px;
+}
+
+@media (max-width: 1270px) {
+  .edit-form input {
+    width: 68%;
   }
-  
-  .edit-contact-left h2 {
-    margin-top: 40px;
+  .icon {
+    right: 30%;
+  }
+  .profile-circle {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+@media (max-width: 1120px) {
+  .edit-form input {
+    width: 63%;
+  }
+  .icon {
+    right: 35%;
+  }
+  .profile-circle {
+    width: 85px;
+    height: 85px;
+  }
+}
+
+@media (max-width: 1135px) {
+  .edit-form input {
+    width: 53%;
+  }
+  .icon {
+    right: 45%;
+  }
+  .profile-circle {
+    width: 75px;
+    height: 75px;
     font-size: 40px;
-    font-weight: bold;
   }
-  
-  .blue-line {
-    width: 60px;
-    height: 3px;
-    background: #4bb1ff;
-    margin-top: -20px;
-  }
-  .blue-line-add {
-    width: 60px;
-    height: 3px;
-    background: #4bb1ff;
-    margin-top: 0px;
+}
+
+@media (max-width: 1000px) {
+  .edit-contact-container {
+    flex-direction: column;
+    height: auto;
+    padding-bottom: 30px;
   }
 
-  .logo {
-    width: 54px;
-    height: 66.5px;
+  .edit-contact-left {
+    width: 100%;
+    padding: 40px 20px;
+    text-align: center;
   }
-  
+
+  .edit-form input {
+    width: 55%;
+    font-size: 0.9rem;
+  }
+
   .edit-contact-right {
-    width: 60%;
-    padding: 40px;
-    position: relative;
+    width: 100%;
+    justify-content: center;
+    padding: 10px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 40px;      
-  }  
-  
+    position: relative;
+  }
+  .profile-circle {
+    position: static;
+    margin: 0 0 -10px 0;
+    top: auto !important;
+    left: auto !important;
+  }
+
+  .edit-form {
+    padding-top: 0px;
+  }
+
+  .input-wrapper {
+    padding-left: 180px;
+  }
+
+  .buttons {
+    padding-right: 0px;
+  }
+  .icon {
+    right: 30%;
+  }
   .close-btn {
     position: absolute;
     top: 20px;
-    right: 20px;
+    right: 30px;
     background: none;
     border: none;
     font-size: 28px;
     cursor: pointer;
   }
-  
-  .profile-circle {
-    width: 110px;
-    height: 110px;
-    opacity: 1;
-    border-radius: 100%;
-    top: 204px;
-    left: 550px;
-    gap: 10px;
-    border-width: 3px;
-    background: #ffcc00;    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 47px;
-    color: white;
-    font-weight: bold;
-    flex-shrink: 0;  
-  }
+}
 
-  .profile-circle-add {
-    width: 110px;
-    height: 110px;
-    opacity: 1;
-    border-radius: 100%;
-    top: 204px;
-    left: 550px;
-    gap: 10px;
-    border-width: 3px;
-    background-color: #A8A8A8;
-    color: white;   
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 47px;
-    font-weight: bold;
-    flex-shrink: 0;  
+@media (max-width: 480px) {
+  .edit-contact-left {
+    width: 100%;
+    padding: 40px 10px;
+    text-align: center;
   }
-
-  .edit-form .input-wrapper {
-    position: relative;
-    margin-bottom: 18px; 
-    width: 422px;  
-  }
-
-  .edit-form {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;          
-    padding-top: 80px;
-  }
-  
   .edit-form input {
-    width: 85%;
-    height: 51px;          
-    padding-left: 15px;
-    border: 1px solid #D1D1D1; 
-    border-radius: 10px;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
+    width: 50%;
+    font-size: 0.9rem;
   }
-  
   .icon {
-    position: absolute;
-    right: 15%;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
+    right: 34%;
   }
-  
-  .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 5px;
-    padding-right: 180px;
-  }
-  
-  .delete-btn, .save-btn {
-    padding: 12px 26px;
+  .delete-btn,
+  .save-btn {
+    padding: 10px 20px;
     border-radius: 10px;
     font-size: 18px;
     cursor: pointer;
-    border: none;
   }
-  
-  .delete-btn {
-    background: white;
-    border: 2px solid #2A3647;
-    color: #2A3647;
+  .edit-contact-left h2 {
+    margin-top: 40px;
+    font-size: 32px;
+    font-weight: bold;
   }
-  
+  .buttons {
+    padding-right: 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  .edit-form input {
+    width: 45%;
+  }
+  .edit-contact-left {
+    padding: 40px 5px;
+  }
+  .edit-contact-left h2 {
+    font-size: 24px;
+  }
+  .blue-line {
+    width: 45px;
+    height: 3px;
+    background: #4bb1ff;
+    margin-top: -15px;
+}
+  .icon {
+    right: 37%;
+  }
+  .delete-btn,
   .save-btn {
-    background: #1f2b3a;
-    color: white;
+    padding: 10px 13px;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
   }
-
-  .text {
-    font-family: Inter;
-    font-weight: 500;
-    font-style: Medium;
-    font-size: 47px;
-    line-height: 120%;
-    letter-spacing: 0%;
-    text-align: center;
-    vertical-align: middle;
+  .buttons {
+    padding-right: 20px;
   }
-
-  .icon-profile {
-    width: 64px; 
-    height: 64px;
+}
+@media (max-width: 380px) {
+  .edit-form input {
+    width: 40%;
+    margin-left: 17px;
   }
-
-  h3 {
-    font-size: 27px;
+  .profile-circle {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
   }
+}
