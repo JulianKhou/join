@@ -15,6 +15,8 @@ import {
   deleteDoc,
   serverTimestamp,
   getDoc,
+  collection,
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
 
@@ -215,6 +217,34 @@ export async function editOrAddContact(nameWithoutWhitespace, name, email, phone
     );
   } catch (error) {
     console.error("Error creating/updating contact profile:", error);
+    throw error;
+  }
+}
+
+
+export async function deleteContact(nameWithoutWhitespace) {
+    try {
+    await deleteDoc(doc(db, "contacts", nameWithoutWhitespace));
+  } catch (error) {
+    console.error("Error deleting contact:", error);
+    throw error;
+  }
+}
+
+export async function getContacts() {
+  try {
+    const contactsRef = collection(db, "contacts");
+    const snapshot = await getDocs(contactsRef);
+
+    const contacts = [];
+    snapshot.forEach((doc) => {
+      contacts.push({ id: doc.id, ...doc.data() });
+    });
+
+    return contacts;
+  
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
     throw error;
   }
 }

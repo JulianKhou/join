@@ -6,46 +6,11 @@ import {
   initOutsideClickHandler,
   getRandomColor
 } from "./utility.js";
-import {editOrAddContact} from "./firebase.js";
+import {editOrAddContact,getContacts} from "./firebase.js";
 
-const contacts = [
-  {
-    name: "Anton Mayer",
-    email: "antonm@gmail.com",
-    initials: "AM",
-    color: "var(--orange-default)",
-  },
-  {
-    name: "Anja Schulz",
-    email: "schulz@hotmail.com",
-    initials: "AS",
-    color: "var(--purpleViolett-default)",
-  },
-  {
-    name: "Benedikt Ziegler",
-    email: "benedikt@gmail.com",
-    initials: "BZ",
-    color: "var(--skyBlue-default)",
-  },
-  {
-    name: "David Eisenberg",
-    email: "davidberg@gmail.com",
-    initials: "DE",
-    color: "var(--pink-default)",
-  },
-  {
-    name: "Eva Fischer",
-    email: "eva@gmail.com",
-    initials: "EF",
-    color: "var(--yellow-default)",
-  },
-  {
-    name: "Emmanuel Mauer",
-    email: "emmanuelma@gmail.com",
-    initials: "EM",
-    color: "var(--aquamarine-default)",
-  },
-];
+
+const contacts = await getContacts();
+console.log("Fetched contacts:", contacts[1].name);
 
 // Groups an array of contacts alphabetically by the first letter of their name
 function groupContacts(contacts) {
