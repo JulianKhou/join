@@ -8,22 +8,28 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, deleteDoc, serverTimestamp,getDoc } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  deleteDoc,
+  serverTimestamp,
+  getDoc,
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
 
+
 export const firebaseConfig = {
-   apiKey: "AIzaSyCgMFf3jcbG-pl3II5aRK9r4XxfF4ysc1c",
+  apiKey: "AIzaSyCgMFf3jcbG-pl3II5aRK9r4XxfF4ysc1c",
   authDomain: "join-44e84.firebaseapp.com",
   projectId: "join-44e84",
   storageBucket: "join-44e84.firebasestorage.app",
   messagingSenderId: "80172784787",
   appId: "1:80172784787:web:2922fbb80429f90e34c166",
-  measurementId: "G-TC3XZWJL58"
+  measurementId: "G-TC3XZWJL58",
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-
 
 // Export Firebase Services
 export const auth = getAuth(app);
@@ -43,9 +49,11 @@ const googleProvider = new GoogleAuthProvider();
 export function createUser(email, password, username) {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      return createOrUpdateUserProfile(userCredential.user.uid, username, email).then(
-        () => userCredential.user
-      );
+      return createOrUpdateUserProfile(
+        userCredential.user.uid,
+        username,
+        email
+      ).then(() => userCredential.user);
     })
     .catch((error) => {
       let message = "Registration failed.";
@@ -95,9 +103,11 @@ export function signInWithGoogle() {
     .then((result) => {
       const user = result.user;
       // Use merge: true to avoid overwriting existing profiles
-      return createOrUpdateUserProfile(user.uid, user.displayName, user.email).then(
-        () => user
-      );
+      return createOrUpdateUserProfile(
+        user.uid,
+        user.displayName,
+        user.email
+      ).then(() => user);
     })
     .catch((error) => {
       let message = "Google login failed.";
@@ -113,7 +123,7 @@ export function signInWithGoogle() {
 /**
  * Creates or updates a user profile in Firestore
  * Uses merge to avoid overwriting existing data (e.g., createdAt)
- * 
+ *
  * @param {string} uid - The unique user ID from Firebase Authentication
  * @param {string} username - The user's username
  * @param {string} email - The user's email address
@@ -128,7 +138,7 @@ export async function createOrUpdateUserProfile(uid, username, email) {
         username,
         email,
         updatedAt: serverTimestamp(),
-        createdAt: serverTimestamp() // Firestore überschreibt nicht wenn merge: true
+        createdAt: serverTimestamp(), // Firestore überschreibt nicht wenn merge: true
       },
       { merge: true }
     );
@@ -176,15 +186,34 @@ export function logout() {
  * @param {Function} callback - Called with user object or null
  */
 export function onAuthChange(callback) {
-  
   return onAuthStateChanged(auth, callback);
 }
 
-
-export async function getUsername(uid){
-  const myRef = doc(db,"users",uid);
+export async function getUsername(uid) {
+  const myRef = doc(db, "users", uid);
   const snapshot = await getDoc(myRef);
   const username = snapshot.data().username;
   console.log("Fetched username:", username);
   return username;
+}
+
+
+export async function editOrAddContact(nameWithoutWhitespace, name, email, phoneNumber) {
+    try {
+    const userRef = doc(db, "contacts", nameWithoutWhitespace);
+    await setDoc(
+      userRef,
+      {
+        name,
+        email,
+        phoneNumber,
+        updatedAt: serverTimestamp(),
+        createdAt: serverTimestamp(), // Firestore überschreibt nicht wenn merge: true
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    console.error("Error creating/updating contact profile:", error);
+    throw error;
+  }
 }
