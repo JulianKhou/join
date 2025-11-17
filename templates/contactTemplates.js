@@ -45,7 +45,7 @@ export var addContactTemplate = `
   const itemsHTML = contacts
     .map(
       (c, i) => `
-        <div class="contact-item" data-contact-id="${i}">
+        <button class="contact-item" data-contact-id="${i}">
             <div class="contact-avatar" style="background-color: ${c.color}">
             ${c.initials}
             </div>
@@ -54,7 +54,7 @@ export var addContactTemplate = `
                 <span class="contact-name">${c.name}</span>
                 <span class="contact-email">${c.email}</span>
             </div>
-        </div>
+        </button>
       `
     )
     .join("");
@@ -64,4 +64,29 @@ export var addContactTemplate = `
     <div class="contacts-letter">${letter}</div>
     ${itemsHTML}
   `;
+}
+export function getContactDetailsTemplate(contact) { 
+
+var contactDetailsTemplate = `
+
+<div class="contact-details-container" id="contactDetailsContainer>
+  <div class="contact-avatar-large" id="contactAvatarLarge">${contact.initials}</div>
+  <div class="contact-details-content">
+    <div class="contact-name-large" id="contactNameLarge">${contact.name}</div>
+    <div class=contact-buttons>
+      <button class="edit-contact-btn" id="editContactBtn">
+      <img src="./assets/contactsAssets/editIcon.svg" alt="Edit Icon" class="edit-icon">
+      Edit</button>
+      <button class="close-contact-details-btn" id="closeContactDetailsBtn">
+      <img src="./assets/contactsAssets/deleteIcon.svg" alt="Delete Icon" class="delete-icon">
+      Delete</button>
+    </div>
+  
+  </div>
+</div>
+
+
+
+`;
+return contactDetailsTemplate;
 }

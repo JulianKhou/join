@@ -1,13 +1,10 @@
 import {
   addContactTemplate,
   getContactsGroupTemplate,
+  getContactDetailsTemplate,
 } from "../templates/contactTemplates.js";
-import {
-  initOutsideClickHandler,
-  getRandomColor
-} from "./utility.js";
-import {editOrAddContact,getContacts} from "./firebase.js";
-
+import { initOutsideClickHandler, getRandomColor } from "./utility.js";
+import { editOrAddContact, getContacts } from "./firebase.js";
 
 const contacts = await getContacts();
 
@@ -40,6 +37,7 @@ function renderContacts() {
     html += getContactsGroupTemplate(letter, groupedContacts[letter]);
   }
   container.innerHTML = html;
+  addContactDetailsEventListeners();
 }
 
 // Execute the renderContacts function immediately when this script file loads
@@ -68,7 +66,7 @@ function addEventListenerToEditContactForm() {
     console.log("Close button clicked!");
     closeEditContactOverlay();
   });
- initOutsideClickHandler(
+  initOutsideClickHandler(
     document.querySelector(".edit-contact-container"),
     closeEditContactOverlay,
     [closeEditBtn]
@@ -90,19 +88,17 @@ function closeEditContactOverlay() {
   }
 }
 
-
-
-function getName(){
+function getName() {
   return document.getElementById("AddContactNameInput").value;
 }
-function getEmail(){
+function getEmail() {
   return document.getElementById("AddContactEmailInput").value;
 }
-function getPhoneNumber(){
+function getPhoneNumber() {
   return document.getElementById("AddContactPhoneNumberInput").value;
 }
 
-function addContact(){
+function addContact() {
   const name = getName();
   const email = getEmail();
   const phoneNumber = getPhoneNumber();
@@ -119,8 +115,8 @@ function addContact(){
     .join("")
     .substring(0, 2);
 
-editOrAddContact(
-    name.replace(/\s+/g, ''),
+  editOrAddContact(
+    name.replace(/\s+/g, ""),
     name,
     email,
     phoneNumber,
@@ -139,4 +135,26 @@ editOrAddContact(
     color,
   });
   renderContacts();
+}
+function addContactDetailsEventListeners() {
+  contacts.forEach((contact, index) => {
+    const contactItem = document.querySelector(`[data-contact-id="${index}"]`);
+    console.log(contactItem);
+    if (contactItem) {
+      contactItem.addEventListener("click", () => {
+        console.log(`Contact item ${contact.name} clicked!`);
+        contactShowDetails(contact,index);
+      });
+    }
+  });
+}
+
+function contactShowDetails(contact,index) {
+  var contactButton = document.querySelector(`[data-contact-id="${index}"]`);
+  if (!contactButton) return;
+  var contactDetailsOverlay = document.getElementById(
+    "contactDetailsOverlay"
+  );
+  contactButton.classList.add("active-contact");
+  contactDetailsOverlay.innerHTML = getContactDetailsTemplate(contact);
 }
