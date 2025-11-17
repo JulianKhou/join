@@ -4,9 +4,10 @@ import {
   getContactDetailsTemplate,
 } from "../templates/contactTemplates.js";
 import { initOutsideClickHandler, getRandomColor } from "./utility.js";
-import { editOrAddContact, getContacts } from "./firebase.js";
+import { editOrAddContact, getContacts,deleteContact } from "./firebase.js";
 
 const contacts = await getContacts();
+var currentShownContact = null;
 
 // Groups an array of contacts alphabetically by the first letter of their name
 function groupContacts(contacts) {
@@ -156,5 +157,29 @@ function contactShowDetails(contact,index) {
     "contactDetailsOverlay"
   );
   contactButton.classList.add("active-contact");
-  contactDetailsOverlay.innerHTML = getContactDetailsTemplate(contact);
+  currentShownContact = contact;
+  contactDetailsOverlay.innerHTML = getContactDetailsTemplate(contact, contact.color);
+  contactDetailsAddEventListeners();
+
+}
+
+function contactDetailsAddEventListeners() {
+var deleteDetailsBtn = document.getElementById("deleteContactDetailsBtn");
+var editDetailsBtn = document.getElementById("editContactBtn");
+var contact = currentShownContact;
+
+deleteDetailsBtn.addEventListener("click", async () => {
+    await deleteContact(contact.name.replace(/\s+/g, "")).catch((error) => {
+    console.error("Error deleting contact:", error);
+    alert("There was an error deleting the contact. Please try again.");
+    contacts.remove(contact);
+    renderContacts();
+    return;
+  }); 
+  });
+editDetailsBtn.addEventListener("click", () => {
+    console.log("Edit Contact button clicked!");
+    // Implement edit contact functionality here
+  });
+
 }

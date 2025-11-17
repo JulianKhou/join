@@ -65,24 +65,39 @@ export var addContactTemplate = `
     ${itemsHTML}
   `;
 }
-export function getContactDetailsTemplate(contact) { 
+export function getContactDetailsTemplate(contact,color) { 
 
 var contactDetailsTemplate = `
 
 <div class="contact-details-container" id="contactDetailsContainer>
-  <div class="contact-avatar-large" id="contactAvatarLarge">${contact.initials}</div>
+<div class="contact-details-header">
+  <div class="contact-avatar-large" id="contactAvatarLarge" style="background-color: ${color}">${contact.initials}</div>
   <div class="contact-details-content">
-    <div class="contact-name-large" id="contactNameLarge">${contact.name}</div>
+    <h2 class="contact-name-large" id="contactNameLarge">${contact.name}</h2>
     <div class=contact-buttons>
-      <button class="edit-contact-btn" id="editContactBtn">
-      <img src="./assets/contactsAssets/editIcon.svg" alt="Edit Icon" class="edit-icon">
+      <button class="edit-contact-btn contact-btn" id="editContactBtn">
+      <img src="./assets/contacts/editButton.svg" alt="Edit Icon" class="edit-icon">
       Edit</button>
-      <button class="close-contact-details-btn" id="closeContactDetailsBtn">
-      <img src="./assets/contactsAssets/deleteIcon.svg" alt="Delete Icon" class="delete-icon">
+      <button class="delete-contact-details-btn contact-btn" id="deleteContactDetailsBtn">
+      <img src="../assets/contacts/deleteButton.svg" alt="Delete Icon" class="delete-icon">
       Delete</button>
     </div>
   
   </div>
+</div>
+
+
+
+  <div class="contact-details-body">
+  <h3>Contact Information </h3>
+
+  <div>
+     <h4> Email </h4>
+     <a href="mailto:${contact.email}">${contact.email}</a>
+  </div>
+  <div>
+    <h4> Phone </h4>
+    <span>${contact.phoneNumber}</span>
 </div>
 
 
