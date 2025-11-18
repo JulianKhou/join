@@ -7,6 +7,7 @@
   <title>Legal Notice External</title>
   <link rel="stylesheet" href="./styles/globalStyles.css">
   <link rel="stylesheet" href="./styles//LegalNotice.css">
+  <link rel="stylesheet" href="./styles/remove.css">
 
   <link rel="icon" type="image/x-icon" href="./assets/favicon/logoFavicon.png">
 </head>
@@ -21,19 +22,26 @@
             </a>
   </nav>
   <header class="header">
+    <img src="./assets/LogIn&SignUp/Capa3.svg" class="header-logo-small d-none" alt="Join Logo Small">
+  
     <span class="header-title">Kanban Project Management Tool</span>
     <div class="headerRight">
       <a href="./help.html">
         <div class="help"></div>
       </a>
-
-      <div class="userProfileInitials"></div>
-
+  
+      <button class="userProfileInitials" id="userProfileInitialsBtn">
+        <div class="nameInitials" id="nameInitials"></div>
+      </button>
+      <div id="profileShowMore" class="profileShowMore d-none"></div>
     </div>
   </header>
   <main class="mainContent">
-      <h1 class="h1">Legal Notice</h1><br>
-
+    <div class="legal-title-container">
+      <h1 class="h1">Legal Notice</h1>
+      <img src="./assets/utilitys/arrowBack.svg" class="h1-arrow" alt="Arrow">
+    </div>
+    
       <section class="legal-section">
         <h2>Imprint</h2>
         <ul class="legal-bullets">
@@ -122,6 +130,20 @@
         </p>
       </section>
   </main>
+  <nav class="mobile-nav">
+    <a href="summaryUser.html">
+      <img src="./assets/sideboardAssets/summary.svg"><br>Summary
+    </a>
+    <a href="addTask.html">
+      <img src="./assets/sideboardAssets/addTask.svg"><br>Add Task
+    </a>
+    <a href="board.html">
+      <img src="./assets/sideboardAssets/board.svg"><br>Board
+    </a>
+    <a href="contacts.html">
+      <img src="./assets/sideboardAssets/contacts.svg"><br>Contacts
+    </a>
+  </nav>
   </div>
 </body>
 
