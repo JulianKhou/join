@@ -1,16 +1,16 @@
 export var addContactTemplate = `
 
-<div class="edit-contact-overlay">
+<div class="edit-contact-overlay add-contact-overlay">
         <div class="edit-contact-container">
       
           <div class="edit-contact-left">
             <img src="./assets/sideboardAssets/joinLogo.svg" class="logo">
-            <h2>Edit contact</h2>
+            <h2 class="add-contact-title">Add contact</h2>
             <div class="blue-line"></div>
           </div>
       
           <div class="edit-contact-right">
-            <button class="close-btn" id="closeEditContactBtn">×</button>
+            <button class="close-btn" id="closeAddContactBtn">×</button>
       
             <div class="profile-circle">TW</div>
       
@@ -44,8 +44,8 @@ export var addContactTemplate = `
     export function getContactsGroupTemplate(letter, contacts) {
   const itemsHTML = contacts
     .map(
-      (c, i) => `
-        <button class="contact-item" data-contact-id="${i}">
+      (c) => `
+        <button class="contact-item" data-contact-id="${c._index}">
             <div class="contact-avatar" style="background-color: ${c.color}">
             ${c.initials}
             </div>
@@ -104,4 +104,48 @@ var contactDetailsTemplate = `
 
 `;
 return contactDetailsTemplate;
+}
+export function editContactTemplate(name,email,phoneNumber,uuid,color,initials) {
+return `
+
+<div class="edit-contact-overlay ">
+        <div class="edit-contact-container add-contact-container">
+      
+          <div class="edit-contact-left ">
+            <img src="./assets/sideboardAssets/joinLogo.svg" class="logo">
+            <h2 class="add-contact-title">Edit contact</h2>
+            <div class="blue-line"></div>
+          </div>
+      
+          <div class="edit-contact-right ">
+            <button class="close-btn" id="closeEditContactBtn">×</button>
+      
+            <div class="profile-circle" style="background-color: ${color}">${initials}</div>
+      
+            <form class="edit-form">
+              <div class="input-wrapper">
+                <input type="text" id="EditContactNameInput" placeholder="Name" value="${name}">
+                <span class="icon"><img src="./assets/LogIn&SignUp/person.svg" alt=""></span>
+              </div>
+      
+              <div class="input-wrapper">
+                <input type="email" id="EditContactEmailInput" placeholder="Mail" value="${email}">
+                <span class="icon"><img src="./assets/LogIn&SignUp/mail.svg" alt=""></span>
+              </div>
+      
+              <div class="input-wrapper">
+                <input type="tel" id="EditContactPhoneNumberInput" placeholder="Phone Number" value="${phoneNumber}">
+                <span class="icon"><img src="./assets/LogIn&SignUp/call.svg" alt=""></span>
+              </div>
+      
+              <div class="buttons">
+                <button class="delete-btn" id="deleteEditContactBtn">Delete</button>
+                <button class="save-btn" id="saveEditContactBtn">Save ✓</button>
+              </div>
+            </form>
+      
+          </div>
+        </div>
+      </div>
+    `;
 }
