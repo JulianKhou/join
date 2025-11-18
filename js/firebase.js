@@ -201,9 +201,11 @@ export async function getUsername(uid) {
 }
 
 
-export async function editOrAddContact(nameWithoutWhitespace, name, email, phoneNumber,color) {
-    try {
-    const userRef = doc(db, "contacts", nameWithoutWhitespace);
+export async function editOrAddContact(docIdOrName, name, email, phoneNumber, color) {
+  try {
+    // Wenn ein docId übergeben wurde, verwenden; sonst Fallback auf name ohne Whitespace
+    const docId = docIdOrName ?? name.replace(/\s+/g, "");
+    const userRef = doc(db, "contacts", docId);
     await setDoc(
       userRef,
       {
@@ -213,10 +215,10 @@ export async function editOrAddContact(nameWithoutWhitespace, name, email, phone
         color,
         updatedAt: serverTimestamp(),
         createdAt: serverTimestamp(),
-         // Firestore überschreibt nicht wenn merge: true
       },
       { merge: true }
     );
+    return docId;
   } catch (error) {
     console.error("Error creating/updating contact profile:", error);
     throw error;
@@ -224,9 +226,10 @@ export async function editOrAddContact(nameWithoutWhitespace, name, email, phone
 }
 
 
-export async function deleteContact(nameWithoutWhitespace) {
+export async function deleteContact(uuid) {
+  console.log("Deleting contact with ID:", uuid);
     try {
-    await deleteDoc(doc(db, "contacts", nameWithoutWhitespace));
+    await deleteDoc(doc(db, "contacts", uuid));
   } catch (error) {
     console.error("Error deleting contact:", error);
     throw error;
