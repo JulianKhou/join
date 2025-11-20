@@ -1,51 +1,153 @@
-  h1{
-    font-size: 61px;
-    font-weight: bold;
-    line-height: 120%;
-    letter-spacing: 0%;
-    align-items: center;
-    padding-bottom: 8px;
-  }
 
-  span{
-    color: skyblue;
-  }
+/* Überschriften */
+.login-box-signup h1 {
+  font-size: 3.8rem; /* responsive Schriftgröße */
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
 
-  .login-box-signup h1 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px; 
+.underline {
+  width: 160px;
+  height: 3px;
+  background: #29ABE2;
+  margin: 0 auto 25px;
+}
+
+.login-box-signup {
+  background: white;
+  width: 598px;
+  height: 630px;
+  padding: 48px;      /* horizontal flexibel */
+  border-radius: 30px;
+  text-align: center;
+  gap: 32px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin: 40px auto;     /* zentriert die Box horizontal */
+  position: relative;
+  box-sizing: border-box; /* damit Padding in Breite enthalten ist */
+}
+
+/* Zurück-Button */
+.back-btn {
+  position: absolute;
+  top: 48px;
+  left: 48px;
+  width: 32px;
+  height: 32px;
+}
+.back-btn img {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Input-Felder */
+.input-field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-field input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.input-field .icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+}
+
+label {
+  font-size: 14px;
+}
+
+label span {
+  color: #29ABE2; 
+}
+
+/* Button-Gruppe */
+.btn-group {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.primary-btn {
+  background: #2a3647;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+@media (max-width: 800px){
+  .login-box-signup {
+    margin-right: 76px;
+    margin-left: 24px;
   }
-  
-  .h1-icon {
-    width: 24px;
-    height: 24px;
-    left: 1px;
-  }
+}
+
+@media (max-width: 500px) {
 
   .login-box-signup {
-    position: relative; 
-    background: white;
-    width: 652px;
-    padding: 48px 115px;
-    border-radius: 30px;
-    text-align: center;
-    gap: 32px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+    width: 396px;
+    height: 595px;
+    margin-right: 72px;
+    margin-left: 24px;
   }
-  
+  .login-box-signup h1{
+    font-size: 46px;
+  }
+
   .back-btn {
-    position: absolute;
-    top: 65px;
-    left: 70px;
-    width: 32px;
-    height: 32px;
+    top: 24px;
+    left: 24px;
   }
-  
-  .back-btn img {
+
+  .input-field input {
+    width: 107%;
+    height: 48px;
+  }
+
+  .btn-group {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .primary-btn {
     width: 100%;
-    height: 100%;
-    cursor: pointer;
+    height: 51px;
   }
+  .input-field .icon {
+    margin-right: -15px;
+}
+.checkbox.accept-terms {
+    padding-top: 32px;
+}
+.btn-group {
+  margin-top: 32px !important;
+}
+.primary-btn {
+  width: 180px !important; 
+  height: 51px !important;
+}
+}
+
+@media (max-width: 370px){
+  .login-box-signup {
+    margin-left: 40px;
+}
+}
+
+
   
