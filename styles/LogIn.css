@@ -216,4 +216,7 @@
     height: 78px;
     width: 64px;
   }
+  .login-box h1{
+    font-size: 47px;
+  }
 }
