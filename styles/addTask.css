@@ -135,6 +135,10 @@ label{
   letter-spacing: 0%;  
 }
 
+.icontest rect {
+  fill: blue;
+}
+
 
 
 
