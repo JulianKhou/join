@@ -20,7 +20,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
 
-
 export const firebaseConfig = {
   apiKey: "AIzaSyCgMFf3jcbG-pl3II5aRK9r4XxfF4ysc1c",
   authDomain: "join-44e84.firebaseapp.com",
@@ -131,7 +130,7 @@ export function signInWithGoogle() {
  * @param {string} email - The user's email address
  * @returns {Promise<void>} Promise that resolves when the profile is created/updated
  */
-export async function createOrUpdateUserProfile(uid, username, email,color) {
+export async function createOrUpdateUserProfile(uid, username, email, color) {
   try {
     const userRef = doc(db, "users", uid);
     await setDoc(
@@ -200,8 +199,13 @@ export async function getUsername(uid) {
   return username;
 }
 
-
-export async function editOrAddContact(docIdOrName, name, email, phoneNumber, color) {
+export async function editOrAddContact(
+  docIdOrName,
+  name,
+  email,
+  phoneNumber,
+  color
+) {
   try {
     // Wenn ein docId übergeben wurde, verwenden; sonst Fallback auf name ohne Whitespace
     const docId = docIdOrName ?? name.replace(/\s+/g, "");
@@ -225,10 +229,9 @@ export async function editOrAddContact(docIdOrName, name, email, phoneNumber, co
   }
 }
 
-
 export async function deleteContact(uuid) {
   console.log("Deleting contact with ID:", uuid);
-    try {
+  try {
     await deleteDoc(doc(db, "contacts", uuid));
   } catch (error) {
     console.error("Error deleting contact:", error);
@@ -247,9 +250,106 @@ export async function getContacts() {
     });
 
     return contacts;
-  
   } catch (error) {
     console.error("Error fetching contacts:", error);
     throw error;
   }
+}
+export async function createTask(
+  title,
+  description,
+  dueDate,
+  priority,
+  subtasks,
+  assignedTo,
+  category,
+  uid
+) {
+  const safeSubtasks = Array.isArray(subtasks) ? subtasks : [];
+  const taskRef = doc(collection(db, "tasks"));
+  const createData = {
+    title,
+    description,
+    dueDate,
+    priority,
+    subtasks: safeSubtasks,
+    assignedTo,
+    category,
+    uid,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  };
+  await setDoc(taskRef, createData);
+  return taskRef.id;
+}
+
+export async function updateTask(taskId, updateData) {
+  const taskRef = doc(db, "tasks", taskId);
+  await setDoc(taskRef, updateData, { merge: true });
+  return taskRef.id;
+}
+
+export async function addEditTask(
+  title,
+  description,
+  dueDate,
+  priority,
+  subtasks,
+  assignedTo,
+  category,
+  taskId
+) {
+  const user = auth.currentUser;
+  if (!user) {
+    return Promise.reject(new Error("No user is currently logged in."));
+  }
+  const uid = user.uid;
+  const safeSubtasks = Array.isArray(subtasks) ? subtasks : [];
+
+  try {
+    if (taskId) {
+      // Edit: ensure task exists and belongs to current user, then call updateTask
+      const taskRef = doc(db, "tasks", taskId);
+      const snap = await getDoc(taskRef);
+      if (!snap.exists()) {
+        throw new Error("Task not found.");
+      }
+      const existing = snap.data();
+      if (existing.uid && existing.uid !== uid) {
+        throw new Error("Not authorized to edit this task.");
+      }
+
+      const updateData = {
+        title,
+        description,
+        dueDate,
+        priority,
+        subtasks: safeSubtasks,
+        assignedTo,
+        category,
+        updatedAt: serverTimestamp(),
+      };
+
+      return await updateTask(taskId, updateData);
+    } else {
+      // Create: call createTask
+      return await createTask(
+        title,
+        description,
+        dueDate,
+        priority,
+        safeSubtasks,
+        assignedTo,
+        category,
+        uid
+      );
+    }
+  } catch (error) {
+    console.error("Error creating/updating task:", error);
+    throw error;
+  }
+}
+export function deleteTask(taskId) {
+  const taskRef = doc(db, "tasks", taskId);
+  return deleteDoc(taskRef);
 }

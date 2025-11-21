@@ -280,3 +280,11 @@ body {
 .join-text {
   color: var(--skyBlue-default);
 }
+.btnRemoveBackground {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: underline;
+  padding: 0;
+}

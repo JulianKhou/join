@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="./js/firebase.js"></script>
     <script type="module" src="./js/userInterface.js" defer></script>
+    <script type="module" src="./js/addTask.js" defer></script>
     <link rel="stylesheet" href="./styles/globalStyles.css">
     <link rel="stylesheet" href="./styles/addTask.css">
     <title>Add Task</title>
@@ -63,13 +64,13 @@
     
         <div class="task-column">
           <label for="task-title">Title<span>*</span></label>
-          <input class="task-input" type="text" id="task-title" placeholder="Enter a title" required>
+          <input class="task-input" type="text" id="taskTitle" placeholder="Enter a title" required>
     
           <label for="task-description">Description</label>
-          <textarea class="task-input-description id="task-description" placeholder="Enter a Description"></textarea>
+          <textarea class="task-input-description" id="taskDescription" placeholder="Enter a Description"></textarea>
     
           <label for="task-date">Due date<span>*</span></label>
-          <input class="task-input" type="date" id="task-date" required>
+          <input class="task-input" type="date" id="taskDate" required>
     
           <p class="required-hint">*This field is required</p>
         </div>
@@ -78,7 +79,7 @@
           <label>Priority</label>
           <div class="priority-buttons">
               <img src="./assets/addTask/urgent.svg" alt="">
-              <img class="icontest" src="./assets/addTask/medium.svg" alt="">
+              <img src="./assets/addTask/medium.svg" alt="">
               <img src="./assets/addTask/low.svg" alt="">
           </div>
     
@@ -99,8 +100,9 @@
       </form>
 
       <div class="add-task-buttons">
-        <img src="./assets/addTask/Secondary.svg" alt="">
-        <img src="./assets/addTask/Primary check button.svg" alt="">
+        <button class="add-task-button" id="addTaskBtn"><img src="./assets/addTask/Secondary.svg" alt=""></button>
+        <button class="cancel-task-button" id="cancelTaskBtn"><img src="./assets/addTask/Primary check button.svg" alt=""></button>
+        
       </div>
     
     </div>
