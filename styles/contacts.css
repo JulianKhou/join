@@ -1,4 +1,4 @@
-.mainContent {
+.main-content-contacts {
     flex: 1;
     margin-left: 230px;
     margin-top: 95px;
@@ -108,7 +108,6 @@
 .contact-email {
     font-size: 14px;
     color: var(--skyBlue-default);
-    
 }
 
 .contact-email:hover {
@@ -155,12 +154,14 @@
     background-color: #ccc;
     border-radius: 3px;
 }
+
 .active-contact {
     background-color: var(--mainColor-default);
     .contact-name{
         color: #fff;
     }
 }
+
 .contact-details-container{
     display: flex;
     flex-direction:row;
@@ -168,12 +169,14 @@
     gap: 20px;
     ;
 }
+
 .contact-details-overlay{
     display: flex;
         flex-direction: column;
         gap: 40px;
     
 }
+
 .contact-details-content{
     display: flex;
     justify-content: flex-start;
@@ -183,9 +186,11 @@
     position: static;
     margin-left: 40px;
 }
+
 .contact-buttons{
     display: flex;
 }
+
 .contact-btn{
         background: transparent;
     border: 0;
@@ -196,11 +201,13 @@
     width: 81px;
     height: 24px;
 }
+
 .contact-btn:hover{
     cursor: pointer;
     text-decoration: underline;
     background-color: var(--veryLightGray-default);
 }
+
 .contact-avatar-large{
     display: flex;
     flex-direction: row;
@@ -214,8 +221,9 @@
     border: 3px solid white;
     color: white;
 }
+
 .contact-detail-body{
-      align-self: flex-start;
+    align-self: flex-start;
     margin: 30px;
     gap: 20px;
     display: flex;

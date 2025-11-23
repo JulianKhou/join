@@ -1,3 +1,9 @@
+  .main-content-help{
+    padding-top: 220px;
+    padding-left: 330px;
+    padding-right: 65px;
+  }
+
 .helpBackButton {
   background: url(../assets/utilitys/arrowBack.svg);
   width: 20px;

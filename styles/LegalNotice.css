@@ -1,3 +1,9 @@
+  .main-content-legal{
+    padding-top: 220px;
+    padding-left: 330px;
+    padding-right: 65px;
+  }
+  
   .legal-area {
     max-width: 1014px;
     padding-top: 32px;
@@ -29,13 +35,6 @@
     margin-bottom: 12px;
     line-height: 1.45;
     list-style: disc;
-  }
-
-  .mainContentLegal {
-    flex: 1;
-    padding: 40px 60px;
-    margin-left: 250px; 
-    margin-top: 70px;   
   }
 
   span{
@@ -90,7 +89,7 @@
     .legal-bullets{
       font-size: 14px;
     }
-    .mainContent {
+    .main-content-legal {
       padding-right: 50px;
       padding-left: 270px;
     }
@@ -116,7 +115,7 @@
     .header-title{
       font-size: 14px;
     }
-    .mainContent {
+    .main-content-legal {
       padding-right: 30px;
       padding-left: 250px;
     }
@@ -138,7 +137,7 @@
     .header-title{
       font-size: 12px;
     }
-    .mainContent {
+    .main-content-legal {
       padding-right: 30px;
       padding-left: 220px;
     }
@@ -163,7 +162,7 @@
     .header-title{
       font-size: 12px;
     }
-    .mainContent {
+    .main-content-legal {
       padding-right: 20px;
       padding-left: 200px;
     }
@@ -204,7 +203,7 @@
       display: none;
     }
   
-    .mainContent {
+    .main-content-legal {
       margin-left: 0;
       width: 100%;
       padding: 120px 16px 100px;

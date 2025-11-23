@@ -24,8 +24,16 @@ h3 {
   color: black;
 }
 
+.mb-16 {
+  margin-bottom: 16px;
+}
+
 .mb-24 {
   margin-bottom: 24px;
+}
+
+.mb-28 {
+  margin-bottom: 28px;
 }
 
 .mb-30 {
@@ -177,13 +185,6 @@ body {
 
 .container {
   display: flex;
-}
-
-.mainContent {
-  flex: 1;
-  padding-left: 300px;
-  padding-right: 100px;
-  padding-top: 170px;
 }
 
 .header {

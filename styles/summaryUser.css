@@ -1,3 +1,15 @@
+.main-content-summary {
+    padding-top: 220px;
+    padding-left: 330px;
+    padding-right: 65px;
+}
+
+.main-content-help {
+    padding-top: 220px;
+    padding-left: 330px;
+    padding-right: 65px;
+}
+
 .summary-metric-icon {
     width: 70px;
     height: 70px;
@@ -7,14 +19,17 @@
     flex-shrink: 0;
     transition: background 100ms ease-in-out, border 100ms ease-in-out;
 }
+
 .summary-metric-icon svg path,
 .summary-metric-icon svg {
     transition: fill 100ms ease-in-out, stroke 100ms ease-in-out, color 100ms ease-in-out;
 }
+
 .summary-metric-tile-row-1:hover .summary-metric-icon {
     background: #fff !important;
     border: 2px solid #fff;
 }
+
 .summary-metric-tile-row-1:hover .summary-metric-icon svg path,
 .summary-metric-tile-row-1:hover .summary-metric-icon svg {
     fill: #2A3647 !important;
