@@ -5,6 +5,10 @@
   font-family: "Inter", sans-serif;
 }
 
+.d-none{
+  display: none;
+}
+
 h1 {
   font-size: 61px;
   font-weight: 700;
