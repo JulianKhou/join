@@ -29,3 +29,30 @@ dropZones.forEach(zone => {
     zone.addEventListener("dragleave", handleDragLeave);
     zone.addEventListener("drop", handleDrop);
 });
+
+// Overlay functionality
+const overlay = document.getElementById('taskDetailOverlay');
+const closeBtn = document.getElementById('overlayCloseBtn');
+const taskCards = document.querySelectorAll('.task-card.grabbable');
+
+// Open overlay when clicking on a task card
+taskCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+        if (e.target.closest('svg') || e.target.closest('button')) return;
+        overlay.classList.add('active');
+    });
+});
+
+// Close overlay
+function closeOverlay() {
+    overlay.classList.remove('active');
+}
+
+closeBtn?.addEventListener('click', closeOverlay);
+
+// Close overlay when clicking outside the card
+overlay?.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+        closeOverlay();
+    }
+});
