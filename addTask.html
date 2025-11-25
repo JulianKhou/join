@@ -44,6 +44,7 @@
   </nav>
 
   <header class="header">
+    <img src="./assets/LogIn&SignUp/Capa3.svg" class="header-logo-small" alt="Join Logo Small">
     <span class="header-title">Kanban Project Management Tool</span>
     <div class="headerRight">
       <a href="./help.html"><div class="help"></div></a>
@@ -78,9 +79,9 @@
         <div class="task-column">
           <label>Priority</label>
           <div class="priority-buttons">
-              <img src="./assets/addTask/urgent.svg" alt="">
-              <img src="./assets/addTask/medium.svg" alt="">
-              <img src="./assets/addTask/low.svg" alt="">
+              <img class="priority-buttons-size" src="./assets/addTask/urgent.svg" alt="urgent priority button">
+              <img class="priority-buttons-size" src="./assets/addTask/medium.svg" alt="medium priority button">
+              <img class="priority-buttons-size" src="./assets/addTask/low.svg" alt="low oriority button">
           </div>
     
           <label for="assigned">Assigned to</label>
@@ -100,13 +101,27 @@
       </form>
 
       <div class="add-task-buttons">
-        <button class="add-task-button" id="addTaskBtn"><img src="./assets/addTask/Secondary.svg" alt=""></button>
-        <button class="cancel-task-button" id="cancelTaskBtn"><img src="./assets/addTask/Primary check button.svg" alt=""></button>
+        <img class="task-cancel-button-size" src="./assets/addTask/Secondary.svg" alt="cancel button">
+        <img class="task-create-button-size" src="./assets/addTask/Primary check button.svg" alt="create task button">
         
       </div>
     
     </div>
   </main>
+  <nav class="mobile-nav">
+    <a href="summaryUser.html">
+      <img src="./assets/sideboardAssets/summary.svg"><br>Summary
+    </a>
+    <a href="addTask.html">
+      <img src="./assets/sideboardAssets/addTask.svg"><br>Add Task
+    </a>
+    <a href="board.html">
+      <img src="./assets/sideboardAssets/board.svg"><br>Board
+    </a>
+    <a href="contacts.html">
+      <img src="./assets/sideboardAssets/contacts.svg"><br>Contacts
+    </a>
+  </nav>
 
 </body>
 
