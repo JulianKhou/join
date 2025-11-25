@@ -241,7 +241,6 @@ body {
   background-position: center;
   color: var(--gray-default);
   width: 4vw;
-  /* 20% der Viewport-Breite */
   height: 4vw;
   max-height: 40px;
   max-width: 40px;
@@ -257,7 +256,6 @@ body {
 
 .userProfileInitials {
   width: 6vw;
-  /* 20% der Viewport-Breite */
   height: 6vw;
   max-height: 60px;
   max-width: 60px;
