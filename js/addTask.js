@@ -2,9 +2,46 @@ import {getContacts,addEditTask} from "./firebase.js";
 import {addAssignedToBarTask,addSubTask} from '../templates/addTaskTemplates.js';
 import { getInitials } from "./utility.js";
 
+// replace top-level var queries with declarations only so functions can still access them
+const PRIORITY = Object.freeze({
+  LOW: "Low",
+  MEDIUM: "Medium",
+  HIGH: "High",
+});
+let selectedPriority = PRIORITY.MEDIUM; // default
+
+// declare DOM refs here (no queries yet)
+let priorityUrgentBtn;
+let priorityMediumBtn;
+let priorityLowBtn;
+let priorityUrgentImg;
+let priorityMediumImg;
+let priorityLowImg;
+let selectBox;
+let checkboxList;
+
+// On DOM ready: set up UI, attach handlers and load contacts.
 document.addEventListener("DOMContentLoaded", async () => {
     const addTaskBtn = document.getElementById("addTaskBtn");
     const cancelTaskBtn = document.getElementById("cancelTaskBtn");
+
+    // assign DOM refs after DOM is ready (no functionality change, just safer)
+    priorityUrgentBtn = document.getElementById("priorityUrgentBtn");
+    priorityMediumBtn = document.getElementById("priorityMediumBtn");
+    priorityLowBtn = document.getElementById("priorityLowBtn");
+    priorityUrgentImg = document.getElementById("priorityUrgentImg");
+    priorityMediumImg = document.getElementById("priorityMediumImg");
+    priorityLowImg = document.getElementById("priorityLowImg");
+    selectBox = document.getElementById("selectedBox");
+    checkboxList = document.getElementById("chooseContactsCheckboxList");
+
+    // attach listeners that relied on those refs (moved here to ensure elements exist)
+    if (selectBox && checkboxList) {
+      selectBox.addEventListener("click", () => {
+        checkboxList.style.display =
+          checkboxList.style.display === "block" ? "none" : "block";
+      });
+    }
 
     addTaskBtn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -16,7 +53,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Logic to cancel adding the task goes here
         console.log("Cancel Task button clicked");
     });
-    addContactsToAssignTask(await getContacts());
+
+    // rest of initialization (unchanged order)
+    await addContactsToAssignTask(await getContacts());
     initAddEventListeners();
     checkChekboxChanges();
     addCategoryOptionsTask();
@@ -25,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
-
+// Insert contact options into the assign-to checkbox list.
 function addContactsToAssignTask(contacts) {
     const assignedSelect = document.getElementById("chooseContactsCheckboxList");
     if (!assignedSelect) return;
@@ -43,72 +82,39 @@ function addContactsToAssignTask(contacts) {
     });
 }
 
-const PRIORITY= Object.freeze({
-    LOW: 'Low',
-    MEDIUM: 'Medium',
-    HIGH: 'High'
-});
-var selectedPriority = PRIORITY.MEDIUM; // Default priority
-var priorityUrgentBtn = document.getElementById("priorityUrgentBtn");
-var priorityMediumBtn = document.getElementById("priorityMediumBtn");
-var priorityLowBtn = document.getElementById("priorityLowBtn");
-var priorityUrgentImg = document.getElementById("priorityUrgentImg");
-var priorityMediumImg = document.getElementById("priorityMediumImg");
-var priorityLowImg = document.getElementById("priorityLowImg");
 
-function initAddEventListeners() {
-  priorityLowBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      selectedPriority = PRIORITY.LOW;
-      priorityLowImg.style.fill = "red"; // Example visual feedback
-  });
-
-  priorityMediumBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      selectedPriority = PRIORITY.MEDIUM;
-        
-  });
-    priorityUrgentBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      selectedPriority = PRIORITY.HIGH;
-        
-  });
-}
-
+// Return the task title input value.
 function getTitleTask() {  
     const titleTask = document.getElementById("taskTitle").value;
     return titleTask;
 }
 
+// Return the task description input value.
 function getDescriptionTask() {  
     const descriptionTask = document.getElementById("taskDescription").value;
     return descriptionTask;
 }
+
+// Return the task due date input value.
 function getDueDateTask() {  
     const dueDateTask = document.getElementById("taskDate").value;
     return dueDateTask;
 }
+
+// Return the currently selected priority.
 function getPriorityTask() {  
     return selectedPriority;
 }
 
 
-
-
+// Append the assigned area UI and populate contacts.
 async function addAssignToBarTask() {  
     const assignedToSelect = document.getElementById("assignedArea");
    assignedToSelect.appendChild(addAssignedToBarTask());
    addContactsToAssignTask(await getContacts());
 }
 
- const selectBox = document.getElementById("selectedBox");
-const checkboxList = document.getElementById("chooseContactsCheckboxList");
-
-selectBox.addEventListener("click", () => {
-  checkboxList.style.display =
-    checkboxList.style.display === "block" ? "none" : "block";
-});
-
+// Wire change handlers for assign-to checkboxes and update the select box text.
 function checkChekboxChanges() {    
 const checkboxes = checkboxList.querySelectorAll(".assignedToCheckbox");
 checkboxes.forEach(cb => {
@@ -125,6 +131,7 @@ checkboxes.forEach(cb => {
 }   
 
 
+// Return array of selected assigned-to values.
 function getSelectedAssignedTo() {  
     const checkboxes = checkboxList.querySelectorAll(".assignedToCheckbox");
     const selected = [...checkboxes]
@@ -139,6 +146,7 @@ const CATEGORY= Object.freeze({
     MARKETING: 'Marketing',
     USERSTORY: 'User Story ',
 });
+// Populate category select with options.
 function addCategoryOptionsTask() {  
     const categorySelect = document.getElementById("categorySelect");
     for (const key in CATEGORY) {
@@ -149,11 +157,13 @@ function addCategoryOptionsTask() {
     }
 }
 
+// Return currently selected category.
 function getCategoryTask() {  
     const categorySelect = document.getElementById("categorySelect");
     return categorySelect.value;
 }
 
+// Initialize add/remove subtask buttons and handlers.
 function initSubtaskEventListeners() {  
     const addSubtaskBtn = document.getElementById("addSubtaskBtn");
     const removeSubtaskBtn = document.getElementById("removeSubtaskBtn");
@@ -177,6 +187,7 @@ function initSubtaskEventListeners() {
         }
     });
 }
+// Collect subtask texts from the DOM and return them as an array.
 function getSubtasksList() {
     const subtasksList = document.getElementById("subtasksList");
     const subtasks = [];
@@ -187,6 +198,7 @@ function getSubtasksList() {
     return subtasks;
 }
 
+// Build task object from inputs and send to firebase handler.
 function createTaskObject() {  
    var task = {
         title: getTitleTask(),
