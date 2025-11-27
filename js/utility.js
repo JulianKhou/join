@@ -33,3 +33,13 @@ export function getRandomColor() {
     ];
     return colors[Math.floor(Math.random() * colors.length)];
   }
+
+
+  export function getInitials(name) {
+    const names = name.split(' ');
+    let initials = names[0].charAt(0).toUpperCase();
+    if (names.length > 1) {
+        initials += names[names.length - 1].charAt(0).toUpperCase();
+    }
+    return initials;
+}

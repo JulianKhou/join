@@ -70,7 +70,7 @@ let saveContactBtn = null;
 
 /* Open add-contact overlay (prevents multiple overlays). */
 addContactBtn.addEventListener("click", () => {
-  console.log("Add Contact button clicked!");
+  
   if (document.querySelector(".add-contact-overlay")) return;
 
   const addContent = document.getElementById("addContact");
@@ -84,7 +84,7 @@ function addEventListenerToAddContactForm() {
   closeAddBtn = document.getElementById("closeAddContactBtn");
   if (closeAddBtn) {
     closeAddBtn.addEventListener("click", () => {
-      console.log("Close button clicked!");
+    
       closeAddContactOverlay();
     });
   }
@@ -100,7 +100,7 @@ function addEventListenerToAddContactForm() {
   if (saveContactBtn) {
     saveContactBtn.addEventListener("click", async (e) => {
       e.preventDefault();
-      console.log("Save Contact button clicked!");
+      
       await addContact(); // await so we have correct id before updating UI
       closeAddContactOverlay();
     });
@@ -226,7 +226,7 @@ function contactDetailsAddEventListeners() {
   if (editDetailsBtn) {
     // open edit overlay for the current contact
     editDetailsBtn.addEventListener("click", () => {
-      console.log("Edit Contact button clicked!");
+      
       editContact(currentShownContact);
     });
   }
@@ -262,7 +262,7 @@ function addEventListenerToEditContactForm(contact) {
   const closeEditBtn = document.getElementById("closeEditContactBtn");
   if (closeEditBtn) {
     closeEditBtn.addEventListener("click", () => {
-      console.log("Close button clicked!");
+  
       closeEditContactOverlay();
     });
   }
@@ -277,7 +277,7 @@ function addEventListenerToEditContactForm(contact) {
   if (saveEditContactBtn) {
     saveEditContactBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log("Save Contact button clicked!");
+    
       saveEditedContact(contact);
       closeEditContactOverlay();
     });
@@ -287,7 +287,7 @@ function addEventListenerToEditContactForm(contact) {
   if (deleteContactBtn) {
     deleteContactBtn.addEventListener("click", async (e) => {
       e.preventDefault();
-      console.log("Delete Contact button clicked!");
+     
       try {
         await deleteContact(contact.id);
         const idx = contacts.findIndex((c) => c.id === contact.id);
@@ -345,4 +345,8 @@ async function saveEditedContact(contact) {
 function closeEditContactOverlay() {
   const overlay = document.querySelector(".edit-contact-overlay");
   if (overlay) overlay.remove();
+}
+
+export function getContactsArray() {
+  return contacts;
 }

@@ -131,8 +131,12 @@ export function signInWithGoogle() {
  * @returns {Promise<void>} Promise that resolves when the profile is created/updated
  */
 export async function createOrUpdateUserProfile(uid, username, email, color) {
+  if(getUsername(uid) != null)
+    
+    return;{
   try {
     const userRef = doc(db, "users", uid);
+    
     await setDoc(
       userRef,
       {
@@ -140,14 +144,16 @@ export async function createOrUpdateUserProfile(uid, username, email, color) {
         email,
         updatedAt: serverTimestamp(),
         createdAt: serverTimestamp(),
-        color: color, // Firestore überschreibt nicht wenn merge: true
+        color: color, 
       },
-      { merge: true }
+      { merge: true
+        }
     );
   } catch (error) {
     console.error("Error creating/updating user profile:", error);
     throw error;
   }
+}
 }
 
 /**
@@ -195,7 +201,6 @@ export async function getUsername(uid) {
   const myRef = doc(db, "users", uid);
   const snapshot = await getDoc(myRef);
   const username = snapshot.data().username;
-  console.log("Fetched username:", username);
   return username;
 }
 
@@ -230,7 +235,6 @@ export async function editOrAddContact(
 }
 
 export async function deleteContact(uuid) {
-  console.log("Deleting contact with ID:", uuid);
   try {
     await deleteDoc(doc(db, "contacts", uuid));
   } catch (error) {

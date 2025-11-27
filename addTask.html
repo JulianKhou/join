@@ -21,7 +21,7 @@
         <span class="sidebar-span">Summary</span>
       </a>
 
-      <a href="addTask.html" class="active-link">
+      <a href="addTask.html" class="nav-item-top active">
         <img src="./assets/sideboardAssets/addTask.svg" alt="Add Task">
         <span>Add Task</span>
       </a>
@@ -79,30 +79,45 @@
         <div class="task-column">
           <label>Priority</label>
           <div class="priority-buttons">
-              <img class="priority-buttons-size" src="./assets/addTask/urgent.svg" alt="urgent priority button">
-              <img class="priority-buttons-size" src="./assets/addTask/medium.svg" alt="medium priority button">
-              <img class="priority-buttons-size" src="./assets/addTask/low.svg" alt="low oriority button">
+              <button class="remove-background" id="priorityUrgentBtn"><img class="priority-buttons-size" src="./assets/addTask/urgent.svg" alt="urgent priority button" id="priorityUrgentImg"></button>
+              <button class="remove-background" id="priorityMediumBtn"><img class="priority-buttons-size" src="./assets/addTask/medium.svg" alt="medium priority button" id="priorityMediumImg"></button>
+              <button class="remove-background" id="priorityLowBtn"><img class="priority-buttons-size" src="./assets/addTask/low.svg" alt="low oriority button" id="priorityLowImg"></button>
           </div>
-    
+          <div class="assigned-area" id="assignedArea">
           <label for="assigned">Assigned to</label>
-          <select class="task-input" id="assigned">
-            <option>Select contacts to assign</option>
-          </select>
-    
+
+          <div class="multi-select">
+          <div class="selected-box" id="selectedBox">Select contacts to assign</div>
+            <div class="checkbox-list" id="chooseContactsCheckboxList">
+
+
+            </div>
+
+          </div>
+          </div>
+          
           <label for="category">Category<span>*</span></label>
-          <select class="task-input" id="category" required>
+          <select class="task-input" id="categorySelect" required>
             <option>Select task category</option>
           </select>
     
           <label for="subtasks">Subtasks</label>
+          <div class="subtask-input-area">
           <input class="task-input" type="text" id="subtasks" placeholder="Add new subtask">
+          <div class="subtask-buttons">
+          <button class="remove-background subtask-btn" id="addSubtaskBtn"><img class="subtask-add-button-size" src="./assets/utilitys/check.svg" alt="add subtask button"></button>
+           <div class="dividing-line"></div>
+          <button class="remove-background subtask-btn" id="removeSubtaskBtn"><img class="subtask-remove-button-size" src="./assets/utilitys/close.svg" alt="remove subtask button"></button>
+          </div>
+          </div>
+          <div class="subtasks-list" id="subtasksList"></div>
         </div>
     
       </form>
 
       <div class="add-task-buttons">
-        <img class="task-cancel-button-size" src="./assets/addTask/Secondary.svg" alt="cancel button">
-        <img class="task-create-button-size" src="./assets/addTask/Primary check button.svg" alt="create task button">
+        <img class="task-cancel-button remove-background-size" src="./assets/addTask/Secondary.svg" id="cancelTaskBtn" alt="cancel button">
+        <img class="task-create-button remove-background-size" src="./assets/addTask/Primary check button.svg" id="addTaskBtn" alt="create task button">
         
       </div>
     
