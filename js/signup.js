@@ -4,9 +4,7 @@ var signUpBtn= document.getElementById("signUpBtn");
 
 signUpBtn.addEventListener("click",function(event){
     event.preventDefault(); // Verhindert das Standard-Formularverhalten
-    console.log("Sign Up button clicked");
-    console.log("Email: "+getEmailInput());
-    console.log(checkCorrectPassword());
+
     if(checkCorrectPassword()){
         createUser(getEmailInput(),getPasswordInput(),getUsernameInput())
             .then((user) => {

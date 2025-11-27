@@ -30,12 +30,12 @@ document.addEventListener("DOMContentLoaded", () => {
 // Listen for authentication state changes
 onAuthChange(async (user) => {
   if (user) {
-    console.log("Auth state changed, user logged in:", user.uid);
+    
     uid = user.uid;
 
     try {
       username = await getUsername(uid);
-      console.log("Username fetched:", username);
+      
 
       if (username) {
         editProfileInitials();
@@ -65,13 +65,12 @@ export function getInitials(Name) {
   if (initials.length === 1) {
     initials += names[0].charAt(1).toUpperCase();
   }
-  console.log("Initials:", initials);
   return initials;
 }
 
 // Display user initials in profile button
 export function editProfileInitials() {
-  console.log("Editing profile initials for username:", getInitials(username));
+
   const nameInitialsElement = document.getElementById("nameInitials");
 
   if (nameInitialsElement) {
@@ -107,7 +106,7 @@ function addEventListenersToProfileButtons() {
     window.location.href = "legalNoticeInt.html";
   });
   logoutBtn.addEventListener("click", function (event) {
-    console.log("Logout button clicked");
+   
     logoutUser();
   });
 }

@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Log In</title>
   <link rel="stylesheet" href="./styles/LogIn.css">
+  <script type="module" src="./js/login.js" defer></script>
+  <script type="module" src="./js/firebase.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -38,9 +40,15 @@
         </div>
 
         <div class="btn-group">
-          <button class="primary-btn">Log in</button>
-          <button class="outlined-btn">Guest Log in</button>
+          <button class="primary-btn" id="loginBtn">Log in</button>
+          <button class="outlined-btn" id="guestLoginBtn">Guest Log in</button>
         </div>
+         <div class="google-login">
+            <button type="button" id="googleLoginBtn" class="google-btn">
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width: 18px; margin-right: 8px;">
+              Sign in with Google
+            </button>
+          </div>
       </form>
     </div>
   </section>
