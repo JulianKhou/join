@@ -1,7 +1,6 @@
 .add-task-wrapper {
   position: relative;
   margin-left: 260px;
-  margin-top: 100px;
   padding: 40px 80px;
   display: flex;
   flex-direction: column;
@@ -101,6 +100,7 @@
 .task-column:last-child {
   padding-left: 16px;
 }
+
 
 .header-logo-small {
   display: none;
