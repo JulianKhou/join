@@ -259,27 +259,18 @@ export async function getContacts() {
     throw error;
   }
 }
-export async function createTask(
-  title,
-  description,
-  dueDate,
-  priority,
-  subtasks,
-  assignedTo,
-  category,
-  uid
-) {
-  const safeSubtasks = Array.isArray(subtasks) ? subtasks : [];
+export async function createTask(task) {
+const user = auth.currentUser;
   const taskRef = doc(collection(db, "tasks"));
   const createData = {
-    title,
-    description,
-    dueDate,
-    priority,
-    subtasks: safeSubtasks,
-    assignedTo,
-    category,
-    uid,
+    title: task.title,
+    description: task.description,
+    dueDate: task.dueDate,
+    priority: task.priority,
+    subtasks: task.subtasks,
+    assignedTo: task.assignedTo,
+    category: task.category,
+    createdBy: user.uid,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   };
@@ -293,67 +284,23 @@ export async function updateTask(taskId, updateData) {
   return taskRef.id;
 }
 
-export async function addEditTask(
-  title,
-  description,
-  dueDate,
-  priority,
-  subtasks,
-  assignedTo,
-  category,
-  taskId
-) {
-  const user = auth.currentUser;
-  if (!user) {
-    return Promise.reject(new Error("No user is currently logged in."));
-  }
-  const uid = user.uid;
-  const safeSubtasks = Array.isArray(subtasks) ? subtasks : [];
 
-  try {
-    if (taskId) {
-      // Edit: ensure task exists and belongs to current user, then call updateTask
-      const taskRef = doc(db, "tasks", taskId);
-      const snap = await getDoc(taskRef);
-      if (!snap.exists()) {
-        throw new Error("Task not found.");
-      }
-      const existing = snap.data();
-      if (existing.uid && existing.uid !== uid) {
-        throw new Error("Not authorized to edit this task.");
-      }
 
-      const updateData = {
-        title,
-        description,
-        dueDate,
-        priority,
-        subtasks: safeSubtasks,
-        assignedTo,
-        category,
-        updatedAt: serverTimestamp(),
-      };
 
-      return await updateTask(taskId, updateData);
-    } else {
-      // Create: call createTask
-      return await createTask(
-        title,
-        description,
-        dueDate,
-        priority,
-        safeSubtasks,
-        assignedTo,
-        category,
-        uid
-      );
-    }
-  } catch (error) {
-    console.error("Error creating/updating task:", error);
-    throw error;
-  }
+export async function addEditTask(task) {
+createTask(task).then((taskId) => {
+    console.log("Task added with ID:", taskId);
+  });
+  //später mal updateTask aufrufen, wenn taskId existiert
 }
+
+
 export function deleteTask(taskId) {
   const taskRef = doc(db, "tasks", taskId);
   return deleteDoc(taskRef);
+}
+
+function checkIfTaskExists(taskId) {
+  const taskRef = doc(db, "tasks", taskId);
+  return getDoc(taskRef).then((docSnap) => docSnap.exists());
 }

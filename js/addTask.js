@@ -1,4 +1,4 @@
-import {getContacts} from "./firebase.js";
+import {getContacts,addEditTask} from "./firebase.js";
 import {addAssignedToBarTask,addSubTask} from '../templates/addTaskTemplates.js';
 import { getInitials } from "./utility.js";
 
@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     addTaskBtn.addEventListener("click", (e) => {
         e.preventDefault();
-        // Logic to add the task goes here
+        createTaskObject();
         console.log("Add Task button clicked");
     });
     cancelTaskBtn.addEventListener("click", (e) => {
@@ -57,17 +57,19 @@ var priorityMediumImg = document.getElementById("priorityMediumImg");
 var priorityLowImg = document.getElementById("priorityLowImg");
 
 function initAddEventListeners() {
-  priorityLowBtn.addEventListener("click", () => {
-
+  priorityLowBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       selectedPriority = PRIORITY.LOW;
       priorityLowImg.style.fill = "red"; // Example visual feedback
   });
 
-  priorityMediumBtn.addEventListener("click", () => {
+  priorityMediumBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       selectedPriority = PRIORITY.MEDIUM;
         
   });
-    priorityUrgentBtn.addEventListener("click", () => {
+    priorityUrgentBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       selectedPriority = PRIORITY.HIGH;
         
   });
@@ -174,4 +176,29 @@ function initSubtaskEventListeners() {
             subtasksList.removeChild(lastSubtask);
         }
     });
+}
+function getSubtasksList() {
+    const subtasksList = document.getElementById("subtasksList");
+    const subtasks = [];
+    subtasksList.querySelectorAll("label").forEach(label => {
+        const subtaskText = label.textContent.trim();
+        subtasks.push(subtaskText);
+    });
+    return subtasks;
+}
+
+function createTaskObject() {  
+   var task = {
+        title: getTitleTask(),
+        description: getDescriptionTask(),
+        dueDate: getDueDateTask(),
+        priority: getPriorityTask(),
+        assignedTo: getSelectedAssignedTo(),
+        category: getCategoryTask(),
+        subtasks: getSubtasksList()
+   };
+   console.log("Created Task Object:", task);
+    addEditTask(task);
+
+    return task;
 }
