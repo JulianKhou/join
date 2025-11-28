@@ -9,8 +9,6 @@
   z-index: 0;
 }
 
-.task-cancel-button-size
-
 .add-task-form {
   display: flex;
   gap: 45px;
@@ -91,6 +89,13 @@
   cursor: pointer;
 }
 
+.priority-btn img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transition: 0.2s ease-in-out;
+}
+
 .required-hint {
   font-size: 14px;
   color: #f26262;
@@ -104,7 +109,6 @@
 .task-column:last-child {
   padding-left: 16px;
 }
-
 
 .header-logo-small {
   display: none;
@@ -165,7 +169,6 @@ label {
   border-radius: 10px;
   width: 100%;
   gap: 8px;
-  
 }
 
 .checkbox-list {
@@ -187,12 +190,12 @@ label {
   font-style: Regular;
   font-size: 16px;
   line-height: 120%;
-  letter-spacing: 0%;  
+  letter-spacing: 0%;
   margin-bottom: 8px;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: unset;
-    align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: unset;
+  align-items: center;
 }
 .dividing-line {
   width: 2px;
@@ -201,31 +204,31 @@ label {
   margin: 0 8px;
 }
 
-.subtask-buttons{
-      bottom: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 24px;
-    position: relative;
-    left: 376px;
-    width: 50px;
+.subtask-buttons {
+  bottom: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  position: relative;
+  left: 376px;
+  width: 50px;
 }
-.subtask-btn{
-    cursor: pointer;
+.subtask-btn {
+  cursor: pointer;
 }
-.subtask-btn:hover{
-    opacity: 0.8;
-    background-color:var(--lightGray-default);
+.subtask-btn:hover {
+  opacity: 0.8;
+  background-color: var(--lightGray-default);
 }
 
-.point{
-    height: 8px;
-    width: 8px;
-    background-color: var(--darkGray-default);
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 10px;
+.point {
+  height: 8px;
+  width: 8px;
+  background-color: var(--darkGray-default);
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
 }
 
 @media (max-width: 1350px) {
@@ -301,9 +304,9 @@ label {
   }
 }
 
-@media (min-width: 611px){
+@media (min-width: 611px) {
   .header-logo-small {
-      display: none;
+    display: none;
   }
 }
 
@@ -312,7 +315,7 @@ label {
     display: none;
   }
 
-  .selected-box{
+  .selected-box {
     width: 500px;
   }
 
@@ -327,7 +330,7 @@ label {
     left: 48px;
     width: 32px;
     height: 39px;
-}
+  }
 
   .task-input {
     width: 100%;
@@ -418,160 +421,158 @@ label {
     height: 46px;
   }
 
-@media (max-width: 555px) {
-  .task-input {
-    width: 400px;
+  @media (max-width: 555px) {
+    .task-input {
+      width: 400px;
+    }
+
+    .task-input-description {
+      width: 400px;
+    }
+
+    .priority-buttons-size {
+      height: 53px;
+      width: 127px;
+    }
+
+    .add-task-wrapper {
+      margin-left: -30px;
+    }
+
+    .add-task-buttons {
+      padding-bottom: 48px;
+      padding-left: 67px;
+    }
+    .selected-box {
+      width: 400px;
+    }
+
+    .subtask-buttons {
+      left: 345px;
+    }
   }
 
-  .task-input-description {
-    width: 400px;
+  @media (max-width: 480px) {
+    .task-input {
+      width: 400px;
+    }
+
+    .task-input-description {
+      width: 400px;
+    }
+
+    .header-logo-small {
+      left: 38px;
+    }
+
+    .priority-buttons-size {
+      height: 53px;
+      width: 127px;
+    }
+
+    .add-task-wrapper {
+      margin-left: -60px;
+    }
+
+    .add-task-buttons {
+      padding-bottom: 48px;
+      padding-left: 68px;
+    }
+
+    .priority-buttons {
+      gap: 8px;
+    }
+    .add-task-wrapper {
+      margin-left: -50px;
+    }
   }
 
-  .priority-buttons-size {
-    height: 53px;
-    width: 127px;
+  @media (max-width: 430px) {
+    .task-input {
+      width: 350px;
+    }
+
+    .header-logo-small {
+      left: 32px;
+    }
+
+    .task-input-description {
+      width: 350px;
+    }
+
+    .priority-buttons-size {
+      height: 53px;
+      width: 111px;
+    }
+
+    .add-task-wrapper {
+      margin-left: -55px;
+    }
+
+    .add-task-buttons {
+      padding-bottom: 48px;
+      padding-left: 15px;
+    }
+
+    .priority-buttons {
+      gap: 8px;
+    }
+    .selected-box {
+      width: 350px;
+    }
+
+    .subtask-buttons {
+      left: 290px;
+    }
   }
 
-  .add-task-wrapper {
-    margin-left: -30px;
-  }
+  @media (max-width: 380px) {
+    .task-input {
+      width: 295px;
+    }
 
-  .add-task-buttons {
-    padding-bottom: 48px;
-    padding-left: 67px;
-  }
-  .selected-box{
-    width: 400px;
-  }
+    .header-logo-small {
+      left: 24px;
+    }
 
-  .subtask-buttons {
-    left: 345px;
+    .task-input-description {
+      width: 295px;
+    }
+
+    .priority-buttons-size {
+      height: 53px;
+      width: 93px;
+    }
+
+    .add-task-wrapper {
+      margin-left: -65px;
+    }
+
+    .add-task-buttons {
+      padding-bottom: 48px;
+      padding-left: 5px;
+    }
+
+    .priority-buttons {
+      gap: 8px;
+    }
+    .add-task-wrapper h1 {
+      font-size: 40px;
+    }
+    .task-cancel-button-size {
+      height: 48px;
+      width: 120px;
+    }
+    .task-create-button-size {
+      height: 48px;
+      width: 154spx;
+    }
+    .selected-box {
+      width: 300px;
+    }
+
+    .subtask-buttons {
+      left: 240px;
+    }
   }
 }
-
-@media (max-width: 480px) {
-  .task-input {
-    width: 400px;
-  }
-
-  .task-input-description {
-    width: 400px;
-  }
-
-  .header-logo-small {
-    left: 38px;
-}
-
-  .priority-buttons-size {
-    height: 53px;
-    width: 127px;
-  }
-
-  .add-task-wrapper {
-    margin-left: -60px;
-  }
-
-  .add-task-buttons {
-    padding-bottom: 48px;
-    padding-left: 68px;
-  }
-
-  .priority-buttons {
-    gap: 8px;
-  }
-  .add-task-wrapper {
-    margin-left: -50px;
-  }
-}
-
-@media (max-width: 430px) {
-  .task-input {
-    width: 350px;
-  }
-
-  .header-logo-small {
-    left: 32px;
-}
-
-  .task-input-description {
-    width: 350px;
-  }
-
-  .priority-buttons-size {
-    height: 53px;
-    width: 111px;
-  }
-
-  .add-task-wrapper {
-    margin-left: -55px;
-  }
-
-  .add-task-buttons {
-    padding-bottom: 48px;
-    padding-left: 15px;
-  }
-
-  .priority-buttons {
-    gap: 8px;
-  }
-  .selected-box{
-    width: 350px;
-  }
-
-  .subtask-buttons {
-    left: 290px;
-  }
-}
-
-@media (max-width: 380px) {
-  .task-input {
-    width: 295px;
-  }
-
-  .header-logo-small {
-    left: 24px;
-}
-
-  .task-input-description {
-    width: 295px;
-  }
-
-  .priority-buttons-size {
-    height: 53px;
-    width: 93px;
-  }
-
-  .add-task-wrapper {
-    margin-left: -65px;
-  }
-
-  .add-task-buttons {
-    padding-bottom: 48px;
-    padding-left: 5px;
-  }
-
-  .priority-buttons {
-    gap: 8px;
-  }
-  .add-task-wrapper h1 {
-    font-size: 40px;
-  }
-  .task-cancel-button-size {
-    height: 48px;
-    width: 120px;
-  }
-  .task-create-button-size {
-    height: 48px;
-    width: 154spx;
-  }
-  .selected-box{
-    width: 300px;
-  }
-
-  .subtask-buttons {
-    left: 240px;
-  }
-}
-}
-
-

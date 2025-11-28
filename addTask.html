@@ -1,143 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script type="module" src="./js/firebase.js"></script>
     <script type="module" src="./js/userInterface.js" defer></script>
     <script type="module" src="./js/addTask.js" defer></script>
-    <link rel="stylesheet" href="./styles/globalStyles.css">
-    <link rel="stylesheet" href="./styles/addTask.css">
+    <link rel="stylesheet" href="./styles/globalStyles.css" />
+    <link rel="stylesheet" href="./styles/addTask.css" />
     <title>Add Task</title>
-</head>
+  </head>
 
-<body>
-  <nav class="sideBoard">
-    <img src="./assets/sideboardAssets/joinLogo.svg" class="join-logo" alt="join logo">
-    <div class="navLeftTop">
-      <a href="summaryUser.html" class="nav-item-top">
-        <img src="./assets/sideboardAssets/summary.svg" alt="Summary">
-        <span class="sidebar-span">Summary</span>
-      </a>
+  <body>
+    <nav class="sideBoard">
+      <img
+        src="./assets/sideboardAssets/joinLogo.svg"
+        class="join-logo"
+        alt="join logo"
+      />
+      <div class="navLeftTop">
+        <a href="summaryUser.html" class="nav-item-top">
+          <img src="./assets/sideboardAssets/summary.svg" alt="Summary" />
+          <span class="sidebar-span">Summary</span>
+        </a>
 
-      <a href="addTask.html" class="nav-item-top active">
-        <img src="./assets/sideboardAssets/addTask.svg" alt="Add Task">
-        <span>Add Task</span>
-      </a>
+        <a href="addTask.html" class="nav-item-top active">
+          <img src="./assets/sideboardAssets/addTask.svg" alt="Add Task" />
+          <span>Add Task</span>
+        </a>
 
-      <a href="board.html" class="nav-item-top">
-        <img src="./assets/sideboardAssets/board.svg" alt="Board">
-        <span>Board</span>
-      </a>
+        <a href="board.html" class="nav-item-top">
+          <img src="./assets/sideboardAssets/board.svg" alt="Board" />
+          <span>Board</span>
+        </a>
 
-      <a href="contacts.html" class="nav-item-top">
-        <img src="./assets/sideboardAssets/contacts.svg" alt="Contacts">
-        <span>Contacts</span>
-      </a>
-    </div>
+        <a href="contacts.html" class="nav-item-top">
+          <img src="./assets/sideboardAssets/contacts.svg" alt="Contacts" />
+          <span>Contacts</span>
+        </a>
+      </div>
 
-    <div class="navLeftBottom">
-      <a href="privacyPolicyInt.html" class="nav-item-bottom">Privacy Policy</a>
-      <a href="legalNoticeInt.html" class="nav-item-bottom">Legal notice</a>
-    </div>
-  </nav>
+      <div class="navLeftBottom">
+        <a href="privacyPolicyInt.html" class="nav-item-bottom"
+          >Privacy Policy</a
+        >
+        <a href="legalNoticeInt.html" class="nav-item-bottom">Legal notice</a>
+      </div>
+    </nav>
 
-  <header class="header">
-    <img src="./assets/LogIn&SignUp/Capa3.svg" class="header-logo-small" alt="Join Logo Small">
-    <span class="header-title">Kanban Project Management Tool</span>
-    <div class="headerRight">
-      <a href="./help.html"><div class="help"></div></a>
-           <button class="userProfileInitials" id="userProfileInitialsBtn">
-        <div class="nameInitials" id="nameInitials"></div>
-      </button>
+    <header class="header">
+      <img
+        src="./assets/LogIn&SignUp/Capa3.svg"
+        class="header-logo-small"
+        alt="Join Logo Small"
+      />
+      <span class="header-title">Kanban Project Management Tool</span>
+      <div class="headerRight">
+        <a href="./help.html"><div class="help"></div></a>
+        <button class="userProfileInitials" id="userProfileInitialsBtn">
+          <div class="nameInitials" id="nameInitials"></div>
+        </button>
         <div id="profileShowMore" class="profileShowMore d-none"></div>
-    </div>
-  </header>
+      </div>
+    </header>
 
-  <main class="main-content">
+    <main class="main-content">
+      <div class="add-task-wrapper">
+        <h1>Add Task</h1>
 
-    <div class="add-task-wrapper">
+        <form class="add-task-form">
+          <div class="task-column">
+            <label for="task-title">Title<span>*</span></label>
+            <input
+              class="task-input"
+              type="text"
+              id="taskTitle"
+              placeholder="Enter a title"
+              required
+            />
 
-      <h1>Add Task</h1>
-    
-      <form class="add-task-form">
-    
-        <div class="task-column">
-          <label for="task-title">Title<span>*</span></label>
-          <input class="task-input" type="text" id="taskTitle" placeholder="Enter a title" required>
-    
-          <label for="task-description">Description</label>
-          <textarea class="task-input-description" id="taskDescription" placeholder="Enter a Description"></textarea>
-    
-          <label for="task-date">Due date<span>*</span></label>
-          <input class="task-input" type="date" id="taskDate" required>
-    
-          <p class="required-hint">*This field is required</p>
-        </div>
-    
-        <div class="task-column">
-          <label>Priority</label>
-          <div class="priority-buttons">
-              <button class="remove-background" id="priorityUrgentBtn"><img class="priority-buttons-size" src="./assets/addTask/urgent.svg" alt="urgent priority button" id="priorityUrgentImg"></button>
-              <button class="remove-background" id="priorityMediumBtn"><img class="priority-buttons-size" src="./assets/addTask/medium.svg" alt="medium priority button" id="priorityMediumImg"></button>
-              <button class="remove-background" id="priorityLowBtn"><img class="priority-buttons-size" src="./assets/addTask/low.svg" alt="low oriority button" id="priorityLowImg"></button>
+            <label for="task-description">Description</label>
+            <textarea
+              class="task-input-description"
+              id="taskDescription"
+              placeholder="Enter a Description"
+            ></textarea>
+
+            <label for="task-date">Due date<span>*</span></label>
+            <input class="task-input" type="date" id="taskDate" required />
+
+            <p class="required-hint">*This field is required</p>
           </div>
-          <div class="assigned-area" id="assignedArea">
-          <label for="assigned">Assigned to</label>
 
-          <div class="multi-select">
-          <div class="selected-box" id="selectedBox">Select contacts to assign</div>
-            <div class="checkbox-list" id="chooseContactsCheckboxList">
+          <div class="task-column">
+            <label>Priority</label>
+            <div class="priority-buttons">
+              <button class="remove-background" id="priorityUrgentBtn">
+                <img
+                  class="priority-buttons-size"
+                  src="./assets/addTask/urgent.svg"
+                  alt="urgent priority button"
+                  id="priorityUrgentImg"
+                />
+              </button>
+              <button class="remove-background" id="priorityMediumBtn">
+                <img
+                  class="priority-buttons-size"
+                  src="./assets/addTask/medium.svg"
+                  alt="medium priority button"
+                  id="priorityMediumImg"
+                />
+              </button>
+              <button class="remove-background" id="priorityLowBtn">
+                <img
+                  class="priority-buttons-size"
+                  src="./assets/addTask/low.svg"
+                  alt="low oriority button"
+                  id="priorityLowImg"
+                />
+              </button>
+            </div>
+            <div class="assigned-area" id="assignedArea">
+              <label for="assigned">Assigned to</label>
 
-
+              <div class="multi-select">
+                <div class="selected-box" id="selectedBox">
+                  Select contacts to assign
+                </div>
+                <div
+                  class="checkbox-list"
+                  id="chooseContactsCheckboxList"
+                ></div>
+              </div>
             </div>
 
+            <label for="category">Category<span>*</span></label>
+            <select class="task-input" id="categorySelect" required>
+              <option>Select task category</option>
+            </select>
+
+            <label for="subtasks">Subtasks</label>
+            <div class="subtask-input-area">
+              <input
+                class="task-input"
+                type="text"
+                id="subtasks"
+                placeholder="Add new subtask"
+              />
+              <div class="subtask-buttons">
+                <button
+                  class="remove-background subtask-btn"
+                  id="addSubtaskBtn"
+                >
+                  <img
+                    class="subtask-add-button-size"
+                    src="./assets/utilitys/check.svg"
+                    alt="add subtask button"
+                  />
+                </button>
+                <div class="dividing-line"></div>
+                <button
+                  class="remove-background subtask-btn"
+                  id="removeSubtaskBtn"
+                >
+                  <img
+                    class="subtask-remove-button-size"
+                    src="./assets/utilitys/close.svg"
+                    alt="remove subtask button"
+                  />
+                </button>
+              </div>
+            </div>
+            <div class="subtasks-list" id="subtasksList"></div>
           </div>
-          </div>
-          
-          <label for="category">Category<span>*</span></label>
-          <select class="task-input" id="categorySelect" required>
-            <option>Select task category</option>
-          </select>
-    
-          <label for="subtasks">Subtasks</label>
-          <div class="subtask-input-area">
-          <input class="task-input" type="text" id="subtasks" placeholder="Add new subtask">
-          <div class="subtask-buttons">
-          <button class="remove-background subtask-btn" id="addSubtaskBtn"><img class="subtask-add-button-size" src="./assets/utilitys/check.svg" alt="add subtask button"></button>
-           <div class="dividing-line"></div>
-          <button class="remove-background subtask-btn" id="removeSubtaskBtn"><img class="subtask-remove-button-size" src="./assets/utilitys/close.svg" alt="remove subtask button"></button>
-          </div>
-          </div>
-          <div class="subtasks-list" id="subtasksList"></div>
+        </form>
+
+        <div class="add-task-buttons">
+          <img
+            class="task-cancel-button-size remove-background-size"
+            src="./assets/addTask/Secondary.svg"
+            id="cancelTaskBtn"
+            alt="cancel button"
+          />
+          <img
+            class="task-create-button-size remove-background-size"
+            src="./assets/addTask/Primary check button.svg"
+            id="addTaskBtn"
+            alt="create task button"
+          />
         </div>
-    
-      </form>
-
-      <div class="add-task-buttons">
-        <img class="task-cancel-button-size remove-background-size" src="./assets/addTask/Secondary.svg" id="cancelTaskBtn" alt="cancel button">
-        <img class="task-create-button-size remove-background-size" src="./assets/addTask/Primary check button.svg" id="addTaskBtn" alt="create task button">
-        
       </div>
-    
-    </div>
-  </main>
-  <nav class="mobile-nav">
-    <a href="summaryUser.html">
-      <img src="./assets/sideboardAssets/summary.svg"><br>Summary
-    </a>
-    <a href="addTask.html">
-      <img src="./assets/sideboardAssets/addTask.svg"><br>Add Task
-    </a>
-    <a href="board.html">
-      <img src="./assets/sideboardAssets/board.svg"><br>Board
-    </a>
-    <a href="contacts.html">
-      <img src="./assets/sideboardAssets/contacts.svg"><br>Contacts
-    </a>
-  </nav>
-
-</body>
-
+    </main>
+    <nav class="mobile-nav">
+      <a href="summaryUser.html">
+        <img src="./assets/sideboardAssets/summary.svg" /><br />Summary
+      </a>
+      <a href="addTask.html">
+        <img src="./assets/sideboardAssets/addTask.svg" /><br />Add Task
+      </a>
+      <a href="board.html">
+        <img src="./assets/sideboardAssets/board.svg" /><br />Board
+      </a>
+      <a href="contacts.html">
+        <img src="./assets/sideboardAssets/contacts.svg" /><br />Contacts
+      </a>
+    </nav>
+    <script src="./js/addTaskPriorityButtons.js"></script>
+  </body>
 </html>
