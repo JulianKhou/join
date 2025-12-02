@@ -220,7 +220,8 @@
 
 .task-card.dragging {
     opacity: 0.7;
-    cursor: grabbing;
+    rotate: 5deg;
+    transform-origin: bottom left;
 }
 
 .task-category {
@@ -357,6 +358,24 @@
 
 /* Overlay */
 
+@keyframes slideInRight {
+    from {
+        transform: translateX(150%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(150%);
+    }
+}
+
 .overlay-edit {
     position: fixed;
     top: 0;
@@ -382,6 +401,11 @@
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideInRight 0.2s ease-out;
+}
+
+.overlay-edit.closing .overlay-edit-card {
+    animation: slideOutRight 0.2s ease-out forwards;
 }
 
 .overlay-header {
@@ -410,13 +434,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 36px;
+    height: 36px;
     transition: opacity 0.2s ease;
+    background-color: transparent;
+    border-radius: 50%;
 }
 
 .overlay-close-btn:hover {
-    opacity: 0.7;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .overlay-title {
@@ -593,4 +619,8 @@
 
 .action-btn-icon{
     margin-right: 12px;
+}
+
+.subtask-checkbox{
+    accent-color: red !important;
 }

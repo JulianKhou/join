@@ -2,7 +2,9 @@ const cards = document.querySelectorAll('[draggable="true"]');
 const dropZones = document.querySelectorAll('.kanban-column');
 
 function handleDragStart(drag) {
-    drag.dataTransfer.setData("text/plain", drag.target.closest('[draggable="true"]').id);
+    const card = drag.target.closest('[draggable="true"]');
+    drag.dataTransfer.setData("text/plain", card.id);
+    card.classList.add('dragging');
 }
 
 function handleDragOver(drag) {
@@ -20,6 +22,7 @@ function handleDrop(drag) {
     const cardId = drag.dataTransfer.getData("text/plain");
     const movedCard = document.getElementById(cardId);
     movedCard && this.appendChild(movedCard);
+    movedCard?.classList.remove('dragging');
     this.style.backgroundColor = "";
 }
 
@@ -39,13 +42,17 @@ const taskCards = document.querySelectorAll('.task-card.grabbable');
 taskCards.forEach(card => {
     card.addEventListener('click', (e) => {
         if (e.target.closest('svg') || e.target.closest('button')) return;
+        overlay.classList.remove('closing');
         overlay.classList.add('active');
     });
 });
 
-// Close overlay
+// Close overlay with animation
 function closeOverlay() {
-    overlay.classList.remove('active');
+    overlay.classList.add('closing');
+    setTimeout(() => {
+        overlay.classList.remove('active', 'closing');
+    }, 200);
 }
 
 closeBtn?.addEventListener('click', closeOverlay);
