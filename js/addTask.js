@@ -50,14 +50,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     cancelTaskBtn.addEventListener("click", (e) => {
         e.preventDefault(); 
-        // Logic to cancel adding the task goes here
+        resetAddTaskForm();
         console.log("Cancel Task button clicked");
     });
 
     // rest of initialization (unchanged order)
     await addContactsToAssignTask(await getContacts());
-    initAddEventListeners();
-    checkChekboxChanges();
+    checkCheckboxChanges();
     addCategoryOptionsTask();
     initSubtaskEventListeners();
 });
@@ -115,7 +114,7 @@ async function addAssignToBarTask() {
 }
 
 // Wire change handlers for assign-to checkboxes and update the select box text.
-function checkChekboxChanges() {    
+function checkCheckboxChanges() {    
 const checkboxes = checkboxList.querySelectorAll(".assignedToCheckbox");
 checkboxes.forEach(cb => {
   cb.addEventListener("change", () => {
@@ -214,4 +213,43 @@ function createTaskObject() {
 
     return task;
 }
-
+function clearTitleInput() {  
+    const titleInput = document.getElementById("taskTitle");
+    titleInput.value = "";
+}
+function clearDescriptionInput() {  
+    const descriptionInput = document.getElementById("taskDescription");
+    descriptionInput.value = "";
+}
+function clearDueDateInput() {  
+    const dueDateInput = document.getElementById("taskDate");
+    dueDateInput.value = "";
+}
+function clearSubtasksList() {  
+    const subtasksList = document.getElementById("subtasksList");
+    subtasksList.innerHTML = "";
+}
+function clearAssignedToSelection() {  
+    const checkboxes = checkboxList.querySelectorAll(".assignedToCheckbox");    
+    checkboxes.forEach(cb => cb.checked = false);
+}
+function resetPrioritySelection() {
+    selectedPriority = PRIORITY.MEDIUM;
+}
+function resetCategorySelection() {  
+    const categorySelect = document.getElementById("categorySelect");
+    categorySelect.selectedIndex = 0;
+}
+function resetAssignToSelectBox() {  
+    selectBox.innerText = "Bitte auswählen";
+}
+function resetAddTaskForm() {  
+    clearTitleInput();
+    clearDescriptionInput();
+    clearDueDateInput();
+    clearSubtasksList();
+    clearAssignedToSelection();
+    resetPrioritySelection();
+    resetCategorySelection();
+    resetAssignToSelectBox();
+}
