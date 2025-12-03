@@ -1,4 +1,4 @@
-import { getAllTasks,changeTaskProgress } from "./firebase.js";
+import { getAllTasks,changeTaskProgress,getSubtasksCompletionState } from "./firebase.js";
 import { taskCardTemplate, taskDetailTemplate } from "../templates/boardTasksTemplates.js";
 
 const overlay = document.getElementById('taskDetailOverlay');
@@ -51,24 +51,28 @@ function renderTasks(tasks) {
     const doneColumn = document.getElementById('doneColumnContainer');
 
     tasks.forEach(task => {
-        const taskCardHTML = taskCardTemplate(task); // Assume this function generates HTML for a task card
+        const taskCardHTML = taskCardTemplate(task);
+         // Assume this function generates HTML for a task card
         switch (task.progress) {
             case 'toDo':
                 toDoColumn.insertAdjacentHTML('beforeend', taskCardHTML);
-                console.log("Rendered To Do Task:", task);
+                
+                changeSubtaskProgressbar(task);
                 break;
             case 'inProgress':
                 inProgressColumn.insertAdjacentHTML('beforeend', taskCardHTML);
-                console.log("Rendered In Progress Task:", task);
+                
+                changeSubtaskProgressbar(task);
                 break;
             case 'awaitFeedback':
                 awaitFeedbackColumn.insertAdjacentHTML('beforeend', taskCardHTML);
-                console.log("Rendered Awaiting Feedback Task:", task);
-            
+         
+                changeSubtaskProgressbar(task);
                 break;
             case 'done':
                 doneColumn.insertAdjacentHTML('beforeend', taskCardHTML);
-                console.log("Rendered Done Task:", task);
+              
+                changeSubtaskProgressbar(task);
                 break;
         }
     });
@@ -112,7 +116,7 @@ function handleDrop(drag) {
 function updateTaskProgressInFirebase(taskId, newProgress) {
     changeTaskProgress(taskId, newProgress)
         .then(() => {
-            console.log(`Task ${taskId} progress updated to ${newProgress} in Firebase.`);
+           
         })
         .catch((error) => {
             console.error("Error updating task progress in Firebase:", error);
@@ -158,9 +162,7 @@ function switchAwaitFeedbackColumn() {
   const awaitFeedbackColumn = document.getElementById('awaitFeedbackColumn');
   // query cards INSIDE feedbackColumn only
   const hasCards = feedbackColumn.querySelectorAll('.task-card').length > 0;
-  
-  console.log("Has Tasks in Await Feedback Column:", hasCards);
-  
+
   if (hasCards) {
     awaitFeedbackColumn.style.display = 'none';
   } else {
@@ -185,4 +187,24 @@ function checkColumnVisibility() {
     switchAwaitFeedbackColumn();
     switchInProgressColumn();
     switchDoneColumn();
+}
+
+
+function changeSubtaskProgressbar(task) {
+  getSubtasksCompletionState(task.id)
+    .then(({ totalSubtasks, completedSubtasks }) => {
+      const progressBar = document.getElementById(`progress-bar-${task.id}`);
+      const printInfo = document.getElementById(`subtask-info-${task.id}`);
+      if (printInfo) {
+        printInfo.textContent = `${completedSubtasks}/${totalSubtasks} Subtasks`;
+      }
+      if (progressBar) {
+        const percentage = (completedSubtasks / totalSubtasks) * 100 || 0;
+        progressBar.style.width = `${percentage}%`;
+      }
+
+    })
+    .catch((error) => {
+      console.error("Error getting subtask completion state:", error);
+    });
 }

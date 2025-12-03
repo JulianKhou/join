@@ -624,3 +624,9 @@
 .subtask-checkbox{
     accent-color: red !important;
 }
+.technical-task{
+    background-color: var(--skyBlue-default);
+}
+.user-story{
+    background-color: var(--blue-default);
+}
