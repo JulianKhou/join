@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       overlay.classList.add('active');
     });
   });
+  checkColumnVisibility();
 
   // close handlers
   closeBtn?.addEventListener('click', () => overlay.classList.remove('active'));
@@ -63,6 +64,7 @@ function renderTasks(tasks) {
             case 'awaitFeedback':
                 awaitFeedbackColumn.insertAdjacentHTML('beforeend', taskCardHTML);
                 console.log("Rendered Awaiting Feedback Task:", task);
+            
                 break;
             case 'done':
                 doneColumn.insertAdjacentHTML('beforeend', taskCardHTML);
@@ -101,6 +103,7 @@ function handleDrop(drag) {
     let taskId = movedCard.dataset.taskId || movedCard.id;
     taskId = taskId.replace('task-card-', ''); // clean up id if needed
     const newProgress = getNewProgressFromDropZone(this);
+    checkColumnVisibility();
     updateTaskProgressInFirebase(taskId, newProgress);
 }
 
@@ -128,6 +131,58 @@ function getNewProgressFromDropZone(dropZone) {
             return 'done';
     }
 }
-function getTaskIdformCard(card) {
-    
+
+function switchTodoColumn() {
+    const toDoColumn = document.getElementById('todoColumnContainer');
+    const toDoColumnContent = document.getElementById('todoColumn');
+    const hasCards = toDoColumn.querySelectorAll('.task-card').length > 0;
+    if (hasCards) {
+        toDoColumnContent.style.display = 'none';
+    } else {
+        toDoColumnContent.style.display = 'block';
+    }
+}
+function switchInProgressColumn() {
+  const inProgressColumn = document.getElementById('inProgressColumnContainer');
+  const inProgressColumnContent = document.getElementById('progressColumn');
+  const hasCards = inProgressColumn.querySelectorAll('.task-card').length > 0;
+
+    if (hasCards) {
+        inProgressColumnContent.style.display = 'none';
+    } else {
+        inProgressColumnContent.style.display = 'block';
+    }
+}
+function switchAwaitFeedbackColumn() {
+  const feedbackColumn = document.getElementById('feedbackColumnContainer');
+  const awaitFeedbackColumn = document.getElementById('awaitFeedbackColumn');
+  // query cards INSIDE feedbackColumn only
+  const hasCards = feedbackColumn.querySelectorAll('.task-card').length > 0;
+  
+  console.log("Has Tasks in Await Feedback Column:", hasCards);
+  
+  if (hasCards) {
+    awaitFeedbackColumn.style.display = 'none';
+  } else {
+    awaitFeedbackColumn.style.display = 'block';
+  }
+}
+
+
+function switchDoneColumn() {
+    const doneColumn = document.getElementById('doneColumnContainer');
+    const doneColumnContent = document.getElementById('doneColumn');
+    const hasCards = doneColumn.querySelectorAll('.task-card').length > 0;
+    if (hasCards) {
+        doneColumnContent.style.display = 'none';
+    } else {
+        doneColumnContent.style.display = 'block';
+    }
+} 
+
+function checkColumnVisibility() {
+   switchTodoColumn();
+    switchAwaitFeedbackColumn();
+    switchInProgressColumn();
+    switchDoneColumn();
 }
