@@ -273,6 +273,7 @@ const user = auth.currentUser;
     createdBy: user.uid,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
+    progress: "toDo",
   };
   await setDoc(taskRef, createData);
   return taskRef.id;
@@ -304,3 +305,45 @@ function checkIfTaskExists(taskId) {
   const taskRef = doc(db, "tasks", taskId);
   return getDoc(taskRef).then((docSnap) => docSnap.exists());
 }
+
+export function changeTaskProgress(taskId, newProgress) {
+  if (!["toDo", "inProgress", "awaitFeedback" ,"done"].includes(newProgress)) {
+    throw new Error("Invalid progress status");
+  }
+  const taskRef = doc(db, "tasks", taskId);
+  return setDoc(
+    taskRef,
+    { progress: newProgress, updatedAt: serverTimestamp() },
+    { merge: true }
+  );
+}
+
+export async function getTask(taskId) {
+  const taskRef = doc(db, "tasks", taskId);
+  const taskSnap = await getDoc(taskRef);
+  if (taskSnap.exists()) {
+    return { id: taskSnap.id, ...taskSnap.data() };
+  } else {
+    throw new Error("Task not found");
+  }
+}
+export async function getAllTasks() {
+  const tasksRef = collection(db, "tasks");
+  const snapshot = await getDocs(tasksRef);
+  const tasks = [];
+  snapshot.forEach((doc) => {
+    tasks.push({ id: doc.id, ...doc.data() });
+  });
+  return tasks;
+}
+export async function getTaskIds() {
+  const tasksRef = collection(db, "tasks");
+  const snapshot = await getDocs(tasksRef);
+  const taskIds = [];
+  snapshot.forEach((doc) => {
+    taskIds.push(doc.id);
+  }
+  );
+  return taskIds;
+}
+

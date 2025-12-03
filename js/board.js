@@ -1,5 +1,76 @@
-const cards = document.querySelectorAll('[draggable="true"]');
-const dropZones = document.querySelectorAll('.kanban-column');
+import { getAllTasks,changeTaskProgress } from "./firebase.js";
+import { taskCardTemplate, taskDetailTemplate } from "../templates/boardTasksTemplates.js";
+
+const overlay = document.getElementById('taskDetailOverlay');
+const closeBtn = document.getElementById('overlayCloseBtn');
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const tasks = await getAllTasks();
+  renderTasks(tasks);
+
+  // query rendered cards and drop zones AFTER render
+  const cards = document.querySelectorAll('[draggable="true"]');
+  const dropZones = document.querySelectorAll('.kanban-column');
+
+  // attach drag listeners
+  cards.forEach(card => card.addEventListener("dragstart", handleDragStart));
+  dropZones.forEach(zone => {
+    zone.addEventListener("dragover", handleDragOver);
+    zone.addEventListener("dragleave", handleDragLeave);
+    zone.addEventListener("drop", handleDrop);
+  });
+
+  // attach click listener to each rendered card (create new detail per click)
+  const taskCards = document.querySelectorAll('.task-card');
+  taskCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('svg') || e.target.closest('button')) return;
+      // create fresh detail content each time
+      const taskDetail = taskDetailTemplate(card.dataset.taskId || card.id);
+      // clear previous content and open overlay
+      overlay.innerHTML = "";
+      if (typeof taskDetail === "string") {
+        overlay.insertAdjacentHTML("beforeend", taskDetail);
+      } else if (taskDetail instanceof Node) {
+        overlay.appendChild(taskDetail);
+      }
+      overlay.classList.add('active');
+    });
+  });
+
+  // close handlers
+  closeBtn?.addEventListener('click', () => overlay.classList.remove('active'));
+  overlay?.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
+});
+
+function renderTasks(tasks) {
+    const toDoColumn = document.getElementById('todoColumnContainer');
+    const inProgressColumn = document.getElementById('inProgressColumnContainer');
+    const awaitFeedbackColumn = document.getElementById('feedbackColumnContainer');
+    const doneColumn = document.getElementById('doneColumnContainer');
+
+    tasks.forEach(task => {
+        const taskCardHTML = taskCardTemplate(task); // Assume this function generates HTML for a task card
+        switch (task.progress) {
+            case 'toDo':
+                toDoColumn.insertAdjacentHTML('beforeend', taskCardHTML);
+                console.log("Rendered To Do Task:", task);
+                break;
+            case 'inProgress':
+                inProgressColumn.insertAdjacentHTML('beforeend', taskCardHTML);
+                console.log("Rendered In Progress Task:", task);
+                break;
+            case 'awaitFeedback':
+                awaitFeedbackColumn.insertAdjacentHTML('beforeend', taskCardHTML);
+                console.log("Rendered Awaiting Feedback Task:", task);
+                break;
+            case 'done':
+                doneColumn.insertAdjacentHTML('beforeend', taskCardHTML);
+                console.log("Rendered Done Task:", task);
+                break;
+        }
+    });
+}
 
 function handleDragStart(drag) {
     const card = drag.target.closest('[draggable="true"]');
@@ -21,45 +92,42 @@ function handleDrop(drag) {
     drag.preventDefault();
     const cardId = drag.dataTransfer.getData("text/plain");
     const movedCard = document.getElementById(cardId);
-    movedCard && this.appendChild(movedCard);
-    movedCard?.classList.remove('dragging');
+    if (!movedCard) return;
+
+    this.appendChild(movedCard);
     this.style.backgroundColor = "";
+
+    // prefer data-task-id if available, fall back to element id
+    let taskId = movedCard.dataset.taskId || movedCard.id;
+    taskId = taskId.replace('task-card-', ''); // clean up id if needed
+    const newProgress = getNewProgressFromDropZone(this);
+    updateTaskProgressInFirebase(taskId, newProgress);
 }
 
-cards.forEach(card => card.addEventListener("dragstart", handleDragStart));
-dropZones.forEach(zone => {
-    zone.addEventListener("dragover", handleDragOver);
-    zone.addEventListener("dragleave", handleDragLeave);
-    zone.addEventListener("drop", handleDrop);
-});
 
-// Overlay functionality
-const overlay = document.getElementById('taskDetailOverlay');
-const closeBtn = document.getElementById('overlayCloseBtn');
-const taskCards = document.querySelectorAll('.task-card.grabbable');
 
-// Open overlay when clicking on a task card
-taskCards.forEach(card => {
-    card.addEventListener('click', (e) => {
-        if (e.target.closest('svg') || e.target.closest('button')) return;
-        overlay.classList.remove('closing');
-        overlay.classList.add('active');
-    });
-});
-
-// Close overlay with animation
-function closeOverlay() {
-    overlay.classList.add('closing');
-    setTimeout(() => {
-        overlay.classList.remove('active', 'closing');
-    }, 200);
+function updateTaskProgressInFirebase(taskId, newProgress) {
+    changeTaskProgress(taskId, newProgress)
+        .then(() => {
+            console.log(`Task ${taskId} progress updated to ${newProgress} in Firebase.`);
+        })
+        .catch((error) => {
+            console.error("Error updating task progress in Firebase:", error);
+        });
 }
 
-closeBtn?.addEventListener('click', closeOverlay);
-
-// Close overlay when clicking outside the card
-overlay?.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-        closeOverlay();
+function getNewProgressFromDropZone(dropZone) {
+    switch (dropZone.id) {
+        case 'todoColumnContainer':
+            return 'toDo';
+        case 'inProgressColumnContainer':
+            return 'inProgress';
+        case 'feedbackColumnContainer':
+            return 'awaitFeedback';
+        case 'doneColumnContainer':
+            return 'done';
     }
-});
+}
+function getTaskIdformCard(card) {
+    
+}
