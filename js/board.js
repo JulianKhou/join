@@ -46,17 +46,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else if (taskDetail instanceof Node) {
         overlay.appendChild(taskDetail);
       }
-      overlay.classList.add("active");
+      overlay.classList.add('active');
+      
+      // Re-attach close button listener after content is inserted
+      const newCloseBtn = overlay.querySelector('#overlayCloseBtn');
+      newCloseBtn?.addEventListener('click', closeOverlayOnBtn);
     });
   });
   checkColumnVisibility();
 
   // close handlers
-  closeBtn?.addEventListener("click", () => overlay.classList.remove("active"));
-  overlay?.addEventListener("click", (e) => {
-    if (e.target === overlay) overlay.classList.remove("active");
-  });
+  overlay?.addEventListener('click', (e) => { if (e.target === overlay) closeOverlayOnBtn(); });
 });
+
+function closeOverlayOnBtn() {
+  overlay.classList.add('closing');
+  setTimeout(() => {
+    overlay.classList.remove('active', 'closing');
+  }, 200);
+}
 
 function renderTasks(tasks) {
   const toDoColumn = document.getElementById("todoColumnContainer");
@@ -120,8 +128,9 @@ function handleDrop(drag) {
   const movedCard = document.getElementById(cardId);
   if (!movedCard) return;
 
-  this.appendChild(movedCard);
-  this.style.backgroundColor = "";
+    this.appendChild(movedCard);
+    this.style.backgroundColor = "";
+    movedCard.classList.remove('dragging');
 
   // prefer data-task-id if available, fall back to element id
   let taskId = movedCard.dataset.taskId || movedCard.id;
@@ -151,6 +160,166 @@ function getNewProgressFromDropZone(dropZone) {
       return "done";
   }
 }
+function getTaskIdformCard(card) {
+    
+}
+
+// Add Task Overlay Functions
+const addTaskOverlay = document.getElementById('addTaskOverlay');
+const addTaskBtn = document.getElementById('addTaskBtn');
+const addTaskCloseBtn = document.getElementById('addTaskCloseBtn');
+const addTaskCancelBtn = document.getElementById('addTaskCancelBtn');
+const addTaskFormOverlay = document.getElementById('addTaskFormOverlay');
+
+// Open Add Task Overlay
+addTaskBtn?.addEventListener('click', () => {
+    addTaskOverlay?.classList.add('active');
+});
+
+// Close Add Task Overlay Functions
+function closeAddTaskOverlay() {
+    addTaskOverlay?.classList.add('closing');
+    setTimeout(() => {
+        addTaskOverlay?.classList.remove('active', 'closing');
+    }, 200);
+}
+
+// Close button in overlay
+addTaskCloseBtn?.addEventListener('click', closeAddTaskOverlay);
+
+// Cancel button
+addTaskCancelBtn?.addEventListener('click', closeAddTaskOverlay);
+
+// Close on overlay background click
+addTaskOverlay?.addEventListener('click', (e) => {
+    if (e.target === addTaskOverlay) {
+        closeAddTaskOverlay();
+    }
+});
+
+// Priority button selection
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.priority-button');
+    if (btn) {
+        const group = btn.closest('.priority-button-group');
+        
+        // Remove active class from all buttons and their icons
+        group?.querySelectorAll('.priority-button').forEach(b => {
+            b.classList.remove('priority-button-urgant-active', 'priority-button-medium-active', 'priority-button-low-active');
+            const icon = b.querySelector('svg');
+            icon?.classList.remove('priority-button-icon-active');
+        });
+        
+        // Add active class to clicked button
+        if (btn.id === 'priority-button-urgant') {
+            btn.classList.add('priority-button-urgant-active');
+        } else if (btn.textContent.includes('Medium')) {
+            btn.classList.add('priority-button-medium-active');
+        } else if (btn.textContent.includes('Low')) {
+            btn.classList.add('priority-button-low-active');
+        }
+        
+        // Add active class to the icon
+        const icon = btn.querySelector('svg');
+        icon?.classList.add('priority-button-icon-active');
+    }
+});
+
+// Multi-select dropdown
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.selected-box')) {
+        const box = e.target.closest('.selected-box');
+        const list = box.nextElementSibling;
+        
+        // Close other open dropdowns
+        document.querySelectorAll('.checkbox-list.active').forEach(l => {
+            if (l !== list) l.classList.remove('active');
+        });
+        
+        list?.classList.toggle('active');
+    }
+});
+
+// Form submission
+addTaskFormOverlay?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const title = document.querySelector('input[placeholder="Enter a title..."]')?.value;
+    const description = document.querySelector('textarea[placeholder="Enter a description..."]')?.value;
+    const dueDate = document.querySelector('input[type="date"]')?.value;
+    
+    const activePriority = document.querySelector('.priority-btn-active');
+    const priority = activePriority?.dataset.priority || 'medium';
+    
+    const category = document.querySelector('select')?.value || 'User Story';
+    
+    const selectedContacts = Array.from(
+        document.querySelectorAll('.checkbox-item input[type="checkbox"]:checked')
+    ).map(cb => cb.value);
+    
+    const subtasks = Array.from(
+        document.querySelectorAll('.subtask-item-overlay')
+    ).map(item => ({
+        title: item.textContent.trim(),
+        completed: false
+    }));
+    
+    // Validation
+    if (!title?.trim()) {
+        alert('Please enter a task title');
+        return;
+    }
+    
+    // Create task object
+    const newTask = {
+        title,
+        description,
+        dueDate,
+        priority,
+        category,
+        assignedTo: selectedContacts,
+        subtasks,
+        progress: 'toDo',
+        createdAt: new Date().toISOString()
+    };
+    
+    console.log('New Task:', newTask);
+    // TODO: Send to Firebase and refresh board
+    
+    closeAddTaskOverlay();
+});
+
+// Subtask input handling
+const subtaskInput = document.querySelector('.form-input[type="text"][placeholder="Add new subtask..."]');
+const subtaskAddBtn = document.querySelector('.subtask-btn-group .subtask-action-btn:nth-child(2)');
+
+subtaskAddBtn?.addEventListener('click', () => {
+    const subtaskText = subtaskInput?.value?.trim();
+    if (!subtaskText) return;
+    
+    const subtasksList = document.querySelector('.subtasks-list-overlay');
+    const subtaskItem = document.createElement('div');
+    subtaskItem.className = 'subtask-item-overlay';
+    subtaskItem.innerHTML = `
+        <span>${subtaskText}</span>
+        <button type="button" class="subtask-remove-btn">×</button>
+    `;
+    
+    subtaskItem.querySelector('.subtask-remove-btn').addEventListener('click', () => {
+        subtaskItem.remove();
+    });
+    
+    subtasksList?.appendChild(subtaskItem);
+    if (subtaskInput) subtaskInput.value = '';
+});
+
+// Allow Enter key to add subtask
+subtaskInput?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        subtaskAddBtn?.click();
+    }
+});
 
 function switchTodoColumn() {
   const toDoColumn = document.getElementById("todoColumnContainer");
@@ -221,6 +390,7 @@ function changeSubtaskProgressbar(task) {
       console.error("Error getting subtask completion state:", error);
     });
 }
+
 
 function addAssigneeAvatar(task){
   let assignedUid=task.assignedTo;
