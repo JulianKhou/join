@@ -50,3 +50,7 @@ export function returnContactById(id,contactsList){
     let contact = contactsList.find(contact => contact.id === id);
     return contact;
 }
+
+export function getTaskIndexById(id, tasksList) {
+    return tasksList.findIndex(task => task.id === id);
+}

@@ -2,14 +2,18 @@ import {
   getAllTasks,
   changeTaskProgress,
   getSubtasksCompletionState,
+  changeSubtaskCompletion,
+  getTask
 } from "./firebase.js";
 import {
   taskCardTemplate,
   taskDetailTemplate,
   assigneeAvatarTemplate,
+  assigneeAvatarToDetail,
+  addSubtaskToDetailTemplate,
 } from "../templates/boardTasksTemplates.js";
 
-import { getInitials,returnContactById } from "./utility.js";
+import { getInitials,returnContactById,getTaskIndexById } from "./utility.js";
 import { getContacts } from "./firebase.js";
 
 const overlay = document.getElementById("taskDetailOverlay");
@@ -20,11 +24,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   contactsList = await getContacts();
   renderTasks(tasks);
 
-  // query rendered cards and drop zones AFTER render
   const cards = document.querySelectorAll('[draggable="true"]');
   const dropZones = document.querySelectorAll(".kanban-column");
 
-  // attach drag listeners
   cards.forEach((card) => card.addEventListener("dragstart", handleDragStart));
   dropZones.forEach((zone) => {
     zone.addEventListener("dragover", handleDragOver);
@@ -32,30 +34,44 @@ document.addEventListener("DOMContentLoaded", async () => {
     zone.addEventListener("drop", handleDrop);
   });
 
-  // attach click listener to each rendered card (create new detail per click)
   const taskCards = document.querySelectorAll(".task-card");
   taskCards.forEach((card) => {
-    card.addEventListener("click", (e) => {
+    card.addEventListener("click", async (e) => {  // ← async!
       if (e.target.closest("svg") || e.target.closest("button")) return;
-      // create fresh detail content each time
-      const taskDetail = taskDetailTemplate(card.dataset.taskId || card.id);
-      // clear previous content and open overlay
-      overlay.innerHTML = "";
-      if (typeof taskDetail === "string") {
-        overlay.insertAdjacentHTML("beforeend", taskDetail);
-      } else if (taskDetail instanceof Node) {
-        overlay.appendChild(taskDetail);
-      }
-      overlay.classList.add('active');
       
-      // Re-attach close button listener after content is inserted
-      const newCloseBtn = overlay.querySelector('#overlayCloseBtn');
-      newCloseBtn?.addEventListener('click', closeOverlayOnBtn);
+      // Extract taskId from card id (e.g. "task-card-ABC123" → "ABC123")
+      const taskId = card.id.replace("task-card-", "");
+      
+      try {
+        // Load fresh task data from Firestore
+        const task = await getTask(taskId);
+        
+        const taskDetail = taskDetailTemplate(task);
+        
+        overlay.innerHTML = "";
+        if (typeof taskDetail === "string") {
+          overlay.insertAdjacentHTML("beforeend", taskDetail);
+        } else if (taskDetail instanceof Node) {
+          overlay.appendChild(taskDetail);
+        }
+        
+        overlay.classList.add('active');
+        
+        // NOW insert assignees & subtasks with FRESH data
+        addAssigneeAvatartoDetail(task);
+        addSubtaskToDetail(task);
+        addEventListenersToSubtaskButtons(task.id);
+        
+        const newCloseBtn = overlay.querySelector('#overlayCloseBtn');
+        newCloseBtn?.addEventListener('click', closeOverlayOnBtn);
+      } catch (error) {
+        console.error("Failed to load task details:", error);
+        alert("Could not load task details.");
+      }
     });
   });
+  
   checkColumnVisibility();
-
-  // close handlers
   overlay?.addEventListener('click', (e) => { if (e.target === overlay) closeOverlayOnBtn(); });
 });
 
@@ -69,36 +85,31 @@ function closeOverlayOnBtn() {
 function renderTasks(tasks) {
   const toDoColumn = document.getElementById("todoColumnContainer");
   const inProgressColumn = document.getElementById("inProgressColumnContainer");
-  const awaitFeedbackColumn = document.getElementById(
-    "feedbackColumnContainer"
-  );
+  const awaitFeedbackColumn = document.getElementById("feedbackColumnContainer");
   const doneColumn = document.getElementById("doneColumnContainer");
 
   tasks.forEach((task) => {
     const taskCardHTML = taskCardTemplate(task);
-    // Assume this function generates HTML for a task card
+    
     switch (task.progress) {
       case "toDo":
         toDoColumn.insertAdjacentHTML("beforeend", taskCardHTML);
-
         changeSubtaskProgressbar(task);
         addAssigneeAvatar(task);
+        // removed addSubtaskToDetail(task); — only needed in overlay, not in card
         break;
       case "inProgress":
         inProgressColumn.insertAdjacentHTML("beforeend", taskCardHTML);
-
         changeSubtaskProgressbar(task);
         addAssigneeAvatar(task);
         break;
       case "awaitFeedback":
         awaitFeedbackColumn.insertAdjacentHTML("beforeend", taskCardHTML);
-
         changeSubtaskProgressbar(task);
         addAssigneeAvatar(task);
         break;
       case "done":
         doneColumn.insertAdjacentHTML("beforeend", taskCardHTML);
-
         changeSubtaskProgressbar(task);
         addAssigneeAvatar(task);
         break;
@@ -159,9 +170,6 @@ function getNewProgressFromDropZone(dropZone) {
     case "doneColumnContainer":
       return "done";
   }
-}
-function getTaskIdformCard(card) {
-    
 }
 
 // Add Task Overlay Functions
@@ -393,15 +401,88 @@ function changeSubtaskProgressbar(task) {
 
 
 function addAssigneeAvatar(task){
-  let assignedUid=task.assignedTo;
-  assignedUid.forEach(uid=>{
-    let contact = returnContactById(uid, contactsList);
-    let initials=getInitials(contact.name);
-    let color=contact.color;
-    console.log("Adding avatar for assignee:", initials, color);
-    let avatarHTML=assigneeAvatarTemplate(initials,color);
-    let taskCard=document.getElementById(`task-card-${task.id}`);
-    let assigneesContainer=taskCard.querySelector(".task-assignees");
-    assigneesContainer.insertAdjacentHTML("beforeend",avatarHTML);
+  task.assignedTo.forEach(uid => {
+    const contact = returnContactById(uid, contactsList);
+    const avatarHTML = assigneeAvatarTemplate(getInitials(contact.name), contact.color);
+    document.getElementById(`task-card-${task.id}`)
+      .querySelector(".task-assignees")
+      .insertAdjacentHTML("beforeend", avatarHTML);
   });
-} 
+}
+function addAssigneeAvatartoDetail(task) {
+   task.assignedTo.forEach(uid => {
+    const contact = returnContactById(uid, contactsList);
+    const avatarHTML = assigneeAvatarToDetail(getInitials(contact.name), contact.name, contact.color);
+    document.getElementById(`overlayEditCard-${task.id}`)
+      .querySelector(".overlay-assignees")
+      .insertAdjacentHTML("beforeend", avatarHTML);
+  });
+}
+
+function addSubtaskToDetail(task) {
+  const subtaskDetails = document.getElementById(`subtaskDetails-${task.id}`);
+  if (!subtaskDetails) {
+    console.warn(`Subtask details container not found for task ${task.id}`);
+    return;
+  }
+  
+  // Clear existing subtasks
+  subtaskDetails.innerHTML = '<span class="overlay-label">Subtasks</span>';
+  
+  // Render each subtask with correct checked state
+  task.subtasks?.forEach((subtask, index) => {
+    const subtaskHTML = addSubtaskToDetailTemplate(subtask.text, subtask.completed, index);
+    subtaskDetails.insertAdjacentHTML("beforeend", subtaskHTML);
+  });
+  
+  // If no subtasks, show message
+  if (!task.subtasks || task.subtasks.length === 0) {
+    subtaskDetails.insertAdjacentHTML("beforeend", '<p class="no-subtasks">No subtasks</p>');
+  }
+}
+
+async function addEventListenersToSubtaskButtons(taskId) {
+  const subtaskDetails = document.getElementById(`subtaskDetails-${taskId}`);
+  if (!subtaskDetails) {
+    console.warn(`Subtask details not found for task ${taskId}`);
+    return;
+  }
+  
+  const subtaskItems = subtaskDetails.querySelectorAll('.overlay-subtask-item');
+  subtaskItems.forEach((item, index) => {
+    const checkbox = item.querySelector('input[type="checkbox"]');
+    if (!checkbox) return;
+    
+    checkbox.addEventListener('change', async () => {
+      try {
+        // 1) Update Firestore
+        await changeSubtaskCompletion(taskId, index, checkbox.checked);
+        console.log(`✅ Subtask ${index} changed to ${checkbox.checked}`);
+        
+        // 2) Reload task from Firestore to get fresh data
+        const updatedTask = await getTask(taskId);
+        
+        // 3) Update progress bar in the card (on board)
+        changeSubtaskProgressbar(updatedTask);
+        
+        // 4) Update subtask counter in the overlay (optional)
+        updateOverlaySubtaskInfo(updatedTask);
+        
+      } catch (error) {
+        console.error("❌ Failed to update subtask:", error);
+        checkbox.checked = !checkbox.checked; // rollback UI
+      }
+    });
+  });
+}
+
+// Update the subtask info text in the overlay (e.g. "2/4 Subtasks")
+function updateOverlaySubtaskInfo(task) {
+  const total = task.subtasks?.length || 0;
+  const completed = task.subtasks?.filter(s => s.completed).length || 0;
+  
+  const subtaskInfoEl = document.getElementById(`subtaskDetails-${task.id}`)?.querySelector('.overlay-subtask-info');
+  if (subtaskInfoEl) {
+    subtaskInfoEl.textContent = `${completed}/${total} Subtasks`;
+  }
+}

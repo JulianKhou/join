@@ -370,3 +370,22 @@ export async function getContact(uid) {
     throw new Error("Contact not found");
   }
 }
+
+export async function changeSubtaskCompletion(taskId, subtaskIndex, completed) {
+  const taskRef = doc(db, "tasks", taskId);
+  const taskSnap = await getDoc(taskRef);
+  if (taskSnap.exists()) {
+    const taskData = taskSnap.data();
+    const subtasks = taskData.subtasks || [];
+    
+    if (subtaskIndex >= 0 && subtaskIndex < subtasks.length) {
+      subtasks[subtaskIndex].completed = completed;
+      await setDoc(taskRef, { subtasks, updatedAt: serverTimestamp() }, { merge: true });
+    } else {
+      throw new Error("Invalid subtask index");
+    }
+  } else {
+    throw new Error("Task not found");
+  }
+}
+

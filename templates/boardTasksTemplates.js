@@ -1,4 +1,4 @@
-export function taskCardTemplate(tasks,){
+export function taskCardTemplate(tasks){
     let taskCards=` 
     
     <div class="task-card grabbable" id="task-card-${tasks.id}" draggable="true">
@@ -36,10 +36,10 @@ export function taskDetailTemplate(task){
   let taskDetail=`
     <!-- Overlay -->
  
-    <div class="overlay-edit-card">
+    <div class="overlay-edit-card" id="overlayEditCard-${task.id}">
       <!-- Close Button -->
       <div class="overlay-header">
-        <div class="task-category-overlay user-story">User Story</div>
+        <div class="task-category-overlay card-detail-${task.category.toLowerCase().replace(/\s+/g, '-')}">${task.category}</div>
         <button class="overlay-close-btn" id="overlayCloseBtn">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M18 6L6 18M6 6L18 18" stroke="#2A3647" stroke-width="2" stroke-linecap="round"
@@ -63,17 +63,11 @@ export function taskDetailTemplate(task){
 
         <!-- Priority -->
         <div class="overlay-field-content">
-          <span>10/05/2023</span>
+          <span>${task.dueDate}</span>
           <div class="overlay-priority">
-            <span>Medium</span>
-            <svg class="priority-icon priority-medium" xmlns="http://www.w3.org/2000/svg" width="17" height="7"
+            <span>${task.priority}</span>
+            <svg class="priority-icon priority-${task.priority.toLowerCase()}" xmlns="http://www.w3.org/2000/svg" width="17" height="7"
               viewBox="0 0 17 7" fill="none">
-              <path
-                d="M16.0685 6.33333L0.931507 6.33333C0.684456 6.33333 0.447523 6.23448 0.272832 6.05852C0.0981406 5.88256 0 5.6439 0 5.39506C0 5.14621 0.0981406 4.90756 0.272832 4.7316C0.447523 4.55564 0.684456 4.45679 0.931507 4.45679L16.0685 4.45679C16.3155 4.45679 16.5525 4.55564 16.7272 4.7316C16.9019 4.90756 17 5.14621 17 5.39506C17 5.6439 16.9019 5.88256 16.7272 6.05852C16.5525 6.23448 16.3155 6.33333 16.0685 6.33333Z"
-                fill="#FFA800" />
-              <path
-                d="M16.0685 1.87654L0.931507 1.87654C0.684456 1.87654 0.447523 1.77769 0.272832 1.60173C0.0981406 1.42577 0 1.18712 0 0.938272C0 0.689426 0.0981406 0.450773 0.272832 0.274813C0.447523 0.0988533 0.684456 0 0.931507 0L16.0685 0C16.3155 0 16.5525 0.0988533 16.7272 0.274813C16.9019 0.450773 17 0.689426 17 0.938272C17 1.18712 16.9019 1.42577 16.7272 1.60173C16.5525 1.77769 16.3155 1.87654 16.0685 1.87654Z"
-                fill="#FFA800" />
             </svg>
           </div>
         </div>
@@ -82,34 +76,16 @@ export function taskDetailTemplate(task){
       <!-- Assigned To -->
       <div class="overlay-field">
         <label class="overlay-label">Assigned To:</label>
-        <div class="overlay-assignees">
-          <div class="overlay-assignee-item">
-            <div class="assignee-avatar" style="background-color: #1FD7C1;">EM</div>
-            <span>Emmanuel Mauer</span>
-          </div>
-          <div class="overlay-assignee-item">
-            <div class="assignee-avatar" style="background-color: #7B68EE;">MB</div>
-            <span>Marcel Bauer</span>
-          </div>
-          <div class="overlay-assignee-item">
-            <div class="assignee-avatar" style="background-color: #0066ff;">AM</div>
-            <span>Anton Mayer</span>
-          </div>
+        <div class="overlay-assignees" id="assignedDetails-${task.id}">
+          <!-- Assignee avatars will be inserted here -->
         </div>
       </div>
 
       <!-- Subtasks -->
       <div class="overlay-field">
-        <label class="overlay-label">Subtasks</label>
-        <div class="overlay-subtasks">
-          <div class="overlay-subtask-item">
-            <input type="checkbox" id="subtask1" checked>
-            <label for="subtask1">Implement Recipe Recommendation</label>
-          </div>
-          <div class="overlay-subtask-item">
-            <input type="checkbox" id="subtask2">
-            <label for="subtask2">Start Page Layout</label>
-          </div>
+       
+        <div class="overlay-subtasks" id="subtaskDetails-${task.id}">
+          <!-- Subtask items will be inserted here -->
         </div>
       </div>
 
@@ -130,11 +106,27 @@ export function taskDetailTemplate(task){
       </div>
     </div>
   `;
-    console.log("Generated Task Detail Overlay HTML:", taskDetail);
   return taskDetail;
 }
 
 export function assigneeAvatarTemplate(initials,color){
   const avatar=`<div class="assignee-avatar" style="background-color: ${color};">${initials}</div>`;
   return avatar;
+}
+export function assigneeAvatarToDetail(initials,name,color){  
+  const avatar=`<div class="overlay-assignee-item">
+  <div class="assignee-avatar" style="background-color: ${color};">${initials}</div>
+  <div class="assignee-name" >${name}</div>
+  </div>
+  `;
+
+  return avatar;
+}
+export function addSubtaskToDetailTemplate(text, completed = false, index) {
+  return `
+    <label class="overlay-subtask-item">
+      <input type="checkbox" ${completed ? 'checked' : ''} data-index="${index}" />
+      <span>${text}</span>
+    </label>
+  `;
 }
