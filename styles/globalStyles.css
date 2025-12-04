@@ -59,6 +59,9 @@ h3 {
 .pr-110{
   padding-right: 110px;
 }
+.hide{
+  display: none;
+}
 
 :root {
   --gray-default: #A8A8A8;

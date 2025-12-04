@@ -3,7 +3,7 @@ export function taskCardTemplate(tasks){
     
     <div class="task-card grabbable" id="task-card-${tasks.id}" draggable="true">
           <div class="tasks-card-content">
-            <div class="task-category ${tasks.category}">${tasks.category}
+            <div class="task-category ${tasks.category.toLowerCase().replace(/\s+/g, '-')}">${tasks.category}
             </div>
             <div class="task-texts">
               <h3 class="task-title">${tasks.title}</h3>
@@ -11,9 +11,9 @@ export function taskCardTemplate(tasks){
             </div>
             <div class="task-subtasks">
               <div class="subtasks-bar">
-                <div class="subtasks-progress"></div>
+                <div class="subtasks-progress " id="progress-bar-${tasks.id}"></div>
               </div>
-              <span>3/4 Subtasks</span>
+              <span class="subtask-info" id="subtask-info-${tasks.id}">3/4 Subtasks</span>
             </div>
             <div class="task-footer">
               <div class="task-assignees">
@@ -33,7 +33,6 @@ export function taskCardTemplate(tasks){
             </div>
           </div>
         </div>` ;
-        console.log("Generated Task Card HTML:", taskCards);
     return taskCards;
 
 } 
@@ -137,6 +136,6 @@ export function taskDetailTemplate(task){
       </div>
     </div>
   `;
-  console.log("Generated Task Detail Overlay HTML:", taskDetail);
+    console.log("Generated Task Detail Overlay HTML:", taskDetail);
   return taskDetail;
 }

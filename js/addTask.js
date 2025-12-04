@@ -97,6 +97,7 @@ function getDescriptionTask() {
 // Return the task due date input value.
 function getDueDateTask() {  
     const dueDateTask = document.getElementById("taskDate").value;
+    console.log("Due Date Task:", dueDateTask);
     return dueDateTask;
 }
 
@@ -141,9 +142,7 @@ function getSelectedAssignedTo() {
 
 const CATEGORY= Object.freeze({
     TECHTASK: 'Technical Task',
-    DEVELOPMENT: 'Development',
-    MARKETING: 'Marketing',
-    USERSTORY: 'User Story ',
+    USERSTORY: 'User Story',
 });
 // Populate category select with options.
 function addCategoryOptionsTask() {  
@@ -186,13 +185,18 @@ function initSubtaskEventListeners() {
         }
     });
 }
-// Collect subtask texts from the DOM and return them as an array.
+// Collect subtask texts from the DOM and return them as an array of objects with completion state.
 function getSubtasksList() {
     const subtasksList = document.getElementById("subtasksList");
     const subtasks = [];
     subtasksList.querySelectorAll("label").forEach(label => {
+        // if template includes a checkbox, read its checked state; else default to false
+        const checkbox = label.querySelector('input[type="checkbox"]');
         const subtaskText = label.textContent.trim();
-        subtasks.push(subtaskText);
+        subtasks.push({
+            text: subtaskText,
+            completed: checkbox ? checkbox.checked : false
+        });
     });
     return subtasks;
 }

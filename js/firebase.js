@@ -347,3 +347,16 @@ export async function getTaskIds() {
   return taskIds;
 }
 
+export async function getSubtasksCompletionState(taskId) {
+  const taskRef = doc(db, "tasks", taskId);
+  const taskSnap = await getDoc(taskRef);
+  if (taskSnap.exists()) {
+    const subtasks = taskSnap.data().subtasks || [];
+    const totalSubtasks = subtasks.length;
+    const completedSubtasks = subtasks.filter(subtask => subtask.completed).length;
+    console.log("Subtasks for task", taskId, ":", totalSubtasks, "total,", completedSubtasks, "completed");
+    return { totalSubtasks, completedSubtasks };
+  } else {
+    throw new Error("Task not found");
+  }
+}
