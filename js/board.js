@@ -3,7 +3,7 @@ import {
   changeTaskProgress,
   getSubtasksCompletionState,
   changeSubtaskCompletion,
-  getTask
+  getTask,
 } from "./firebase.js";
 import {
   taskCardTemplate,
@@ -13,7 +13,7 @@ import {
   addSubtaskToDetailTemplate,
 } from "../templates/boardTasksTemplates.js";
 
-import { getInitials,returnContactById,getTaskIndexById } from "./utility.js";
+import { getInitials, returnContactById, getTaskIndexById } from "./utility.js";
 import { getContacts } from "./firebase.js";
 
 const overlay = document.getElementById("taskDetailOverlay");
@@ -36,61 +36,66 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const taskCards = document.querySelectorAll(".task-card");
   taskCards.forEach((card) => {
-    card.addEventListener("click", async (e) => {  // ← async!
+    card.addEventListener("click", async (e) => {
+      // ← async!
       if (e.target.closest("svg") || e.target.closest("button")) return;
-      
+
       // Extract taskId from card id (e.g. "task-card-ABC123" → "ABC123")
       const taskId = card.id.replace("task-card-", "");
-      
+
       try {
         // Load fresh task data from Firestore
         const task = await getTask(taskId);
-        
+
         const taskDetail = taskDetailTemplate(task);
-        
+
         overlay.innerHTML = "";
         if (typeof taskDetail === "string") {
           overlay.insertAdjacentHTML("beforeend", taskDetail);
         } else if (taskDetail instanceof Node) {
           overlay.appendChild(taskDetail);
         }
-        
-        overlay.classList.add('active');
-        
+
+        overlay.classList.add("active");
+
         // NOW insert assignees & subtasks with FRESH data
         addAssigneeAvatartoDetail(task);
         addSubtaskToDetail(task);
         addEventListenersToSubtaskButtons(task.id);
-        
-        const newCloseBtn = overlay.querySelector('#overlayCloseBtn');
-        newCloseBtn?.addEventListener('click', closeOverlayOnBtn);
+
+        const newCloseBtn = overlay.querySelector("#overlayCloseBtn");
+        newCloseBtn?.addEventListener("click", closeOverlayOnBtn);
       } catch (error) {
         console.error("Failed to load task details:", error);
         alert("Could not load task details.");
       }
     });
   });
-  
+
   checkColumnVisibility();
-  overlay?.addEventListener('click', (e) => { if (e.target === overlay) closeOverlayOnBtn(); });
+  overlay?.addEventListener("click", (e) => {
+    if (e.target === overlay) closeOverlayOnBtn();
+  });
 });
 
 function closeOverlayOnBtn() {
-  overlay.classList.add('closing');
+  overlay.classList.add("closing");
   setTimeout(() => {
-    overlay.classList.remove('active', 'closing');
+    overlay.classList.remove("active", "closing");
   }, 200);
 }
 
 function renderTasks(tasks) {
   const toDoColumn = document.getElementById("todoColumnContainer");
   const inProgressColumn = document.getElementById("inProgressColumnContainer");
-  const awaitFeedbackColumn = document.getElementById("feedbackColumnContainer");
+  const awaitFeedbackColumn = document.getElementById(
+    "feedbackColumnContainer"
+  );
   const doneColumn = document.getElementById("doneColumnContainer");
 
   tasks.forEach((task) => {
     const taskCardHTML = taskCardTemplate(task);
-    
+
     switch (task.progress) {
       case "toDo":
         toDoColumn.insertAdjacentHTML("beforeend", taskCardHTML);
@@ -139,9 +144,9 @@ function handleDrop(drag) {
   const movedCard = document.getElementById(cardId);
   if (!movedCard) return;
 
-    this.appendChild(movedCard);
-    this.style.backgroundColor = "";
-    movedCard.classList.remove('dragging');
+  this.appendChild(movedCard);
+  this.style.backgroundColor = "";
+  movedCard.classList.remove("dragging");
 
   // prefer data-task-id if available, fall back to element id
   let taskId = movedCard.dataset.taskId || movedCard.id;
@@ -173,160 +178,173 @@ function getNewProgressFromDropZone(dropZone) {
 }
 
 // Add Task Overlay Functions
-const addTaskOverlay = document.getElementById('addTaskOverlay');
-const addTaskBtn = document.getElementById('addTaskBtn');
-const addTaskCloseBtn = document.getElementById('addTaskCloseBtn');
-const addTaskCancelBtn = document.getElementById('addTaskCancelBtn');
-const addTaskFormOverlay = document.getElementById('addTaskFormOverlay');
+const addTaskOverlay = document.getElementById("addTaskOverlay");
+const addTaskBtn = document.getElementById("addTaskBtn");
+const addTaskCloseBtn = document.getElementById("addTaskCloseBtn");
+const addTaskCancelBtn = document.getElementById("addTaskCancelBtn");
+const addTaskFormOverlay = document.getElementById("addTaskFormOverlay");
 
 // Open Add Task Overlay
-addTaskBtn?.addEventListener('click', () => {
-    addTaskOverlay?.classList.add('active');
+addTaskBtn?.addEventListener("click", () => {
+  addTaskOverlay?.classList.add("active");
 });
 
 // Close Add Task Overlay Functions
 function closeAddTaskOverlay() {
-    addTaskOverlay?.classList.add('closing');
-    setTimeout(() => {
-        addTaskOverlay?.classList.remove('active', 'closing');
-    }, 200);
+  addTaskOverlay?.classList.add("closing");
+  setTimeout(() => {
+    addTaskOverlay?.classList.remove("active", "closing");
+  }, 200);
 }
 
 // Close button in overlay
-addTaskCloseBtn?.addEventListener('click', closeAddTaskOverlay);
+addTaskCloseBtn?.addEventListener("click", closeAddTaskOverlay);
 
 // Cancel button
-addTaskCancelBtn?.addEventListener('click', closeAddTaskOverlay);
+addTaskCancelBtn?.addEventListener("click", closeAddTaskOverlay);
 
 // Close on overlay background click
-addTaskOverlay?.addEventListener('click', (e) => {
-    if (e.target === addTaskOverlay) {
-        closeAddTaskOverlay();
-    }
+addTaskOverlay?.addEventListener("click", (e) => {
+  if (e.target === addTaskOverlay) {
+    closeAddTaskOverlay();
+  }
 });
 
 // Priority button selection
-document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.priority-button');
-    if (btn) {
-        const group = btn.closest('.priority-button-group');
-        
-        // Remove active class from all buttons and their icons
-        group?.querySelectorAll('.priority-button').forEach(b => {
-            b.classList.remove('priority-button-urgant-active', 'priority-button-medium-active', 'priority-button-low-active');
-            const icon = b.querySelector('svg');
-            icon?.classList.remove('priority-button-icon-active');
-        });
-        
-        // Add active class to clicked button
-        if (btn.id === 'priority-button-urgant') {
-            btn.classList.add('priority-button-urgant-active');
-        } else if (btn.textContent.includes('Medium')) {
-            btn.classList.add('priority-button-medium-active');
-        } else if (btn.textContent.includes('Low')) {
-            btn.classList.add('priority-button-low-active');
-        }
-        
-        // Add active class to the icon
-        const icon = btn.querySelector('svg');
-        icon?.classList.add('priority-button-icon-active');
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".priority-button");
+  if (btn) {
+    const group = btn.closest(".priority-button-group");
+
+    // Remove active class from all buttons and their icons
+    group?.querySelectorAll(".priority-button").forEach((b) => {
+      b.classList.remove(
+        "priority-button-urgant-active",
+        "priority-button-medium-active",
+        "priority-button-low-active"
+      );
+      const icon = b.querySelector("svg");
+      icon?.classList.remove("priority-button-icon-active");
+    });
+
+    // Add active class to clicked button
+    if (btn.id === "priority-button-urgant") {
+      btn.classList.add("priority-button-urgant-active");
+    } else if (btn.textContent.includes("Medium")) {
+      btn.classList.add("priority-button-medium-active");
+    } else if (btn.textContent.includes("Low")) {
+      btn.classList.add("priority-button-low-active");
     }
+
+    // Add active class to the icon
+    const icon = btn.querySelector("svg");
+    icon?.classList.add("priority-button-icon-active");
+  }
 });
 
 // Multi-select dropdown
-document.addEventListener('click', (e) => {
-    if (e.target.closest('.selected-box')) {
-        const box = e.target.closest('.selected-box');
-        const list = box.nextElementSibling;
-        
-        // Close other open dropdowns
-        document.querySelectorAll('.checkbox-list.active').forEach(l => {
-            if (l !== list) l.classList.remove('active');
-        });
-        
-        list?.classList.toggle('active');
-    }
+document.addEventListener("click", (e) => {
+  if (e.target.closest(".selected-box")) {
+    const box = e.target.closest(".selected-box");
+    const list = box.nextElementSibling;
+
+    // Close other open dropdowns
+    document.querySelectorAll(".checkbox-list.active").forEach((l) => {
+      if (l !== list) l.classList.remove("active");
+    });
+
+    list?.classList.toggle("active");
+  }
 });
 
 // Form submission
-addTaskFormOverlay?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const title = document.querySelector('input[placeholder="Enter a title..."]')?.value;
-    const description = document.querySelector('textarea[placeholder="Enter a description..."]')?.value;
-    const dueDate = document.querySelector('input[type="date"]')?.value;
-    
-    const activePriority = document.querySelector('.priority-btn-active');
-    const priority = activePriority?.dataset.priority || 'medium';
-    
-    const category = document.querySelector('select')?.value || 'User Story';
-    
-    const selectedContacts = Array.from(
-        document.querySelectorAll('.checkbox-item input[type="checkbox"]:checked')
-    ).map(cb => cb.value);
-    
-    const subtasks = Array.from(
-        document.querySelectorAll('.subtask-item-overlay')
-    ).map(item => ({
-        title: item.textContent.trim(),
-        completed: false
-    }));
-    
-    // Validation
-    if (!title?.trim()) {
-        alert('Please enter a task title');
-        return;
-    }
-    
-    // Create task object
-    const newTask = {
-        title,
-        description,
-        dueDate,
-        priority,
-        category,
-        assignedTo: selectedContacts,
-        subtasks,
-        progress: 'toDo',
-        createdAt: new Date().toISOString()
-    };
-    
-    console.log('New Task:', newTask);
-    // TODO: Send to Firebase and refresh board
-    
-    closeAddTaskOverlay();
+addTaskFormOverlay?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const title = document.querySelector(
+    'input[placeholder="Enter a title..."]'
+  )?.value;
+  const description = document.querySelector(
+    'textarea[placeholder="Enter a description..."]'
+  )?.value;
+  const dueDate = document.querySelector('input[type="date"]')?.value;
+
+  const activePriority = document.querySelector(".priority-btn-active");
+  const priority = activePriority?.dataset.priority || "medium";
+
+  const category = document.querySelector("select")?.value || "User Story";
+
+  const selectedContacts = Array.from(
+    document.querySelectorAll('.checkbox-item input[type="checkbox"]:checked')
+  ).map((cb) => cb.value);
+
+  const subtasks = Array.from(
+    document.querySelectorAll(".subtask-item-overlay")
+  ).map((item) => ({
+    title: item.textContent.trim(),
+    completed: false,
+  }));
+
+  // Validation
+  if (!title?.trim()) {
+    alert("Please enter a task title");
+    return;
+  }
+
+  // Create task object
+  const newTask = {
+    title,
+    description,
+    dueDate,
+    priority,
+    category,
+    assignedTo: selectedContacts,
+    subtasks,
+    progress: "toDo",
+    createdAt: new Date().toISOString(),
+  };
+
+  console.log("New Task:", newTask);
+  // TODO: Send to Firebase and refresh board
+
+  closeAddTaskOverlay();
 });
 
 // Subtask input handling
-const subtaskInput = document.querySelector('.form-input[type="text"][placeholder="Add new subtask..."]');
-const subtaskAddBtn = document.querySelector('.subtask-btn-group .subtask-action-btn:nth-child(2)');
+const subtaskInput = document.querySelector(
+  '.form-input[type="text"][placeholder="Add new subtask..."]'
+);
+const subtaskAddBtn = document.querySelector(
+  ".subtask-btn-group .subtask-action-btn:nth-child(2)"
+);
 
-subtaskAddBtn?.addEventListener('click', () => {
-    const subtaskText = subtaskInput?.value?.trim();
-    if (!subtaskText) return;
-    
-    const subtasksList = document.querySelector('.subtasks-list-overlay');
-    const subtaskItem = document.createElement('div');
-    subtaskItem.className = 'subtask-item-overlay';
-    subtaskItem.innerHTML = `
+subtaskAddBtn?.addEventListener("click", () => {
+  const subtaskText = subtaskInput?.value?.trim();
+  if (!subtaskText) return;
+
+  const subtasksList = document.querySelector(".subtasks-list-overlay");
+  const subtaskItem = document.createElement("div");
+  subtaskItem.className = "subtask-item-overlay";
+  subtaskItem.innerHTML = `
         <span>${subtaskText}</span>
         <button type="button" class="subtask-remove-btn">×</button>
     `;
-    
-    subtaskItem.querySelector('.subtask-remove-btn').addEventListener('click', () => {
-        subtaskItem.remove();
+
+  subtaskItem
+    .querySelector(".subtask-remove-btn")
+    .addEventListener("click", () => {
+      subtaskItem.remove();
     });
-    
-    subtasksList?.appendChild(subtaskItem);
-    if (subtaskInput) subtaskInput.value = '';
+
+  subtasksList?.appendChild(subtaskItem);
+  if (subtaskInput) subtaskInput.value = "";
 });
 
-// Allow Enter key to add subtask
-subtaskInput?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        subtaskAddBtn?.click();
-    }
+subtaskInput?.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    subtaskAddBtn?.click();
+  }
 });
 
 function switchTodoColumn() {
@@ -399,21 +417,29 @@ function changeSubtaskProgressbar(task) {
     });
 }
 
-
-function addAssigneeAvatar(task){
-  task.assignedTo.forEach(uid => {
+function addAssigneeAvatar(task) {
+  task.assignedTo.forEach((uid) => {
     const contact = returnContactById(uid, contactsList);
-    const avatarHTML = assigneeAvatarTemplate(getInitials(contact.name), contact.color);
-    document.getElementById(`task-card-${task.id}`)
+    const avatarHTML = assigneeAvatarTemplate(
+      getInitials(contact.name),
+      contact.color
+    );
+    document
+      .getElementById(`task-card-${task.id}`)
       .querySelector(".task-assignees")
       .insertAdjacentHTML("beforeend", avatarHTML);
   });
 }
 function addAssigneeAvatartoDetail(task) {
-   task.assignedTo.forEach(uid => {
+  task.assignedTo.forEach((uid) => {
     const contact = returnContactById(uid, contactsList);
-    const avatarHTML = assigneeAvatarToDetail(getInitials(contact.name), contact.name, contact.color);
-    document.getElementById(`overlayEditCard-${task.id}`)
+    const avatarHTML = assigneeAvatarToDetail(
+      getInitials(contact.name),
+      contact.name,
+      contact.color
+    );
+    document
+      .getElementById(`overlayEditCard-${task.id}`)
       .querySelector(".overlay-assignees")
       .insertAdjacentHTML("beforeend", avatarHTML);
   });
@@ -425,19 +451,24 @@ function addSubtaskToDetail(task) {
     console.warn(`Subtask details container not found for task ${task.id}`);
     return;
   }
-  
-  // Clear existing subtasks
+
   subtaskDetails.innerHTML = '<span class="overlay-label">Subtasks</span>';
-  
-  // Render each subtask with correct checked state
+
   task.subtasks?.forEach((subtask, index) => {
-    const subtaskHTML = addSubtaskToDetailTemplate(subtask.text, subtask.completed, index);
+    const subtaskHTML = addSubtaskToDetailTemplate(
+      subtask.text,
+      subtask.completed,
+      index
+    );
     subtaskDetails.insertAdjacentHTML("beforeend", subtaskHTML);
   });
-  
-  // If no subtasks, show message
+
+
   if (!task.subtasks || task.subtasks.length === 0) {
-    subtaskDetails.insertAdjacentHTML("beforeend", '<p class="no-subtasks">No subtasks</p>');
+    subtaskDetails.insertAdjacentHTML(
+      "beforeend",
+      '<p class="no-subtasks">No subtasks</p>'
+    );
   }
 }
 
@@ -447,30 +478,25 @@ async function addEventListenersToSubtaskButtons(taskId) {
     console.warn(`Subtask details not found for task ${taskId}`);
     return;
   }
-  
-  const subtaskItems = subtaskDetails.querySelectorAll('.overlay-subtask-item');
+
+  const subtaskItems = subtaskDetails.querySelectorAll(".overlay-subtask-item");
   subtaskItems.forEach((item, index) => {
     const checkbox = item.querySelector('input[type="checkbox"]');
     if (!checkbox) return;
-    
-    checkbox.addEventListener('change', async () => {
+
+    checkbox.addEventListener("change", async () => {
       try {
-        // 1) Update Firestore
         await changeSubtaskCompletion(taskId, index, checkbox.checked);
         console.log(`✅ Subtask ${index} changed to ${checkbox.checked}`);
-        
-        // 2) Reload task from Firestore to get fresh data
+
         const updatedTask = await getTask(taskId);
-        
-        // 3) Update progress bar in the card (on board)
+
         changeSubtaskProgressbar(updatedTask);
-        
-        // 4) Update subtask counter in the overlay (optional)
+
         updateOverlaySubtaskInfo(updatedTask);
-        
       } catch (error) {
         console.error("❌ Failed to update subtask:", error);
-        checkbox.checked = !checkbox.checked; // rollback UI
+        checkbox.checked = !checkbox.checked;
       }
     });
   });
@@ -479,9 +505,11 @@ async function addEventListenersToSubtaskButtons(taskId) {
 // Update the subtask info text in the overlay (e.g. "2/4 Subtasks")
 function updateOverlaySubtaskInfo(task) {
   const total = task.subtasks?.length || 0;
-  const completed = task.subtasks?.filter(s => s.completed).length || 0;
-  
-  const subtaskInfoEl = document.getElementById(`subtaskDetails-${task.id}`)?.querySelector('.overlay-subtask-info');
+  const completed = task.subtasks?.filter((s) => s.completed).length || 0;
+
+  const subtaskInfoEl = document
+    .getElementById(`subtaskDetails-${task.id}`)
+    ?.querySelector(".overlay-subtask-info");
   if (subtaskInfoEl) {
     subtaskInfoEl.textContent = `${completed}/${total} Subtasks`;
   }
