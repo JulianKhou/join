@@ -1,7 +1,7 @@
 import { getInitials } from "../js/utility.js";
 
-export function addAssignedToBarTask(name) {  
-    const assignedToSelect = '<label class="checkbox-item">   ' +name + '<input type="checkbox" class="assignedToCheckbox" name="assignedTo" value="' + getInitials(name) + '"> </label>';
+export function addAssignedToBarTask(name,uid) {  
+    const assignedToSelect = '<label class="checkbox-item">   ' +name + '<input type="checkbox" class="assignedToCheckbox" name="assignedTo" value="' +uid  + '"> </label>';
           return assignedToSelect;
 }
 

@@ -630,3 +630,24 @@
 .user-story{
     background-color: var(--blue-default);
 }
+.priority-high{
+    background: url(../assets/board/priority-high.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    fill: red;
+}
+.priority-medium{
+    background: url(../assets/board/priority-medium.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    fill: orange;
+}
+.priority-low{
+    background: url(../assets/board/priority-low.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    fill: green;
+}

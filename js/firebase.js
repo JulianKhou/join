@@ -360,3 +360,13 @@ export async function getSubtasksCompletionState(taskId) {
     throw new Error("Task not found");
   }
 }
+
+export async function getContact(uid) {
+  const contactRef = doc(db, "contacts", uid);
+  const contactSnap = await getDoc(contactRef); 
+  if (contactSnap.exists()) { 
+    return { id: contactSnap.id, ...contactSnap.data() };
+  } else {
+    throw new Error("Contact not found");
+  }
+}

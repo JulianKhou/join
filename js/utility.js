@@ -36,10 +36,17 @@ export function getRandomColor() {
 
 
   export function getInitials(name) {
-    const names = name.split(' ');
+    if (!name || typeof name !== 'string') return '';
+    const names = name.trim().split(/\s+/); // split by any whitespace, remove leading/trailing
+    if (names.length === 0) return '';
+    
     let initials = names[0].charAt(0).toUpperCase();
     if (names.length > 1) {
         initials += names[names.length - 1].charAt(0).toUpperCase();
     }
     return initials;
+}
+export function returnContactById(id,contactsList){
+    let contact = contactsList.find(contact => contact.id === id);
+    return contact;
 }

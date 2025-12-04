@@ -1,6 +1,6 @@
-import {getContacts,addEditTask} from "./firebase.js";
+import {getContacts,addEditTask,getContact} from "./firebase.js";
 import {addAssignedToBarTask,addSubTask} from '../templates/addTaskTemplates.js';
-import { getInitials } from "./utility.js";
+import { getInitials,returnContactById } from "./utility.js";
 
 // replace top-level var queries with declarations only so functions can still access them
 const PRIORITY = Object.freeze({
@@ -19,9 +19,11 @@ let priorityMediumImg;
 let priorityLowImg;
 let selectBox;
 let checkboxList;
+let contactsList=[];
 
 // On DOM ready: set up UI, attach handlers and load contacts.
 document.addEventListener("DOMContentLoaded", async () => {
+    contactsList= await getContacts();
     const addTaskBtn = document.getElementById("addTaskBtn");
     const cancelTaskBtn = document.getElementById("cancelTaskBtn");
 
@@ -55,10 +57,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // rest of initialization (unchanged order)
-    await addContactsToAssignTask(await getContacts());
+    await addContactsToAssignTask(contactsList);
     checkCheckboxChanges();
     addCategoryOptionsTask();
     initSubtaskEventListeners();
+    initAddEventListeners();
 });
 
 
@@ -68,7 +71,7 @@ function addContactsToAssignTask(contacts) {
     const assignedSelect = document.getElementById("chooseContactsCheckboxList");
     if (!assignedSelect) return;
     contacts.forEach(contact => {
-        const option = addAssignedToBarTask(contact.name);
+        const option = addAssignedToBarTask(contact.name,contact.id);
      
         // if function returns a string of HTML, insert as HTML; if Node, append
         if (typeof option === "string") {
@@ -121,7 +124,7 @@ checkboxes.forEach(cb => {
   cb.addEventListener("change", () => {
     const selected = [...checkboxes]
       .filter(cb => cb.checked)
-      .map(cb => cb.value);
+      .map(cb => returnContactById(cb.value,contactsList).name);
 
     selectBox.innerText = selected.length
       ? selected.join(", ")
@@ -256,4 +259,32 @@ function resetAddTaskForm() {
     resetPrioritySelection();
     resetCategorySelection();
     resetAssignToSelectBox();
+}
+function initAddEventListeners() {
+  if (priorityLowBtn) {
+    priorityLowBtn.addEventListener("click", (e) => {
+        e.preventDefault(); // ← wichtig!
+        e.stopPropagation();
+        selectedPriority = PRIORITY.LOW;
+        console.log("Priority set to Low");
+    });
+  }
+
+  if (priorityMediumBtn) {
+    priorityMediumBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        selectedPriority = PRIORITY.MEDIUM;
+        console.log("Priority set to Medium");
+    });
+  }
+
+  if (priorityUrgentBtn) {
+    priorityUrgentBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        selectedPriority = PRIORITY.HIGH;
+        console.log("Priority set to Urgent");
+    });
+  }
 }
