@@ -4,6 +4,7 @@ import {
   getSubtasksCompletionState,
   changeSubtaskCompletion,
   getTask,
+  deleteTask,
 } from "./firebase.js";
 import {
   taskCardTemplate,
@@ -62,6 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         addAssigneeAvatartoDetail(task);
         addSubtaskToDetail(task);
         addEventListenersToSubtaskButtons(task.id);
+        initAddEventListenersToTaskDetailButtons(task.id);
 
         const newCloseBtn = overlay.querySelector("#overlayCloseBtn");
         newCloseBtn?.addEventListener("click", closeOverlayOnBtn);
@@ -101,6 +103,7 @@ function renderTasks(tasks) {
         toDoColumn.insertAdjacentHTML("beforeend", taskCardHTML);
         changeSubtaskProgressbar(task);
         addAssigneeAvatar(task);
+        
         // removed addSubtaskToDetail(task); — only needed in overlay, not in card
         break;
       case "inProgress":
@@ -463,7 +466,6 @@ function addSubtaskToDetail(task) {
     subtaskDetails.insertAdjacentHTML("beforeend", subtaskHTML);
   });
 
-
   if (!task.subtasks || task.subtasks.length === 0) {
     subtaskDetails.insertAdjacentHTML(
       "beforeend",
@@ -513,4 +515,31 @@ function updateOverlaySubtaskInfo(task) {
   if (subtaskInfoEl) {
     subtaskInfoEl.textContent = `${completed}/${total} Subtasks`;
   }
+}
+
+function initAddEventListenersToTaskDetailButtons(taskId) {
+  const deleteBtn = document.getElementById(`deleteTaskBtn-${taskId}`);
+  const editBtn = document.getElementById(`editTaskBtn-${taskId}`);
+  deleteBtn?.addEventListener("click", () => {
+    deleteTaskFromBoard(taskId);
+  });
+  editBtn?.addEventListener("click", () => {
+    console.log(`Edit task ${taskId} clicked`);
+  });
+}
+
+function deleteTaskFromBoard(taskId) {
+   deleteTask(taskId)
+    .then(() => {
+      console.log(`Task ${taskId} deleted successfully`); 
+      closeOverlayOnBtn();
+      const taskCard = document.getElementById(`task-card-${taskId}`);
+      taskCard?.remove();
+      checkColumnVisibility();
+    })
+    .catch((error) => {
+      console.error("Error deleting task:", error);
+    });
+
+
 }
