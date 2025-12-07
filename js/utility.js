@@ -54,3 +54,7 @@ export function returnContactById(id,contactsList){
 export function getTaskIndexById(id, tasksList) {
     return tasksList.findIndex(task => task.id === id);
 }
+
+export function getAllTasksFromContacts(tasksList, uid) {
+    return tasksList.filter(task => task.assignedTo.includes(uid));
+}

@@ -1,6 +1,8 @@
 import {createUser} from "./firebase.js";
-var signUpBtn= document.getElementById("signUpBtn");
 
+// ← KEINE onAuthStateChanged hier!
+
+var signUpBtn= document.getElementById("signUpBtn");
 
 signUpBtn.addEventListener("click",function(event){
     event.preventDefault(); // Verhindert das Standard-Formularverhalten
@@ -19,14 +21,11 @@ signUpBtn.addEventListener("click",function(event){
                 console.error("Registration failed:", error);
                 alert("Registrierung fehlgeschlagen: " + error.message);
             });
+    } else {
+        // Password validation failed — don't proceed
+        console.log("Form validation failed, not submitting");
     }
 });
-
-
-
-
-
-
 
 
 
@@ -48,21 +47,33 @@ function getUsernameInput(){
 function checkCorrectPassword(){
     const password= getPasswordInput();
     const confirmPassword= getConfirmPasswordInput();
+    
     if(!checkPasswordMatch(password,confirmPassword)){
-        console.log("Password and confirm password do not match");
-    }else if(!checkLengthPassword(password)){
-        console.log("Password must be at least 6 characters long");
-    }else if(!checkCApitalLetter(password)){
-        console.log("Password must contain at least one capital letter");
-    }else if(!checkLowerCaseLetter(password)){
-        console.log("Password must contain at least one lowercase letter");
-    }else if(!checkSpecialCharacter(password)){
-        console.log("Password must contain at least one special character");
-    }else if(!checkIfPrivacyChecked()){
-        console.log("You must accept the privacy policy");
-    }else{
-        return true;
+        alert("Password and confirm password do not match");
+        return false; // ← wichtig!
     }
+    if(!checkLengthPassword(password)){
+        alert("Password must be at least 6 characters long");
+        return false;
+    }
+    if(!checkCApitalLetter(password)){
+        alert("Password must contain at least one capital letter");
+        return false;
+    }
+    if(!checkLowerCaseLetter(password)){
+        alert("Password must contain at least one lowercase letter");
+        return false;
+    }
+    if(!checkSpecialCharacter(password)){
+        alert("Password must contain at least one special character");
+        return false;
+    }
+    if(!checkIfPrivacyChecked()){
+        alert("You must accept the privacy policy");
+        return false;
+    }
+    
+    return true; // ← alle Checks bestanden
 }
 
 function checkPasswordMatch(password,confirmPassword){

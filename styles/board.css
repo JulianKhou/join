@@ -934,3 +934,24 @@
     background-size: contain;
     fill: green;
 }
+/* Standard: nur View sichtbar */
+.edit-field {
+  display: none;
+}
+
+/* Wenn Karte im Edit-Modus ist */
+.overlay-edit-card.editing .view-field {
+  display: none;
+}
+
+.overlay-edit-card.editing .edit-field {
+  display: block; /* oder inline/inline-block je nach Element */
+}
+
+/* Optional etwas Styling */
+.overlay-title-input,
+.overlay-description-input,
+#taskDueDateEdit-/*id*/ {
+  width: 100%;
+  /* padding, border etc. */
+}

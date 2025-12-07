@@ -540,6 +540,6 @@ function deleteTaskFromBoard(taskId) {
     .catch((error) => {
       console.error("Error deleting task:", error);
     });
-
-
 }
+
+function editTaskDetailTemplate(task) {}

@@ -9,12 +9,17 @@ loginBtn.addEventListener("click", function(event) {
     const email = emailInput.value;
     const password = passwordInput.value;
 
-    loginWithEmail(email, password).then(() => {
+    loginWithEmail(email, password).then((user) => {
+        // Save user to localStorage
+        localStorage.setItem('currentUser', JSON.stringify({
+            uid: user.uid,
+            email: user.email,
+            username: user.displayName || user.email.split('@')[0]
+        }));
         window.location.href = "summaryUser.html";
     }).catch((error) => {
         alert(error.message);
     });
-
 });
 
 
@@ -22,7 +27,13 @@ var googleLoginBtn = document.getElementById("googleLoginBtn");
 googleLoginBtn.addEventListener("click", function(event) {
     event.preventDefault();
     signInWithGoogle()
-        .then(() => {
+        .then((user) => {
+            // Save user to localStorage
+            localStorage.setItem('currentUser', JSON.stringify({
+                uid: user.uid,
+                email: user.email,
+                username: user.displayName || user.email.split('@')[0]
+            }));
             window.location.href = "summaryUser.html";
         })
         .catch((error) => {
@@ -36,14 +47,19 @@ googleLoginBtn.addEventListener("click", function(event) {
 var loginGuest= document.getElementById("guestLoginBtn");
 loginGuest.addEventListener("click", function(event) {
     event.preventDefault();
-    // Use predefined guest credentials
     const guestEmail = "guest@example.com";
     const guestPassword = "Guestpassword#1";
 
-    loginWithEmail(guestEmail, guestPassword).then(() => {
+    loginWithEmail(guestEmail, guestPassword).then((user) => {
+        // Save guest user to localStorage
+        localStorage.setItem('currentUser', JSON.stringify({
+            uid: user.uid,
+            email: user.email,
+            username: 'Guest'
+        }));
         window.location.href = "summaryUser.html";
-
     }).catch((error) => {
         alert(error.message);
     });
-});
+
+}); 

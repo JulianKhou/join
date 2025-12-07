@@ -50,11 +50,21 @@ const googleProvider = new GoogleAuthProvider();
 export function createUser(email, password, username) {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      return createOrUpdateUserProfile(
-        userCredential.user.uid,
-        username,
-        email
-      ).then(() => userCredential.user);
+      const uid = userCredential.user.uid;
+      
+      // Create user profile first
+      return createOrUpdateUserProfile(uid, username, email)
+        .then(() => {
+          // Then create contact with user's data
+          return editOrAddContact(
+            uid,           // use uid as contact ID so it's linked
+            username,
+            email,
+            "",            // no phone number initially
+            generateRandomColor() // or pass a default color
+          );
+        })
+        .then(() => userCredential.user);
     })
     .catch((error) => {
       let message = "Registration failed.";
@@ -78,12 +88,14 @@ export function createUser(email, password, username) {
 export function loginWithEmail(email, password) {
   return signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      return userCredential.user.uid;
+      console.log("✅ Login successful, user:", userCredential.user); // ← Debug
+      return userCredential.user; // ← wichtig!
     })
     .catch((error) => {
+      console.error("❌ Login failed:", error); // ← Debug
       let message = "Login failed.";
       if (error.code === "auth/user-not-found") {
-        message = "No account found with this email.";
+        message = "User not found.";
       } else if (error.code === "auth/wrong-password") {
         message = "Incorrect password.";
       } else if (error.code === "auth/invalid-email") {
@@ -103,12 +115,20 @@ export function signInWithGoogle() {
   return signInWithPopup(auth, googleProvider)
     .then((result) => {
       const user = result.user;
-      // Use merge: true to avoid overwriting existing profiles
-      return createOrUpdateUserProfile(
-        user.uid,
-        user.displayName,
-        user.email
-      ).then(() => user);
+      
+      // Create/update user profile
+      return createOrUpdateUserProfile(user.uid, user.displayName, user.email)
+        .then(() => {
+          // Also create/update contact
+          return editOrAddContact(
+            user.uid,
+            user.displayName,
+            user.email,
+            "",
+            generateRandomColor()
+          );
+        })
+        .then(() => user);
     })
     .catch((error) => {
       let message = "Google login failed.";
@@ -130,30 +150,39 @@ export function signInWithGoogle() {
  * @param {string} email - The user's email address
  * @returns {Promise<void>} Promise that resolves when the profile is created/updated
  */
-export async function createOrUpdateUserProfile(uid, username, email, color) {
-  if(getUsername(uid) != null)
-    
-    return;{
+export async function createOrUpdateUserProfile(uid, username, email) {
   try {
     const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
     
-    await setDoc(
-      userRef,
-      {
+    // Only create if doesn't exist (avoid overwriting existing data)
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
         username,
         email,
-        updatedAt: serverTimestamp(),
         createdAt: serverTimestamp(),
-        color: color, 
-      },
-      { merge: true
-        }
-    );
+        updatedAt: serverTimestamp(),
+        color: generateRandomColor(),
+      });
+    } else {
+      // Just update timestamp if already exists
+      await setDoc(userRef, {
+        updatedAt: serverTimestamp(),
+      }, { merge: true });
+    }
   } catch (error) {
     console.error("Error creating/updating user profile:", error);
     throw error;
   }
 }
+
+// Helper function to generate a random color
+function generateRandomColor() {
+  const colors = [
+    "#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF",
+    "#33FFF5", "#F5FF33", "#FF8C33", "#8C33FF", "#33FF8C"
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
 }
 
 /**
@@ -389,3 +418,12 @@ export async function changeSubtaskCompletion(taskId, subtaskIndex, completed) {
   }
 }
 
+export async function getUserById(uid) {
+  const userRef = doc(db, "users", uid);
+  const userSnap = await getDoc(userRef);
+  if (userSnap.exists()) {
+    return { id: userSnap.id, ...userSnap.data() };
+  } else {
+    throw new Error("User not found");
+  }
+}

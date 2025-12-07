@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <script src="./js/firebase.js" type="module"></script>
   <script type="module" src="./js/userInterface.js"></script>
+  <script type="module" src="./js/summaryUser.js" defer></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
@@ -85,7 +86,7 @@
                 </svg>
               </div>
               <div class="summary-metric-info">
-                <div class="summary-metric-value">1</div>
+                <div class="summary-metric-value" id="summaryUserToDoCount">1</div>
                 <div class="summary-metric-label">To-do</div>
               </div>
             </div>
@@ -107,7 +108,7 @@
               </div>
 
               <div class="summary-metric-info">
-                <div class="summary-metric-value">1</div>
+                <div class="summary-metric-value" id="summaryUserDoneCount">1</div>
                 <div class="summary-metric-label">Done</div>
               </div>
             </div>
@@ -128,13 +129,13 @@
                   </svg>
                 </div>
                 <div class="summary-metric-info summary-metric-label">
-                  <div class="summary-metric-value">1</div>
+                  <div class="summary-metric-value" id="summaryUserUrgentCount">1</div>
                   <div class="summary-metric-urgent-label">Urgent</div>
                 </div>
               </div>
               <div class="summary-metric-divider"></div>
               <div class="summary-metric-deadline">
-                <div class="summary-metric-deadline-date">October 16, 2022</div>
+                <div class="summary-metric-deadline-date" id="summaryUserUrgentDate">October 16, 2022</div>
                 <div class="summary-metric-deadline-label">Upcoming Deadline</div>
               </div>
             </div>
@@ -143,19 +144,19 @@
         <div class="summary-metrics-row-3">
           <a href="./board.html" class="summary-metric-link">
             <div class="summary-metric-tile-row-3" style="--scale-origin: bottom left;">
-              <div class="summary-metric-value">5</div>
+              <div class="summary-metric-value" id="summaryAllTasksOnBoardCount">5</div>
               <div class="summary-metric-label">Tasks in <br>Board</div>
             </div>
           </a>
           <a href="./board.html" class="summary-metric-link">
             <div class="summary-metric-tile-row-3" style="--scale-origin: bottom center;">
-              <div class="summary-metric-value">2</div>
-              <div class="summary-metric-label">Tasks In <br>Progress</div>
+              <div class="summary-metric-value" id="summaryUserInProgressCount">2</div>
+              <div class="summary-metric-label" >Tasks In <br>Progress</div>
             </div>
           </a>
           <a href="./board.html" class="summary-metric-link">
             <div class="summary-metric-tile-row-3" style="--scale-origin: bottom right;">
-              <div class="summary-metric-value">2</div>
+              <div class="summary-metric-value" id="summaryUserAwaitFeedbackCount">2</div>
               <div class="summary-metric-label">Awaiting <br>Feedback</div>
             </div>
           </a>
@@ -163,7 +164,7 @@
       </div>
       <div class="summary-greeting">
         <div class="summary-greeting-text">Good morning,</div>
-        <div class="summary-greeting-user">Sofia Müller</div>
+        <div class="summary-greeting-user" id="shownUsernameOnSummary">Sofia Müller</div>
       </div>
     </section>
   </main>

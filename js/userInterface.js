@@ -47,9 +47,14 @@ onAuthChange(async (user) => {
     }
   } else {
     // Redirect to login if not authenticated and not already on login page
-    if (!window.location.href.includes("logIn.html")) {
-      window.location.href = "logIn.html";
-    }
+    // Get current page filename
+const currentPage = window.location.pathname.split('/').pop();
+
+// Redirect to login ONLY if not already on login or signup page
+if (currentPage !== "logIn.html" && currentPage !== "signUp.html") {
+  window.location.href = "logIn.html";
+}
+
   }
 });
 
@@ -110,3 +115,5 @@ function addEventListenersToProfileButtons() {
     logoutUser();
   });
 }
+
+
