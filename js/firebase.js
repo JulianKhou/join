@@ -93,13 +93,13 @@ export function loginWithEmail(email, password) {
     })
     .catch((error) => {
       console.error("❌ Login failed:", error); // ← Debug
-      let message = "Login failed.";
+      let message = "Login failed, check email and password.";
       if (error.code === "auth/user-not-found") {
         message = "User not found.";
       } else if (error.code === "auth/wrong-password") {
         message = "Incorrect password.";
       } else if (error.code === "auth/invalid-email") {
-        message = "Invalid email address.";
+        message = "Invalid email address or password.";
       }
       throw new Error(message);
     });

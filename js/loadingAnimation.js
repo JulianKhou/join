@@ -27,4 +27,4 @@ const interval = setInterval(() => {
     }, 300);
   }
 
-}, 30);
+}, 8);
