@@ -6,3 +6,12 @@ export  var profileTemplate = `
     <button class="btnListItem" id="logoutBtn">Logout</button>
 </div>
 `;
+
+
+export function iconTemplate(initials,color,addedClass="") {
+    return `
+    <div class="profileIconContainer ${addedClass}" style="background-color: ${color};">
+        ${initials}
+    </div>
+    `;
+}

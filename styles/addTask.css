@@ -12,6 +12,8 @@
 .add-task-form {
   display: flex;
   gap: 45px;
+    box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
 .task-column {
@@ -99,6 +101,9 @@
 .required-hint {
   font-size: 14px;
   color: #f26262;
+  margin-top: -8px;
+  margin-bottom: 8px;
+  display: none;
 }
 
 .task-column:first-child {
@@ -125,6 +130,9 @@
   font-size: 16px;
   gap: 10px;
 }
+.task-input:focus {
+  border: 2px solid var(--lightBlue-default);
+}
 
 .task-input-description {
   width: 440px;
@@ -144,9 +152,9 @@
 }
 
 label {
-  font-family: Inter;
+   font-family: "Inter", sans-serif;
   font-weight: 400;
-  font-style: Regular;
+  font-style: normal;
   font-size: 20px;
   line-height: 120%;
   letter-spacing: 0%;
@@ -180,12 +188,20 @@ label {
   top: 42px;
   z-index: 10;
   padding: 10px;
+      object-fit: contain;
+  
+    flex-direction: column;
+    gap: 20px;
+    scroll-behavior: auto;
+    overflow: auto;
+    max-height: 250px;
 }
 .checkbox-list label {
-  display: block;
+  display: flex;
+  margin-bottom: 6px;
 }
 .checkbox-item {
-  font-family: Inter;
+   font-family: "Inter", sans-serif;
   font-weight: 400;
   font-style: Regular;
   font-size: 16px;
@@ -195,7 +211,10 @@ label {
   display: flex;
   justify-content: flex-start;
   flex-direction: unset;
-  align-items: center;
+
+    justify-content: space-between;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .dividing-line {
   width: 2px;
@@ -229,6 +248,37 @@ label {
   border-radius: 50%;
   display: inline-block;
   margin-right: 10px;
+}
+.checkbox-item .assignedToCheckboxNameIcon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.profileIconContainer {
+       width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+}
+.profileIconContainer{
+  height: 42px;
+  width: 42px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.assignedIcons {
+  display: flex;
+  margin-top: 8px;
+  flex-wrap: wrap;
+    margin: 5px;
+    gap: 8px;
+    overflow: auto;
+    max-height: 70px;
 }
 
 @media (max-width: 1350px) {

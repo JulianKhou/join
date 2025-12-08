@@ -58,3 +58,4 @@ export function getTaskIndexById(id, tasksList) {
 export function getAllTasksFromContacts(tasksList, uid) {
     return tasksList.filter(task => task.assignedTo.includes(uid));
 }
+

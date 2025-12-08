@@ -6,6 +6,7 @@
     <script type="module" src="./js/firebase.js"></script>
     <script type="module" src="./js/userInterface.js" defer></script>
     <script type="module" src="./js/addTask.js" defer></script>
+    <script type="module" src="./js/addTaskPriorityButtons.js" defer></script>
     <link rel="stylesheet" href="./styles/globalStyles.css" />
     <link rel="stylesheet" href="./styles/addTask.css" />
     <title>Add Task</title>
@@ -68,7 +69,7 @@
       <div class="add-task-wrapper">
         <h1>Add Task</h1>
 
-        <form class="add-task-form">
+        <form class="add-task-form" autocomplete="off">
           <div class="task-column">
             <label for="task-title">Title<span>*</span></label>
             <input
@@ -78,10 +79,11 @@
               placeholder="Enter a title"
               required
             />
+            <p class="required-hint">*This field is required</p>
 
             <label for="task-description">Description</label>
             <textarea
-              class="task-input-description"
+              class="task-input-description task-input"
               id="taskDescription"
               placeholder="Enter a Description"
             ></textarea>
@@ -124,21 +126,22 @@
               <label for="assigned">Assigned to</label>
 
               <div class="multi-select">
-                <div class="selected-box" id="selectedBox">
-                  Select contacts to assign
-                </div>
+                <input class="selected-box task-input" id="selectedBox" placeholder=" Select contacts to assign">
+                  
+                </input>
                 <div
                   class="checkbox-list"
                   id="chooseContactsCheckboxList"
                 ></div>
               </div>
+              <div class="assignedIcons" id="assignedIcons"></div>
             </div>
-
+           <p class="required-hint">*This field is required</p>
             <label for="category">Category<span>*</span></label>
             <select class="task-input" id="categorySelect" required>
               <option>Select task category</option>
             </select>
-
+            <p class="required-hint">*This field is required</p>
             <label for="subtasks">Subtasks</label>
             <div class="subtask-input-area">
               <input
@@ -205,6 +208,5 @@
         <img src="./assets/sideboardAssets/contacts.svg" /><br />Contacts
       </a>
     </nav>
-    <script src="./js/addTaskPriorityButtons.js"></script>
   </body>
 </html>
