@@ -3,6 +3,15 @@ import {createUser} from "./firebase.js";
 // ← KEINE onAuthStateChanged hier!
 
 var signUpBtn= document.getElementById("signUpBtn");
+const passwordInput = document.getElementById("passwordInput");
+const confirmInput = document.getElementById("confirmInput");
+
+const passwordIconImg = passwordInput.nextElementSibling.querySelector("img");
+const confirmIconImg = confirmInput.nextElementSibling.querySelector("img");
+
+const lockIcon = "./assets/LogIn&SignUp/lock.svg";
+const visibilityIcon = "./assets/LogIn&SignUp/visibility.svg";
+const visibilityOffIcon = "./assets/LogIn&SignUp/visibility_off.svg";
 
 signUpBtn.addEventListener("click",function(event){
     event.preventDefault(); // Verhindert das Standard-Formularverhalten
@@ -27,7 +36,30 @@ signUpBtn.addEventListener("click",function(event){
     }
 });
 
+function setupPasswordToggle(inputEl, iconImg) {
+    inputEl.addEventListener("input", () => {
+        if (inputEl.value.length > 0) {
+            iconImg.src = visibilityIcon;
+        } else {
+            iconImg.src = lockIcon;
+            inputEl.type = "password";
+        }
+    });
 
+    iconImg.addEventListener("click", () => {
+        if (inputEl.value.length === 0) return;
+
+        if (inputEl.type === "password") {
+            inputEl.type = "text";
+            iconImg.src = visibilityOffIcon;
+        } else {
+            inputEl.type = "password";
+            iconImg.src = visibilityIcon;
+        }
+    });
+}
+setupPasswordToggle(passwordInput, passwordIconImg);
+setupPasswordToggle(confirmInput, confirmIconImg);
 
 function getEmailInput(){
     return document.getElementById("emailInput").value;
