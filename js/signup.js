@@ -58,6 +58,7 @@ function setupPasswordToggle(inputEl, iconImg) {
         }
     });
 }
+
 setupPasswordToggle(passwordInput, passwordIconImg);
 setupPasswordToggle(confirmInput, confirmIconImg);
 

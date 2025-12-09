@@ -45,47 +45,32 @@ loginGuest.addEventListener("click", function(event) {
 
 }); 
 
-// --------- ELEMENTE ---------
-const passwordInput = document.getElementById("passwordInput");
-const confirmInput = document.getElementById("confirmInput");
-
-// Icons für Passwort
-const passwordIconImg = passwordInput.nextElementSibling.querySelector("img");
-const confirmIconImg = confirmInput.nextElementSibling.querySelector("img");
+const passwordInputEl = document.getElementById("passwordInput");
+const passwordIconImg = document.getElementById("passwordIconImg");
 
 const lockIcon = "./assets/LogIn&SignUp/lock.svg";
 const visibilityIcon = "./assets/LogIn&SignUp/visibility.svg";
 const visibilityOffIcon = "./assets/LogIn&SignUp/visibility_off.svg";
 
-// --------- ICON / SICHTBARKEIT LOGIK ---------
-function setupPasswordToggle(inputEl, iconImg) {
-    // Wenn der Benutzer etwas eingibt → Auge
-    inputEl.addEventListener("input", () => {
-        if (inputEl.value.length > 0) {
-            iconImg.src = visibilityIcon;
-        } else {
-            iconImg.src = lockIcon;
-            inputEl.type = "password";
-        }
-    });
 
-    // Klick auf Icon → Passwort sichtbar/unsichtbar
-    iconImg.addEventListener("click", () => {
-        if (inputEl.value.length === 0) return;
+passwordInputEl.addEventListener("input", () => {
+    if (passwordInputEl.value.length > 0) {
+        passwordIconImg.src = visibilityIcon;
+    } else {
+        passwordIconImg.src = lockIcon;
+        passwordInputEl.type = "password"; 
+    }
+});
 
-        if (inputEl.type === "password") {
-            inputEl.type = "text";
-            iconImg.src = visibilityOffIcon;
-        } else {
-            inputEl.type = "password";
-            iconImg.src = visibilityIcon;
-        }
-    });
-}
-
-// Anwenden auf beide Felder
-setupPasswordToggle(passwordInput, passwordIconImg);
-setupPasswordToggle(confirmInput, confirmIconImg);
+passwordIconImg.addEventListener("click", () => {
+    if (passwordInputEl.type === "password" && passwordInputEl.value.length > 0) {
+        passwordInputEl.type = "text";                   
+        passwordIconImg.src = visibilityOffIcon;         
+    } else {
+        passwordInputEl.type = "password";                 
+        passwordIconImg.src = visibilityIcon;              
+    }
+});
 
 loginBtn.addEventListener("click", function(event) {
     event.preventDefault();
@@ -109,7 +94,7 @@ loginBtn.addEventListener("click", function(event) {
 
         switch (error.code) {
             default:
-                errorBox.textContent = "" + error.message;
+                errorBox.textContent = "Error: " + error.message;
         }
 
     });
