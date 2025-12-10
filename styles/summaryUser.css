@@ -297,14 +297,14 @@ a {
 
 .summary-subtitle-row {
   display: flex;
-  flex-direction: row; 
-  align-items: center; 
-  gap: 12px; 
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
 }
 
 .summary-divider-vertical {
-  width: 4px; 
-  height: 60px; 
+  width: 4px;
+  height: 60px;
   background-color: #29abe2;
   border-radius: 2px;
 }
@@ -354,8 +354,45 @@ a {
   font-size: 14px;
 }
 
-@media (max-width: 1030px) {
+.mobile-intro {
+  position: fixed;
+  inset: 0;
+  background: white;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  font-weight: 700;
+  z-index: 9999;
+}
 
+#splash-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: white;
+  font-size: 2rem;
+  font-weight: bold;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+#splash-screen.fill-all {
+  top: 0;
+  height: 100vh;
+}
+
+#splash-screen.below-header {
+  top: 80px;
+  height: calc(100vh - 80px);
+}
+
+@media (max-width: 1030px) {
   .summary-content-row {
     flex-direction: column;
     gap: 40px;
@@ -366,7 +403,6 @@ a {
     margin-left: 140px;
   }
 
-
   .summary-greeting {
     order: -1;
     width: 100%;
@@ -376,7 +412,6 @@ a {
     margin-bottom: 20px;
   }
 
-
   .summary-greeting-text {
     font-size: 36px;
   }
@@ -384,7 +419,6 @@ a {
   .summary-greeting-user {
     font-size: 48px;
   }
-
 
   .main-content-summary {
     padding-left: 120px;
@@ -404,14 +438,14 @@ a {
   }
 
   .summary-subtitle-row {
-    flex-direction: column; 
-    align-items: flex-start; 
+    flex-direction: column;
+    align-items: flex-start;
     gap: 8px;
     margin-top: 8px;
   }
 
   .summary-divider-vertical {
-    width: 120px; 
+    width: 120px;
     height: 4px;
   }
 
@@ -423,11 +457,10 @@ a {
   .help {
     width: 32px;
     height: 32px;
-    background: url('../assets/LogIn&SignUp/Capa3.svg') no-repeat center center;
+    background: url("../assets/LogIn&SignUp/Capa3.svg") no-repeat center center;
     background-size: contain;
     display: block;
-}
-
+  }
 
   .summary-greeting-text,
   .summary-greeting-user {
@@ -437,7 +470,7 @@ a {
   .summary-subtitle-row {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; 
+    align-items: flex-start;
     gap: 8px;
     margin-top: 8px;
   }
@@ -447,7 +480,7 @@ a {
     font-size: 20px;
     color: #2a3647;
     font-weight: 400;
-    text-align: left; 
+    text-align: left;
   }
 
   .summary-subtitle {

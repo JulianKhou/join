@@ -115,3 +115,23 @@ function updateTotalTasksOnBoard() {
         element.textContent = allTasks.length;
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.innerWidth < 750) {
+      const splash = document.getElementById('splash-screen');
+      const main = document.querySelector('.main-content-summary');
+  
+      main.style.visibility = 'hidden';
+      splash.style.display = 'flex';
+  
+      setTimeout(() => {
+        splash.style.opacity = 0; 
+        setTimeout(() => {
+          splash.style.display = 'none'; 
+          main.style.visibility = 'visible';
+        }, 500); 
+      }, 2000);
+    }
+  });
+
+  
