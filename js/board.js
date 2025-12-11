@@ -182,15 +182,16 @@ function getNewProgressFromDropZone(dropZone) {
 
 // Add Task Overlay Functions
 const addTaskOverlay = document.getElementById("addTaskOverlay");
-const addTaskBtn = document.getElementById("addTaskBtn");
 const addTaskCloseBtn = document.getElementById("addTaskCloseBtn");
 const addTaskCancelBtn = document.getElementById("addTaskCancelBtn");
 const addTaskFormOverlay = document.getElementById("addTaskFormOverlay");
 
-// Open Add Task Overlay
-addTaskBtn?.addEventListener("click", () => {
+function openAddTaskOverlay() {
+  const addTaskOverlay = document.getElementById("addTaskOverlay");
   addTaskOverlay?.classList.add("active");
-});
+}
+
+window.openAddTaskOverlay = openAddTaskOverlay;
 
 // Close Add Task Overlay Functions
 function closeAddTaskOverlay() {

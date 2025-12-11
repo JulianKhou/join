@@ -70,7 +70,7 @@
 
 .search-input:focus {
     outline: none;
-    border-color: #0066ff;
+    border-color: #29ABE2;
     box-shadow: 0 0 3px rgba(0, 102, 255, 0.2);
 }
 
@@ -395,7 +395,7 @@
 .overlay-edit-card {
     background-color: #fff;
     border-radius: 30px;
-    padding: 46px 40px;
+    padding: 70px 65px 65px 75px;
     width: 520px;
     max-height: 90vh;
     overflow-y: auto;
@@ -627,12 +627,12 @@
 /* Add Task Overlay Styles */
 
 .add-task-card {
-    width: 740px !important;
-    max-height: 90vh;
+    width: 1120px;
+    height: 880px;
 }
 
 .add-task-title {
-    font-size: 47px !important;
+    font-size: 61px !important;
     margin: 0 !important;
     margin-bottom: 32px !important;
 }
@@ -658,9 +658,9 @@
 }
 
 .form-group label {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 400;
-    color: #000000;
+    color: #2A3647;
 }
 
 .required {
@@ -677,16 +677,32 @@
     transition: border-color 0.2s ease;
 }
 
+.form-input input[type="date"] {
+    color: green;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: rgba(209, 209, 209, 1);
+}
+
 .form-input:focus,
 .form-textarea:focus {
     outline: none;
-    border-color: #0066ff;
+    border-color: #29ABE2;
     box-shadow: 0 0 3px rgba(0, 102, 255, 0.2);
 }
 
 .form-textarea {
     min-height: 120px;
     resize: vertical;
+}
+
+.form-divider {
+  width: 2px;
+  height: 440px;
+  border-radius: 2px;
+  background: rgba(209, 209, 209, 0.5);
 }
 
 .priority-button-group {
@@ -870,19 +886,18 @@
     display: flex;
     gap: 16px;
     justify-content: flex-end;
-    padding-top: 24px;
-    border-top: 1px solid #efefef;
-    margin-top: 32px;
+    margin-top: 110px;
 }
 
 .btn-cancel {
-    padding: 12px 24px;
+    height: 56px;
+    padding: 16px;
     border: 1px solid #D1D1D1;
     background-color: #f5f5f5;
     color: #2A3647;
     border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 21px;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -892,15 +907,20 @@
 }
 
 .btn-create {
-    padding: 12px 32px;
+    height: 56px;
+    padding: 16px;
     border: none;
     background-color: #2A3647;
     color: white;
     border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 21px;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
 }
 
 .btn-create:hover {
