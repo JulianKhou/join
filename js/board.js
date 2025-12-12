@@ -78,6 +78,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   overlay?.addEventListener("click", (e) => {
     if (e.target === overlay) closeOverlayOnBtn();
   });
+
+  // [API] Search functionality for tasks
+  const searchInput = document.getElementById("searchInput");
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      const searchText = e.target.value.toLowerCase();
+      filterTasks(searchText);
+    });
+  }
 });
 
 function closeOverlayOnBtn() {
@@ -541,6 +550,38 @@ function deleteTaskFromBoard(taskId) {
     .catch((error) => {
       console.error("Error deleting task:", error);
     });
+}
+
+// Filter tasks based on search input (title or description)
+function filterTasks(searchText) {
+  const allTaskCards = document.querySelectorAll(".task-card");
+  const columns = [
+    { id: "todoColumnContainer", noTaskClass: ".todo-Column-no-task" },
+    { id: "inProgressColumnContainer", noTaskClass: ".inProgress-Column-no-task" },
+    { id: "feedbackColumnContainer", noTaskClass: ".awaitFeedback-Column-no-task" },
+    { id: "doneColumnContainer", noTaskClass: ".done-Column-no-task" }
+  ];
+  
+  // Filter task cards
+  allTaskCards.forEach((card) => {
+    const title = card.querySelector(".task-title")?.textContent.toLowerCase() || "";
+    const description = card.querySelector(".task-description")?.textContent.toLowerCase() || "";
+    
+    // Show card if search text matches title or description, or if search is empty
+    const matches = searchText === "" || title.includes(searchText) || description.includes(searchText);
+    card.style.display = matches ? "" : "none";
+  });
+
+  // Check each column and show/hide no-task divs
+  columns.forEach((col) => {
+    const column = document.getElementById(col.id);
+    const visibleTasks = column.querySelectorAll(".task-card:not([style*='display: none'])").length;
+    const noTaskDiv = column.querySelector(col.noTaskClass);
+    
+    if (noTaskDiv) {
+      noTaskDiv.style.display = visibleTasks === 0 ? "" : "none";
+    }
+  });
 }
 
 function editTaskDetailTemplate(task) {}
