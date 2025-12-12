@@ -37,7 +37,12 @@ function loadUserData() {
 
     getUserById(currentUser.uid).then(user => {
         currentUser = user;
-        document.getElementById("shownUsernameOnSummary").textContent = currentUser.username || currentUser.name || "Unknown";
+        if (currentUser.username === "Guest") {
+            document.getElementById("shownUsernameOnSummary").textContent = "";
+        } else {
+            document.getElementById("shownUsernameOnSummary").textContent =
+                currentUser.username || currentUser.name || "Unknown";
+        }
         
         const userTasks = getUserTasks(currentUser.id); // ← fixed: use uid instead of id
         
@@ -117,21 +122,35 @@ function updateTotalTasksOnBoard() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.innerWidth < 750) {
-      const splash = document.getElementById('splash-screen');
-      const main = document.querySelector('.main-content-summary');
-  
-      main.style.visibility = 'hidden';
-      splash.style.display = 'flex';
-  
-      setTimeout(() => {
-        splash.style.opacity = 0; 
-        setTimeout(() => {
-          splash.style.display = 'none'; 
-          main.style.visibility = 'visible';
-        }, 500); 
-      }, 2000);
-    }
-  });
+    const splash = document.getElementById('splash-screen');
+    const main = document.querySelector('.main-content-summary');
 
-  
+    if (window.innerWidth >= 750) {
+        splash.style.display = "none";
+        return;
+    }
+
+    const storedUser = localStorage.getItem("currentUser");
+    let greeting = "Good morning!";
+
+    if (storedUser) {
+        const user = JSON.parse(storedUser);
+
+        if (user.username && user.username !== "Guest") {
+            greeting = `Good morning, ${user.username}!`;
+        }
+    }
+
+    splash.textContent = greeting;
+
+    main.style.visibility = 'hidden';
+    splash.style.display = 'flex';
+
+    setTimeout(() => {
+        splash.style.opacity = 0;
+        setTimeout(() => {
+            splash.style.display = 'none';
+            main.style.visibility = 'visible';
+        }, 500);
+    }, 2000);
+});
