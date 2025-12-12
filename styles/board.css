@@ -317,8 +317,8 @@
 }
 
 .priority-icon {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
 }
 
 .priority-high .priority-icon {
@@ -395,7 +395,7 @@
 .overlay-edit-card {
     background-color: #fff;
     border-radius: 30px;
-    padding: 70px 65px 65px 75px;
+    padding: 50px 50px 50px 45px;
     width: 520px;
     max-height: 90vh;
     overflow-y: auto;
@@ -625,10 +625,19 @@
 }
 
 /* Add Task Overlay Styles */
-
-.add-task-card {
+.overlay-add-task-card {
+    background-color: #fff;
+    border-radius: 30px;
+    padding: 70px 65px 65px 75px;
     width: 1120px;
     height: 880px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideInRight 0.2s ease-out;
+}
+
+.overlay-edit.closing .overlay-add-task-card{
+    animation: slideOutRight 0.2s ease-out forwards;
 }
 
 .add-task-title {
@@ -939,6 +948,8 @@
     background-position: center;
     background-size: contain;
     fill: red;
+    width: 20px;
+    height: 20px;
 }
 .priority-medium{
     background: url(../assets/board/priority-medium.svg);
@@ -953,6 +964,8 @@
     background-position: center;
     background-size: contain;
     fill: green;
+    width: 20px;
+    height: 20px;
 }
 /* Standard: nur View sichtbar */
 .edit-field {
