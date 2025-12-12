@@ -495,6 +495,13 @@
     margin-bottom: 20px;
 }
 
+.overlay-label-subtask {
+    display: block;
+    font-size: 20px;
+    font-weight: 400;
+    color: #000000;
+}
+
 .overlay-value {
     font-size: 20px;
     font-weight: 400;
@@ -518,6 +525,7 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    margin-left: 20px;
 }
 
 .overlay-assignee-item .assignee-avatar {
@@ -545,6 +553,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    margin-left: 20px;
 }
 
 .overlay-subtask-item input[type="checkbox"] {
