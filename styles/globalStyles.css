@@ -271,7 +271,7 @@ body {
   align-items: center;
   justify-content: center;
   position: absolute;
-  right: 3%;
+  right: 1%;
 }
 
 .headerRight {
@@ -295,4 +295,11 @@ body {
   font-size: 16px;
   text-decoration: underline;
   padding: 0;
+}
+
+.profileShowMore{
+  padding-right: 22px;
+}
+.btnListItem {
+  max-height: 36px;
 }
