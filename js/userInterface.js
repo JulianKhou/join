@@ -116,4 +116,17 @@ function addEventListenersToProfileButtons() {
   });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const arrow = document.querySelector(".h1-arrow");
+
+  arrow.addEventListener("click", () => {
+    if (document.referrer && document.referrer !== window.location.href) {
+      window.history.back(); 
+    } else {
+      window.location.href = "summaryUser.html"; 
+    }
+  });
+});
+
+
 
