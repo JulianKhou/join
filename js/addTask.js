@@ -222,6 +222,15 @@ function updateAssignedIcons(container, checkboxes) {
       }
     });
 }
+
+function getSelectedAssignedTo() {  
+    const checkboxes = checkboxList.querySelectorAll(".assignedToCheckbox");
+    const selectedIds = [...checkboxes]
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+    return selectedIds;
+}
+
 const CATEGORY= Object.freeze({
     TECHTASK: 'Technical Task',
     USERSTORY: 'User Story',
@@ -256,6 +265,11 @@ function initSubtaskEventListeners() {
         if (subtaskText) {
             const subtaskElement = addSubTask(subtaskText);
             subtasksList.insertAdjacentHTML("beforeend", subtaskElement);
+            
+            // Get the actual DOM element that was just inserted
+            const lastAddedElement = subtasksList.lastElementChild;
+            addSubtaskEventListeners(lastAddedElement);
+            
             subtaskInput.value = ""; // Clear input field
         }
     });
@@ -267,19 +281,99 @@ function initSubtaskEventListeners() {
         }
     });
 }
+function addSubtaskEventListeners(subtaskElement) { 
+  const editBtn = subtaskElement.querySelector(".edit-subtask-button-size");
+    const deleteBtn = subtaskElement.querySelector(".delete-subtask-button-size");
+  console.log("Adding event listeners to subtask element:", subtaskElement);
+    // ✅ Fixed: "dblclick" not "dbclick", use subtaskElement not subtaskNode
+    subtaskElement.addEventListener("dblclick", (e) => {
+        console.log("Double click on subtask to edit");
+        e.preventDefault();
+        editBtn.style.display = "inline-block";
+        deleteBtn.style.display = "inline-block";
+        // Get the text span element
+        const textSpan = subtaskElement.querySelector("span") || subtaskElement;
+        addSubtaskBtnEventListeners(subtaskElement);
+        
+      
+    });
+
+
+}
+
+function addSubtaskBtnEventListeners(subtaskNode) {
+    const editBtn = subtaskNode.querySelector(".edit-subtask-button-size");
+    const deleteBtn = subtaskNode.querySelector(".delete-subtask-button-size");
+    const subtaskElement = subtaskNode;
+    console.log("Adding edit/delete event listeners to subtask element:", subtaskElement);
+ 
+    if (editBtn && editBtn.style.display !== "none") {
+        editBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            
+            // Make the span editable
+            const textSpan = subtaskElement.querySelector("span");
+            if (textSpan) {
+               editableSubtaskText(subtaskElement);
+      
+                
+                // Save on blur (click away)
+                textSpan.addEventListener("blur", () => {
+                    textSpan.contentEditable = false;
+                    editBtn.style.display = "none";
+                    deleteBtn.style.display = "none";
+                }, { once: true });
+                
+                // Save on Enter key
+                textSpan.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        textSpan.blur();
+                    }
+                }, { once: true });
+            }
+        });
+    }
+
+    if (deleteBtn && deleteBtn.style.display !== "none") {
+        deleteBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            subtaskElement.remove();
+        });
+    }
+
+}
+
+function editableSubtaskText(subtaskElement) {
+  const textSpan = subtaskElement.querySelector("span");
+  const pointDiv = subtaskElement.querySelector(".point");
+     if (pointDiv) {
+       pointDiv.style.display = "none"; // Hide the point while editing
+     }
+     subtaskElement.contentEditable = true;
+     subtaskElement.classList.add("subtask-label-active");
+      const range = document.createRange();
+      range.selectNodeContents(textSpan);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+  
+}
+
 // Collect subtask texts from the DOM and return them as an array of objects with completion state.
 function getSubtasksList() {
     const subtasksList = document.getElementById("subtasksList");
     const subtasks = [];
-    subtasksList.querySelectorAll("label").forEach(label => {
+    subtasksList.querySelectorAll("span").forEach(span => {
         // if template includes a checkbox, read its checked state; else default to false
-        const checkbox = label.querySelector('input[type="checkbox"]');
-        const subtaskText = label.textContent.trim();
+        const checkbox = span.querySelector('input[type="checkbox"]');
+        const subtaskText = span.textContent.trim();
         subtasks.push({
             text: subtaskText,
             completed: checkbox ? checkbox.checked : false
         });
     });
+    console.log("Collected Subtasks:", subtasks);
     return subtasks;
 }
 
@@ -292,7 +386,7 @@ function createTaskObject() {
         priority: getPriorityTask(),
         assignedTo: getSelectedAssignedTo(),
         category: getCategoryTask(),
-        subtasks: getSubtasksList()
+        subtasks: getSubtasksList(),
    };
    console.log("Created Task Object:", task);
     addEditTask(task);

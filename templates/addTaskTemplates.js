@@ -7,12 +7,21 @@ export function addAssignedToBarTask(name,uid,iconTemplate) {
 }
 
 export function addSubTask(subtaskString){
-   const addSubTask=`<label> <div class="point"> </div>  ${subtaskString}
-   <div class= "edit-delete-subtask-buttons">
-   <button class="edit-subtask-button-size" src="./assets/contacts/editButton.svg" alt="edit subtask button"> </button>
-   <button class="delete-subtask-button-size" src="./assets/contacts/deleteButton.svg" alt="delete subtask button"> </button>
+   const addSubTask=`<div class="subtask-label">
+   
+   <div class="subtask-label-left">
+   <div class="point"></div>
+   <span>${subtaskString}</span>
    </div>
-   </label>`;
+   <div class="edit-delete-subtask-buttons">
+   <button class="edit-subtask-button-size" src="./assets/contacts/editButton.svg" alt="edit subtask button" style="display:none">
+   <img src="./assets/contacts/editButton.svg" alt="edit subtask button">
+   </button>
+   <button class="delete-subtask-button-size" src="./assets/contacts/deleteButton.svg" alt="delete subtask button" style="display:none">
+   <img src="./assets/contacts/deleteButton.svg" alt="delete subtask button">
+   </button>
+   </div>
+   </div>`;
 
    return addSubTask;   
 
