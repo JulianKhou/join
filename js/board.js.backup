@@ -672,63 +672,17 @@ function attachEditFormEventListeners(taskId) {
       // Show success message
       showNotification("✓ Aufgabe erfolgreich gespeichert", "success");
       
-      // Get updated task data
-      const updatedTask = await getTask(taskId);
-      
-      // 1. Update the detail card with fresh data (SOFORT sichtbar)
-      const overlayEditCard = overlay.querySelector(".overlay-edit-card");
-      if (overlayEditCard && updatedTask) {
-        // Update title
-        const titleEl = overlayEditCard.querySelector(".overlay-title");
-        if (titleEl) titleEl.textContent = updatedTask.title;
-        
-        // Update description
-        const descEl = overlayEditCard.querySelector(".overlay-description");
-        if (descEl) descEl.textContent = updatedTask.description;
-        
-        // Update due date
-        const dateEl = overlayEditCard.querySelector(".overlay-field-content span");
-        if (dateEl) dateEl.textContent = updatedTask.dueDate || "No due date";
-        
-        // Update priority
-        const prioritySpan = overlayEditCard.querySelector(".overlay-priority span");
-        if (prioritySpan) prioritySpan.textContent = updatedTask.priority;
-      }
-      
-      // 2. Update task card on the board
-      const taskCard = document.getElementById(`task-card-${taskId}`);
-      if (taskCard && updatedTask) {
-        const updatedCardHTML = taskCardTemplate(updatedTask);
-        taskCard.outerHTML = updatedCardHTML;
-        
-        // Re-attach drag listeners to the updated card
-        const newCard = document.getElementById(`task-card-${taskId}`);
-        if (newCard) {
-          newCard.addEventListener("dragstart", handleDragStart);
-          newCard.addEventListener("click", async (e) => {
-            if (e.target.closest("svg") || e.target.closest("button")) return;
-            const clickedTaskId = newCard.id.replace("task-card-", "");
-            try {
-              const task = await getTask(clickedTaskId);
-              const detailHTML = taskDetailTemplate(task, contactsList);
-              overlay.innerHTML = detailHTML;
-              overlay.classList.add("active");
-              addAssigneeAvatartoDetail(task);
-              addSubtaskToDetail(task);
-              addEventListenersToSubtaskButtons(task.id);
-              initAddEventListenersToTaskDetailButtons(task.id, task);
-              const newCloseBtn = overlay.querySelector("#overlayCloseBtn");
-              newCloseBtn?.addEventListener("click", closeOverlayOnBtn);
-            } catch (error) {
-              console.error("Failed to load task details:", error);
-              alert("Could not load task details.");
-            }
-          });
-        }
-      }
-      
-      // 3. Close the edit overlay AFTER all updates
+      // Close overlay
       closeEditOverlay();
+      
+      // Refresh task display in detail card
+      const updatedTask = await getTask(taskId);
+      const detailCard = overlay.querySelector(".detail-card");
+      if (detailCard && updatedTask) {
+        const detailHTML = taskDetailTemplate(updatedTask, contactsList);
+        detailCard.innerHTML = detailHTML;
+        initAddEventListenersToTaskDetailButtons(updatedTask.id, updatedTask);
+      }
     } catch (error) {
       console.error("Error updating task:", error);
       showNotification("✗ Fehler beim Speichern der Aufgabe", "error");
@@ -737,14 +691,9 @@ function attachEditFormEventListeners(taskId) {
 }
 
 function closeEditOverlay() {
-  const editCard = document.querySelector(".edit-overlay-card");
+  const editCard = overlay.querySelector(".edit-overlay-card");
   if (editCard) {
-    // Smooth fade out
-    editCard.style.opacity = "0";
-    editCard.style.transition = "opacity 0.3s ease";
-    setTimeout(() => {
-      editCard.remove();
-    }, 300);
+    editCard.remove();
   }
 }
 
