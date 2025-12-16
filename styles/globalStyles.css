@@ -283,6 +283,7 @@ body {
   align-items: center;
   height: 100%;
   margin: 10px;
+  margin-right: 32px;
 }
 
 .join-text {
@@ -302,4 +303,7 @@ body {
 }
 .btnListItem {
   max-height: 36px;
+  width: 100px;
 }
+
+
