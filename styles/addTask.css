@@ -317,21 +317,38 @@ label {
 }
 .edit-delete-subtask-buttons {
   display: flex;
-  margin-right: 10px;
-  gap: 8px;
-  pointer-events: none;
-  isolation: isolate; /* ← verhindert Hover-Bleed */
+    margin-right: 10px;
+    gap: 8px;
+    pointer-events: none;
+    isolation: isolate;
+    z-index: 1;
+    position: fixed;
+    right: 566px;
+    background: transparent;
+    bottom: 227px;
 }
 
 .edit-delete-subtask-buttons button {
   pointer-events: auto;
   isolation: isolate; /* ← isoliert Button-Hover */
 }
+.subtask-label-left{
+      display: flex;
+    align-items: center;
+}
 .subtask-label-active {
-      background: white;
+   background: white;
     border-bottom: 2px solid var(--lightBlue-default);
     width: 440px;
-    
+    height: 48px;
+    display: flex;
+    /* position: fixed; */
+    align-items: center;
+    padding: 10px;
+}
+.subtask-text{
+  display: flex;
+    width: 100%;
 }
 .edit-subtask-button-size {
   background: transparent;
