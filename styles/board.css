@@ -321,7 +321,7 @@
     height: 20px;
 }
 
-.priority-high .priority-icon {
+.priority-urgant .priority-icon {
     color: #ff3333;
 }
 
@@ -420,11 +420,18 @@
     max-width: max-content;
     padding: 4px 18px;
     color: white;
-    background-color: #0038FF;
     border-radius: 8px;
     font-size: 23px;
     font-weight: 400;
 }
+.card-detail-technical-task{
+    background-color: #1FD7C1;
+}
+
+.card-detail-user-story{
+    background-color: #0038FF;
+}
+
 
 .overlay-close-btn {
     background: none;
@@ -947,12 +954,12 @@
 }
 
 .technical-task{
-    background-color: var(--skyBlue-default);
+    background-color: #1FD7C1;
 }
 .user-story{
-    background-color: var(--blue-default);
+    background-color: #0038FF;
 }
-.priority-high{
+.priority-urgant{
     background: url(../assets/board/priority-high.svg);
     background-repeat: no-repeat;
     background-position: center;
@@ -1102,7 +1109,7 @@
     box-shadow: 0px 4px 4px 0px #00000040;
 }
 
-.edit-priority-btn .priority-button-icon-urgent {
+.edit-priority-btn .priority-button-icon-urgant {
     fill: #FF3D00;
 }
 
@@ -1114,7 +1121,7 @@
     fill: #7AE229;
 }
 
-.edit-priority-btn.edit-priority-urgent-active {
+.edit-priority-btn.edit-priority-urgant-active {
     background: #FF3D00;
     color: white;
     box-shadow: none !important;
@@ -1132,7 +1139,7 @@
     box-shadow: none !important;
 }
 
-.edit-priority-btn.edit-priority-urgent-active .priority-icon,
+.edit-priority-btn.edit-priority-urgant-active .priority-icon,
 .edit-priority-btn.edit-priority-medium-active .priority-icon,
 .edit-priority-btn.edit-priority-low-active .priority-icon {
     fill: white;

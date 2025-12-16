@@ -590,8 +590,8 @@ function attachEditFormEventListeners(taskId) {
     priorityButtons.forEach((btn) => {
       const btnPriority = btn.dataset.priority;
       if (btnPriority === initialPriority) {
-        if (btnPriority === "Urgent") {
-          btn.classList.add("edit-priority-urgent-active");
+        if (btnPriority === "Urgant") {
+          btn.classList.add("edit-priority-urgant-active");
         } else if (btnPriority === "Medium") {
           btn.classList.add("edit-priority-medium-active");
         } else if (btnPriority === "Low") {
@@ -608,7 +608,7 @@ function attachEditFormEventListeners(taskId) {
       // Remove active class from all buttons
       priorityButtons.forEach((b) => {
         b.classList.remove(
-          "edit-priority-urgent-active",
+          "edit-priority-urgant-active",
           "edit-priority-medium-active",
           "edit-priority-low-active"
         );
@@ -616,8 +616,8 @@ function attachEditFormEventListeners(taskId) {
       
       // Add active class to clicked button
       const priority = btn.dataset.priority;
-      if (priority === "Urgent") {
-        btn.classList.add("edit-priority-urgent-active");
+      if (priority === "Urgant") {
+        btn.classList.add("edit-priority-urgant-active");
       } else if (priority === "Medium") {
         btn.classList.add("edit-priority-medium-active");
       } else if (priority === "Low") {
@@ -645,7 +645,7 @@ function attachEditFormEventListeners(taskId) {
     const category = overlay.querySelector(`#editTaskCategory-${taskId}`)?.value || "No Category";
     
     const activePriorityBtn = overlay.querySelector(
-      `#editTaskForm-${taskId} .edit-priority-btn.edit-priority-urgent-active,
+      `#editTaskForm-${taskId} .edit-priority-btn.edit-priority-urgant-active,
        #editTaskForm-${taskId} .edit-priority-btn.edit-priority-medium-active,
        #editTaskForm-${taskId} .edit-priority-btn.edit-priority-low-active`
     );
@@ -678,6 +678,16 @@ function attachEditFormEventListeners(taskId) {
       // 1. Update the detail card with fresh data (SOFORT sichtbar)
       const overlayEditCard = overlay.querySelector(".overlay-edit-card");
       if (overlayEditCard && updatedTask) {
+        // Update category
+        const categoryEl = overlayEditCard.querySelector(".task-category-overlay");
+        if (categoryEl) {
+          categoryEl.textContent = updatedTask.category;
+          // Remove old category classes
+          categoryEl.className = 'task-category-overlay';
+          // Add new category class
+          categoryEl.classList.add(`card-detail-${updatedTask.category.toLowerCase().replace(/\s+/g, '-')}`);
+        }
+        
         // Update title
         const titleEl = overlayEditCard.querySelector(".overlay-title");
         if (titleEl) titleEl.textContent = updatedTask.title;
@@ -690,9 +700,18 @@ function attachEditFormEventListeners(taskId) {
         const dateEl = overlayEditCard.querySelector(".overlay-field-content span");
         if (dateEl) dateEl.textContent = updatedTask.dueDate || "No due date";
         
-        // Update priority
+        // Update priority text
         const prioritySpan = overlayEditCard.querySelector(".overlay-priority span");
         if (prioritySpan) prioritySpan.textContent = updatedTask.priority;
+        
+        // Update priority icon with correct CSS class
+        const priorityIcon = overlayEditCard.querySelector(".overlay-priority .priority-icon");
+        if (priorityIcon) {
+          // Remove all priority classes
+          priorityIcon.classList.remove("priority-urgant", "priority-medium", "priority-low");
+          // Add the correct priority class
+          priorityIcon.classList.add(`priority-${updatedTask.priority.toLowerCase()}`);
+        }
       }
       
       // 2. Update task card on the board

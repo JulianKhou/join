@@ -1,4 +1,11 @@
 export function taskCardTemplate(tasks){
+    // Calculate subtask progress
+    const subtasks = tasks.subtasks || [];
+    const totalSubtasks = subtasks.length;
+    const completedSubtasks = subtasks.filter(st => st.completed).length;
+    const subtaskText = totalSubtasks > 0 ? `${completedSubtasks}/${totalSubtasks} Subtasks` : '';
+    const progressPercent = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks * 100) : 0;
+    
     let taskCards=` 
     
     <div class="task-card grabbable" id="task-card-${tasks.id}" draggable="true">
@@ -9,12 +16,14 @@ export function taskCardTemplate(tasks){
               <h3 class="task-title">${tasks.title}</h3>
               <p class="task-description">${tasks.description}</p>
             </div>
+            ${totalSubtasks > 0 ? `
             <div class="task-subtasks">
               <div class="subtasks-bar">
-                <div class="subtasks-progress " id="progress-bar-${tasks.id}"></div>
+                <div class="subtasks-progress" id="progress-bar-${tasks.id}" style="width: ${progressPercent}%"></div>
               </div>
-              <span class="subtask-info" id="subtask-info-${tasks.id}">3/4 Subtasks</span>
+              <span class="subtask-info" id="subtask-info-${tasks.id}">${subtaskText}</span>
             </div>
+            ` : ''}
             <div class="task-footer">
               <div class="task-assignees">
                 <!-- Assignee avatars will be inserted here -->
@@ -239,23 +248,16 @@ export function editTaskFormTemplate(task, categories, contacts) {
           <input type="date" id="editTaskDate-${task.id}" class="edit-form-input" value="${task.dueDate}">
         </div>
 
-        <!-- Category -->
-        <div class="edit-form-group">
-          <label for="editTaskCategory-${task.id}">Category</label>
-          <select id="editTaskCategory-${task.id}" class="edit-form-input" value="${task.category || "No Category"}">
-            <option value="No Category">No Category</option>
-            <option value="User Story">User Story</option>
-            <option value="Technical Task">Technical Task</option>
-          </select>
-        </div>
+        <!-- Hidden category field to preserve original category -->
+        <input type="hidden" id="editTaskCategory-${task.id}" value="${task.category || "No Category"}">
 
         <!-- Priority -->
         <div class="edit-form-group">
           <label>Priority</label>
           <div class="edit-priority-group">
-            <button type="button" class="edit-priority-btn" id="edit-priority-urgent-${task.id}" data-priority="Urgent">
-              <span class="priority-name">Urgent</span>
-              <svg class="priority-icon priority-button-icon-urgent" xmlns="http://www.w3.org/2000/svg" width="20"
+            <button type="button" class="edit-priority-btn" id="edit-priority-urgent-${task.id}" data-priority="Urgant">
+              <span class="priority-name">Urgant</span>
+              <svg class="priority-icon priority-button-icon-urgant" xmlns="http://www.w3.org/2000/svg" width="20"
                 height="15" viewBox="0 0 20 15" fill="none">
                 <path
                   d="M18.9043 14.5096C18.6696 14.51 18.4411 14.4351 18.2522 14.2961L10.0001 8.21288L1.74809 14.2961C1.63224 14.3816 1.50066 14.4435 1.36086 14.4783C1.22106 14.513 1.07577 14.5199 0.933305 14.4986C0.790837 14.4772 0.653973 14.428 0.530528 14.3538C0.407083 14.2796 0.299474 14.1818 0.213845 14.0661C0.128216 13.9503 0.0662437 13.8188 0.0314671 13.6791C-0.00330956 13.5394 -0.0102098 13.3943 0.0111604 13.2519C0.0543195 12.9644 0.21001 12.7058 0.443982 12.533L9.34809 5.96249C9.53679 5.8229 9.76536 5.74756 10.0001 5.74756C10.2349 5.74756 10.4635 5.8229 10.6522 5.96249L19.5563 12.533C19.7422 12.6699 19.8801 12.862 19.9503 13.0819C20.0204 13.3018 20.0193 13.5382 19.9469 13.7573C19.8746 13.9765 19.7349 14.1673 19.5476 14.3024C19.3604 14.4375 19.1352 14.51 18.9043 14.5096Z" />

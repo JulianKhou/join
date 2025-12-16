@@ -7,7 +7,7 @@ import { iconTemplate } from "../templates/profileTemplates.js";
 const PRIORITY = Object.freeze({
   LOW: "Low",
   MEDIUM: "Medium",
-  HIGH: "High",
+    URGENT: "Urgant",
 });
 let selectedPriority = PRIORITY.MEDIUM; // default
 
@@ -461,7 +461,7 @@ function initAddEventListeners() {
     priorityUrgentBtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        selectedPriority = PRIORITY.HIGH;
+        selectedPriority = PRIORITY.URGENT;
         removeClickedFromPriorityButtons();
         priorityUrgentBtn.classList.toggle("clicked");
         toggleUrgentButtonOnClick(priorityUrgentBtn); // ← pass the button element
