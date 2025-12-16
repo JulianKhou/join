@@ -540,6 +540,157 @@ function initAddEventListenersToTaskDetailButtons(taskId, task) {
   });
 }
 
+function initEditAssignedTo(taskId) {
+  const listEl = overlay.querySelector(`#editCheckboxList-${taskId}`);
+  const selectedBox = overlay.querySelector(`#editSelectedBox-${taskId}`);
+  const iconsEl = overlay.querySelector(`#editAssignees-${taskId}`);
+  if (!listEl) return;
+
+  // Load current task to pre-check selections
+  getTask(taskId).then((task) => {
+    // Prepare and sort contacts: current user first then alphabetically
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sorted = [...(contactsList || [])].sort((a, b) => {
+      if (currentUser && a.id === currentUser.uid) return -1;
+      if (currentUser && b.id === currentUser.uid) return 1;
+      return a.name.localeCompare(b.name);
+    });
+
+    listEl.innerHTML = '';
+    sorted.forEach((contact) => {
+      const isYou = currentUser && contact.id === currentUser.uid;
+      const displayName = isYou ? `${contact.name} (You)` : contact.name;
+      const isChecked = Array.isArray(task.assignedTo) && task.assignedTo.includes(contact.id);
+      const label = document.createElement('label');
+      label.className = 'checkbox-item';
+      label.innerHTML = `
+        <div class="assignedToCheckboxNameIcon">${displayName}</div>
+        <input type="checkbox" class="edit-assigned-checkbox" value="${contact.id}" ${isChecked ? 'checked' : ''}>
+      `;
+      listEl.appendChild(label);
+    });
+
+    const updateSummary = () => {
+      const checked = [...listEl.querySelectorAll('.edit-assigned-checkbox')]
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+
+      const names = checked
+        .map(id => {
+          const c = returnContactById(id, contactsList);
+          return c ? c.name : null;
+        })
+        .filter(Boolean);
+
+      if (selectedBox) {
+        selectedBox.value = names.length ? names.join(', ') : 'Select contacts to assign';
+      }
+
+      if (iconsEl) {
+        iconsEl.innerHTML = '';
+        checked.forEach((id) => {
+          const c = returnContactById(id, contactsList);
+          if (c) {
+            const avatarHTML = assigneeAvatarTemplate(getInitials(c.name), c.color);
+            iconsEl.insertAdjacentHTML('beforeend', avatarHTML);
+          }
+        });
+      }
+    };
+
+    // Initial summary
+    updateSummary();
+
+    // Listen for changes
+    listEl.addEventListener('change', updateSummary);
+  });
+}
+
+function initEditModeSubtasks(task) {
+  const subtasksList = overlay.querySelector(`#editSubtasksList-${task.id}`);
+  if (!subtasksList) return;
+  
+  // Clear existing subtasks
+  subtasksList.innerHTML = "";
+  
+  // Add existing subtasks
+  if (task.subtasks && task.subtasks.length > 0) {
+    task.subtasks.forEach((subtask) => {
+      const subtaskHTML = createEditSubtaskElement(subtask.text);
+      subtasksList.insertAdjacentHTML("beforeend", subtaskHTML);
+      
+      // Add event listeners to the newly added subtask
+      const lastAddedElement = subtasksList.lastElementChild;
+      addEditSubtaskEventListeners(lastAddedElement);
+    });
+  }
+}
+
+function createEditSubtaskElement(subtaskText) {
+  return `<div class="subtask-label">
+    <div class="subtask-label-left">
+      <div class="point"></div>
+      <span>${subtaskText}</span>
+    </div>
+    <div class="edit-delete-subtask-buttons">
+      <button class="edit-subtask-button-size" style="display:none" type="button">
+        <img src="./assets/contacts/editButton.svg" alt="edit subtask button">
+      </button>
+      <button class="delete-subtask-button-size" style="display:none" type="button">
+        <img src="./assets/contacts/deleteButton.svg" alt="delete subtask button">
+      </button>
+    </div>
+  </div>`;
+}
+
+function addEditSubtaskEventListeners(subtaskElement) {
+  const editBtn = subtaskElement.querySelector(".edit-subtask-button-size");
+  const deleteBtn = subtaskElement.querySelector(".delete-subtask-button-size");
+  
+  // Double click to show edit/delete buttons
+  subtaskElement.addEventListener("dblclick", (e) => {
+    e.preventDefault();
+    editBtn.style.display = "inline-block";
+    deleteBtn.style.display = "inline-block";
+  });
+  
+  // Edit button
+  if (editBtn) {
+    editBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      
+      const textSpan = subtaskElement.querySelector("span");
+      if (textSpan) {
+        textSpan.contentEditable = true;
+        textSpan.focus();
+        
+        // Save on blur
+        textSpan.addEventListener("blur", () => {
+          textSpan.contentEditable = false;
+          editBtn.style.display = "none";
+          deleteBtn.style.display = "none";
+        }, { once: true });
+        
+        // Save on Enter
+        textSpan.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            textSpan.blur();
+          }
+        }, { once: true });
+      }
+    });
+  }
+  
+  // Delete button
+  if (deleteBtn) {
+    deleteBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      subtaskElement.remove();
+    });
+  }
+}
+
 async function openEditTaskOverlay(taskId) {
   try {
     const task = await getTask(taskId);
@@ -550,6 +701,9 @@ async function openEditTaskOverlay(taskId) {
     if (detailCard) {
       detailCard.insertAdjacentHTML("beforeend", editFormHTML);
     }
+    
+    // Initialize subtasks
+    initEditModeSubtasks(task);
     
     // Attach event listeners to the edit form
     attachEditFormEventListeners(taskId);
@@ -633,7 +787,53 @@ function attachEditFormEventListeners(taskId) {
   selectedBox?.addEventListener("click", (e) => {
     e.stopPropagation();
     checkboxList?.classList.toggle("active");
+
+    // Close when clicking outside
+    if (checkboxList?.classList.contains("active")) {
+      const onDocClick = (evt) => {
+        if (!checkboxList.contains(evt.target) && !selectedBox.contains(evt.target)) {
+          checkboxList.classList.remove("active");
+          document.removeEventListener("click", onDocClick);
+        }
+      };
+      document.addEventListener("click", onDocClick);
+    }
   });
+
+  // Initialize Assigned To controls
+  initEditAssignedTo(taskId);
+  
+  // Subtasks functionality
+  const addSubtaskBtn = overlay.querySelector(`#editAddSubtaskBtn-${taskId}`);
+  const removeSubtaskBtn = overlay.querySelector(`#editRemoveSubtaskBtn-${taskId}`);
+  const subtasksInput = overlay.querySelector(`#editSubtasks-${taskId}`);
+  const subtasksList = overlay.querySelector(`#editSubtasksList-${taskId}`);
+  
+  if (addSubtaskBtn && subtasksInput && subtasksList) {
+    addSubtaskBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const subtaskText = subtasksInput.value.trim();
+      if (subtaskText) {
+        const subtaskHTML = createEditSubtaskElement(subtaskText);
+        subtasksList.insertAdjacentHTML("beforeend", subtaskHTML);
+        
+        const lastAddedElement = subtasksList.lastElementChild;
+        addEditSubtaskEventListeners(lastAddedElement);
+        
+        subtasksInput.value = "";
+      }
+    });
+  }
+  
+  if (removeSubtaskBtn && subtasksList) {
+    removeSubtaskBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const lastSubtask = subtasksList.lastElementChild;
+      if (lastSubtask) {
+        subtasksList.removeChild(lastSubtask);
+      }
+    });
+  }
   
   // Form submission
   editForm?.addEventListener("submit", async (e) => {
@@ -657,13 +857,40 @@ function attachEditFormEventListeners(taskId) {
     }
     
     try {
+      // Collect selected assignees
+      const checkboxScope = overlay.querySelector(`#editCheckboxList-${taskId}`);
+      const selectedAssignees = [];
+      if (checkboxScope) {
+        checkboxScope.querySelectorAll('.edit-assigned-checkbox').forEach((cb) => {
+          if (cb.checked) selectedAssignees.push(cb.value);
+        });
+      }
+
+      // Collect subtasks from the list
+      const subtasksList = overlay.querySelector(`#editSubtasksList-${taskId}`);
+      const subtasks = [];
+      if (subtasksList) {
+        const subtaskElements = subtasksList.querySelectorAll(".subtask-label");
+        subtaskElements.forEach((element) => {
+          const textSpan = element.querySelector("span");
+          if (textSpan && textSpan.textContent.trim()) {
+            subtasks.push({
+              text: textSpan.textContent.trim(),
+              completed: false
+            });
+          }
+        });
+      }
+      
       // Prepare update data
       const updateData = {
         title: title.trim(),
         description: description || "",
         dueDate: dueDate || "",
         priority: priority,
-        category: category
+        category: category,
+        assignedTo: selectedAssignees,
+        subtasks: subtasks
       };
       
       // Update task in Firebase
@@ -675,46 +902,7 @@ function attachEditFormEventListeners(taskId) {
       // Get updated task data
       const updatedTask = await getTask(taskId);
       
-      // 1. Update the detail card with fresh data (SOFORT sichtbar)
-      const overlayEditCard = overlay.querySelector(".overlay-edit-card");
-      if (overlayEditCard && updatedTask) {
-        // Update category
-        const categoryEl = overlayEditCard.querySelector(".task-category-overlay");
-        if (categoryEl) {
-          categoryEl.textContent = updatedTask.category;
-          // Remove old category classes
-          categoryEl.className = 'task-category-overlay';
-          // Add new category class
-          categoryEl.classList.add(`card-detail-${updatedTask.category.toLowerCase().replace(/\s+/g, '-')}`);
-        }
-        
-        // Update title
-        const titleEl = overlayEditCard.querySelector(".overlay-title");
-        if (titleEl) titleEl.textContent = updatedTask.title;
-        
-        // Update description
-        const descEl = overlayEditCard.querySelector(".overlay-description");
-        if (descEl) descEl.textContent = updatedTask.description;
-        
-        // Update due date
-        const dateEl = overlayEditCard.querySelector(".overlay-field-content span");
-        if (dateEl) dateEl.textContent = updatedTask.dueDate || "No due date";
-        
-        // Update priority text
-        const prioritySpan = overlayEditCard.querySelector(".overlay-priority span");
-        if (prioritySpan) prioritySpan.textContent = updatedTask.priority;
-        
-        // Update priority icon with correct CSS class
-        const priorityIcon = overlayEditCard.querySelector(".overlay-priority .priority-icon");
-        if (priorityIcon) {
-          // Remove all priority classes
-          priorityIcon.classList.remove("priority-urgant", "priority-medium", "priority-low");
-          // Add the correct priority class
-          priorityIcon.classList.add(`priority-${updatedTask.priority.toLowerCase()}`);
-        }
-      }
-      
-      // 2. Update task card on the board
+      // 1. Update task card on the board
       const taskCard = document.getElementById(`task-card-${taskId}`);
       if (taskCard && updatedTask) {
         const updatedCardHTML = taskCardTemplate(updatedTask);
@@ -723,6 +911,11 @@ function attachEditFormEventListeners(taskId) {
         // Re-attach drag listeners to the updated card
         const newCard = document.getElementById(`task-card-${taskId}`);
         if (newCard) {
+          // Re-render assignee avatars on the updated card
+          const assigneesContainer = newCard.querySelector('.task-assignees');
+          if (assigneesContainer) assigneesContainer.innerHTML = '';
+          addAssigneeAvatar(updatedTask);
+
           newCard.addEventListener("dragstart", handleDragStart);
           newCard.addEventListener("click", async (e) => {
             if (e.target.closest("svg") || e.target.closest("button")) return;
@@ -746,8 +939,28 @@ function attachEditFormEventListeners(taskId) {
         }
       }
       
-      // 3. Close the edit overlay AFTER all updates
+      // 2. Close edit overlay and reload detail view with updated data
       closeEditOverlay();
+      
+      // 3. Reload detail overlay with updated data
+      const taskDetail = taskDetailTemplate(updatedTask);
+      overlay.innerHTML = "";
+      if (typeof taskDetail === "string") {
+        overlay.insertAdjacentHTML("beforeend", taskDetail);
+      } else if (taskDetail instanceof Node) {
+        overlay.appendChild(taskDetail);
+      }
+      
+      overlay.classList.add("active");
+      
+      // Re-insert assignees & subtasks with updated data
+      addAssigneeAvatartoDetail(updatedTask);
+      addSubtaskToDetail(updatedTask);
+      addEventListenersToSubtaskButtons(updatedTask.id);
+      initAddEventListenersToTaskDetailButtons(updatedTask.id);
+      
+      const newCloseBtn = overlay.querySelector("#overlayCloseBtn");
+      newCloseBtn?.addEventListener("click", closeOverlayOnBtn);
     } catch (error) {
       console.error("Error updating task:", error);
       showNotification("✗ Fehler beim Speichern der Aufgabe", "error");

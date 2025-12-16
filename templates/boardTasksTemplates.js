@@ -291,16 +291,51 @@ export function editTaskFormTemplate(task, categories, contacts) {
         <!-- Assigned To -->
         <div class="edit-form-group">
           <label>Assigned to</label>
-          <div class="edit-multi-select">
-            <div class="edit-selected-box" id="editSelectedBox-${task.id}">Select contacts to assign</div>
-            <div class="edit-checkbox-list" id="editCheckboxList-${task.id}"></div>
+          <div class="multi-select">
+            <input class="selected-box task-input" id="editSelectedBox-${task.id}" placeholder=" Select contacts to assign">
+            </input>
+            <div class="checkbox-list" id="editCheckboxList-${task.id}"></div>
           </div>
-          <div class="edit-assignees" id="editAssignees-${task.id}"></div>
+          <div class="assignedIcons" id="editAssignees-${task.id}"></div>
         </div>
 
         <!-- Subtasks -->
         <div class="edit-form-group">
           <label>Subtasks</label>
+          <div class="edit-subtask-input-area">
+            <input
+              class="edit-form-input"
+              type="text"
+              id="editSubtasks-${task.id}"
+              placeholder="Add new subtask"
+            />
+            <div class="edit-subtask-buttons">
+              <button
+                class="remove-background edit-subtask-btn"
+                id="editAddSubtaskBtn-${task.id}"
+                type="button"
+              >
+                <img
+                  class="subtask-add-button-size"
+                  src="./assets/utilitys/check.svg"
+                  alt="add subtask button"
+                />
+              </button>
+              <div class="dividing-line"></div>
+              <button
+                class="remove-background edit-subtask-btn"
+                id="editRemoveSubtaskBtn-${task.id}"
+                type="button"
+              >
+                <img
+                  class="subtask-remove-button-size"
+                  src="./assets/utilitys/close.svg"
+                  alt="remove subtask button"
+                />
+              </button>
+            </div>
+          </div>
+          <div class="edit-subtasks-list" id="editSubtasksList-${task.id}"></div>
         </div>
       </form>
 
