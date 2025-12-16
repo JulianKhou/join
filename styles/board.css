@@ -1208,6 +1208,108 @@
     margin-left: 0;
 }
 
+/* Edit Subtasks Styles */
+.edit-subtask-input-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.edit-subtask-buttons {
+    position: absolute;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.edit-subtask-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-subtask-btn:hover {
+    opacity: 0.7;
+}
+
+.edit-subtasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Subtask label styles for edit mode */
+.subtask-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: default;
+    pointer-events: none;
+}
+
+.subtask-label span,
+.subtask-label button,
+.subtask-label input[type="checkbox"] {
+    pointer-events: auto;
+}
+
+.subtask-label-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.point {
+    height: 8px;
+    width: 8px;
+    background-color: #2A3647;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.edit-delete-subtask-buttons {
+    display: flex;
+    gap: 8px;
+    pointer-events: none;
+    isolation: isolate;
+}
+
+.edit-delete-subtask-buttons button {
+    pointer-events: auto;
+    isolation: isolate;
+}
+
+.edit-subtask-button-size,
+.delete-subtask-button-size {
+    background: transparent;
+    border: 0;
+    position: relative;
+    z-index: 1;
+    border-radius: 8px;
+    padding: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.edit-subtask-button-size:hover:not(:disabled),
+.delete-subtask-button-size:hover:not(:disabled) {
+    cursor: pointer;
+    background-color: #f5f5f5;
+}
+
+.dividing-line {
+    width: 1px;
+    height: 20px;
+    background-color: #d1d1d1;
+}
+
 .edit-overlay-actions {
     display: flex;
     justify-content: flex-end;
@@ -1266,4 +1368,68 @@
 
 .notification {
     animation: slideIn 0.3s ease-in-out;
+}
+
+/* Match Add Task Assigned-to styles in edit overlay */
+.multi-select {
+    width: 440px;
+    position: relative;
+}
+
+.selected-box {
+    padding: 10px;
+    border: 1px solid #d1d1d1;
+    cursor: pointer;
+    background: white;
+    border-radius: 10px;
+    width: 100%;
+    gap: 8px;
+}
+
+.checkbox-list {
+    display: none;
+    border: 1px solid #aaa;
+    background: white;
+    position: absolute;
+    padding-top: 10px;
+    width: 100%;
+    top: 42px;
+    z-index: 10;
+    flex-direction: column;
+    gap: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 250px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox-list.active {
+    display: flex;
+}
+
+.checkbox-list label {
+    display: flex;
+    margin-bottom: 6px;
+    width: 95%;
+}
+
+.checkbox-item {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0%;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.assignedIcons {
+    display: flex;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    gap: 8px;
+    overflow: auto;
+    max-height: 70px;
 }
