@@ -27,7 +27,7 @@
     <nav class="sideBoard">
       <img
         src="./assets/sideboardAssets/joinLogo.svg"
-        class="join-logo"
+        class="join-logo mobile-logo"
         alt="join logo"
       />
 
@@ -59,14 +59,16 @@
     </nav>
 
     <header class="header">
-      <span class="header-title">Kanban Project Management Tool</span>
+      <img
+        src="./assets/LogIn&SignUp/Capa3.svg"
+        class="header-logo-small"
+        alt="Join Logo Small"
+      />
+      <img src="./assets/contacts/person_add.svg">
       <div class="headerRight">
-        <a href="./help.html">
-          <div class="help"></div>
-        </a>
-
+        <a href="./help.html"><div class="help"></div></a>
         <button class="userProfileInitials" id="userProfileInitialsBtn">
-          <div class="nameInitials" id="nameInitials">SM</div>
+          <div class="nameInitials" id="nameInitials"></div>
         </button>
         <div id="profileShowMore" class="profileShowMore d-none"></div>
       </div>
@@ -76,7 +78,7 @@
       <div class="contacts-container">
         <div class="contacts-left">
           <div class="contacts-left-header">
-            <button class="btn-add-contact " id="addContactBtn">
+            <button class="btn-add-contact fab-add-contact"  id="addContactBtn">
               Add new contact
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -106,5 +108,22 @@
       </div>
       <div id="addContact"></div>
     </main>
+    <nav class="mobile-nav">
+      <a href="summaryUser.html">
+        <img src="./assets/sideboardAssets/summary.svg" /><br />Summary
+      </a>
+      <a href="addTask.html">
+        <img src="./assets/sideboardAssets/addTask.svg" /><br />Add Task
+      </a>
+      <a href="board.html">
+        <img src="./assets/sideboardAssets/board.svg" /><br />Board
+      </a>
+      <a href="contacts.html">
+        <img src="./assets/sideboardAssets/contacts.svg" /><br />Contacts
+      </a>
+    </nav>
+    <button class="fab-add-contact" id="addContactBtn">
+      <img src="./assets/contacts/person_add.svg" alt="Add Contact">
+    </button>
   </body>
 </html>

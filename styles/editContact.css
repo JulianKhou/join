@@ -134,6 +134,7 @@
 .icon {
   position: absolute;
   top: 50%;
+  right: 11%;
   transform: translateY(-50%);
   pointer-events: none;
 }
@@ -220,9 +221,7 @@ h3 {
 .buttons {
   padding-right: 0px;
 }
-.icon {
-  right: -22%;
-}
+
 .close-btn {
   position: absolute;
   top: -40px;
@@ -240,28 +239,31 @@ h3 {
   padding: 10px 14px;
 }
 
-@media (max-width: 1625px){
+@media (max-width: 1625px) {
   .icon {
-    right:-10%;
+    right: 20%;
   }
-  .edit-form input{
+  .edit-form input {
     width: 300px;
+  }
+  .buttons {
+    padding-right: 180px;
   }
 }
 
-@media (max-width: 1425px){
+@media (max-width: 1425px) {
   .icon {
-    right:-1%;
+    right: 28%;
   }
-  .edit-form input{
-    width: 250px;
+  .edit-form input {
+    width: 240px;
     padding-left: 10px;
   }
 }
 
 @media (max-width: 1400px) {
   .icon {
-    display: none;
+    right: 30%;
   }
 }
 
@@ -285,10 +287,20 @@ h3 {
   .edit-form .input-wrapper {
     position: relative;
     margin-bottom: 18px;
-    width: 435px;
+    width: 215px;
+  }
+
+  .edit-form input {
+    width: 200px;
+  }
+
+  .icon{
+    right: 3%;
   }
   .buttons {
-    margin-left: 120px;
+    padding-right: 0px;
+    max-height: 45px;
+    margin-left: 154px;
   }
 }
 
@@ -296,9 +308,6 @@ h3 {
   .edit-form .input-wrapper {
     position: relative;
     margin-bottom: 18px;
-  }
-  .buttons {
-    margin-left: 115px;
   }
 }
 
@@ -309,18 +318,26 @@ h3 {
     height: auto;
     padding-bottom: 30px;
   }
+.edit-blue-line{
+  border-bottom: 3px solid #4bb1ff;
+}
 
   .edit-contact-left {
     width: 100%;
     padding: 60px 20px;
     text-align: center;
+    position: relative;
+  }
+
+  .blue-line{
+    display: none;
   }
 
   .edit-contact-right {
     margin-top: 60px;
   }
 
-  .blue-line{
+  .blue-line {
     margin-left: 215px;
   }
 
@@ -335,7 +352,7 @@ h3 {
   }
   .icon {
     display: unset;
-    right: -8%;
+    right: -22%;
   }
   .edit-form .input-wrapper {
     margin-right: 225px;
@@ -343,7 +360,7 @@ h3 {
   .edit-form input {
     width: 300px;
   }
-  .buttons{
+  .buttons {
     margin-left: 0px;
   }
 }
@@ -351,7 +368,7 @@ h3 {
 @media (min-width: 1001px) {
   .close-btn {
     position: fixed;
-    top: 32%;
+    top: 30%;
     right: 21%;
     background: none;
     border: none;
@@ -370,6 +387,15 @@ h3 {
   }
 }
 
+@media (max-width: 670px){
+  .edit-form input{
+    width: 230px;
+  }
+  .icon {
+    right: -5%;
+}
+}
+
 @media (max-width: 480px) {
   .edit-contact-left {
     width: 100%;
@@ -377,12 +403,12 @@ h3 {
     text-align: center;
   }
   .edit-form input {
-    width: 300px;
+    width: 230px;
     font-size: 0.9rem;
   }
-.blue-line{
-  margin-left: 480px;
-}
+  .blue-line {
+    margin-left: 480px;
+  }
   .icon {
     right: -6%;
   }
@@ -406,9 +432,19 @@ h3 {
   }
 }
 
+@media (max-width: 430px){
+  .edit-form input {
+    width: 220px;
+  }
+  .icon {
+    right: -4%;
+  }
+}
+
 @media (max-width: 400px) {
   .edit-form input {
-    width: 300px;
+    width: 210px;
+    margin-left: 8px;
   }
   .edit-contact-left {
     padding: 40px 5px;
@@ -423,7 +459,7 @@ h3 {
     margin-top: -15px;
   }
   .icon {
-    right:-9%;
+    right: -2%;
   }
   .delete-btn,
   .save-btn {
@@ -438,7 +474,7 @@ h3 {
 }
 @media (max-width: 380px) {
   .edit-form input {
-    width: 40%;
+    width: 190px;
     margin-left: 17px;
   }
   .profile-circle {
@@ -447,7 +483,7 @@ h3 {
     font-size: 24px;
   }
   .icon {
-    right: 35%;
+    right: 1%;
   }
   .delete-btn,
   .save-btn {
@@ -455,5 +491,15 @@ h3 {
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
+  }
+}
+
+@media (max-width: 350px){
+  .icon{
+    right: 2%;
+  }
+  .edit-form input{
+    width: 173px;
+    margin-left: 26px;
   }
 }
