@@ -11,7 +11,7 @@ export function addSubTask(subtaskString){
    
    <div class="subtask-label-left">
    <div class="point"></div>
-   <span>${subtaskString}</span>
+   <span class="subtask-text">${subtaskString}</span>
    </div>
    <div class="edit-delete-subtask-buttons">
    <button class="edit-subtask-button-size" src="./assets/contacts/editButton.svg" alt="edit subtask button" style="display:none">

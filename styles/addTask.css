@@ -12,7 +12,7 @@
 .add-task-form {
   display: flex;
   gap: 45px;
-    box-sizing: border-box;
+  box-sizing: border-box;
   font-family: "Inter", sans-serif;
   min-height: 550px;
 }
@@ -130,6 +130,7 @@
   font-size: 16px;
   gap: 10px;
 }
+
 .task-input:focus {
   border: 2px solid var(--lightBlue-default);
 }
@@ -152,18 +153,20 @@
 }
 
 label {
-   font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 20px;
   line-height: 120%;
   letter-spacing: 0%;
 }
+
 .remove-background {
   background: none;
   border: none;
   padding: 0;
 }
+
 .multi-select {
   width: 440px;
   position: relative;
@@ -189,24 +192,26 @@ label {
   top: 42px;
   z-index: 10;
 
-    flex-direction: column;
-    gap: 5px;
-    scroll-behavior: auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: 250px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  gap: 5px;
+  scroll-behavior: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 250px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
 }
+
 .checkbox-list label {
   display: flex;
   margin-bottom: 6px;
-      width: 95%;
+  width: 95%;
 }
+
 .checkbox-item {
-   font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 400;
-  font-style: normal; /* ✅ changed from "Regular" */
+  font-style: normal;
   font-size: 16px;
   line-height: 120%;
   letter-spacing: 0%;
@@ -214,12 +219,12 @@ label {
   display: flex;
   justify-content: flex-start;
   flex-direction: unset;
-    justify-content: space-between;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-radius: 8px;
-    width: 100%;
-    padding: 6px 8px;
+  justify-content: space-between;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 8px;
+  width: 100%;
+  padding: 6px 8px;
 }
 
 .checkbox-item:hover {
@@ -227,6 +232,7 @@ label {
   cursor: pointer;
   color: white;
 }
+
 .dividing-line {
   width: 2px;
   height: 24px;
@@ -244,31 +250,34 @@ label {
   left: 376px;
   width: 50px;
 }
+
 .subtask-label {
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: default;
-  pointer-events: none; /* ← verhindert Label-Hover */
+  pointer-events: none;
+  /* ← verhindert Label-Hover */
 }
 
 /* Re-enable pointer events ONLY on interactive children */
 .subtask-label span,
 .subtask-label button,
 .subtask-label input[type="checkbox"] {
-  pointer-events: auto; /* ← erlaubt Button-Hover */
+  pointer-events: auto;
+  /* ← erlaubt Button-Hover */
 }
 
-.subtasks-list{
+.subtasks-list {
   min-height: 150px;
   max-height: 200px;
   overflow-y: scroll;
   margin-top: -20px;
   display: flex;
-  /* align-items: center; */
   flex-direction: column;
   gap: 24px;
 }
+
 .subtask-btn {
   cursor: pointer;
 }
@@ -282,6 +291,7 @@ label {
   display: inline-block;
   margin-right: 10px;
 }
+
 .checkbox-item .assignedToCheckboxNameIcon {
   display: flex;
   align-items: center;
@@ -292,29 +302,50 @@ label {
   display: flex;
   margin-top: 8px;
   flex-wrap: wrap;
-    margin: 5px;
-    gap: 8px;
-    overflow: auto;
-    max-height: 70px;
+  margin: 5px;
+  gap: 8px;
+  overflow: auto;
+  max-height: 70px;
 }
+
 .edit-delete-subtask-buttons {
   display: flex;
   margin-right: 10px;
   gap: 8px;
   pointer-events: none;
-  isolation: isolate; /* ← verhindert Hover-Bleed */
+  isolation: isolate;
+  z-index: 1;
+  position: fixed;
+  right: 566px;
+  background: transparent;
+  bottom: 227px;
 }
 
 .edit-delete-subtask-buttons button {
   pointer-events: auto;
-  isolation: isolate; /* ← isoliert Button-Hover */
+  isolation: isolate;
 }
+
+.subtask-label-left {
+  display: flex;
+  align-items: center;
+}
+
 .subtask-label-active {
-      background: white;
-    border-bottom: 2px solid var(--lightBlue-default);
-    width: 440px;
-    
+  background: white;
+  border-bottom: 2px solid var(--lightBlue-default);
+  width: 440px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
+
+.subtask-text {
+  display: flex;
+  width: 100%;
+}
+
 .edit-subtask-button-size {
   background: transparent;
   border: 0;
@@ -351,6 +382,27 @@ label {
   display: none;
 }
 
+.profileIconContainer {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+  border-color: white;
+  border: 2px solid white;
+}
+
+.profileIconContainer {
+  height: 42px;
+  width: 42px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
 @media (max-width: 1350px) {
   .add-task-form {
     flex-direction: column;
@@ -365,9 +417,11 @@ label {
   .task-column:last-child {
     padding-left: 0;
   }
+
   .add-task-buttons {
     padding-left: 105px;
   }
+
   .priority-buttons-size {
     height: 53px;
     width: 145px;
@@ -384,19 +438,24 @@ label {
   .task-input {
     width: 380px;
   }
+
   .task-input-description {
     width: 380px;
   }
+
   .add-task-buttons {
     padding-left: 45px;
   }
+
   .priority-buttons-size {
     height: 52px;
     width: 122px;
   }
+
   .selected-box {
     width: 380px;
   }
+
   .subtask-buttons {
     left: 320px;
   }
@@ -406,19 +465,24 @@ label {
   .task-input {
     width: 333px;
   }
+
   .task-input-description {
     width: 333px;
   }
+
   .add-task-buttons {
     padding-left: 0px;
   }
+
   .priority-buttons-size {
     height: 48px;
     width: 104px;
   }
+
   .selected-box {
     width: 333px;
   }
+
   .subtask-buttons {
     left: 275px;
   }
@@ -514,15 +578,18 @@ label {
     text-align: center;
     text-decoration: none;
   }
+
   .mobile-nav {
     display: flex !important;
   }
+
   .header {
     width: 100% !important;
     left: 0;
   }
+
   .header-title,
-  .header-right > .help {
+  .header-right>.help {
     display: none;
   }
 
@@ -563,6 +630,7 @@ label {
       padding-bottom: 48px;
       padding-left: 67px;
     }
+
     .selected-box {
       width: 400px;
     }
@@ -602,6 +670,7 @@ label {
     .priority-buttons {
       gap: 8px;
     }
+
     .add-task-wrapper {
       margin-left: -50px;
     }
@@ -637,6 +706,7 @@ label {
     .priority-buttons {
       gap: 8px;
     }
+
     .selected-box {
       width: 350px;
     }
@@ -676,17 +746,21 @@ label {
     .priority-buttons {
       gap: 8px;
     }
+
     .add-task-wrapper h1 {
       font-size: 40px;
     }
+
     .task-cancel-button-size {
       height: 48px;
       width: 120px;
     }
+
     .task-create-button-size {
       height: 48px;
       width: 154spx;
     }
+
     .selected-box {
       width: 300px;
     }

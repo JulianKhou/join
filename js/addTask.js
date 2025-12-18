@@ -304,9 +304,7 @@ function addSubtaskEventListeners(subtaskElement) {
 function addSubtaskBtnEventListeners(subtaskNode) {
     const editBtn = subtaskNode.querySelector(".edit-subtask-button-size");
     const deleteBtn = subtaskNode.querySelector(".delete-subtask-button-size");
-    const subtaskElement = subtaskNode;
-    console.log("Adding edit/delete event listeners to subtask element:", subtaskElement);
- 
+    const subtaskElement = subtaskNode.querySelector(".subtask-label-left") || subtaskNode;
     if (editBtn && editBtn.style.display !== "none") {
         editBtn.addEventListener("click", (e) => {
             e.preventDefault();
@@ -319,9 +317,7 @@ function addSubtaskBtnEventListeners(subtaskNode) {
                 
                 // Save on blur (click away)
                 textSpan.addEventListener("blur", () => {
-                    textSpan.contentEditable = false;
-                    editBtn.style.display = "none";
-                    deleteBtn.style.display = "none";
+                    removeEditableSubtaskText(subtaskElement);
                 }, { once: true });
                 
                 // Save on Enter key
@@ -354,11 +350,23 @@ function editableSubtaskText(subtaskElement) {
      subtaskElement.classList.add("subtask-label-active");
       const range = document.createRange();
       range.selectNodeContents(textSpan);
-                const selection = window.getSelection();
+     const selection = window.getSelection();
                 selection.removeAllRanges();
                 selection.addRange(range);
   
 }
+
+function removeEditableSubtaskText(subtaskElement) {
+    console.log("Removing editable state from subtask element:", subtaskElement);
+  const textSpan = subtaskElement.querySelector("span");
+  const pointDiv = subtaskElement.querySelector(".point");
+        if (pointDiv) {
+         pointDiv.style.display = "block"; // Show the point again
+         }
+        subtaskElement.contentEditable = false;
+        subtaskElement.classList.remove("subtask-label-active");
+}
+
 
 // Collect subtask texts from the DOM and return them as an array of objects with completion state.
 function getSubtasksList() {
