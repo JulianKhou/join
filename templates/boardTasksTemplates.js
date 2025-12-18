@@ -45,7 +45,7 @@ export function taskDetailTemplate(task){
   let taskDetail=`
     <!-- Overlay -->
  
-    <div class="overlay-edit-card" id="overlayEditCard-${task.id}">
+    <div class="overlay-detail-card" id="overlayDetailCard-${task.id}">
       <!-- Close Button -->
       <div class="overlay-header">
         <div class="task-category-overlay card-detail-${task.category.toLowerCase().replace(/\s+/g, '-')}">${task.category}</div>
@@ -253,7 +253,7 @@ export function editTaskFormTemplate(task, categories, contacts) {
 
         <!-- Priority -->
         <div class="edit-form-group">
-          <label>Priority</label>
+          <label class="priority-label">Priority</label>
           <div class="edit-priority-group">
             <button type="button" class="edit-priority-btn" id="edit-priority-urgent-${task.id}" data-priority="Urgant">
               <span class="priority-name">Urgant</span>
@@ -289,12 +289,17 @@ export function editTaskFormTemplate(task, categories, contacts) {
         </div>
 
         <!-- Assigned To -->
-        <div class="edit-form-group">
-          <label>Assigned to</label>
+        <div class="assigned-area" id="assignedArea">
+          <label class="assigned-label" for="assigned">Assigned to</label>
+
           <div class="multi-select">
             <input class="selected-box task-input" id="editSelectedBox-${task.id}" placeholder=" Select contacts to assign">
+              
             </input>
-            <div class="checkbox-list" id="editCheckboxList-${task.id}"></div>
+            <div
+              class="checkbox-list"
+              id="editCheckboxList-${task.id}"
+            ></div>
           </div>
           <div class="assignedIcons" id="editAssignees-${task.id}"></div>
         </div>

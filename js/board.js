@@ -454,7 +454,7 @@ function addAssigneeAvatartoDetail(task) {
       contact.color
     );
     document
-      .getElementById(`overlayEditCard-${task.id}`)
+      .getElementById(`overlayDetailCard-${task.id}`)
       .querySelector(".overlay-assignees")
       .insertAdjacentHTML("beforeend", avatarHTML);
   });
@@ -561,29 +561,26 @@ function initEditAssignedTo(taskId) {
       const isYou = currentUser && contact.id === currentUser.uid;
       const displayName = isYou ? `${contact.name} (You)` : contact.name;
       const isChecked = Array.isArray(task.assignedTo) && task.assignedTo.includes(contact.id);
+      
+      // Create avatar icon for the contact
+      const avatarIcon = `<div class="profileIconContainer" style="background-color: ${contact.color};">${getInitials(contact.name)}</div>`;
+      
       const label = document.createElement('label');
       label.className = 'checkbox-item';
       label.innerHTML = `
-        <div class="assignedToCheckboxNameIcon">${displayName}</div>
-        <input type="checkbox" class="edit-assigned-checkbox" value="${contact.id}" ${isChecked ? 'checked' : ''}>
+        <div class="assignedToCheckboxNameIcon">${avatarIcon} ${displayName}</div>
+        <input type="checkbox" class="assignedToCheckbox" name="assignedTo" value="${contact.id}" ${isChecked ? 'checked' : ''}>
       `;
       listEl.appendChild(label);
     });
 
     const updateSummary = () => {
-      const checked = [...listEl.querySelectorAll('.edit-assigned-checkbox')]
+      const checked = [...listEl.querySelectorAll('.assignedToCheckbox')]
         .filter(cb => cb.checked)
         .map(cb => cb.value);
 
-      const names = checked
-        .map(id => {
-          const c = returnContactById(id, contactsList);
-          return c ? c.name : null;
-        })
-        .filter(Boolean);
-
       if (selectedBox) {
-        selectedBox.value = names.length ? names.join(', ') : 'Select contacts to assign';
+        selectedBox.value = '';
       }
 
       if (iconsEl) {
@@ -697,7 +694,7 @@ async function openEditTaskOverlay(taskId) {
     const editFormHTML = editTaskFormTemplate(task, [], contactsList);
     
     // Insert edit form inside the existing detail card
-    const detailCard = overlay.querySelector(`#overlayEditCard-${taskId}`);
+    const detailCard = overlay.querySelector(`#overlayDetailCard-${taskId}`);
     if (detailCard) {
       detailCard.insertAdjacentHTML("beforeend", editFormHTML);
     }
@@ -861,7 +858,7 @@ function attachEditFormEventListeners(taskId) {
       const checkboxScope = overlay.querySelector(`#editCheckboxList-${taskId}`);
       const selectedAssignees = [];
       if (checkboxScope) {
-        checkboxScope.querySelectorAll('.edit-assigned-checkbox').forEach((cb) => {
+        checkboxScope.querySelectorAll('.assignedToCheckbox').forEach((cb) => {
           if (cb.checked) selectedAssignees.push(cb.value);
         });
       }
@@ -895,9 +892,6 @@ function attachEditFormEventListeners(taskId) {
       
       // Update task in Firebase
       await updateTask(taskId, updateData);
-      
-      // Show success message
-      showNotification("✓ Aufgabe erfolgreich gespeichert", "success");
       
       // Get updated task data
       const updatedTask = await getTask(taskId);
@@ -950,6 +944,10 @@ function attachEditFormEventListeners(taskId) {
       } else if (taskDetail instanceof Node) {
         overlay.appendChild(taskDetail);
       }
+
+      // Suppress the entry animation when returning from the edit form
+      const detailCard = overlay.querySelector(".overlay-detail-card");
+      detailCard?.classList.add("no-animation");
       
       overlay.classList.add("active");
       
@@ -971,12 +969,7 @@ function attachEditFormEventListeners(taskId) {
 function closeEditOverlay() {
   const editCard = document.querySelector(".edit-overlay-card");
   if (editCard) {
-    // Smooth fade out
-    editCard.style.opacity = "0";
-    editCard.style.transition = "opacity 0.3s ease";
-    setTimeout(() => {
-      editCard.remove();
-    }, 300);
+    editCard.remove();
   }
 }
 
@@ -1055,4 +1048,3 @@ function showNotification(message, type = "success") {
   }, 3000);
 }
 
-function editTaskDetailTemplate(task) {}
