@@ -83,6 +83,13 @@
   cursor: pointer;
 }
 
+/* New subtle hover effect */
+.priority-buttons button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+}
+
 .priority-btn {
   border-radius: 10px;
   padding: 12px 20px;
@@ -281,7 +288,6 @@ label {
 .subtask-btn {
   cursor: pointer;
 }
-
 
 .point {
   height: 8px;
@@ -588,7 +594,7 @@ label {
   }
 
   .header-title,
-  .header-right>.help {
+  .header-right > .help {
     display: none;
   }
 
