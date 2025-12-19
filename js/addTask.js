@@ -277,6 +277,7 @@ function initSubtaskEventListeners() {
         e.preventDefault();
         const lastSubtask = subtasksList.lastElementChild;
         if (lastSubtask) {
+            console.log("Removing last subtask:", lastSubtask);
             subtasksList.removeChild(lastSubtask);
         }
     });
@@ -308,23 +309,41 @@ function addSubtaskBtnEventListeners(subtaskNode) {
     if (editBtn && editBtn.style.display !== "none") {
         editBtn.addEventListener("click", (e) => {
             e.preventDefault();
+            e.stopPropagation();
             
             // Make the span editable
             const textSpan = subtaskElement.querySelector("span");
             if (textSpan) {
-               editableSubtaskText(subtaskElement);
+               editableSubtaskText(subtaskNode);
       
                 
-                // Save on blur (click away)
-                textSpan.addEventListener("blur", () => {
-                    removeEditableSubtaskText(subtaskElement);
-                }, { once: true });
+                // Helper to close edit mode
+                const closeEdit = () => {
+                    removeEditableSubtaskText(subtaskNode);
+                    document.removeEventListener("click", handleOutsideClick);
+                };
+
+                // Handle outside clicks
+                const handleOutsideClick = (event) => {
+                    // Check if click is inside the subtask row using closest
+                    const clickedInside = event.target.closest(".subtask-label");
+                    // Ensure the clicked row is THIS row (compare references) 
+                    // Note: subtaskNode refers to the div created in addSubTask template which HAS class 'subtask-label'
+                    if (clickedInside !== subtaskNode) {
+                        closeEdit();
+                    }
+                };
+                
+                // Save on click outside (delayed to avoid immediate trigger)
+                setTimeout(() => {
+                    document.addEventListener("click", handleOutsideClick);
+                }, 0);
                 
                 // Save on Enter key
                 textSpan.addEventListener("keydown", (e) => {
                     if (e.key === "Enter") {
                         e.preventDefault();
-                        textSpan.blur();
+                        closeEdit();
                     }
                 }, { once: true });
             }
@@ -334,7 +353,7 @@ function addSubtaskBtnEventListeners(subtaskNode) {
     if (deleteBtn && deleteBtn.style.display !== "none") {
         deleteBtn.addEventListener("click", (e) => {
             e.preventDefault();
-            subtaskElement.remove();
+            subtaskNode.remove();
         });
     }
 
@@ -343,28 +362,40 @@ function addSubtaskBtnEventListeners(subtaskNode) {
 function editableSubtaskText(subtaskElement) {
   const textSpan = subtaskElement.querySelector("span");
   const pointDiv = subtaskElement.querySelector(".point");
-     if (pointDiv) {
-       pointDiv.style.display = "none"; // Hide the point while editing
-     }
-     subtaskElement.contentEditable = true;
-     subtaskElement.classList.add("subtask-label-active");
+  if (pointDiv) {
+    pointDiv.style.display = "none"; // Hide the point while editing
+  }
+  // Change: Set contentEditable on the SPAN, not the parent container
+  if (textSpan) {
+    textSpan.contentEditable = true;
+    textSpan.focus(); // Ensure focus is set
+  }
+  
+  subtaskElement.classList.add("subtask-label-active");
+
+  // Selection range handling (optional but good for UX: select all text)
+  if (textSpan) {
       const range = document.createRange();
       range.selectNodeContents(textSpan);
-     const selection = window.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
-  
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+  }
 }
 
 function removeEditableSubtaskText(subtaskElement) {
     console.log("Removing editable state from subtask element:", subtaskElement);
-  const textSpan = subtaskElement.querySelector("span");
-  const pointDiv = subtaskElement.querySelector(".point");
-        if (pointDiv) {
-         pointDiv.style.display = "block"; // Show the point again
-         }
-        subtaskElement.contentEditable = false;
-        subtaskElement.classList.remove("subtask-label-active");
+    const textSpan = subtaskElement.querySelector("span");
+    const pointDiv = subtaskElement.querySelector(".point");
+
+    if (pointDiv) {
+        pointDiv.style.display = "block"; // Show the point again
+    }
+    // Change: Remove contentEditable from the SPAN
+    if (textSpan) {
+        textSpan.contentEditable = false;
+    }
+    subtaskElement.classList.remove("subtask-label-active");
 }
 
 

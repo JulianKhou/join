@@ -313,12 +313,6 @@ label {
   margin-right: 10px;
   gap: 8px;
   pointer-events: none;
-  isolation: isolate;
-  z-index: 1;
-  position: fixed;
-  right: 566px;
-  background: transparent;
-  bottom: 227px;
 }
 
 .edit-delete-subtask-buttons button {
@@ -339,11 +333,16 @@ label {
   display: flex;
   align-items: center;
   padding: 10px;
+  pointer-events: auto;
 }
 
 .subtask-text {
   display: flex;
   width: 100%;
+}
+
+.subtask-label-active span {
+  outline: none;
 }
 
 .edit-subtask-button-size {
