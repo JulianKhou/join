@@ -261,6 +261,10 @@
       display: none;
     }
 
+    .userProfileInitials{
+      right: 4%;
+    }
+
     .help{
         display: none;
     }
@@ -343,7 +347,7 @@
     
       .contact-item {
         padding: 12px 0;
-        gap: 48px;
+        gap: 24px;
       }
 
       .contacts-letter {

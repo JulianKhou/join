@@ -65,19 +65,27 @@ function contactListClickHandler(e) {
 if (contactsList) contactsList.addEventListener("click", contactListClickHandler);
 
 const addContactBtn = document.getElementById("addContactBtn");
+const addContactMobileBtn = document.getElementById("addContactMobileBtn");
+
 let closeAddBtn = null;
 let saveContactBtn = null;
-
 /* Open add-contact overlay (prevents multiple overlays). */
-addContactBtn.addEventListener("click", () => {
-  
+function openAddContactOverlay() {
   if (document.querySelector(".add-contact-overlay")) return;
 
   const addContent = document.getElementById("addContact");
   addContent.insertAdjacentHTML("beforeend", addContactTemplate);
 
   addEventListenerToAddContactForm();
-});
+}
+
+if (addContactBtn) {
+  addContactBtn.addEventListener("click", openAddContactOverlay);
+}
+
+if (addContactMobileBtn) {
+  addContactMobileBtn.addEventListener("click", openAddContactOverlay);
+}
 
 /* Add listeners for add-contact overlay: close button, outside click, save. */
 function addEventListenerToAddContactForm() {
