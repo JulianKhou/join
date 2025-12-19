@@ -51,16 +51,16 @@ export function createUser(email, password, username) {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const uid = userCredential.user.uid;
-      
+
       // Create user profile first
       return createOrUpdateUserProfile(uid, username, email)
         .then(() => {
           // Then create contact with user's data
           return editOrAddContact(
-            uid,           // use uid as contact ID so it's linked
+            uid, // use uid as contact ID so it's linked
             username,
             email,
-            "",            // no phone number initially
+            "", // no phone number initially
             generateRandomColor() // or pass a default color
           );
         })
@@ -115,7 +115,7 @@ export function signInWithGoogle() {
   return signInWithPopup(auth, googleProvider)
     .then((result) => {
       const user = result.user;
-      
+
       // Create/update user profile
       return createOrUpdateUserProfile(user.uid, user.displayName, user.email)
         .then(() => {
@@ -154,7 +154,7 @@ export async function createOrUpdateUserProfile(uid, username, email) {
   try {
     const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
-    
+
     // Only create if doesn't exist (avoid overwriting existing data)
     if (!userSnap.exists()) {
       await setDoc(userRef, {
@@ -166,9 +166,13 @@ export async function createOrUpdateUserProfile(uid, username, email) {
       });
     } else {
       // Just update timestamp if already exists
-      await setDoc(userRef, {
-        updatedAt: serverTimestamp(),
-      }, { merge: true });
+      await setDoc(
+        userRef,
+        {
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
     }
   } catch (error) {
     console.error("Error creating/updating user profile:", error);
@@ -176,11 +180,61 @@ export async function createOrUpdateUserProfile(uid, username, email) {
   }
 }
 
+/**
+ * Updates a user's profile data (username, email) in Firestore 'users' and 'contacts'
+ * @param {string} uid - User ID
+ * @param {object} data - Object containing { username, email }
+ */
+export async function updateUserProfile(uid, data) {
+  try {
+    // 1. Update 'users' collection
+    const userRef = doc(db, "users", uid);
+    await setDoc(
+      userRef,
+      {
+        username: data.username,
+        email: data.email,
+        updatedAt: serverTimestamp(),
+      },
+      { merge: true }
+    );
+
+    // 2. Update 'contacts' collection (if exists)
+    // We assume contact ID is same as uid (see createUser logic)
+    // If not, we might need to search for it, but let's try direct update first.
+    const contactRef = doc(db, "contacts", uid);
+    const contactSnap = await getDoc(contactRef);
+
+    if (contactSnap.exists()) {
+      await setDoc(
+        contactRef,
+        {
+          name: data.username,
+          email: data.email,
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+    }
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    throw error;
+  }
+}
+
 // Helper function to generate a random color
 function generateRandomColor() {
   const colors = [
-    "#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF",
-    "#33FFF5", "#F5FF33", "#FF8C33", "#8C33FF", "#33FF8C"
+    "#FF5733",
+    "#33FF57",
+    "#3357FF",
+    "#FF33A1",
+    "#A133FF",
+    "#33FFF5",
+    "#F5FF33",
+    "#FF8C33",
+    "#8C33FF",
+    "#33FF8C",
   ];
   return colors[Math.floor(Math.random() * colors.length)];
 }
@@ -289,7 +343,7 @@ export async function getContacts() {
   }
 }
 export async function createTask(task) {
-const user = auth.currentUser;
+  const user = auth.currentUser;
   const taskRef = doc(collection(db, "tasks"));
   const createData = {
     title: task.title,
@@ -314,16 +368,12 @@ export async function updateTask(taskId, updateData) {
   return taskRef.id;
 }
 
-
-
-
 export async function addEditTask(task) {
-createTask(task).then((taskId) => {
+  createTask(task).then((taskId) => {
     console.log("Task added with ID:", taskId);
   });
   //später mal updateTask aufrufen, wenn taskId existiert
 }
-
 
 export function deleteTask(taskId) {
   const taskRef = doc(db, "tasks", taskId);
@@ -336,7 +386,7 @@ function checkIfTaskExists(taskId) {
 }
 
 export function changeTaskProgress(taskId, newProgress) {
-  if (!["toDo", "inProgress", "awaitFeedback" ,"done"].includes(newProgress)) {
+  if (!["toDo", "inProgress", "awaitFeedback", "done"].includes(newProgress)) {
     throw new Error("Invalid progress status");
   }
   const taskRef = doc(db, "tasks", taskId);
@@ -371,8 +421,7 @@ export async function getTaskIds() {
   const taskIds = [];
   snapshot.forEach((doc) => {
     taskIds.push(doc.id);
-  }
-  );
+  });
   return taskIds;
 }
 
@@ -382,8 +431,18 @@ export async function getSubtasksCompletionState(taskId) {
   if (taskSnap.exists()) {
     const subtasks = taskSnap.data().subtasks || [];
     const totalSubtasks = subtasks.length;
-    const completedSubtasks = subtasks.filter(subtask => subtask.completed).length;
-    console.log("Subtasks for task", taskId, ":", totalSubtasks, "total,", completedSubtasks, "completed");
+    const completedSubtasks = subtasks.filter(
+      (subtask) => subtask.completed
+    ).length;
+    console.log(
+      "Subtasks for task",
+      taskId,
+      ":",
+      totalSubtasks,
+      "total,",
+      completedSubtasks,
+      "completed"
+    );
     return { totalSubtasks, completedSubtasks };
   } else {
     throw new Error("Task not found");
@@ -392,8 +451,8 @@ export async function getSubtasksCompletionState(taskId) {
 
 export async function getContact(uid) {
   const contactRef = doc(db, "contacts", uid);
-  const contactSnap = await getDoc(contactRef); 
-  if (contactSnap.exists()) { 
+  const contactSnap = await getDoc(contactRef);
+  if (contactSnap.exists()) {
     return { id: contactSnap.id, ...contactSnap.data() };
   } else {
     throw new Error("Contact not found");
@@ -406,10 +465,14 @@ export async function changeSubtaskCompletion(taskId, subtaskIndex, completed) {
   if (taskSnap.exists()) {
     const taskData = taskSnap.data();
     const subtasks = taskData.subtasks || [];
-    
+
     if (subtaskIndex >= 0 && subtaskIndex < subtasks.length) {
       subtasks[subtaskIndex].completed = completed;
-      await setDoc(taskRef, { subtasks, updatedAt: serverTimestamp() }, { merge: true });
+      await setDoc(
+        taskRef,
+        { subtasks, updatedAt: serverTimestamp() },
+        { merge: true }
+      );
     } else {
       throw new Error("Invalid subtask index");
     }

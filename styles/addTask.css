@@ -278,7 +278,7 @@ label {
 .subtasks-list {
   min-height: 150px;
   max-height: 200px;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-top: -20px;
   display: flex;
   flex-direction: column;

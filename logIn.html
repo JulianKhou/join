@@ -1,86 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In</title>
+    <link rel="stylesheet" href="./styles/LogIn.css" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Log In</title>
-  <link rel="stylesheet" href="./styles/LogIn.css">
+    <script type="module" src="./js/firebase.js" defer></script>
 
-  <script type="module" src="./js/login.js" defer></script>
-  <script type="module" src="./js/firebase.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-</head>
+  <body>
+    <div class="loader-overlay" id="loader">
+      <div class="loader-container">
+        <div class="percent-text" id="percent-text">0%</div>
 
-<body>
+        <svg class="progress-ring" width="210" height="210">
+          <circle id="progress-bg" cx="105" cy="105" r="95"></circle>
+          <circle id="progress-bar" cx="105" cy="105" r="95"></circle>
+        </svg>
 
-  <div class="loader-overlay" id="loader">
-    <div class="loader-container">
-      <div class="percent-text" id="percent-text">0%</div>
-  
-      <svg class="progress-ring" width="210" height="210">
-        <circle id="progress-bg" cx="105" cy="105" r="95"></circle>
-        <circle id="progress-bar" cx="105" cy="105" r="95"></circle>
-      </svg>
-  
-      <img src="./assets/LogIn&SignUp/Capa 2.svg" class="loader-logo">
+        <img src="./assets/LogIn&SignUp/Capa 2.svg" class="loader-logo" />
+      </div>
     </div>
-  </div>
 
-  <header class="top-nav">
-    <span class="LogIn-Text">Not a Join user?</span>
-    <a href="./signUp.html" class="signup-btn">Sign up</a>
-  </header>
+    <header class="top-nav">
+      <span class="LogIn-Text">Not a Join user?</span>
+      <a href="./signUp.html" class="signup-btn">Sign up</a>
+    </header>
 
-  <div class="logo">
-    <img src="./assets/LogIn&SignUp/Capa 2.svg" alt="Join Logo">
-  </div>
-
-  <section class="Box-position">
-    <div class="login-box">
-      <h1>Log in</h1>
-      <div class="underline"></div>
-
-      <form id="loginForm" novalidate onsubmit="return false;">
-        <div class="input-field">
-          <input id="emailInput" type="" placeholder="Email">
-          <span class="icon"><img src="./assets/LogIn&SignUp/mail.svg"></span>
-        </div>
-
-        <div class="input-field">
-          <input id="passwordInput" type="password" placeholder="Password">
-          <span class="icon" id="passwordIcon">
-            <img src="./assets/LogIn&SignUp/lock.svg" id="passwordIconImg">
-          </span>
-        </div>
-
-        <div id="loginError" class="error-message"></div>
-
-        <div class="btn-group">
-          <button class="primary-btn" id="loginBtn">Log in</button>
-          <button class="outlined-btn" id="guestLoginBtn" type="button">Guest Log in</button>
-        </div>
-
-        <div class="google-login">
-          <button type="button" id="googleLoginBtn" class="google-btn">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
-                 alt="Google" style="width: 18px; margin-right: 8px;">
-            Sign in with Google
-          </button>
-        </div>
-      </form>
+    <div class="logo">
+      <img src="./assets/LogIn&SignUp/Capa 2.svg" alt="Join Logo" />
     </div>
-  </section>
 
-  <footer>
-    <a href="./privacyPolicyExt.html">Privacy Policy</a>
-    <a href="/legalNoticeExt.html">Legal notice</a>
-  </footer>
+    <section class="Box-position">
+      <div class="login-box">
+        <h1>Log in</h1>
+        <div class="underline"></div>
 
-  <script src="./js/loadingAnimation.js"></script>
+        <form id="loginForm" novalidate onsubmit="return false;">
+          <div class="input-field">
+            <input id="emailInput" type="" placeholder="Email" />
+            <span class="icon"
+              ><img src="./assets/LogIn&SignUp/mail.svg"
+            /></span>
+          </div>
 
-</body>
+          <div class="input-field">
+            <input id="passwordInput" type="password" placeholder="Password" />
+            <span class="icon" id="passwordIcon">
+              <img src="./assets/LogIn&SignUp/lock.svg" id="passwordIconImg" />
+            </span>
+          </div>
+
+          <div id="loginError" class="error-message"></div>
+
+          <div class="btn-group">
+            <button class="primary-btn" id="loginBtn">Log in</button>
+            <button class="outlined-btn" id="guestLoginBtn" type="button">
+              Guest Log in
+            </button>
+          </div>
+
+          <div class="google-login">
+            <button type="button" id="googleLoginBtn" class="google-btn">
+              <img
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="Google"
+                style="width: 18px; margin-right: 8px"
+              />
+              Sign in with Google
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <a href="./privacyPolicyExt.html">Privacy Policy</a>
+      <a href="/legalNoticeExt.html">Legal notice</a>
+    </footer>
+
+    <script src="./js/loadingAnimation.js"></script>
+    <script type="module" src="./js/pages/login.js"></script>
+  </body>
 </html>
