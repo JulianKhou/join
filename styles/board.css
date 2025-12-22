@@ -348,8 +348,9 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    border-style: dashed; size: 1px;
-    stroke-dasharray: 2,4;
+    border-style: dashed;
+    size: 1px;
+    stroke-dasharray: 2, 4;
 }
 
 .drag-area {
@@ -357,8 +358,9 @@
     border-radius: 30px;
     margin-top: 20px;
     opacity: 0.15;
-    border-style: dashed; size: 1px;
-    stroke-dasharray: 2,4;
+    border-style: dashed;
+    size: 1px;
+    stroke-dasharray: 2, 4;
 }
 
 /* Overlay */
@@ -367,6 +369,7 @@
     from {
         transform: translateX(150%);
     }
+
     to {
         transform: translateX(0);
     }
@@ -376,6 +379,7 @@
     from {
         transform: translateX(0);
     }
+
     to {
         transform: translateX(150%);
     }
@@ -431,7 +435,7 @@
     margin-bottom: 32px;
 }
 
-.task-category-overlay{
+.task-category-overlay {
     display: inline-block;
     max-width: max-content;
     padding: 4px 18px;
@@ -440,11 +444,12 @@
     font-size: 23px;
     font-weight: 400;
 }
-.card-detail-technical-task{
+
+.card-detail-technical-task {
     background-color: #1FD7C1;
 }
 
-.card-detail-user-story{
+.card-detail-user-story {
     background-color: #0038FF;
 }
 
@@ -486,7 +491,7 @@
     line-height: 1.4;
 }
 
-.date-and-priority-section{
+.date-and-priority-section {
     display: flex;
     flex-direction: row;
     margin-bottom: 36px;
@@ -637,7 +642,7 @@
 }
 
 .btn-edit:hover {
-   color: #29ABE2;
+    color: #29ABE2;
     fill: #29ABE2;
     font-weight: 700;
 }
@@ -649,11 +654,11 @@
     background: #D1D1D1;
 }
 
-.action-btn-icon{
+.action-btn-icon {
     margin-right: 12px;
 }
 
-.subtask-checkbox{
+.subtask-checkbox {
     accent-color: red !important;
 }
 
@@ -669,7 +674,7 @@
     animation: slideInRight 0.2s ease-out;
 }
 
-.overlay-edit.closing .overlay-add-task-card{
+.overlay-edit.closing .overlay-add-task-card {
     animation: slideOutRight 0.2s ease-out forwards;
 }
 
@@ -741,15 +746,15 @@
 }
 
 .form-divider {
-  width: 2px;
-  height: 440px;
-  border-radius: 2px;
-  background: rgba(209, 209, 209, 0.5);
+    width: 2px;
+    height: 440px;
+    border-radius: 2px;
+    background: rgba(209, 209, 209, 0.5);
 }
 
 .priority-button-group {
-  display: flex;
-  gap: 8px;
+    display: flex;
+    gap: 8px;
 }
 
 .priority-button {
@@ -775,37 +780,37 @@
     box-shadow: 0px 4px 4px 0px #00000040;
 }
 
-.priority-button-icon-urgant{
+.priority-button-icon-urgant {
     fill: #FF3D00;
 }
 
-.priority-button-icon-medium{
+.priority-button-icon-medium {
     fill: #FFA800;
 }
 
-.priority-button-icon-low{
+.priority-button-icon-low {
     fill: #7AE229;
 }
 
-.priority-button-urgant-active{
+.priority-button-urgant-active {
     background: #FF3D00;
     color: white;
     box-shadow: none !important;
 }
 
-.priority-button-medium-active{
+.priority-button-medium-active {
     background: #FFA800;
     color: white;
     box-shadow: none !important;
 }
 
-.priority-button-low-active{
+.priority-button-low-active {
     background: #7AE229;
     color: white;
     box-shadow: none !important;
 }
 
-.priority-button-icon-active{
+.priority-button-icon-active {
     fill: white;
 }
 
@@ -926,9 +931,14 @@
 
 .add-task-actions {
     display: flex;
-    gap: 16px;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-top: 110px;
+    align-items: flex-end;
+}
+
+.cancel-create-buttons{
+    display: flex;
+    gap: 16px;
 }
 
 .btn-cancel {
@@ -969,13 +979,15 @@
     background-color: #29ABE2;
 }
 
-.technical-task{
+.technical-task {
     background-color: #1FD7C1;
 }
-.user-story{
+
+.user-story {
     background-color: #0038FF;
 }
-.priority-urgant{
+
+.priority-urgant {
     background: url(../assets/board/priority-high.svg);
     background-repeat: no-repeat;
     background-position: center;
@@ -984,14 +996,16 @@
     width: 20px;
     height: 20px;
 }
-.priority-medium{
+
+.priority-medium {
     background: url(../assets/board/priority-medium.svg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
     fill: orange;
 }
-.priority-low{
+
+.priority-low {
     background: url(../assets/board/priority-low.svg);
     background-repeat: no-repeat;
     background-position: center;
@@ -1000,26 +1014,31 @@
     width: 20px;
     height: 20px;
 }
+
 /* Standard: nur View sichtbar */
 .edit-field {
-  display: none;
+    display: none;
 }
 
 /* Wenn Karte im Edit-Modus ist */
 .overlay-detail-card.editing .view-field {
-  display: none;
+    display: none;
 }
 
 .overlay-detail-card.editing .edit-field {
-  display: block; /* oder inline/inline-block je nach Element */
+    display: block;
+    /* oder inline/inline-block je nach Element */
 }
 
 /* Optional etwas Styling */
 .overlay-title-input,
 .overlay-description-input,
-#taskDueDateEdit-/*id*/ {
-  width: 100%;
-  /* padding, border etc. */
+#taskDueDateEdit-
+
+/*id*/
+    {
+    width: 100%;
+    /* padding, border etc. */
 }
 
 /* Edit Task Overlay Styles - Independent from Add Task */
@@ -1375,24 +1394,24 @@
 }
 
 .profileIconContainer {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 600;
-  font-size: 18px;
-  border-color: white;
-  border: 2px solid white;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    border-color: white;
+    border: 2px solid white;
 }
 
 .profileIconContainer {
-  height: 42px;
-  width: 42px;
-  font-size: 16px;
-  font-weight: 500;
+    height: 42px;
+    width: 42px;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 /* Notification styles */
@@ -1401,6 +1420,7 @@
         transform: translateX(400px);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
@@ -1412,6 +1432,7 @@
         transform: translateX(0);
         opacity: 1;
     }
+
     to {
         transform: translateX(400px);
         opacity: 0;

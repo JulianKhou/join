@@ -91,30 +91,6 @@ function initSearch() {
   }
 }
 
-function filterTasks(searchText) {
-  document.querySelectorAll(".task-card").forEach((card) => {
-    const title = card.querySelector(".task-title")?.textContent.toLowerCase() || "";
-    const description = card.querySelector(".task-description")?.textContent.toLowerCase() || "";
-    card.style.display = (searchText === "" || title.includes(searchText) || description.includes(searchText)) ? "" : "none";
-  });
-  updateNoTaskVisibility();
-}
-
-function updateNoTaskVisibility() {
-  const columns = [
-    { id: "todoColumnContainer", noTaskClass: ".todo-Column-no-task" },
-    { id: "inProgressColumnContainer", noTaskClass: ".inProgress-Column-no-task" },
-    { id: "feedbackColumnContainer", noTaskClass: ".awaitFeedback-Column-no-task" },
-    { id: "doneColumnContainer", noTaskClass: ".done-Column-no-task" }
-  ];
-  columns.forEach((col) => {
-    const column = document.getElementById(col.id);
-    const visibleTasks = column?.querySelectorAll('.task-card:not([style*="display: none"])').length || 0;
-    const noTaskDiv = column?.querySelector(col.noTaskClass);
-    if (noTaskDiv) noTaskDiv.style.display = visibleTasks === 0 ? "" : "none";
-  });
-}
-
 function closeOverlayOnBtn() {
   overlay.classList.add("closing");
   setTimeout(() => {
@@ -512,7 +488,29 @@ function deleteTaskFromBoard(taskId) {
   }).catch((error) => console.error("Error deleting task:", error));
 }
 
- 
+function filterTasks(searchText) {
+  document.querySelectorAll(".task-card").forEach((card) => {
+    const title = card.querySelector(".task-title")?.textContent.toLowerCase() || "";
+    const description = card.querySelector(".task-description")?.textContent.toLowerCase() || "";
+    card.style.display = (searchText === "" || title.includes(searchText) || description.includes(searchText)) ? "" : "none";
+  });
+  updateNoTaskVisibility();
+}
+
+function updateNoTaskVisibility() {
+  const columns = [
+    { id: "todoColumnContainer", noTaskClass: ".todo-Column-no-task" },
+    { id: "inProgressColumnContainer", noTaskClass: ".inProgress-Column-no-task" },
+    { id: "feedbackColumnContainer", noTaskClass: ".awaitFeedback-Column-no-task" },
+    { id: "doneColumnContainer", noTaskClass: ".done-Column-no-task" }
+  ];
+  columns.forEach((col) => {
+    const column = document.getElementById(col.id);
+    const visibleTasks = column?.querySelectorAll(".task-card:not([style*='display: none'])").length || 0;
+    const noTaskDiv = column?.querySelector(col.noTaskClass);
+    if (noTaskDiv) noTaskDiv.style.display = visibleTasks === 0 ? "" : "none";
+  });
+}
 
 function initAddTaskOverlay() {
   populateOverlayContacts();
