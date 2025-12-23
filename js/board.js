@@ -414,7 +414,7 @@ function initEditPriorityButtons(taskId) {
   priorityButtons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      priorityButtons.forEach((b) => b.classList.remove("edit-priority-urgant-active", "edit-priority-medium-active", "edit-priority-low-active"));
+      priorityButtons.forEach((b) => b.classList.remove("edit-priority-urgent-active", "edit-priority-medium-active", "edit-priority-low-active"));
       btn.classList.add(`edit-priority-${btn.dataset.priority.toLowerCase()}-active`);
     });
   });
@@ -539,8 +539,8 @@ function initOverlayPriorityButtons() {
   priorityBtns.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      priorityBtns.forEach((b) => b.classList.remove("priority-button-urgant-active", "priority-button-medium-active", "priority-button-low-active"));
-      if (btn.textContent.includes("Urgent")) btn.classList.add("priority-button-urgant-active");
+      priorityBtns.forEach((b) => b.classList.remove("priority-button-urgent-active", "priority-button-medium-active", "priority-button-low-active"));
+      if (btn.textContent.includes("Urgent")) btn.classList.add("priority-button-urgent-active");
       else if (btn.textContent.includes("Medium")) btn.classList.add("priority-button-medium-active");
       else btn.classList.add("priority-button-low-active");
     });
@@ -624,9 +624,9 @@ function collectOverlayFormData() {
 }
 
 function getOverlayPriority() {
-  const activeBtn = document.querySelector(".priority-button-urgant-active, .priority-button-medium-active, .priority-button-low-active");
+  const activeBtn = document.querySelector(".priority-button-urgent-active, .priority-button-medium-active, .priority-button-low-active");
   if (!activeBtn) return "Medium";
-  if (activeBtn.classList.contains("priority-button-urgant-active")) return "Urgent";
+  if (activeBtn.classList.contains("priority-button-urgent-active")) return "Urgent";
   if (activeBtn.classList.contains("priority-button-low-active")) return "Low";
   return "Medium";
 }
@@ -673,7 +673,7 @@ function resetOverlayForm() {
   document.querySelectorAll("#overlayCheckboxList .assignedToCheckbox").forEach((cb) => cb.checked = false);
   document.getElementById("subtasksListOverlay").innerHTML = "";
   document.querySelectorAll(".priority-button").forEach((btn) => {
-    btn.classList.remove("priority-button-urgant-active", "priority-button-medium-active", "priority-button-low-active");
+    btn.classList.remove("priority-button-urgent-active", "priority-button-medium-active", "priority-button-low-active");
   });
 }
 
