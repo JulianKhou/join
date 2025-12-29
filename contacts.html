@@ -21,6 +21,7 @@
     <script src="./js/firebase.js" type="module"></script>
     <script type="module" src="./js/userInterface.js"></script>
     <script type="module" src="./js/contacts.js" defer></script>
+    <script type="module" src="./js/profilePopup.js"></script>
   </head>
 
   <body>
@@ -70,8 +71,15 @@
         <button class="userProfileInitials" id="userProfileInitialsBtn">
           <div class="nameInitials" id="nameInitials"></div>
         </button>
-        <div id="profileShowMore" class="profileShowMore d-none"></div>
-      </div>
+        
+        <div id="profileShowMore" class="profileShowMore d-none">
+          <a href="help.html">Help</a>
+          <a href="legalNoticeInt.html">Legal Notice</a>
+          <a href="privacyPolicyInt.html">Privacy Policy</a>
+          <hr />
+          <button id="logoutBtn">Log out</button>
+        </div>
+        
     </header>
 
     <main class="main-content-contacts">

@@ -351,19 +351,19 @@
       }
 
       .contacts-letter {
-        width: 100%;               /* volle Breite */
-        border-bottom: 1px solid #f0f0f0; /* Linie über volle Breite */
-        box-sizing: border-box;    /* Padding wird berücksichtigt */
+        width: 100%;              
+        border-bottom: 1px solid #f0f0f0; 
+        box-sizing: border-box;    
         padding-bottom: 4px;
-        margin-left: 0;            /* falls vorher eingerückt */
+        margin-left: 0;          
       }
 
       .contacts-letter::after {
         content: "";
         display: block;
-        height: 1px;               /* Dicke der Linie */
-        background-color: #f0f0f0; /* Farbe der Linie */
-        width: 100%;               /* Linie über volle Breite */
+        height: 1px;               
+        background-color: #f0f0f0; 
+        width: 100%;               
         position: absolute;
         bottom: 0;
         left: 0;
@@ -401,3 +401,6 @@
         height: 24px;
       }
   }
+
+  
+

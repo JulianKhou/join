@@ -8,13 +8,14 @@
 }
 
 .edit-contact-container {
-  width: 60%;
+  width: 80%;
   height: 480px;
   background: white;
   border-radius: 30px;
   display: flex;
   overflow: hidden;
   font-family: sans-serif;
+  right: 15px;
 }
 
 .edit-contact-left {
@@ -134,7 +135,7 @@
 .icon {
   position: absolute;
   top: 50%;
-  right: 11%;
+  right: -22%;
   transform: translateY(-50%);
   pointer-events: none;
 }
@@ -241,31 +242,27 @@ h3 {
 
 @media (max-width: 1625px) {
   .icon {
-    right: 20%;
+    right: -27%;
   }
   .edit-form input {
-    width: 300px;
+    width: 370px;
   }
   .buttons {
     padding-right: 180px;
+    margin-left: 180px;
   }
 }
 
 @media (max-width: 1425px) {
   .icon {
-    right: 28%;
+    right: -18%;
   }
   .edit-form input {
-    width: 240px;
+    width: 330px;
     padding-left: 10px;
   }
 }
 
-@media (max-width: 1400px) {
-  .icon {
-    right: 30%;
-  }
-}
 
 @media (max-width: 1270px) {
   .profile-circle {
@@ -287,7 +284,7 @@ h3 {
   .edit-form .input-wrapper {
     position: relative;
     margin-bottom: 18px;
-    width: 215px;
+    width: 0px;
   }
 
   .edit-form input {
@@ -295,12 +292,14 @@ h3 {
   }
 
   .icon{
-    right: 3%;
+    right: -105%;
   }
   .buttons {
-    padding-right: 0px;
     max-height: 45px;
-    margin-left: 154px;
+    margin-left: 180px;
+  }
+  .close-btn{
+    top: -12%;
   }
 }
 
@@ -369,7 +368,7 @@ h3 {
   .close-btn {
     position: fixed;
     top: 30%;
-    right: 21%;
+    right: 11%;
     background: none;
     border: none;
     font-size: 28px;
