@@ -1,3 +1,7 @@
+.d_none {
+    display: none !important;
+}
+
 .main-content-board {
     padding-left: 295px;
     padding-top: 180px;
@@ -84,6 +88,24 @@
     width: 160px;
     height: 48px;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    background-color: #2a3447;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 21px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-task-btn-responsiv {
+    width: 48px;
+    height: 48px;
+    display: none;
     justify-content: center;
     align-items: center;
     gap: 4px;
@@ -917,7 +939,7 @@
     align-items: flex-end;
 }
 
-.cancel-create-buttons{
+.cancel-create-buttons {
     display: flex;
     gap: 16px;
 }
@@ -1465,4 +1487,190 @@
     gap: 8px;
     overflow: auto;
     max-height: 70px;
+}
+
+.mobile-nav {
+    display: none;
+}
+
+.board-header-responsive {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-logo-small {
+    display: none;
+}
+
+@media (max-width: 1190px) {
+    .kanban-board {
+        flex-direction: column;
+    }
+
+    .kanban-column {
+        width: 100%;
+    }
+
+    .task-card {
+        width: 70%;
+    }
+
+    .overlay-add-task-card {
+        margin: 20px;
+    }
+}
+
+@media (max-width: 1030px) {
+    .board-title {
+        font-size: 47px;
+    }
+
+    .add-task-btn {
+        width: 160px;
+        height: 48px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        background-color: #2a3447;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 21px;
+        font-weight: 700;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .add-task-btn-responsiv {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        background-color: #2a3447;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 21px;
+        font-weight: 700;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .board-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .board-header-responsive {
+        gap: 20px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .board-header-actions {
+        width: 100%;
+    }
+
+    .search-wrapper {
+        width: 100%;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+
+    .column-title {
+        font-size: 27px;
+    }
+
+    .add-column-btn-svg {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 960px) {
+    .add-task-form-overlay{
+        flex-direction: column;
+    }
+
+    .form-divider {
+        display: none;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        left: 0 !important;
+        padding: 10px 16px;
+        box-sizing: border-box;
+    }
+
+    .main-content-board {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .mobile-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 74px;
+        background: #2a3647;
+        border-top: 1px solid #d1d1d1;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 500;
+    }
+
+    .mobile-nav a {
+        color: #ffffff;
+        font-size: 12px;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .mobile-nav {
+        display: flex !important;
+    }
+
+    .sideBoard {
+        display: none;
+    }
+
+    .header-title {
+        display: none;
+    }
+
+    .help {
+        display: none;
+    }
+
+    .header-logo-small {
+        display: block;
+        position: absolute;
+        top: 25px;
+        left: 48px;
+        width: 32px;
+        height: 39px;
+    }
+
+    .userProfileInitials {
+        margin-right: 16px;
+        width: 46px;
+        height: 46px;
+    }
 }
