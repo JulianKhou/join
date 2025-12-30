@@ -1,12 +1,13 @@
+
 .main-content-contacts {
     flex: 1;
     margin-left: 230px;
-    margin-top: 95px;
+    padding-top: 80px;
 }
 
 .contacts-container {
-    display: flex;
-    height: 100vh;
+  display: flex;
+  height: auto;
 }
 
 .mobile-nav{
@@ -232,15 +233,20 @@
     flex-direction: column;
 }
 
-@media (min-width:411px){
-    .fab-add-contact{
-        display: none;
-    }
+@media (max-width: 1000px){
+  .edit-form input{
+    padding-right: 92px;
+    width: 260px;
+}
 }
 
 @media (max-width: 500px) {
     .sideBoard {
       display: none;
+    }
+
+    .buttons {
+      padding-right: 84px;
     }
   
     .mobile-bottom-nav {

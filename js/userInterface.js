@@ -13,7 +13,6 @@ var logoutBtn = null;
 var privacySettingsBtn = null;
 var legalNoticeBtn = null;
 
-
 // Listen for authentication state changes
 onAuthChange(async (user) => {
   if (user) {
