@@ -244,10 +244,6 @@
     .sideBoard {
       display: none;
     }
-
-    .buttons {
-      padding-right: 84px;
-    }
   
     .mobile-bottom-nav {
       display: flex;
