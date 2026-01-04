@@ -13,20 +13,6 @@ var logoutBtn = null;
 var privacySettingsBtn = null;
 var legalNoticeBtn = null;
 
-// Wait for DOM to load before accessing elements
-document.addEventListener("DOMContentLoaded", () => {
-  var profileShowMoreBtn = document.getElementById("userProfileInitialsBtn");
-
-  if (profileShowMoreBtn) {
-    // Toggle profile dropdown and attach event listeners
-    profileShowMoreBtn.addEventListener("click", function () {
-      document.getElementById("profileShowMore").innerHTML = profileTemplate;
-      document.getElementById("profileShowMore").classList.toggle("d-none");
-      addEventListenersToProfileButtons();
-    });
-  }
-});
-
 // Listen for authentication state changes
 onAuthChange(async (user) => {
   if (user) {
@@ -127,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 
 
 

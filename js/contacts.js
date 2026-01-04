@@ -5,7 +5,7 @@ import {
   editContactTemplate,
 } from "../templates/contactTemplates.js";
 import { initOutsideClickHandler, getRandomColor } from "./utility.js";
-import { editOrAddContact, getContacts, deleteContact } from "./firebase.js";
+import { editOrAddContact, getContacts, auth, getContact, deleteContact } from "./firebase.js";
 
 const contacts = await getContacts();
 let currentShownContact = null;
@@ -358,3 +358,26 @@ function closeEditContactOverlay() {
 export function getContactsArray() {
   return contacts;
 }
+
+const editProfileBtn = document.getElementById("editProfileBtn");
+
+if (editProfileBtn) {
+  editProfileBtn.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("No user logged in.");
+      return;
+    }
+
+    try {
+      // Holt die Kontaktdaten des aktuell eingeloggten Users
+      const contact = await getContact(user.uid);
+      editContact(contact); // ruft die existierende editContact-Funktion auf
+    } catch (error) {
+      console.error("Could not fetch user contact:", error);
+      alert("Could not load your profile.");
+    }
+  });
+}
+
+
