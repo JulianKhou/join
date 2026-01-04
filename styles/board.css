@@ -144,7 +144,7 @@
     flex-direction: column;
     width: 25%;
     border-radius: 8px;
-    min-height: 400px;
+    min-height: 230px;
 }
 
 .column-header {
@@ -213,7 +213,7 @@
 .task-card {
     background-color: white;
     border-radius: 24px;
-    margin-top: 20px;
+    margin-bottom: 20px;
     padding: 18px;
     transition: box-shadow 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
@@ -1692,8 +1692,8 @@
     }
 
     .overlay-title {
-        font-size: 36px;
-        margin-bottom: 12px;
+        font-size: 36px !important;
+        margin-bottom: 12px !important;
     }
 
     .overlay-description {
@@ -1729,5 +1729,59 @@
 
     .overlay-label {
         font-size: 16px;
+    }
+
+    .overlay-add-task-card{
+        padding: 32px 24px 32px 24px;
+    }
+
+    .form-group label{
+        font-size: 16px;
+    }
+
+    .add-task-form-overlay{
+        gap: 24px;
+    }
+
+    .add-task-actions{
+        margin-top: 0px;
+    }
+
+    .btn-create{
+        font-size: 16px;
+    }
+
+    .btn-cancel{
+        font-size: 16px;
+    }
+
+    .priority-button {
+        font-size: 16px;
+    }
+
+    .priority-icon{
+        width: 16px;
+        height: 16px;
+    }
+
+    .priority-button {
+        width: 120px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 540px) {
+
+    .overlay-actions{
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 460px) {
+    .priority-button-group{
+        flex-direction: column;
+        gap: 12px;
     }
 }
