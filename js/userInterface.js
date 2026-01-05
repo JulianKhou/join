@@ -1,4 +1,4 @@
-import { updateUserProfile } from "./firebase.js";
+import { updateUserProfile, getUsername, onAuthChange } from "./firebase.js";
 import {
   profileTemplate,
   editProfileTemplate,
@@ -71,7 +71,7 @@ function handleUserLogoutRedirect() {
   const currentPath = window.location.pathname.toLowerCase();
   // Using lower case names for check
   const publicPages = [
-    "login.html",
+    "index.html",
     "signup.html",
     "privacypolicyext.html",
     "legalnoticeext.html",
@@ -87,10 +87,10 @@ function handleUserLogoutRedirect() {
   if (
     !isPublic &&
     !currentPath.endsWith("/") &&
-    !currentPath.includes("login.html")
+    !currentPath.includes("index.html")
   ) {
-    console.warn("Redirecting to logIn.html from", currentPath);
-    window.location.href = "logIn.html";
+    console.warn("Redirecting to index.html from", currentPath);
+    window.location.href = "index.html";
   }
 }
 
@@ -116,8 +116,8 @@ export function editProfileInitials() {
 function logoutUser() {
   logout()
     .then(() => {
-      window.location.href = "logIn.html";
-      console.log("User logged out and redirected to logIn.html");
+      window.location.href = "index.html";
+      console.log("User logged out and redirected to index.html");
     })
     .catch((error) => {
       console.error("Logout failed:", error);

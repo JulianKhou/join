@@ -802,7 +802,7 @@
   box-shadow: 0px 4px 4px 0px #00000040;
 }
 
-.priority-button-icon-urgant {
+.priority-button-icon-urgent {
   fill: #ff3d00;
 }
 
@@ -814,7 +814,7 @@
   fill: #7ae229;
 }
 
-.priority-button-urgant-active {
+.priority-button-urgent-active {
   background: #ff3d00;
   color: white;
   box-shadow: none !important;
@@ -1002,7 +1002,7 @@
 .user-story {
   background-color: #0038ff;
 }
-.priority-urgant {
+.priority-urgent {
   background: url(../assets/board/priority-high.svg);
   background-repeat: no-repeat;
   background-position: center;
@@ -1032,15 +1032,14 @@
 .edit-overlay-card {
   background-color: #fff;
   border-radius: 30px;
-  padding: 110px 40px 50px 40px;
-  width: 100%;
-  height: 100%;
-  max-height: 90vh;
+  padding: 50px 40px;
+  width: 520px;
+  height: auto;
+  max-height: 85vh;
   overflow-y: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .edit-overlay-close-btn {
@@ -1146,7 +1145,7 @@
   box-shadow: 0px 4px 4px 0px #00000040;
 }
 
-.edit-priority-btn .priority-button-icon-urgant {
+.edit-priority-btn .priority-button-icon-urgent {
   fill: #ff3d00;
 }
 
@@ -1158,7 +1157,7 @@
   fill: #7ae229;
 }
 
-.edit-priority-btn.edit-priority-urgant-active {
+.edit-priority-btn.edit-priority-urgent-active {
   background: #ff3d00;
   color: white;
   box-shadow: none !important;
@@ -1499,4 +1498,134 @@
   gap: 8px;
   overflow: auto;
   max-height: 70px;
+}
+
+/* Subtask Inline Edit Styles for Board Overlay */
+/* Subtask Inline Edit Styles for Board Overlay */
+.subtask-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  min-height: 32px; /* Prevent jumpiness */
+}
+
+.subtask-label:hover {
+  background-color: #eee;
+}
+
+/* Stable hover behavior */
+.subtask-label .edit-delete-subtask-buttons {
+  display: none;
+}
+/* Show buttons on hover or when focused */
+.subtask-label:hover .edit-delete-subtask-buttons,
+.subtask-label.subtask-focus .edit-delete-subtask-buttons {
+  display: flex;
+}
+
+.subtask-label:hover,
+.subtask-label.subtask-focus {
+  background-color: #eee;
+}
+
+.edit-delete-subtask-buttons {
+  gap: 4px;
+  align-items: center;
+}
+
+.edit-subtask-button-size,
+.delete-subtask-button-size {
+  /* Match Add Task buttons exactly if needed, or use robust local styles */
+  background: transparent;
+  border: none;
+  padding: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-subtask-button-size:hover,
+.delete-subtask-button-size:hover {
+  background-color: #d1d1d1;
+}
+
+.edit-subtask-button-size img,
+.delete-subtask-button-size img {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+/* Inline Input State */
+.subtask-label-active {
+  background-color: #fff;
+  border-bottom: 2px solid #29abe2;
+  border-radius: 0;
+  padding: 4px 0px;
+  margin-bottom: 4px; /* spacing while editing */
+}
+
+/* Force hover OFF when active for editing */
+.subtask-label-active:hover {
+  background-color: #fff;
+}
+
+.edit-subtask-input-inline {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  outline: none;
+  /* padding left to match text position? */
+  padding-left: 8px;
+}
+
+.edit-subtask-buttons-inline {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-right: 4px;
+}
+
+/* Inline buttons */
+.subtask-check-btn,
+.subtask-delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subtask-check-btn:hover,
+.subtask-delete-btn:hover {
+  background-color: #eee;
+}
+
+.subtask-check-btn img,
+.subtask-delete-btn img {
+  width: 18px; /* Slightly larger for action buttons? */
+  height: 18px;
+}
+
+/* The divider line */
+.dividing-line {
+  width: 1px;
+  height: 20px;
+  background-color: #d1d1d1;
+  margin: 0 4px;
 }

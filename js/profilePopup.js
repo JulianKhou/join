@@ -19,7 +19,7 @@ if (profileBtn && profileMenu) {
 
   // Logout → zurück zur Login-Seite
   logoutBtn?.addEventListener("click", () => {
-    logout().then(() => (window.location.href = "logIn.html"));
+    logout().then(() => (window.location.href = "index.html"));
   });
 
   // Privacy Settings → weiterleiten

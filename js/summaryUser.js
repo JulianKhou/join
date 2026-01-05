@@ -43,7 +43,7 @@ function loadUserData() {
       currentUser = user;
       updateGreetingName(currentUser);
 
-      const userTasks = getUserTasks(currentUser.uid); // ← fixed: use uid instead of id
+      const userTasks = getUserTasks(currentUser.id);
 
       // Update all task counts
       updateTaskCount(

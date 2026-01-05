@@ -369,8 +369,9 @@ export async function updateTask(taskId, updateData) {
 }
 
 export async function addEditTask(task) {
-  createTask(task).then((taskId) => {
+  return createTask(task).then((taskId) => {
     console.log("Task added with ID:", taskId);
+    return taskId;
   });
   //später mal updateTask aufrufen, wenn taskId existiert
 }

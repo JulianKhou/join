@@ -58,12 +58,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   priorityMediumBtn = document.getElementById("priorityMediumBtn");
   priorityLowBtn = document.getElementById("priorityLowBtn");
 
-  addTaskBtn?.addEventListener("click", (e) => {
+  addTaskBtn?.addEventListener("click", async (e) => {
     e.preventDefault();
     if (!validateTaskForm()) return;
-    createTaskObject();
-    // Logic to redirect or show success could go here
-    window.location.href = "board.html";
+
+    // Disable button to prevent double-submit
+    addTaskBtn.disabled = true;
+
+    try {
+      await createTaskObject();
+      // Logic to redirect or show success could go here
+      window.location.href = "board.html";
+    } catch (error) {
+      console.error("Error adding task:", error);
+      alert("Failed to add task. Please try again.");
+      addTaskBtn.disabled = false;
+    }
   });
 
   cancelTaskBtn?.addEventListener("click", (e) => {
@@ -201,6 +211,5 @@ function createTaskObject() {
   };
 
   // Using firebase function
-  addEditTask(task);
-  return task;
+  return addEditTask(task);
 }

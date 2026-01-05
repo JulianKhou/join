@@ -26,7 +26,7 @@ function handleSignup(e) {
 
   signUp(email, password, name)
     .then(() => {
-      window.location.href = "logIn.html";
+      window.location.href = "index.html";
     })
     .catch((error) => {
       alert("Signup failed: " + error.message);
