@@ -429,3 +429,46 @@ body {
 .save-btn:hover {
   background: #29abe2;
 }
+
+.profileShowMore {
+  position: absolute;
+  top: 80px; /* unter dem Header-Button */
+  right: 32px;
+  width: 160px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  padding: 10px 0;
+  gap: 4px;
+  z-index: 999;
+}
+
+.profileShowMore a,
+.profileShowMore button {
+  padding: 10px 16px;
+  font-size: 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  text-align: center;
+  justify-content: center;
+  text-decoration: none;
+  width: 100%;
+  color: var(--mainColor-default);
+  cursor: pointer;
+}
+
+.profileShowMore a:hover,
+.profileShowMore button:hover {
+  background-color: var(--veryLightGray-default);
+}
+
+.profileShowMore hr {
+  margin: 6px 0;
+  border: none;
+  border-top: 1px solid #e0e0e0;
+}
+
+.profileShowMore:not(.d-none) {
+  display: flex;
+}

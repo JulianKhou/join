@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <script src="./js/firebase.js" type="module"></script>
   <script src="./js/board.js" type="module"></script>
+  <script type="module" src="./js/profilePopup.js"></script>
   <script type="module" src="./js/userInterface.js"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
@@ -48,19 +49,20 @@
     </div>
   </nav>
   <header class="header">
-    <span class="header-title">Kanban Project Management Tool</span>
-    <div class="headerRight">
-      <a href="./help.html">
-        <div class="help"></div>
-      </a>
-
-      <button class="userProfileInitials" id="userProfileInitialsBtn">
-        <div class="nameInitials" id="nameInitials"></div>
-      </button>
-      <div id="profileShowMore" class="profileShowMore d-none"></div>
-
-    </div>
-  </header>
+      <img
+        src="./assets/LogIn&SignUp/Capa3.svg"
+        class="header-logo-small"
+        alt="Join Logo Small"
+      />
+      <span class="header-title">Kanban Project Management Tool</span>
+      <div class="headerRight">
+        <a href="./help.html"><div class="help"></div></a>
+        <button class="userProfileInitials" id="userProfileInitialsBtn">
+          <div class="nameInitials" id="nameInitials"></div>
+        </button>
+        <div id="profileShowMore" class="profileShowMore d-none"></div>
+      </div>
+    </header>
   <!-- Overlay -->
   <div class="overlay-edit" id="taskDetailOverlay">
     <div class="overlay-edit-card">
@@ -203,9 +205,9 @@
           <div class="form-group">
             <label>Priority</label>
             <div class="priority-button-group">
-              <button class="priority-button" id="priority-button-urgant">
-                <span class="priority-name">Urgant</span>
-                <svg class="priority-icon priority-button-icon-urgant" xmlns="http://www.w3.org/2000/svg" width="20"
+              <button class="priority-button">
+                <span class="priority-name">Urgent</span>
+                <svg class="priority-icon priority-button-icon-urgent" xmlns="http://www.w3.org/2000/svg" width="20"
                   height="15" viewBox="0 0 20 15" fill="none">
                   <path
                     d="M18.9043 14.5096C18.6696 14.51 18.4411 14.4351 18.2522 14.2961L10.0001 8.21288L1.74809 14.2961C1.63224 14.3816 1.50066 14.4435 1.36086 14.4783C1.22106 14.513 1.07577 14.5199 0.933305 14.4986C0.790837 14.4772 0.653973 14.428 0.530528 14.3538C0.407083 14.2796 0.299474 14.1818 0.213845 14.0661C0.128216 13.9503 0.0662437 13.8188 0.0314671 13.6791C-0.00330956 13.5394 -0.0102098 13.3943 0.0111604 13.2519C0.0543195 12.9644 0.21001 12.7058 0.443982 12.533L9.34809 5.96249C9.53679 5.8229 9.76536 5.74756 10.0001 5.74756C10.2349 5.74756 10.4635 5.8229 10.6522 5.96249L19.5563 12.533C19.7422 12.6699 19.8801 12.862 19.9503 13.0819C20.0204 13.3018 20.0193 13.5382 19.9469 13.7573C19.8746 13.9765 19.7349 14.1673 19.5476 14.3024C19.3604 14.4375 19.1352 14.51 18.9043 14.5096Z" />
@@ -281,125 +283,163 @@
 
       <!-- Action Buttons -->
       <div class="overlay-actions add-task-actions">
-        <button type="button" class="btn-cancel" id="addTaskCancelBtn">Cancel</button>
-        <button type="submit" form="addTaskFormOverlay" class="btn-create">Create Task
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
-            <path
-              d="M5.288 8.775L13.763 0.3C13.963 0.1 14.2005 0 14.4755 0C14.7505 0 14.988 0.1 15.188 0.3C15.388 0.5 15.488 0.7375 15.488 1.0125C15.488 1.2875 15.388 1.525 15.188 1.725L5.988 10.925C5.788 11.125 5.55467 11.225 5.288 11.225C5.02133 11.225 4.788 11.125 4.588 10.925L0.288 6.625C0.088 6.425 -0.00783333 6.1875 0.0005 5.9125C0.00883333 5.6375 0.113 5.4 0.313 5.2C0.513 5 0.7505 4.9 1.0255 4.9C1.3005 4.9 1.538 5 1.738 5.2L5.288 8.775Z"
-              fill="white" />
-          </svg>
-        </button>
+        <div class="required-text">
+          <span class="required">*</span>
+          <span>This field is required</span>
+        </div>
+        <div class="cancel-create-buttons">
+          <button type="button" class="btn-cancel" id="addTaskCancelBtn">Cancel</button>
+          <button type="submit" form="addTaskFormOverlay" class="btn-create">Create Task
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
+              <path
+                d="M5.288 8.775L13.763 0.3C13.963 0.1 14.2005 0 14.4755 0C14.7505 0 14.988 0.1 15.188 0.3C15.388 0.5 15.488 0.7375 15.488 1.0125C15.488 1.2875 15.388 1.525 15.188 1.725L5.988 10.925C5.788 11.125 5.55467 11.225 5.288 11.225C5.02133 11.225 4.788 11.125 4.588 10.925L0.288 6.625C0.088 6.425 -0.00783333 6.1875 0.0005 5.9125C0.00883333 5.6375 0.113 5.4 0.313 5.2C0.513 5 0.7505 4.9 1.0255 4.9C1.3005 4.9 1.538 5 1.738 5.2L5.288 8.775Z"
+                fill="white" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
   <main class="main-content-board">
-    <section class="board-header-row">
-      <h1 class="board-title">Board</h1>
-      <div class="board-header-actions">
-        <div class="search-wrapper">
-          <input type="text" class="search-input" placeholder="Find Task" id="searchInput">
-          <div class="search-divider"></div>
-          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none">
-            <path
-              d="M6.50185 13.0037C4.68467 13.0037 3.14673 12.3744 1.88804 11.1157C0.629346 9.85697 0 8.31903 0 6.50185C0 4.68467 0.629346 3.14673 1.88804 1.88804C3.14673 0.629346 4.68467 0 6.50185 0C8.31903 0 9.85697 0.629346 11.1157 1.88804C12.3744 3.14673 13.0037 4.68467 13.0037 6.50185C13.0037 7.23539 12.887 7.92725 12.6536 8.57744C12.4202 9.22762 12.1034 9.80279 11.7033 10.3029L17.3049 15.9045C17.4883 16.0879 17.58 16.3213 17.58 16.6047C17.58 16.8881 17.4883 17.1215 17.3049 17.3049C17.1215 17.4883 16.8881 17.58 16.6047 17.58C16.3213 17.58 16.0879 17.4883 15.9045 17.3049L10.3029 11.7033C9.80279 12.1034 9.22762 12.4202 8.57744 12.6536C7.92725 12.887 7.23539 13.0037 6.50185 13.0037ZM6.50185 11.0031C7.7522 11.0031 8.81501 10.5655 9.69026 9.69026C10.5655 8.81501 11.0031 7.7522 11.0031 6.50185C11.0031 5.25149 10.5655 4.18869 9.69026 3.31344C8.81501 2.43819 7.7522 2.00057 6.50185 2.00057C5.25149 2.00057 4.18869 2.43819 3.31344 3.31344C2.43819 4.18869 2.00057 5.25149 2.00057 6.50185C2.00057 7.7522 2.43819 8.81501 3.31344 9.69026C4.18869 10.5655 5.25149 11.0031 6.50185 11.0031Z"
-              fill="#2A3647" />
-          </svg>
+    <div class="board-wrapper">
+      <section class="board-header-row">
+        <div class="board-header-responsive">
+          <h1 class="board-title">Board</h1>
+          <button class="add-task-btn-responsiv" id="addTaskBtnResponsiv" onclick="openAddTaskOverlay()">
+            <svg class="plus-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"
+              fill="none">
+              <mask id="mask0_400464_4357" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="32"
+                height="32">
+                <rect width="32" height="32" fill="#D9D9D9" />
+              </mask>
+              <g mask="url(#mask0_400464_4357)">
+                <path
+                  d="M14.666 17.3327H6.66602V14.666H14.666V6.66602H17.3327V14.666H25.3327V17.3327H17.3327V25.3327H14.666V17.3327Z"
+                  fill="white" />/
+            </svg>
+          </button>
         </div>
-        <button class="add-task-btn" id="addTaskBtn" onclick="openAddTaskOverlay()">Add task
-          <svg class="plus-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"
-            fill="none">
-            <mask id="mask0_400464_4357" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="32"
-              height="32">
-              <rect width="32" height="32" fill="#D9D9D9" />
-            </mask>
-            <g mask="url(#mask0_400464_4357)">
+        <div class="board-header-actions">
+          <div class="search-wrapper">
+            <input type="text" class="search-input" placeholder="Find Task" id="searchInput">
+            <div class="search-divider"></div>
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none">
               <path
-                d="M14.666 17.3327H6.66602V14.666H14.666V6.66602H17.3327V14.666H25.3327V17.3327H17.3327V25.3327H14.666V17.3327Z"
-                fill="white" />/
-          </svg>
-        </button>
-      </div>
-    </section>
-
-    <div class="kanban-board">
-      <!-- To Do -->
-      <div class="kanban-column" id="todoColumnContainer">
-        <div class="column-header">
-          <h2 class="column-title">To do</h2>
-          <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay()">
-            <svg class="add-column-btn-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-              viewBox="0 0 24 24" fill="none">
-              <rect x="1" y="1" width="22" height="22" rx="7" stroke-width="2" />
-              <path d="M12 8V16" stroke-width="2" stroke-linecap="round" />
-              <path d="M16 12.0754L8 12.0754" stroke-width="2" stroke-linecap="round" />
+                d="M6.50185 13.0037C4.68467 13.0037 3.14673 12.3744 1.88804 11.1157C0.629346 9.85697 0 8.31903 0 6.50185C0 4.68467 0.629346 3.14673 1.88804 1.88804C3.14673 0.629346 4.68467 0 6.50185 0C8.31903 0 9.85697 0.629346 11.1157 1.88804C12.3744 3.14673 13.0037 4.68467 13.0037 6.50185C13.0037 7.23539 12.887 7.92725 12.6536 8.57744C12.4202 9.22762 12.1034 9.80279 11.7033 10.3029L17.3049 15.9045C17.4883 16.0879 17.58 16.3213 17.58 16.6047C17.58 16.8881 17.4883 17.1215 17.3049 17.3049C17.1215 17.4883 16.8881 17.58 16.6047 17.58C16.3213 17.58 16.0879 17.4883 15.9045 17.3049L10.3029 11.7033C9.80279 12.1034 9.22762 12.4202 8.57744 12.6536C7.92725 12.887 7.23539 13.0037 6.50185 13.0037ZM6.50185 11.0031C7.7522 11.0031 8.81501 10.5655 9.69026 9.69026C10.5655 8.81501 11.0031 7.7522 11.0031 6.50185C11.0031 5.25149 10.5655 4.18869 9.69026 3.31344C8.81501 2.43819 7.7522 2.00057 6.50185 2.00057C5.25149 2.00057 4.18869 2.43819 3.31344 3.31344C2.43819 4.18869 2.00057 5.25149 2.00057 6.50185C2.00057 7.7522 2.43819 8.81501 3.31344 9.69026C4.18869 10.5655 5.25149 11.0031 6.50185 11.0031Z"
+                fill="#2A3647" />
+            </svg>
+          </div>
+          <button class="add-task-btn" id="addTaskBtn" onclick="openAddTaskOverlay()">Add task
+            <svg class="plus-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"
+              fill="none">
+              <mask id="mask0_400464_4357" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="32"
+                height="32">
+                <rect width="32" height="32" fill="#D9D9D9" />
+              </mask>
+              <g mask="url(#mask0_400464_4357)">
+                <path
+                  d="M14.666 17.3327H6.66602V14.666H14.666V6.66602H17.3327V14.666H25.3327V17.3327H17.3327V25.3327H14.666V17.3327Z"
+                  fill="white" />/
             </svg>
           </button>
         </div>
+      </section>
 
-        <div class="tasks-container" id="todoColumn">
-          <div class="no-task todo-Column-no-task">
-            <span>No tasks To do</span>
+      <div class="kanban-board">
+        <!-- To Do -->
+        <div class="kanban-column" id="todoColumnContainer">
+          <div class="column-header">
+            <h2 class="column-title">To do</h2>
+            <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay()">
+              <svg class="add-column-btn-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none">
+                <rect x="1" y="1" width="22" height="22" rx="7" stroke-width="2" />
+                <path d="M12 8V16" stroke-width="2" stroke-linecap="round" />
+                <path d="M16 12.0754L8 12.0754" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
           </div>
-        </div>
-      </div>
 
-      <!-- In Progress -->
-      <div class="kanban-column" id="inProgressColumnContainer">
-        <div class="column-header">
-          <h2 class="column-title">In progress</h2>
-          <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay()">
-            <svg class="add-column-btn-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-              viewBox="0 0 24 24" fill="none">
-              <rect x="1" y="1" width="22" height="22" rx="7" stroke-width="2" />
-              <path d="M12 8V16" stroke-width="2" stroke-linecap="round" />
-              <path d="M16 12.0754L8 12.0754" stroke-width="2" stroke-linecap="round" />
-            </svg>
-          </button>
-        </div>
-        <div class="tasks-container" id="progressColumn">
-          <div class="no-task inProgress-Column-no-task">
-            <span>No tasks In progress</span>
+          <div class="tasks-container" id="todoColumn">
+            <div class="no-task todo-Column-no-task">
+              <span>No tasks To do</span>
+            </div>
           </div>
         </div>
 
+        <!-- In Progress -->
+        <div class="kanban-column" id="inProgressColumnContainer">
+          <div class="column-header">
+            <h2 class="column-title">In progress</h2>
+            <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay()">
+              <svg class="add-column-btn-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none">
+                <rect x="1" y="1" width="22" height="22" rx="7" stroke-width="2" />
+                <path d="M12 8V16" stroke-width="2" stroke-linecap="round" />
+                <path d="M16 12.0754L8 12.0754" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="tasks-container" id="progressColumn">
+            <div class="no-task inProgress-Column-no-task">
+              <span>No tasks In progress</span>
+            </div>
+          </div>
 
-      </div>
 
-      <!-- Await Feedback -->
-      <div class="kanban-column" id="feedbackColumnContainer">
-        <div class="column-header">
-          <h2 class="column-title">Await feedback</h2>
-          <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay()">
-            <svg class="add-column-btn-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-              viewBox="0 0 24 24" fill="none">
-              <rect x="1" y="1" width="22" height="22" rx="7" stroke-width="2" />
-              <path d="M12 8V16" stroke-width="2" stroke-linecap="round" />
-              <path d="M16 12.0754L8 12.0754" stroke-width="2" stroke-linecap="round" />
-            </svg>
-          </button>
         </div>
-        <div class="tasks-container" id="awaitFeedbackColumn">
-          <div class="no-task awaitFeedback-Column-no-task">
-            <span>No tasks Await Feedback</span>
+
+        <!-- Await Feedback -->
+        <div class="kanban-column" id="feedbackColumnContainer">
+          <div class="column-header">
+            <h2 class="column-title">Await feedback</h2>
+            <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay()">
+              <svg class="add-column-btn-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none">
+                <rect x="1" y="1" width="22" height="22" rx="7" stroke-width="2" />
+                <path d="M12 8V16" stroke-width="2" stroke-linecap="round" />
+                <path d="M16 12.0754L8 12.0754" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="tasks-container" id="awaitFeedbackColumn">
+            <div class="no-task awaitFeedback-Column-no-task">
+              <span>No tasks Await Feedback</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Done -->
-      <div class="kanban-column" id="doneColumnContainer">
-        <div class="column-header">
-          <h2 class="column-title">Done</h2>
-        </div>
-        <div class="tasks-container" id="doneColumn">
-          <div class="no-task done-Column-no-task">
-            <span>No tasks Done</span>
+        <!-- Done -->
+        <div class="kanban-column" id="doneColumnContainer">
+          <div class="column-header">
+            <h2 class="column-title">Done</h2>
+          </div>
+          <div class="tasks-container" id="doneColumn">
+            <div class="no-task done-Column-no-task">
+              <span>No tasks Done</span>
+            </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </main>
+
+  <nav class="mobile-nav">
+    <a href="summaryUser.html">
+      <img src="./assets/sideboardAssets/summary.svg" /><br />Summary
+    </a>
+    <a href="addTask.html">
+      <img src="./assets/sideboardAssets/addTask.svg" /><br />Add Task
+    </a>
+    <a href="board.html">
+      <img src="./assets/sideboardAssets/board.svg" /><br />Board
+    </a>
+    <a href="contacts.html">
+      <img src="./assets/sideboardAssets/contacts.svg" /><br />Contacts
+    </a>
+  </nav>
 </body>
 
 </html>

@@ -374,6 +374,15 @@ a {
   height: calc(100vh - 80px);
 }
 
+@media (max-width:1150px){
+  .summary-greeting-text{
+    font-size: 32px;
+  }
+  .summary-greeting-user{
+    font-size: 40px;
+  }
+}
+
 @media (max-width: 1030px) {
   .summary-content-row {
     flex-direction: column;

@@ -38,7 +38,7 @@ import {
 const PRIORITY = Object.freeze({
   LOW: "Low",
   MEDIUM: "Medium",
-  URGENT: "Urgant",
+  URGENT: "Urgent",
 });
 
 let selectedPriority = PRIORITY.MEDIUM;

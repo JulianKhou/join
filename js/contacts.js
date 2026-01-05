@@ -5,7 +5,7 @@ import {
   editContactTemplate,
 } from "../templates/contactTemplates.js";
 import { initOutsideClickHandler, getRandomColor } from "./utility.js";
-import { editOrAddContact, getContacts, deleteContact } from "./firebase.js";
+import { editOrAddContact, getContacts, auth, getContact, deleteContact } from "./firebase.js";
 
 const contacts = await getContacts();
 let currentShownContact = null;
@@ -65,19 +65,27 @@ function contactListClickHandler(e) {
 if (contactsList) contactsList.addEventListener("click", contactListClickHandler);
 
 const addContactBtn = document.getElementById("addContactBtn");
+const addContactMobileBtn = document.getElementById("addContactMobileBtn");
+
 let closeAddBtn = null;
 let saveContactBtn = null;
-
 /* Open add-contact overlay (prevents multiple overlays). */
-addContactBtn.addEventListener("click", () => {
-  
+function openAddContactOverlay() {
   if (document.querySelector(".add-contact-overlay")) return;
 
   const addContent = document.getElementById("addContact");
   addContent.insertAdjacentHTML("beforeend", addContactTemplate);
 
   addEventListenerToAddContactForm();
-});
+}
+
+if (addContactBtn) {
+  addContactBtn.addEventListener("click", openAddContactOverlay);
+}
+
+if (addContactMobileBtn) {
+  addContactMobileBtn.addEventListener("click", openAddContactOverlay);
+}
 
 /* Add listeners for add-contact overlay: close button, outside click, save. */
 function addEventListenerToAddContactForm() {
@@ -350,3 +358,26 @@ function closeEditContactOverlay() {
 export function getContactsArray() {
   return contacts;
 }
+
+const editProfileBtn = document.getElementById("editProfileBtn");
+
+if (editProfileBtn) {
+  editProfileBtn.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("No user logged in.");
+      return;
+    }
+
+    try {
+      // Holt die Kontaktdaten des aktuell eingeloggten Users
+      const contact = await getContact(user.uid);
+      editContact(contact); // ruft die existierende editContact-Funktion auf
+    } catch (error) {
+      console.error("Could not fetch user contact:", error);
+      alert("Could not load your profile.");
+    }
+  });
+}
+
+

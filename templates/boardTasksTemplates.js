@@ -255,9 +255,9 @@ export function editTaskFormTemplate(task, categories, contacts) {
         <div class="edit-form-group">
           <label class="priority-label">Priority</label>
           <div class="edit-priority-group">
-            <button type="button" class="edit-priority-btn" id="edit-priority-urgent-${task.id}" data-priority="Urgant">
-              <span class="priority-name">Urgant</span>
-              <svg class="priority-icon priority-button-icon-urgant" xmlns="http://www.w3.org/2000/svg" width="20"
+            <button type="button" class="edit-priority-btn" id="edit-priority-urgent-${task.id}" data-priority="Urgent">
+              <span class="priority-name">Urgent</span>
+              <svg class="priority-icon priority-button-icon-urgent" xmlns="http://www.w3.org/2000/svg" width="20"
                 height="15" viewBox="0 0 20 15" fill="none">
                 <path
                   d="M18.9043 14.5096C18.6696 14.51 18.4411 14.4351 18.2522 14.2961L10.0001 8.21288L1.74809 14.2961C1.63224 14.3816 1.50066 14.4435 1.36086 14.4783C1.22106 14.513 1.07577 14.5199 0.933305 14.4986C0.790837 14.4772 0.653973 14.428 0.530528 14.3538C0.407083 14.2796 0.299474 14.1818 0.213845 14.0661C0.128216 13.9503 0.0662437 13.8188 0.0314671 13.6791C-0.00330956 13.5394 -0.0102098 13.3943 0.0111604 13.2519C0.0543195 12.9644 0.21001 12.7058 0.443982 12.533L9.34809 5.96249C9.53679 5.8229 9.76536 5.74756 10.0001 5.74756C10.2349 5.74756 10.4635 5.8229 10.6522 5.96249L19.5563 12.533C19.7422 12.6699 19.8801 12.862 19.9503 13.0819C20.0204 13.3018 20.0193 13.5382 19.9469 13.7573C19.8746 13.9765 19.7349 14.1673 19.5476 14.3024C19.3604 14.4375 19.1352 14.51 18.9043 14.5096Z" />

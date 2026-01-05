@@ -4,6 +4,9 @@ import {
   getTask,
   updateTask,
   deleteTask,
+  updateTask,
+  createTask,
+  addEditTask,
 } from "./firebase.js";
 import {
   taskCardTemplate,

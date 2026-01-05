@@ -8,13 +8,14 @@
 }
 
 .edit-contact-container {
-  width: 60%;
+  width: 80%;
   height: 480px;
   background: white;
   border-radius: 30px;
   display: flex;
   overflow: hidden;
   font-family: sans-serif;
+  right: 15px;
 }
 
 .edit-contact-left {
@@ -134,7 +135,7 @@
 .icon {
   position: absolute;
   top: 50%;
-  right: 11%;
+  right: -22%;
   transform: translateY(-50%);
   pointer-events: none;
 }
@@ -241,29 +242,24 @@ h3 {
 
 @media (max-width: 1625px) {
   .icon {
-    right: 20%;
+    right: -27%;
   }
   .edit-form input {
-    width: 300px;
+    width: 370px;
   }
   .buttons {
     padding-right: 180px;
+    margin-left: 181px;
   }
 }
 
 @media (max-width: 1425px) {
   .icon {
-    right: 28%;
+    right: -18%;
   }
   .edit-form input {
-    width: 240px;
+    width: 330px;
     padding-left: 10px;
-  }
-}
-
-@media (max-width: 1400px) {
-  .icon {
-    right: 30%;
   }
 }
 
@@ -287,20 +283,22 @@ h3 {
   .edit-form .input-wrapper {
     position: relative;
     margin-bottom: 18px;
-    width: 215px;
+    width: 0px;
   }
 
   .edit-form input {
-    width: 200px;
+    width: 260px;
   }
 
-  .icon{
-    right: 3%;
+  .icon {
+    right: -140%;
   }
   .buttons {
-    padding-right: 0px;
     max-height: 45px;
-    margin-left: 154px;
+    margin-left: 180px;
+}
+  .close-btn {
+    top: -12%;
   }
 }
 
@@ -318,9 +316,9 @@ h3 {
     height: auto;
     padding-bottom: 30px;
   }
-.edit-blue-line{
-  border-bottom: 3px solid #4bb1ff;
-}
+  .edit-blue-line {
+    border-bottom: 3px solid #4bb1ff;
+  }
 
   .edit-contact-left {
     width: 100%;
@@ -329,7 +327,7 @@ h3 {
     position: relative;
   }
 
-  .blue-line{
+  .blue-line {
     display: none;
   }
 
@@ -352,24 +350,28 @@ h3 {
   }
   .icon {
     display: unset;
-    right: -22%;
+    right: -160%;
   }
   .edit-form .input-wrapper {
     margin-right: 225px;
+    margin-left: 40px;
+  }
+  .edit-form {
+    padding-right: 100px;
   }
   .edit-form input {
     width: 300px;
   }
   .buttons {
-    margin-left: 0px;
-  }
+    margin-left: 264px;
+}
 }
 
 @media (min-width: 1001px) {
   .close-btn {
     position: fixed;
     top: 30%;
-    right: 21%;
+    right: 11%;
     background: none;
     border: none;
     font-size: 28px;
@@ -387,13 +389,22 @@ h3 {
   }
 }
 
-@media (max-width: 670px){
-  .edit-form input{
-    width: 230px;
+@media (max-width: 670px) {
+  .edit-form input {
+    width: 300px;
   }
   .icon {
-    right: -5%;
+    right: -160%;
+  }
 }
+
+@media (max-width: 500px) {
+  .buttons {
+    margin-left: 264px;
+  }
+  .edit-form .input-wrapper {
+    margin-left: 32px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -403,14 +414,14 @@ h3 {
     text-align: center;
   }
   .edit-form input {
-    width: 230px;
+    width: 300px;
     font-size: 0.9rem;
   }
   .blue-line {
     margin-left: 480px;
   }
   .icon {
-    right: -6%;
+    right: -160%;
   }
   .delete-btn,
   .save-btn {
@@ -424,28 +435,32 @@ h3 {
     font-size: 32px;
     font-weight: bold;
   }
-  .buttons {
-    padding-right: 15px;
-  }
   .close-btn {
     font-size: 22px;
   }
+  .edit-form .input-wrapper {
+    margin-right: 300px;
+    margin-left: 34px;
+  }
+  .buttons {
+    margin-left: 264px;
+  }
 }
 
-@media (max-width: 430px){
+@media (max-width: 430px) {
   .edit-form input {
-    width: 220px;
+    width: 300px;
   }
   .icon {
-    right: -4%;
+    right: -160%;
   }
 }
 
 @media (max-width: 400px) {
   .edit-form input {
-    width: 210px;
-    margin-left: 8px;
-  }
+    width: 230px;
+    margin-left: -20px;
+}
   .edit-contact-left {
     padding: 40px 5px;
   }
@@ -459,7 +474,7 @@ h3 {
     margin-top: -15px;
   }
   .icon {
-    right: -2%;
+    right: -112%;
   }
   .delete-btn,
   .save-btn {
@@ -469,21 +484,24 @@ h3 {
     cursor: pointer;
   }
   .buttons {
-    padding-right: 20px;
+    margin-right: -16px;
   }
+  .edit-form .input-wrapper {
+    margin-left: 74px;
+}
 }
 @media (max-width: 380px) {
   .edit-form input {
-    width: 190px;
-    margin-left: 17px;
-  }
+    width: 200px;
+    margin-left: -16px;
+}
   .profile-circle {
     width: 60px;
     height: 60px;
     font-size: 24px;
   }
   .icon {
-    right: 1%;
+    right: -99%;
   }
   .delete-btn,
   .save-btn {
@@ -494,12 +512,12 @@ h3 {
   }
 }
 
-@media (max-width: 350px){
-  .icon{
-    right: 2%;
+@media (max-width: 350px) {
+  .icon {
+    right: -94%;
   }
-  .edit-form input{
-    width: 173px;
-    margin-left: 26px;
-  }
+  .edit-form input {
+    width: 200px;
+    margin-left: -24px;
+}
 }

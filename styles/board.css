@@ -1,3 +1,7 @@
+.d_none {
+  display: none !important;
+}
+
 .main-content-board {
   padding-left: 295px;
   padding-top: 180px;
@@ -106,6 +110,24 @@
   transition: background-color 0.3s ease;
 }
 
+.add-task-btn-responsiv {
+  width: 48px;
+  height: 48px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  background-color: #2a3447;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 21px;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
 .add-task-btn:hover {
   background-color: #29abe2;
 }
@@ -130,7 +152,7 @@
   flex-direction: column;
   width: 25%;
   border-radius: 8px;
-  min-height: 400px;
+  min-height: 230px;
 }
 
 .column-header {
@@ -199,7 +221,7 @@
 .task-card {
   background-color: white;
   border-radius: 24px;
-  margin-top: 20px;
+  margin-bottom: 20px;
   padding: 18px;
   transition: box-shadow 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
@@ -322,7 +344,7 @@
   height: 20px;
 }
 
-.priority-urgant .priority-icon {
+.priority-urgent .priority-icon {
   color: #ff3333;
 }
 
@@ -370,6 +392,7 @@
   from {
     transform: translateX(150%);
   }
+
   to {
     transform: translateX(0);
   }
@@ -379,6 +402,7 @@
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(150%);
   }
@@ -443,6 +467,7 @@
   font-size: 23px;
   font-weight: 400;
 }
+
 .card-detail-technical-task {
   background-color: #1fd7c1;
 }
@@ -1002,27 +1027,6 @@
   width: 20px;
   height: 20px;
 }
-/* Standard: nur View sichtbar */
-.edit-field {
-  display: none;
-}
-
-/* Wenn Karte im Edit-Modus ist */
-.overlay-detail-card.editing .view-field {
-  display: none;
-}
-
-.overlay-detail-card.editing .edit-field {
-  display: block; /* oder inline/inline-block je nach Element */
-}
-
-/* Optional etwas Styling */
-.overlay-title-input,
-.overlay-description-input,
-#taskDueDateEdit-/*id*/ {
-  width: 100%;
-  /* padding, border etc. */
-}
 
 /* Edit Task Overlay Styles - Independent from Add Task */
 .edit-overlay-card {
@@ -1172,7 +1176,7 @@
   box-shadow: none !important;
 }
 
-.edit-priority-btn.edit-priority-urgant-active .priority-icon,
+.edit-priority-btn.edit-priority-urgent-active .priority-icon,
 .edit-priority-btn.edit-priority-medium-active .priority-icon,
 .edit-priority-btn.edit-priority-low-active .priority-icon {
   fill: white;
