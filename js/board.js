@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function initDragAndDrop() {
   const cards = document.querySelectorAll('[draggable="true"]');
-  const dropZones = document.querySelectorAll(".kanban-column");
+  const dropZones = document.querySelectorAll(".tasks-container");
   cards.forEach((card) => card.addEventListener("dragstart", handleDragStart));
   dropZones.forEach((zone) => {
     zone.addEventListener("dragover", handleDragOver);
@@ -102,10 +102,10 @@ function filterTasks(searchText) {
 
 function updateNoTaskVisibility() {
   const columns = [
-    { id: "todoColumnContainer", noTaskClass: ".todo-Column-no-task" },
-    { id: "inProgressColumnContainer", noTaskClass: ".inProgress-Column-no-task" },
-    { id: "feedbackColumnContainer", noTaskClass: ".awaitFeedback-Column-no-task" },
-    { id: "doneColumnContainer", noTaskClass: ".done-Column-no-task" }
+    { id: "todoColumn", noTaskClass: ".todo-Column-no-task" },
+    { id: "progressColumn", noTaskClass: ".inProgress-Column-no-task" },
+    { id: "awaitFeedbackColumn", noTaskClass: ".awaitFeedback-Column-no-task" },
+    { id: "doneColumn", noTaskClass: ".done-Column-no-task" }
   ];
   columns.forEach((col) => {
     const column = document.getElementById(col.id);
@@ -124,10 +124,10 @@ function closeOverlayOnBtn() {
 
 function renderTasks(tasks) {
   const columns = {
-    toDo: document.getElementById("todoColumnContainer"),
-    inProgress: document.getElementById("inProgressColumnContainer"),
-    awaitFeedback: document.getElementById("feedbackColumnContainer"),
-    done: document.getElementById("doneColumnContainer")
+    toDo: document.getElementById("todoColumn"),
+    inProgress: document.getElementById("progressColumn"),
+    awaitFeedback: document.getElementById("awaitFeedbackColumn"),
+    done: document.getElementById("doneColumn")
   };
   tasks.forEach((task) => {
     const column = columns[task.progress];
@@ -175,10 +175,10 @@ function updateTaskProgressInFirebase(taskId, newProgress) {
 
 function getNewProgressFromDropZone(dropZone) {
   const progressMap = {
-    todoColumnContainer: "toDo",
-    inProgressColumnContainer: "inProgress",
-    feedbackColumnContainer: "awaitFeedback",
-    doneColumnContainer: "done"
+    todoColumn: "toDo",
+    progressColumn: "inProgress",
+    awaitFeedbackColumn: "awaitFeedback",
+    doneColumn: "done"
   };
   return progressMap[dropZone.id];
 }
@@ -204,18 +204,8 @@ document.getElementById("addTaskOverlay")?.addEventListener("click", (e) => {
   if (e.target === document.getElementById("addTaskOverlay")) closeAddTaskOverlay();
 });
 
-function toggleColumnVisibility(containerId, contentId) {
-  const container = document.getElementById(containerId);
-  const content = document.getElementById(contentId);
-  const hasCards = container.querySelectorAll(".task-card").length > 0;
-  content.style.display = hasCards ? "none" : "block";
-}
-
 function checkColumnVisibility() {
-  toggleColumnVisibility("todoColumnContainer", "todoColumn");
-  toggleColumnVisibility("inProgressColumnContainer", "progressColumn");
-  toggleColumnVisibility("feedbackColumnContainer", "awaitFeedbackColumn");
-  toggleColumnVisibility("doneColumnContainer", "doneColumn");
+  updateNoTaskVisibility();
 }
 
 function changeSubtaskProgressbar(task) {
@@ -570,16 +560,28 @@ function attachCheckboxChangeListeners() {
 }
 
 function initOverlaySubtasks() {
-  const addBtn = document.querySelector("#addTaskOverlay .subtask-btn-group svg:nth-child(2)")?.parentElement;
+  const addBtn = document.getElementById("addSubtaskBtnOverlay");
+  const removeBtn = document.getElementById("removeSubtaskBtnOverlay");
   const input = document.getElementById("overlaySubtask");
   const list = document.getElementById("subtasksListOverlay");
-  if (!addBtn || !input || !list) return;
+  
+  if (!addBtn || !removeBtn || !input || !list) return;
+  
   addBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const text = input.value.trim();
     if (!text) return;
     addOverlaySubtask(text, list);
     input.value = "";
+    input.focus();
+  });
+  
+  removeBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const lastSubtask = list.lastElementChild;
+    if (lastSubtask) {
+      list.removeChild(lastSubtask);
+    }
   });
 }
 
@@ -587,7 +589,11 @@ function addOverlaySubtask(text, list) {
   const subtaskDiv = document.createElement("div");
   subtaskDiv.className = "subtask-item-overlay";
   subtaskDiv.innerHTML = `<span>${text}</span><button type="button" class="subtask-remove-btn">×</button>`;
-  subtaskDiv.querySelector(".subtask-remove-btn").addEventListener("click", () => subtaskDiv.remove());
+  const removeBtn = subtaskDiv.querySelector(".subtask-remove-btn");
+  removeBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    subtaskDiv.remove();
+  });
   list.appendChild(subtaskDiv);
 }
 
@@ -677,18 +683,18 @@ function resetOverlayForm() {
   });
 }
 
-function getColumnContainerId(progress) {
+function getTasksContainerId(progress) {
   const map = {
-    toDo: "todoColumnContainer",
-    inProgress: "inProgressColumnContainer",
-    awaitFeedback: "feedbackColumnContainer",
-    done: "doneColumnContainer",
+    toDo: "todoColumn",
+    inProgress: "progressColumn",
+    awaitFeedback: "awaitFeedbackColumn",
+    done: "doneColumn",
   };
-  return map[progress] || "todoColumnContainer";
+  return map[progress] || "todoColumn";
 }
 
 function appendNewTaskToBoard(task) {
-  const col = document.getElementById(getColumnContainerId(task.progress));
+  const col = document.getElementById(getTasksContainerId(task.progress));
   if (!col) return;
   col.insertAdjacentHTML("beforeend", taskCardTemplate(task));
   changeSubtaskProgressbar(task);

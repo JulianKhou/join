@@ -868,23 +868,26 @@
     accent-color: #0066ff;
 }
 
-.subtask-input-group {
+.subtask-input-area {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.subtask-btn-group {
+.subtask-buttons {
     display: flex;
     align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: auto;
     gap: 8px;
 }
 
-.subtask-action-btn {
+.subtask-btn {
+    cursor: pointer;
     background: none;
     border: none;
-    cursor: pointer;
-    padding: 8px;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -892,7 +895,7 @@
     transition: color 0.2s ease;
 }
 
-.subtask-action-btn:hover {
+.subtask-btn:hover {
     color: #0066ff;
 }
 
@@ -902,11 +905,14 @@
     background-color: #D1D1D1;
 }
 
-.subtasks-list-overlay {
+.subtasks-list {
+    min-height: 150px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 8px;
 }
 
 .subtask-item-overlay {
@@ -917,6 +923,20 @@
     background-color: #f5f5f5;
     border-radius: 8px;
     font-size: 14px;
+}
+
+.subtask-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: default;
+    pointer-events: none;
+}
+
+.subtask-label span,
+.subtask-label button,
+.subtask-label input[type="checkbox"] {
+    pointer-events: auto;
 }
 
 .subtask-remove-btn {
@@ -1578,7 +1598,7 @@
     }
 
     .search-wrapper {
-        width: 100%;
+        idth: 100%;
     }
 
     .search-input {
@@ -1605,7 +1625,7 @@
     }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 750px) {
 
     .header {
         display: flex;
@@ -1767,6 +1787,17 @@
     .priority-button {
         width: 120px;
         height: 40px;
+    }
+
+     .tasks-container{
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding-right: 20px;
+    }
+
+    .task-card{
+        min-width: 250px;
     }
 }
 

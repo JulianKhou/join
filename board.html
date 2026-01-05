@@ -260,23 +260,23 @@
           <!-- Subtasks -->
           <div class="form-group">
             <label for="overlaySubtask">Subtasks</label>
-            <div class="subtask-input-group">
+            <div class="subtask-input-area">
               <input type="text" id="overlaySubtask" class="form-input" placeholder="Add new subtask">
-              <div class="subtask-btn-group">
-                <button type="button" class="subtask-action-btn" id="addSubtaskBtnOverlay">
+              <div class="subtask-buttons">
+                <button type="button" class="remove-background subtask-btn" id="addSubtaskBtnOverlay">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M5 12h14M12 5v14" stroke="#2A3647" stroke-width="2" stroke-linecap="round" />
                   </svg>
                 </button>
                 <div class="divider-line"></div>
-                <button type="button" class="subtask-action-btn" id="removeSubtaskBtnOverlay">
+                <button type="button" class="remove-background subtask-btn" id="removeSubtaskBtnOverlay">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M18 6L6 18M6 6L18 18" stroke="#2A3647" stroke-width="2" stroke-linecap="round" />
                   </svg>
                 </button>
               </div>
             </div>
-            <div class="subtasks-list-overlay" id="subtasksListOverlay"></div>
+            <div class="subtasks-list" id="subtasksListOverlay"></div>
           </div>
         </div>
       </form>
@@ -361,9 +361,11 @@
             </button>
           </div>
 
-          <div class="tasks-container" id="todoColumn">
-            <div class="no-task todo-Column-no-task">
-              <span>No tasks To do</span>
+          <div class="todoColumnContainer">
+            <div class="tasks-container" id="todoColumn">
+              <div class="no-task todo-Column-no-task">
+                <span>No tasks To do</span>
+              </div>
             </div>
           </div>
         </div>
