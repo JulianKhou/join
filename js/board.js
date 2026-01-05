@@ -4,7 +4,6 @@ import {
   getTask,
   updateTask,
   deleteTask,
-  updateTask,
   createTask,
   addEditTask,
 } from "./firebase.js";
@@ -50,6 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupDragAndDropListeners();
   setupGlobalDelegationListeners();
   setupSearchListener();
+  setupAddTaskListeners();
 });
 
 /**
@@ -162,11 +162,22 @@ const addTaskCancelBtn = document.getElementById("addTaskCancelBtn");
 // Expose to window if needed by HTML onclicks, otherwise standard listeners preferred
 window.openAddTaskOverlay = openAddTaskOverlay;
 
+function logError(msg) {
+  console.error(`[Board Debug]: ${msg}`);
+}
+
 function openAddTaskOverlay() {
-  if (addTaskOverlay) addTaskOverlay.classList.add("active");
+  const addTaskOverlay = document.getElementById("addTaskOverlay");
+  console.log("Attempting to open add task overlay", addTaskOverlay);
+  if (addTaskOverlay) {
+    addTaskOverlay.classList.add("active");
+  } else {
+    logError("addTaskOverlay element not found!");
+  }
 }
 
 function closeAddTaskOverlay() {
+  const addTaskOverlay = document.getElementById("addTaskOverlay");
   if (!addTaskOverlay) return;
   addTaskOverlay.classList.add("closing");
   setTimeout(() => {
@@ -174,12 +185,19 @@ function closeAddTaskOverlay() {
   }, 200);
 }
 
-if (addTaskCloseBtn)
-  addTaskCloseBtn.addEventListener("click", closeAddTaskOverlay);
-if (addTaskCancelBtn)
-  addTaskCancelBtn.addEventListener("click", closeAddTaskOverlay);
-if (addTaskOverlay) {
-  addTaskOverlay.addEventListener("click", (e) => {
-    if (e.target === addTaskOverlay) closeAddTaskOverlay();
-  });
+// Initialize Add Task Listeners inside init or check availability
+function setupAddTaskListeners() {
+  const addTaskCloseBtn = document.getElementById("addTaskCloseBtn");
+  const addTaskCancelBtn = document.getElementById("addTaskCancelBtn");
+  const addTaskOverlay = document.getElementById("addTaskOverlay");
+
+  if (addTaskCloseBtn)
+    addTaskCloseBtn.addEventListener("click", closeAddTaskOverlay);
+  if (addTaskCancelBtn)
+    addTaskCancelBtn.addEventListener("click", closeAddTaskOverlay);
+  if (addTaskOverlay) {
+    addTaskOverlay.addEventListener("click", (e) => {
+      if (e.target === addTaskOverlay) closeAddTaskOverlay();
+    });
+  }
 }
