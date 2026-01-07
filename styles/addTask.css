@@ -86,8 +86,7 @@
 /* New subtle hover effect */
 .priority-buttons button:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 0;
+  border-radius: 10px;
 }
 
 .priority-btn {
@@ -434,15 +433,14 @@ label {
 }
 
 @media (max-width: 960px) {
-  .add-task-form-overlay{
+  .add-task-form-overlay {
     flex-direction: column;
   }
 }
 
 @media (max-width: 850px) {
-
   .add-task-wrapper h1 {
-  font-size: 47px;
+    font-size: 47px;
   }
 
   .add-task-wrapper {

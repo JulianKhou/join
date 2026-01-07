@@ -6,13 +6,15 @@ import {
   deleteTask,
   createTask,
   addEditTask,
+  auth,
 } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 import {
   taskCardTemplate,
-  editTaskFormTemplate,
   assigneeAvatarToDetail,
   addSubtaskToDetailTemplate,
 } from "../templates/boardTasksTemplates.js";
+import { editTaskFormTemplate } from "../templates/boardEditTemplates.js";
 import {
   returnContactById,
   getInitials,
@@ -41,16 +43,61 @@ let contactsList = [];
 /**
  * Initializes the board: loads data, renders tasks, sets up listeners.
  */
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Board: DOMContentLoaded. Waiting for Auth...");
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      console.log("Board: User authenticated:", user.uid);
+      try {
+        await initBoardData();
+      } catch (err) {
+        console.error("Board: Init failed", err);
+      }
+    } else {
+      console.warn("Board: No user logged in. Redirecting to login?");
+      // Optionally redirect or show empty board
+      // window.location.href = "index.html";
+      // For now, let's try to init anyway in case of public access, but warn.
+      console.log("Board: Attempting init without user...");
+      await initBoardData();
+    }
+  });
+});
+
+async function initBoardData() {
+  console.log("Board: Fetching tasks...");
   const tasks = await getAllTasks();
+  console.log("Board: Tasks fetched:", tasks);
+
+  // MOCK DATA CHECK: If tasks are empty, inject one to verify renderer.
+  if (!tasks || tasks.length === 0) {
+    console.warn(
+      "Board: No tasks found in DB. Injecting MOCK task for validation."
+    );
+    tasks.push({
+      id: "mock-1",
+      title: "Test Task (Mock)",
+      description: "If you see this, rendering works but DB is empty.",
+      category: "User Story",
+      priority: "Urgent",
+      progress: "toDo",
+      assignedTo: [],
+      dueDate: "2023-12-31",
+    });
+  }
+
+  console.log("Board: Fetching contacts...");
   contactsList = await getContacts();
+  console.log("Board: Contacts fetched:", contactsList);
 
   initializeModules(tasks, contactsList);
   setupDragAndDropListeners();
   setupGlobalDelegationListeners();
   setupSearchListener();
   setupAddTaskListeners();
-});
+  console.log("Board: Initialization complete.");
+}
 
 /**
  * Passes data to sub-modules and triggers initial render.

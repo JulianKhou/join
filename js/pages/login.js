@@ -1,4 +1,8 @@
-import { loginWithEmail as login, signInWithGoogle } from "../firebase.js";
+import {
+  loginWithEmail as login,
+  signInWithGoogle,
+  createUser,
+} from "../firebase.js";
 
 const loginForm = document.getElementById("loginForm");
 const guestLoginBtn = document.getElementById("guestLoginBtn");
@@ -55,7 +59,10 @@ function handleLogin(e) {
 }
 
 function guestLogin() {
-  login("guest@join.com", "guest1234")
+  const guestEmail = "guest@join.com";
+  const guestPassword = "Guest1234!";
+
+  login(guestEmail, guestPassword)
     .then((user) => {
       localStorage.setItem(
         "currentUser",
@@ -64,9 +71,43 @@ function guestLogin() {
       window.location.href = "summaryUser.html";
     })
     .catch((error) => {
-      console.error("Guest login failed:", error);
-      alert("Guest login failed. Please try again or sign up.");
-      // Do NOT redirect on failure, that causes the loop!
+      console.warn("Guest login failed, attempting fallback...", error);
+
+      const errorMsg = error.message || "";
+
+      // Fallback: Create the guest account if it doesn't exist
+      // firebase.js throws "User not found." check for that string
+      if (
+        errorMsg.includes("User not found") ||
+        errorMsg.includes("not found")
+      ) {
+        createUser(guestEmail, guestPassword, "Guest")
+          .then((user) => {
+            localStorage.setItem(
+              "currentUser",
+              JSON.stringify({
+                uid: user.uid,
+                email: user.email,
+                username: "Guest",
+              })
+            );
+            alert("Guest account created! Logging in...");
+            window.location.href = "summaryUser.html";
+          })
+          .catch((createError) => {
+            console.error("Failed to create guest account:", createError);
+            // Try a random guest if the main one is bricked?
+            // For now just show error
+            alert("Guest Creation Error: " + createError.message);
+          });
+      } else if (errorMsg.includes("Incorrect password")) {
+        alert(
+          "Error: The Guest User exists but the password 'guest1234' is wrong. Please delete the user 'guest@join.com' in Firebase manually or contact admin."
+        );
+      } else {
+        // Show the exact error so user can report it
+        alert("Guest Login Error: " + errorMsg);
+      }
     });
 }
 

@@ -1,5 +1,5 @@
 export var profileTemplate = `
-    <button class="btnListItem" id="editProfileBtn">Profil anzeigen</button>
+    <button class="btnListItem" id="editProfileBtn">View Profile</button>
     <button class="btnListItem" id="legalNoticeBtn">Legal Notice</button>
     <button class="btnListItem" id="privacySettingsBtn">Privacy Policy</button>
     <button class="btnListItem" id="logoutBtn">Log out</button>
