@@ -15,9 +15,10 @@ document.addEventListener("DOMContentLoaded", initUserProfile);
 function initUserProfile() {
   const profileShowMoreBtn = document.getElementById("userProfileInitialsBtn");
 
-  if (profileShowMoreBtn) {
-    profileShowMoreBtn.addEventListener("click", toggleProfileDropdown);
-  }
+  // Removed to avoid conflict with profilePopup.js
+  // if (profileShowMoreBtn) {
+  //   profileShowMoreBtn.addEventListener("click", toggleProfileDropdown);
+  // }
 }
 
 /**

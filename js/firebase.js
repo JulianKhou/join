@@ -200,8 +200,6 @@ export async function updateUserProfile(uid, data) {
     );
 
     // 2. Update 'contacts' collection (if exists)
-    // We assume contact ID is same as uid (see createUser logic)
-    // If not, we might need to search for it, but let's try direct update first.
     const contactRef = doc(db, "contacts", uid);
     const contactSnap = await getDoc(contactRef);
 
@@ -211,6 +209,7 @@ export async function updateUserProfile(uid, data) {
         {
           name: data.username,
           email: data.email,
+          phoneNumber: data.phone || "",
           updatedAt: serverTimestamp(),
         },
         { merge: true }
@@ -255,9 +254,14 @@ export async function deleteUserProfile(uid) {
   }
 
   try {
-    await user.delete();
-
+    // Delete User Document
     await deleteDoc(doc(db, "users", uid));
+
+    // Delete Contact Document
+    await deleteDoc(doc(db, "contacts", uid));
+
+    // Finally delete the user from Authentication
+    await user.delete();
   } catch (error) {
     console.error("Error deleting user:", error);
     throw error;
@@ -280,6 +284,11 @@ export function onAuthChange(callback) {
   return onAuthStateChanged(auth, callback);
 }
 
+/**
+ * Retrieves the username for a given user ID.
+ * @param {string} uid - User ID
+ * @returns {Promise<string>} The username
+ */
 export async function getUsername(uid) {
   const myRef = doc(db, "users", uid);
   const snapshot = await getDoc(myRef);
@@ -287,6 +296,16 @@ export async function getUsername(uid) {
   return username;
 }
 
+/**
+ * Creates or updates a contact in the contacts collection.
+ * Uses a specific docId if provided, otherwise generates one from the name.
+ * @param {string|null} docIdOrName - Document ID or null (to use name)
+ * @param {string} name - Contact name
+ * @param {string} email - Contact email
+ * @param {string} phoneNumber - Contact phone
+ * @param {string} color - Contact avatar color
+ * @returns {Promise<string>} The document ID used
+ */
 export async function editOrAddContact(
   docIdOrName,
   name,
@@ -317,6 +336,10 @@ export async function editOrAddContact(
   }
 }
 
+/**
+ * Deletes a contact by UUID.
+ * @param {string} uuid - Contact ID
+ */
 export async function deleteContact(uuid) {
   try {
     await deleteDoc(doc(db, "contacts", uuid));
@@ -326,6 +349,10 @@ export async function deleteContact(uuid) {
   }
 }
 
+/**
+ * Fetches all contacts from the collection.
+ * @returns {Promise<Array>} List of contact objects
+ */
 export async function getContacts() {
   try {
     const contactsRef = collection(db, "contacts");
@@ -342,6 +369,12 @@ export async function getContacts() {
     throw error;
   }
 }
+
+/**
+ * Creates a new task in the tasks collection.
+ * @param {Object} task - Task data object
+ * @returns {Promise<string>} The ID of the created task
+ */
 export async function createTask(task) {
   const user = auth.currentUser;
   const taskRef = doc(collection(db, "tasks"));
@@ -362,6 +395,12 @@ export async function createTask(task) {
   return taskRef.id;
 }
 
+/**
+ * Updates an existing task by ID.
+ * @param {string} taskId - ID of the task
+ * @param {Object} updateData - Partial data to update
+ * @returns {Promise<string>} Task ID
+ */
 export async function updateTask(taskId, updateData) {
   const taskRef = doc(db, "tasks", taskId);
   await setDoc(taskRef, updateData, { merge: true });
