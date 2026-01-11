@@ -1,7 +1,12 @@
-import { profileTemplate } from "../templates/profileTemplates.js";
+import { profileTemplate, profileTemplateSimple } from "../templates/profileTemplates.js";
 import { logout } from "./firebase.js";
 
 console.log("profilePopup.js loaded");
+
+function isSimpleProfilePage() {
+  const simplePages = ["addTask.html", "board.html", "summary.html", "privacyPolicyInt.html", "legalNoticeInt.html", "help.html"];
+  return simplePages.some(page => window.location.pathname.endsWith(page));
+}
 
 // Button & Dropdown abrufen
 const profileBtn = document.getElementById("userProfileInitialsBtn");
@@ -9,7 +14,11 @@ const profileMenu = document.getElementById("profileShowMore");
 
 if (profileBtn && profileMenu) {
   // Template nur EINMAL setzen
-  profileMenu.innerHTML = profileTemplate;
+  if (isSimpleProfilePage()) {
+    profileMenu.innerHTML = profileTemplateSimple;
+  } else {
+    profileMenu.innerHTML = profileTemplate;
+  }
 
   // Buttons aus dem Template holen
   const editProfileBtn = profileMenu.querySelector("#editProfileBtn");

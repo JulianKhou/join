@@ -7,6 +7,13 @@ export var profileTemplate = `
 </div>
 `;
 
+export var profileTemplateSimple = `
+<div class="btnList">
+    <button class="legalNoticeBtn btnListItem" id="legalNoticeBtn">Legal Notice</button>
+    <button class="btnListItem" id="privacySettingsBtn">Privacy Settings</button>
+    <button class="btnListItem" id="logoutBtn">Logout</button>
+</div>
+`;
 
 export function iconTemplate(initials,color,addedClass="") {
     return `
@@ -15,3 +22,6 @@ export function iconTemplate(initials,color,addedClass="") {
     </div>
     `;
 }
+
+
+
