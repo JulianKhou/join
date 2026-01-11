@@ -311,7 +311,7 @@ body {
   top: 80px;              /* unter dem Header-Button */
   right: 32px;
   width: 160px;
-  background: white;
+  background: #2A3647;
   border-radius: 16px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
   padding: 10px 0;
@@ -330,7 +330,7 @@ body {
   justify-content: center;
   text-decoration: none;
   width: 100%;
-  color: var(--mainColor-default);
+  color: #B8BABC;
   cursor: pointer;
 }
 
@@ -348,5 +348,6 @@ body {
 .profileShowMore:not(.d-none) {
   display: flex;
 }
+
 
 
