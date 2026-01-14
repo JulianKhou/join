@@ -150,7 +150,7 @@
 .kanban-column {
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: 55%;
   border-radius: 8px;
   min-height: 230px;
 }
@@ -429,7 +429,7 @@
   background-color: #fff;
   border-radius: 30px;
   padding: 50px 50px 50px 45px;
-  width: 520px;
+  width: 450px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -496,65 +496,65 @@
 }
 
 .overlay-title {
-  font-size: 61px;
+  font-size: 36px;
   font-weight: 700;
   color: #000000;
   margin: 0 0 16px 0;
   line-height: 1.2;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
 }
 
 .overlay-description {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   font-style: normal;
   color: #000000;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   line-height: 1.4;
 }
 
 .date-and-priority-section {
   display: flex;
   flex-direction: row;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
 }
 
 .overlay-field-label {
   display: flex;
   flex-direction: column;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   color: #000000;
-  gap: 36px;
+  gap: 24px;
 }
 
 .overlay-field-content {
   display: flex;
   flex-direction: column;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   color: #000000;
   margin-left: 28px;
-  gap: 36px;
+  gap: 24px;
 }
 
 .overlay-label {
   display: block;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   color: #000000;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .overlay-label-subtask {
   display: block;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   color: #000000;
 }
 
 .overlay-value {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   color: #000000;
 }
@@ -588,7 +588,7 @@
 }
 
 .overlay-assignee-item span {
-  font-size: 19px;
+  font-size: 16px;
   font-weight: 400;
   color: #000000;
 }
@@ -604,14 +604,35 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-left: 20px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
 }
 
-.overlay-subtask-item input[type="checkbox"] {
+.overlay-subtask-item:hover {
+  background-color: #eee;
+}
+
+.custom-checkbox {
   width: 20px;
   height: 20px;
-  cursor: pointer;
-  accent-color: #0066ff;
+  border: 2px solid #2a3647;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.custom-checkbox.checked {
+  background-color: transparent; /* Or #2a3647 if you want filled */
+}
+
+.custom-checkbox img {
+  width: 14px;
+  height: 14px;
 }
 
 .overlay-subtask-item label {
@@ -1643,10 +1664,145 @@
   height: 18px;
 }
 
+/* Main No Task Style */
+.no-task {
+  width: 100%;
+  height: 52px;
+  background-color: #e7e7e7;
+  border: 1px dashed #a8a8a8;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a8a8a8;
+  font-size: 16px;
+  margin-top: 12px;
+}
+
 /* The divider line */
 .dividing-line {
   width: 1px;
   height: 20px;
   background-color: #d1d1d1;
   margin: 0 4px;
+}
+
+@media (max-width: 750px) {
+  .main-content-board {
+    padding: 120px 16px 100px 16px;
+    margin-left: 0;
+  }
+
+  .board-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .board-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .board-header-responsive {
+    display: flex !important; /* Ensure flex is active */
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0; /* Tighten space between title/add row and search */
+  }
+
+  .board-title {
+    font-size: 47px;
+    margin: 0;
+  }
+
+  .add-task-btn-responsiv {
+    display: flex !important; /* Force show on mobile */
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background-color: #2a3647;
+    margin-right: 0;
+  }
+
+  .add-task-btn-responsiv img,
+  .add-task-btn-responsiv svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .board-header-actions {
+    width: 100%;
+    gap: 0;
+    width: 100%;
+    gap: 0;
+    margin-top: 0;
+    margin-right: 0;
+  }
+
+  .search-divider {
+    display: none;
+  }
+
+  .search-wrapper {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .search-input {
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding doesn't overflow */
+  }
+
+  .add-task-btn {
+    display: none; /* Hide desktop button */
+  }
+
+  .kanban-board {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 24px;
+  }
+
+  .board-column {
+    width: 100%;
+    min-width: 0; /* Allow shrinking */
+    margin-bottom: 24px;
+  }
+
+  .board-column-header {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .no-task-div {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .column-title {
+    font-size: 27px;
+  }
+
+  .add-column-btn {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #2a3647; /* Outlined box style */
+    border-radius: 8px; /* Rounded corners */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .add-column-btn-svg {
+    width: 12px; /* Smaller icon inside the box */
+    height: 12px;
+    stroke: #2a3647; /* Ensure color */
+  }
+
+  .task-card {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }

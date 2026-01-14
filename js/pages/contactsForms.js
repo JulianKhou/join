@@ -200,15 +200,68 @@ function refreshDetailView(id) {
 }
 
 // Specialized listener setup because we are in Forms module but updating Detail View
+// Specialized listener setup because we are in Forms module but updating Detail View
 export function setupContactDetailListenersFromForms(contact) {
   const deleteBtn = document.getElementById("deleteContactDetailsBtn");
   const editBtn = document.getElementById("editContactBtn");
 
+  // Desktop Listeners
   if (deleteBtn) {
     deleteBtn.addEventListener("click", () => handleDeleteContact(contact.id));
   }
   if (editBtn) {
     editBtn.addEventListener("click", () => openEditContactOverlay(contact));
+  }
+
+  // --- Mobile Listeners (Moved from contactsUI.js to persist after edits) ---
+
+  // Back Arrow
+  const backArrow = document.getElementById("mobileBackArrow");
+  if (backArrow) {
+    backArrow.onclick = () => {
+      document.body.classList.remove("mobile-details-active");
+      const activeBtn = document.querySelector(".active-contact");
+      if (activeBtn) activeBtn.classList.remove("active-contact");
+    };
+  }
+
+  // Mobile Options Menu Logic
+  const optionsBtn = document.getElementById("mobileOptionsBtn");
+  const optionsMenu = document.getElementById("mobileOptionsMenu");
+  const mobileEditBtn = document.getElementById("mobileEditBtn");
+  const mobileDeleteBtn = document.getElementById("mobileDeleteBtn");
+
+  if (optionsBtn && optionsMenu) {
+    optionsBtn.onclick = (e) => {
+      e.stopPropagation();
+      optionsMenu.classList.toggle("d-none");
+    };
+
+    // Close menu when clicking elsewhere (using a named function to avoid duplicates if possible,
+    // but anonymous is safer for simple re-attachment if we don't care about piling up listeners on document?
+    // actually piling up listeners on document IS bad.
+    // Better to just add it once or use the existing "outside click" utility?
+    // For now, let's keep it simple. If checking contains, it's cheap.
+    document.addEventListener("click", (e) => {
+      if (!optionsBtn.contains(e.target) && !optionsMenu.contains(e.target)) {
+        optionsMenu.classList.add("d-none");
+      }
+    });
+  }
+
+  if (mobileEditBtn) {
+    mobileEditBtn.onclick = () => {
+      if (optionsMenu) optionsMenu.classList.add("d-none");
+      openEditContactOverlay(contact);
+    };
+  }
+
+  if (mobileDeleteBtn) {
+    mobileDeleteBtn.onclick = async () => {
+      if (optionsMenu) optionsMenu.classList.add("d-none");
+      await handleDeleteContact(contact.id);
+      document.body.classList.remove("mobile-details-active");
+    };
   }
 }
 

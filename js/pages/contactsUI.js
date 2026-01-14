@@ -5,6 +5,8 @@ import {
   openAddContactOverlay,
   setCurrentContact,
   setupContactDetailListenersFromForms,
+  openEditContactOverlay,
+  handleDeleteContact,
 } from "./contactsForms.js";
 
 // Initialize data
@@ -52,6 +54,11 @@ function contactShowDetails(contact, index) {
   overlay.innerHTML = getContactDetailsTemplate(contact, contact.color);
 
   setupContactDetailListenersFromForms(contact);
+
+  /* Mobile View Class Toggle */
+  if (window.innerWidth <= 1050) {
+    document.body.classList.add("mobile-details-active");
+  }
 }
 
 /**

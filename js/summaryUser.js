@@ -43,32 +43,30 @@ function loadUserData() {
       currentUser = user;
       updateGreetingName(currentUser);
 
-      const userTasks = getUserTasks(currentUser.id);
-
-      // Update all task counts
+      // Update all task counts using global tasks (allTasks) instead of userTasks
       updateTaskCount(
         "summaryUserToDoCount",
-        userTasks,
+        allTasks,
         (t) => t.progress === PROGRESS.TODO
       );
       updateTaskCount(
         "summaryUserDoneCount",
-        userTasks,
+        allTasks,
         (t) => t.progress === PROGRESS.DONE
       );
       updateTaskCount(
         "summaryUserInProgressCount",
-        userTasks,
+        allTasks,
         (t) => t.progress === PROGRESS.IN_PROGRESS
       );
       updateTaskCount(
         "summaryUserAwaitFeedbackCount",
-        userTasks,
+        allTasks,
         (t) => t.progress === PROGRESS.AWAIT_FEEDBACK
       );
 
       // Special cases
-      updateUrgentTasksAndDeadline(userTasks);
+      updateUrgentTasksAndDeadline(allTasks);
       updateTotalTasksOnBoard();
 
       // Check for phone number (Only once per session)
@@ -204,3 +202,27 @@ function updateGreetingName(user) {
     "Guest";
   nameElement.textContent = displayName;
 }
+
+function handleResponsiveGreeting() {
+  const greeting = document.querySelector(".summary-greeting");
+  if (!greeting) return;
+
+  // Only apply logic if within the tablet/desktop breakpoint where it's stacked
+  // Mobile (< 750px) handles it with splash screen or hidden by CSS
+  // Our breakpoint for vertical stack is 1350px.
+  // We want to hide it after 2s if width <= 1350px and > 570px (mobile handles differently)
+
+  if (window.innerWidth <= 1350 && window.innerWidth > 570) {
+    setTimeout(() => {
+      greeting.classList.add("fade-out");
+    }, 2000);
+  } else {
+    // Reset if resized back to large screen
+    greeting.classList.remove("fade-out");
+  }
+}
+
+// Run on load
+document.addEventListener("DOMContentLoaded", handleResponsiveGreeting);
+// Optional: Run on resize (debounced preferably, but simple here)
+window.addEventListener("resize", handleResponsiveGreeting);

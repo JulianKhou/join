@@ -41,7 +41,7 @@ export var addContactTemplate = `
       </div>
     `;
 
-    export function getContactsGroupTemplate(letter, contacts) {
+export function getContactsGroupTemplate(letter, contacts) {
   const itemsHTML = contacts
     .map(
       (c) => `
@@ -65,48 +65,79 @@ export var addContactTemplate = `
     ${itemsHTML}
   `;
 }
-export function getContactDetailsTemplate(contact,color) { 
+export function getContactDetailsTemplate(contact, color) {
+  var contactDetailsTemplate = `
 
-var contactDetailsTemplate = `
-
-<div class="contact-details-container" id="contactDetailsContainer>
-<div class="contact-details-header">
-  <div class="contact-avatar-large" id="contactAvatarLarge" style="background-color: ${color}">${contact.initials}</div>
-  <div class="contact-details-content">
-    <h2 class="contact-name-large" id="contactNameLarge">${contact.name}</h2>
-    <div class=contact-buttons>
-      <button class="edit-contact-btn contact-btn" id="editContactBtn">
-      <img src="./assets/contacts/editButton.svg" alt="Edit Icon" class="edit-icon">
-      Edit</button>
-      <button class="delete-contact-details-btn contact-btn" id="deleteContactDetailsBtn">
-      <img src="../assets/contacts/deleteButton.svg" alt="Delete Icon" class="delete-icon">
-      Delete</button>
+<div class="contact-details-container" id="contactDetailsContainer">
+    
+    <!-- Mobile Header inside Details View -->
+    <div class="contacts-mobile-header">
+        <h1>Contacts</h1>
+        <div class="blue-line-mobile"></div>
+        <span class="subtitle">Better with a team</span>
     </div>
-  
-  </div>
+
+    <div class="contact-details-header">
+        <div class="contact-avatar-large" id="contactAvatarLarge" style="background-color: ${color}">${contact.initials}</div>
+        
+        <div class="contact-details-content">
+            <h2 class="contact-name-large" id="contactNameLarge">${contact.name}</h2>
+            <!-- Back Arrow attached to name/header area -->
+            <img src="./assets/utilitys/arrowBack.svg" class="mobile-back-arrow" id="mobileBackArrow" alt="Back">
+
+            <div class=contact-buttons>
+                <button class="edit-contact-btn contact-btn" id="editContactBtn">
+                <img src="./assets/contacts/editButton.svg" alt="Edit Icon" class="edit-icon">
+                Edit</button>
+                <button class="delete-contact-details-btn contact-btn" id="deleteContactDetailsBtn">
+                <img src="./assets/contacts/deleteButton.svg" alt="Delete Icon" class="delete-icon">
+                Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-details-body">
+        <h3>Contact Information </h3>
+        <div>
+            <h4> Email </h4>
+            <a href="mailto:${contact.email}">${contact.email}</a>
+        </div>
+        <div>
+            <h4> Phone </h4>
+            <span>${contact.phoneNumber}</span>
+        </div>
+    </div>
+
+    <!-- Floating Options Button (Mobile Only) -->
+    <div class="mobile-options-container">
+        <!-- Using inline SVG for options or image if available -->
+        <button class="mobile-options-btn" id="mobileOptionsBtn">
+            <img src="./assets/sideboardAssets/more_vert.svg" alt="Options"> 
+        </button>
+        <!-- Mobile Menu -->
+        <div class="mobile-options-menu d-none" id="mobileOptionsMenu">
+            <button class="mobile-menu-btn" id="mobileEditBtn">
+                <img src="./assets/contacts/editButton.svg" alt="Edit"> Edit
+            </button>
+            <button class="mobile-menu-btn" id="mobileDeleteBtn">
+                <img src="./assets/contacts/deleteButton.svg" alt="Delete"> Delete
+            </button>
+        </div>
+    </div>
+
 </div>
-
-
-
-  <div class="contact-details-body">
-  <h3>Contact Information </h3>
-
-  <div>
-     <h4> Email </h4>
-     <a href="mailto:${contact.email}">${contact.email}</a>
-  </div>
-  <div>
-    <h4> Phone </h4>
-    <span>${contact.phoneNumber}</span>
-</div>
-
-
-
 `;
-return contactDetailsTemplate;
+  return contactDetailsTemplate;
 }
-export function editContactTemplate(name,email,phoneNumber,uuid,color,initials) {
-return `
+export function editContactTemplate(
+  name,
+  email,
+  phoneNumber,
+  uuid,
+  color,
+  initials
+) {
+  return `
 
 <div class="edit-contact-overlay ">
         <div class="edit-contact-container add-contact-container">

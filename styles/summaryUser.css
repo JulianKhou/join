@@ -1,11 +1,11 @@
 .main-content-summary {
-  padding-top: 220px;
+  padding-top: 120px;
   padding-left: 330px;
   padding-right: 65px;
 }
 
 .main-content-help {
-  padding-top: 220px;
+  padding-top: 120px;
   padding-left: 330px;
   padding-right: 65px;
 }
@@ -313,29 +313,6 @@ a {
   gap: 80px;
 }
 
-.mobile-bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background: #2a3647;
-  display: none;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 9999;
-}
-
-.mobile-bottom-nav a {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  color: white;
-  font-size: 14px;
-}
-
 .mobile-intro {
   position: fixed;
   inset: 0;
@@ -374,16 +351,16 @@ a {
   height: calc(100vh - 80px);
 }
 
-@media (max-width:1150px){
-  .summary-greeting-text{
+@media (max-width: 1150px) {
+  .summary-greeting-text {
     font-size: 32px;
   }
-  .summary-greeting-user{
+  .summary-greeting-user {
     font-size: 40px;
   }
 }
 
-@media (max-width: 1030px) {
+@media (max-width: 1350px) {
   .summary-content-row {
     flex-direction: column;
     gap: 40px;
@@ -401,6 +378,18 @@ a {
     align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    height: auto;
+    opacity: 1;
+    transition: opacity 1s ease-in-out, height 1s ease-in-out,
+      margin 1s ease-in-out, padding 1s ease-in-out;
+  }
+
+  .summary-greeting.fade-out {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
   }
 
   .summary-greeting-text {
@@ -424,10 +413,6 @@ a {
     display: none;
   }
 
-  .mobile-bottom-nav {
-    display: flex;
-  }
-
   .summary-subtitle-row {
     flex-direction: column;
     align-items: flex-start;
@@ -446,11 +431,7 @@ a {
   }
 
   .help {
-    width: 32px;
-    height: 32px;
-    background: url("../assets/LogIn&SignUp/Capa3.svg") no-repeat center center;
-    background-size: contain;
-    display: block;
+    display: none;
   }
 
   .summary-greeting-text,
@@ -594,93 +575,127 @@ a {
 }
 
 @media (max-width: 570px) {
+  .main-content-summary {
+    padding-top: 96px; /* Increased to clear header */
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Header adjustments to fit mobile */
+  .summary-header-row {
+    margin-bottom: 24px;
+    gap: 8px;
+  }
+
+  .summary-title {
+    font-size: 42px;
+  }
+
   .summary-content-row {
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
     align-items: center;
     margin-left: 0;
   }
 
   .summary-metrics {
     width: 100%;
+    height: auto; /* Allow auto height */
     gap: 16px;
   }
 
-  .summary-metric-tile-row-1,
-  .summary-metric-tile-row-2,
-  .summary-metric-tile-row-3 {
-    flex: 1 1 100%;
-    max-width: 100%;
-    min-height: 100px;
-    box-sizing: border-box;
+  /* Row 1: Side by side (Todo, Done) */
+  .summary-metrics-row-1 {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    height: auto;
   }
 
-  .summary-metric-tile-row-1,
-  .summary-metric-tile-row-3 {
-    flex-direction: column;
+  .summary-metric-tile-row-1 {
+    flex: 1; /* Equal width */
+    height: auto;
+    min-height: 100px;
+    flex-direction: row; /* Icon left, text right? No, design shows column usually, checking... design shows Side-by-side inner? No, design shows Icon Left, Text Right or Stacked. Design image shows Icon Left, Text Right for Todo/Done */
+    /* Actually design shows: Icon Left, Text Right for Todo/Done */
+    padding: 16px;
     justify-content: center;
     align-items: center;
+  }
+
+  /* Adjust inner layout of Todo/Done for mobile to be compact */
+  .summary-metric-horizontal {
     gap: 12px;
-    padding: 12px;
+    padding: 16px;
+  }
+
+  /* Row 2: Urgent (Full Width) */
+  .summary-metrics-row-2 {
+    height: auto;
   }
 
   .summary-metric-tile-row-2 {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
+    padding: 16px;
     gap: 12px;
-    padding: 12px;
   }
 
-  .summary-metric-urgent,
-  .summary-metric-deadline {
-    flex-direction: row;
-    align-items: center;
+  .summary-metric-urgent {
+    margin-left: 0; /* Reset previous override */
+    justify-content: center;
+  }
+
+  /* Row 3: 3 Columns (Board, InProgress, Feedback) */
+  .summary-metrics-row-3 {
+    display: flex;
+    flex-direction: row; /* Force row */
+    gap: 12px; /* Smaller gap to fit 3 items */
+    height: auto;
+  }
+
+  .summary-metric-tile-row-3 {
+    flex: 1; /* Equal width */
+    width: 95%; /* Fallback */
+    height: auto;
+    min-height: 100px;
+    padding: 12px 8px; /* Very small padding */
     gap: 8px;
-    margin-left: 24px;
   }
 
+  /* Text Scaling for Mobile 3-Column Layout */
   .summary-metric-value {
-    font-size: 48px;
+    font-size: 32px;
   }
 
-  .summary-metric-label,
-  .summary-metric-urgent-label,
-  .summary-metric-deadline-label,
-  .summary-metric-deadline-date {
-    font-size: 14px;
+  .summary-metric-label {
+    font-size: 13px;
     text-align: center;
-  }
-}
-
-@media (max-width: 360px) {
-  .summary-metric-tile-row-2 {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 8px;
-    padding: 8px;
+    line-height: 1.2;
   }
 
-  .summary-metric-urgent,
-  .summary-metric-deadline {
-    flex: 1 1 0;
-    min-width: 0;
-    gap: 4px;
-    margin-left: 24px;
+  /* Icons in row 3 need to be hidden or small? Design shows Counts + Text. No icons in Row 3 typically? 
+     Wait, standard Row 3 is just Count + Label. 
+     Row 1 has Icons. 
+  */
+
+  .summary-metric-icon {
+    width: 40px;
+    height: 40px;
   }
 
-  .summary-metric-value {
-    font-size: 36px;
+  .summary-metric-icon img,
+  .summary-metric-icon svg {
+    width: 20px;
+    height: 20px;
   }
 
-  .summary-metric-label,
-  .summary-metric-urgent-label,
-  .summary-metric-deadline-label,
-  .summary-metric-deadline-date {
-    font-size: 12px;
-    text-align: center;
+  /* Hide greeting on mobile if needed to save space, or style it */
+  .summary-greeting {
+    margin-top: 0;
+    margin-bottom: 0;
+    height: auto;
+  }
+  .summary-greeting-text,
+  .summary-greeting-user {
+    display: none; /* Often hidden on strict mobile views to save space, user image shows no greeting, just title */
   }
 }

@@ -5,6 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2000;
 }
 
 .edit-contact-container {
@@ -61,8 +62,8 @@
 
 .close-btn {
   position: absolute;
-  top: -40px;
-  right: 20px;
+  top: 25px;
+  right: 25px;
   background: none;
   border: none;
   font-size: 28px;
@@ -296,7 +297,7 @@ h3 {
   .buttons {
     max-height: 45px;
     margin-left: 180px;
-}
+  }
   .close-btn {
     top: -12%;
   }
@@ -309,75 +310,135 @@ h3 {
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1050px) {
   .edit-contact-container {
-    position: relative;
     flex-direction: column;
     height: auto;
-    padding-bottom: 30px;
+    max-height: 90vh;
+    overflow-y: auto;
+    width: 90%;
+    max-width: 600px;
+    position: relative; /* Context for absolute close btn */
   }
-  .edit-blue-line {
-    border-bottom: 3px solid #4bb1ff;
+
+  /* Close button - Top Right of Container */
+  .close-btn {
+    position: absolute;
+    top: 20px !important;
+    right: 20px !important;
+    color: black; /* Or white depending on background, usually sits on white on mobile here? No, background is white/blue split. */
+    /* Actually on mobile design, the top part is blue. Close btn is inside 'edit-contact-right' usually? 
+       Check HTML: close-btn is inside edit-contact-right. 
+       edit-contact-right is the WHITE part on desktop, but on mobile it's underneath.
+       Wait, if I use absolute positioning on the container, I need to make sure close-btn is pulled out?
+       Let's put it fixed absolute relative to container, z-index high. 
+       But the logic says close-btn is child of edit-contact-right.
+       We should make sure edit-contact-right allows it to be positioned relative to container if possible,
+       OR we just position it inside edit-contact-right which is the white bottom part?
+       USER said "top right". Usually that means top right of the whole modal.
+       If it is inside 'edit-contact-right', and 'edit-contact-right' is the bottom white part, it will be in the middle of the modal.
+       We want it at the VERY top right of the modal (the blue part).
+       Since it is DOM-nested in 'edit-contact-right', we might need to use `right: 20px; top: 20px` relative to `.edit-contact-container` 
+       ONLY IF `.edit-contact-right` is NOT relative. 
+       But `.edit-contact-container` is relative.
+       So we need to break it out of flow. 
+    */
+    position: absolute;
+    top: 25px !important;
+    right: 25px !important;
+    z-index: 50;
+    color: white; /* On blue background */
+    background-color: transparent;
   }
+
+  /* Ensure parent doesn't trap it if it has overflow: hidden, well container has overflow hidden. 
+     So valid coordinates must be inside container. */
 
   .edit-contact-left {
     width: 100%;
-    padding: 60px 20px;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px 30px 0 0;
     text-align: center;
-    position: relative;
   }
 
-  .blue-line {
+  .edit-contact-left .logo {
     display: none;
   }
 
-  .edit-contact-right {
-    margin-top: 60px;
+  .edit-contact-left h2 {
+    margin-top: 10px;
+    font-size: 32px;
+    color: white;
   }
 
   .blue-line {
-    margin-left: 215px;
+    width: 50px;
+    margin: 10px auto;
+    background-color: #29abe2;
+  }
+
+  .edit-contact-right {
+    width: 100%;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0;
+    background: white;
+    border-radius: 0 0 30px 30px;
+    position: static;
   }
 
   .profile-circle {
-    position: absolute;
-    top: calc(100% - 60px);
-    left: 100px;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    top: -18%;
-    left: 50%;
+    position: static;
+    margin-top: -80px; /* Pull up to overlap */
+    margin-bottom: 20px;
+    transform: none;
+    border: 3px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  .icon {
-    display: unset;
-    right: -160%;
-  }
-  .edit-form .input-wrapper {
-    margin-right: 225px;
-    margin-left: 40px;
-  }
+
   .edit-form {
-    padding-right: 100px;
+    padding-top: 0;
+    width: 100%;
+    align-items: center;
   }
+
+  .edit-form .input-wrapper {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 0 16px 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+
   .edit-form input {
-    width: 300px;
+    width: 100%;
+    padding-right: 40px;
   }
+
+  .icon {
+    right: 15px;
+    left: auto;
+    transform: translateY(-50%);
+    display: block;
+  }
+
   .buttons {
-    margin-left: 264px;
-}
+    margin: 20px 0 0 0;
+    padding: 0;
+    width: 100%;
+    justify-content: center;
+  }
 }
 
-@media (min-width: 1001px) {
-  .close-btn {
-    position: fixed;
-    top: 30%;
-    right: 11%;
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    z-index: 9999;
-  }
+@media (min-width: 1051px) {
+  /* Close button uses default absolute position inside right pane now */
   .profile-circle {
     position: absolute;
     top: calc(100% - 60px);
@@ -460,7 +521,7 @@ h3 {
   .edit-form input {
     width: 230px;
     margin-left: -20px;
-}
+  }
   .edit-contact-left {
     padding: 40px 5px;
   }
@@ -488,13 +549,13 @@ h3 {
   }
   .edit-form .input-wrapper {
     margin-left: 74px;
-}
+  }
 }
 @media (max-width: 380px) {
   .edit-form input {
     width: 200px;
     margin-left: -16px;
-}
+  }
   .profile-circle {
     width: 60px;
     height: 60px;
@@ -519,5 +580,5 @@ h3 {
   .edit-form input {
     width: 200px;
     margin-left: -24px;
-}
+  }
 }

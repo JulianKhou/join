@@ -28,6 +28,9 @@ function setupGlobalEventListeners() {
 function setupAddContactButton() {
   const btn = document.getElementById("addContactBtn");
   if (btn) btn.addEventListener("click", openAddContactOverlay);
+
+  const mobileBtn = document.getElementById("addContactMobileBtn");
+  if (mobileBtn) mobileBtn.addEventListener("click", openAddContactOverlay);
 }
 
 // Start

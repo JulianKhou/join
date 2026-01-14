@@ -382,10 +382,6 @@ label {
   background-color: var(--gray-default);
 }
 
-.mobile-nav {
-  display: none;
-}
-
 .profileIconContainer {
   width: 48px;
   height: 48px;
@@ -502,13 +498,13 @@ label {
   }
 }
 
-@media (min-width: 611px) {
+@media (min-width: 751px) {
   .header-logo-small {
     display: none;
   }
 }
 
-@media (max-width: 610px) {
+@media (max-width: 750px) {
   .sideBoard {
     display: none;
   }
@@ -548,7 +544,7 @@ label {
   }
 
   .add-task-buttons {
-    padding-bottom: 48px;
+    padding-bottom: 100px;
     padding-left: 165px;
   }
 
@@ -569,32 +565,6 @@ label {
     left: 0 !important;
     padding: 10px 16px;
     box-sizing: border-box;
-  }
-
-  .mobile-nav {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 74px;
-    background: #2a3647;
-    border-top: 1px solid #d1d1d1;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 500;
-  }
-
-  .mobile-nav a {
-    color: #ffffff;
-    font-size: 12px;
-    text-align: center;
-    text-decoration: none;
-  }
-
-  .mobile-nav {
-    display: flex !important;
   }
 
   .header {

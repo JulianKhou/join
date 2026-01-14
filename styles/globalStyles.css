@@ -216,6 +216,25 @@ body {
   z-index: 1000;
 }
 
+.header-logo-small {
+  display: none; /* Hidden by default on desktop */
+}
+
+@media (max-width: 1050px) {
+  .header {
+    left: 0;
+    width: 100%;
+    padding: 0 16px; /* Adjust padding for mobile */
+    height: 80px; /* Match mobile nav height convention if needed, or keep 96px */
+  }
+
+  .header-logo-small {
+    display: block;
+    width: 48px;
+    height: 48px;
+  }
+}
+
 .header-title {
   font-size: 20px;
   font-weight: 400;
@@ -229,6 +248,7 @@ body {
   align-items: center;
   gap: 16px;
   position: relative; /* For dropdown positioning */
+  margin-left: auto;
 }
 
 /* Help Icon */
@@ -237,8 +257,8 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  width: 24px;
-  height: 24px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   transition: transform 0.1s ease;
 }
@@ -558,4 +578,61 @@ body {
 
 .input-error {
   border: 1px solid red !important;
+}
+
+/* Unified Mobile Navigation */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #2a3647;
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+  padding-bottom: env(
+    safe-area-inset-bottom
+  ); /* Safe area for iPhone home bar */
+}
+
+.mobile-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #cdcdcd; /* Default inactive color matching sidebar */
+  font-size: 14px;
+  padding: 8px 0; /* Vertical padding only */
+  width: 80px; /* Fixed width for consistency */
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav a:hover {
+  color: #29abe2;
+  background-color: rgba(
+    42,
+    54,
+    71,
+    1
+  ); /* Slight bg change? or Keep transparent */
+}
+
+.mobile-active-link {
+  background-color: #091931;
+  color: white !important;
+  font-weight: 700;
+}
+
+@media (max-width: 1050px) {
+  .sideBoard {
+    display: none;
+  }
+
+  .mobile-nav {
+    display: flex;
+  }
 }
