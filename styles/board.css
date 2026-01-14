@@ -1687,7 +1687,7 @@
   margin: 0 4px;
 }
 
-@media (max-width: 750px) {
+@media (max-width: 1050px) {
   .main-content-board {
     padding: 120px 16px 100px 16px;
     margin-left: 0;
@@ -1802,6 +1802,7 @@
   }
 
   .task-card {
+    max-width: 240px;
     width: 100%;
     box-sizing: border-box;
   }
