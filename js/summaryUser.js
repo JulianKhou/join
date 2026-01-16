@@ -20,13 +20,42 @@ const PRIORITY = {
 };
 
 // Initialize: load all tasks from Firestore and populate UI
-document.addEventListener("DOMContentLoaded", async () => {
-  allTasks = await getAllTasks();
-  loadUserData();
-});
+const initSummary = async () => {
+  console.log("Initializing summary...");
+
+  // Safety timeout: Ensure overlay is removed after 8 seconds max to prevent infinite loading
+  const safetyTimeout = setTimeout(() => {
+    console.warn("Summary data loading timed out, forcing overlay removal.");
+    const overlay = document.getElementById("summary-loading-overlay");
+    if (overlay) overlay.classList.add("d-none");
+  }, 8000);
+
+  try {
+    allTasks = await getAllTasks();
+    await loadUserData();
+  } catch (error) {
+    console.error("Error loading summary data:", error);
+  } finally {
+    clearTimeout(safetyTimeout);
+    const overlay = document.getElementById("summary-loading-overlay");
+    if (overlay) {
+      // Small delay to ensure smooth transition
+      setTimeout(() => {
+        overlay.classList.add("d-none");
+      }, 500);
+    }
+  }
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initSummary);
+} else {
+  // DOM already ready (e.g. module loaded late)
+  initSummary();
+}
 
 // Load user from localStorage, fetch fresh data from Firestore, update UI
-function loadUserData() {
+async function loadUserData() {
   const storedUser = localStorage.getItem("currentUser");
   if (!storedUser) {
     console.error("No user found in localStorage");
@@ -38,57 +67,59 @@ function loadUserData() {
   // Set initial data from local storage to avoid flicker
   updateGreetingName(currentUser);
 
-  getUserById(currentUser.uid)
-    .then((user) => {
-      currentUser = user;
-      updateGreetingName(currentUser);
+  try {
+    const user = await getUserById(currentUser.uid);
+    currentUser = user;
+    updateGreetingName(currentUser);
 
-      // Update all task counts using global tasks (allTasks) instead of userTasks
-      updateTaskCount(
-        "summaryUserToDoCount",
-        allTasks,
-        (t) => t.progress === PROGRESS.TODO
-      );
-      updateTaskCount(
-        "summaryUserDoneCount",
-        allTasks,
-        (t) => t.progress === PROGRESS.DONE
-      );
-      updateTaskCount(
-        "summaryUserInProgressCount",
-        allTasks,
-        (t) => t.progress === PROGRESS.IN_PROGRESS
-      );
-      updateTaskCount(
-        "summaryUserAwaitFeedbackCount",
-        allTasks,
-        (t) => t.progress === PROGRESS.AWAIT_FEEDBACK
-      );
+    // Update all task counts using global tasks (allTasks) instead of userTasks
+    updateTaskCount(
+      "summaryUserToDoCount",
+      allTasks,
+      (t) => t.progress === PROGRESS.TODO
+    );
+    updateTaskCount(
+      "summaryUserDoneCount",
+      allTasks,
+      (t) => t.progress === PROGRESS.DONE
+    );
+    updateTaskCount(
+      "summaryUserInProgressCount",
+      allTasks,
+      (t) => t.progress === PROGRESS.IN_PROGRESS
+    );
+    updateTaskCount(
+      "summaryUserAwaitFeedbackCount",
+      allTasks,
+      (t) => t.progress === PROGRESS.AWAIT_FEEDBACK
+    );
 
-      // Special cases
-      updateUrgentTasksAndDeadline(allTasks);
-      updateTotalTasksOnBoard();
+    // Special cases
+    updateUrgentTasksAndDeadline(allTasks);
+    updateTotalTasksOnBoard();
 
-      // Check for phone number (Only once per session)
-      const userId = currentUser.id || currentUser.uid;
-      const alreadyChecked = sessionStorage.getItem("phoneCheckDone");
+    // Check for phone number (Only once per session)
+    const userId = currentUser.id || currentUser.uid;
+    const alreadyChecked = sessionStorage.getItem("phoneCheckDone");
 
-      if (!alreadyChecked) {
-        getContact(userId)
-          .then((contact) => {
-            // Mark as checked immediately so we don't spam even if it fails
-            sessionStorage.setItem("phoneCheckDone", "true");
-
-            if (!contact.phoneNumber) {
-              alert("Please add a phone number to your profile.");
-            }
-          })
-          .catch((err) => console.warn("Could not check phone number:", err));
-      }
-    })
-    .catch((error) => {
-      console.error("Failed to load user data:", error);
-    });
+    if (!alreadyChecked) {
+      // Don't await this one to avoid blocking UI if it's slow,
+      // or do await if we want to be strict.
+      // User requested "loading screen while data loaded".
+      // Phone check is secondary. Let's make it non-blocking for the loader.
+      getContact(userId)
+        .then((contact) => {
+          sessionStorage.setItem("phoneCheckDone", "true");
+          if (!contact.phoneNumber) {
+            // alert("Please add a phone number to your profile."); // Disabled to avoid popup blocking verification
+          }
+        })
+        .catch((err) => console.warn("Could not check phone number:", err));
+    }
+  } catch (error) {
+    console.error("Failed to load user data:", error);
+    throw error; // Re-throw to be caught in main listener
+  }
 }
 
 // Filter all tasks to only those assigned to the given user
@@ -160,10 +191,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const splash = document.getElementById("splash-screen");
   const main = document.querySelector(".main-content-summary");
 
-  if (window.innerWidth >= 750) {
-    splash.style.display = "none";
+  if (sessionStorage.getItem("splashScreenShown")) {
     return;
   }
+
+  if (window.innerWidth >= 750) {
+    return;
+  }
+
+  sessionStorage.setItem("splashScreenShown", "true");
 
   const storedUser = localStorage.getItem("currentUser");
   let greeting = "Good morning!";

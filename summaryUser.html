@@ -80,6 +80,10 @@
 
     <div id="splash-screen" class="below-header">Good morning!</div>
 
+    <div id="summary-loading-overlay">
+      <div class="loader"></div>
+    </div>
+
     <div id="summary-content">
       <main class="main-content-summary">
         <div id="mobile-intro" class="mobile-intro" style="display: none">
@@ -128,9 +132,10 @@
                     </svg>
                   </div>
                   <div class="summary-metric-info">
-                    <div class="summary-metric-value" id="summaryUserToDoCount">
-                      1
-                    </div>
+                    <div
+                      class="summary-metric-value"
+                      id="summaryUserToDoCount"
+                    ></div>
                     <div class="summary-metric-label">To-do</div>
                   </div>
                 </div>
@@ -169,9 +174,10 @@
                   </div>
 
                   <div class="summary-metric-info">
-                    <div class="summary-metric-value" id="summaryUserDoneCount">
-                      1
-                    </div>
+                    <div
+                      class="summary-metric-value"
+                      id="summaryUserDoneCount"
+                    ></div>
                     <div class="summary-metric-label">Done</div>
                   </div>
                 </div>
@@ -206,9 +212,7 @@
                       <div
                         class="summary-metric-value"
                         id="summaryUserUrgentCount"
-                      >
-                        1
-                      </div>
+                      ></div>
                       <div class="summary-metric-urgent-label">Urgent</div>
                     </div>
                   </div>
@@ -217,9 +221,7 @@
                     <div
                       class="summary-metric-deadline-date"
                       id="summaryUserUrgentDate"
-                    >
-                      October 16, 2022
-                    </div>
+                    ></div>
                     <div class="summary-metric-deadline-label">
                       Upcoming Deadline
                     </div>
@@ -236,9 +238,7 @@
                   <div
                     class="summary-metric-value"
                     id="summaryAllTasksOnBoardCount"
-                  >
-                    5
-                  </div>
+                  ></div>
                   <div class="summary-metric-label">Tasks in <br />Board</div>
                 </div>
               </a>
@@ -250,9 +250,7 @@
                   <div
                     class="summary-metric-value"
                     id="summaryUserInProgressCount"
-                  >
-                    2
-                  </div>
+                  ></div>
                   <div class="summary-metric-label">
                     Tasks In <br />Progress
                   </div>
@@ -266,9 +264,7 @@
                   <div
                     class="summary-metric-value"
                     id="summaryUserAwaitFeedbackCount"
-                  >
-                    2
-                  </div>
+                  ></div>
                   <div class="summary-metric-label">
                     Awaiting <br />Feedback
                   </div>
@@ -306,5 +302,18 @@
         </a>
       </nav>
     </div>
+    <script>
+      // Failsafe: If the main script fails to load (e.g., CORS, module error),
+      // this standard script will remove the overlay after 4 seconds.
+      setTimeout(() => {
+        const overlay = document.getElementById("summary-loading-overlay");
+        if (overlay && !overlay.classList.contains("d-none")) {
+          console.warn(
+            "Failsafe: Main script didn't remove overlay. Removing it now."
+          );
+          overlay.classList.add("d-none");
+        }
+      }, 4000); // 4 seconds fallback
+    </script>
   </body>
 </html>

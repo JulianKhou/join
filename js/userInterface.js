@@ -117,6 +117,7 @@ export function editProfileInitials() {
 function logoutUser() {
   logout()
     .then(() => {
+      sessionStorage.removeItem("splashScreenShown");
       window.location.href = "index.html";
       console.log("User logged out and redirected to index.html");
     })

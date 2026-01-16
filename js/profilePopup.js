@@ -191,7 +191,10 @@ if (profileBtn && profileMenu) {
 
   // Logout → zurück zur Login-Seite
   logoutBtn?.addEventListener("click", () => {
-    logout().then(() => (window.location.href = "index.html"));
+    logout().then(() => {
+      sessionStorage.removeItem("splashScreenShown");
+      window.location.href = "index.html";
+    });
   });
 
   // Privacy Settings → weiterleiten
