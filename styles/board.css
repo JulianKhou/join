@@ -478,10 +478,12 @@
 }
 
 .overlay-header {
+  margin-right: 10px;
+  margin-top: 44px;
+  margin-left: 10px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 32px;
 }
 
 .task-category-overlay {
@@ -1087,6 +1089,7 @@
   position: relative;
   z-index: 10;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 750px;
 }
 
 .edit-overlay-close-btn {
@@ -1713,44 +1716,71 @@
   margin: 0 4px;
 }
 
+/* Overlay Background Wrapper */
+.overlay-edit {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevent background scroll propagation */
+}
+
+.overlay-edit.active {
+  display: flex !important;
+}
+
 /* Shared Overlay Card Styles */
 .overlay-add-task-card,
 .edit-overlay-card {
   width: 95%;
-  height: 90%;
+  height: 85vh; /* Fixed height relative to viewport */
   max-height: 90vh;
   border-radius: 30px;
-  padding: 20px 20px 80px 20px;
-  max-width: none;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  position: relative;
-  overflow-y: auto;
+  padding: 0; /* Remove padding from container */
+  max-width: 550px;
   background: white;
-  max-width: 500px;
-  max-height: 750px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Hide outer overflow */
+  position: relative;
+  z-index: 10;
 }
 
-/* Specifically Hide Scrollbar for Cards */
-.overlay-add-task-card::-webkit-scrollbar,
-.edit-overlay-card::-webkit-scrollbar {
-  display: none;
+/* Scrollable Content Area */
+.add-task-form-overlay,
+.edit-task-form {
+  flex: 1;
+  overflow-y: hidden;
+  padding: 20px 20px 0 20px; /* Padding moved inside */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.add-task-form-overlay::-webkit-scrollbar,
+.edit-task-form::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 /* Adjust Edit Overlay Actions to Stick to Bottom */
-.edit-overlay-actions {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+.edit-overlay-actions,
+.add-task-actions {
+  position: relative; /* Normal flow */
   width: 100%;
   padding: 20px;
   background: white;
   border-radius: 0 0 30px 30px;
-  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow separator */
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: flex-end;
   box-sizing: border-box;
   z-index: 10;
+  margin-top: 0; /* Reset margins */
 }
 
 .add-task-title {
@@ -2153,14 +2183,6 @@
   .edit-subtasks-list::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 4px;
-  }
-
-  .edit-subtasks-list {
-    max-height: 120px;
-    overflow-y: auto;
-    margin-top: 8px;
-    padding-right: 4px;
-    padding-bottom: 8px; /* Prevent last item cutoff */
   }
 
   /* Ensure detail card doesn't overflow screen */
