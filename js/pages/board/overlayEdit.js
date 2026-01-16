@@ -68,20 +68,29 @@ function setupEditPriorityButtons(taskId, currentPriority) {
       `edit-priority-${p.toLowerCase()}-${taskId}`
     );
     if (btn) {
-      const activeClass = `edit-priority-${p.toLowerCase()}-active`;
-
+      // Set initial state
       if (p === currentPriority) {
-        btn.classList.add(activeClass);
+        btn.classList.add("active", `prio-${p.toLowerCase()}`);
       }
 
       btn.addEventListener("click", () => {
+        // Reset all buttons
         priorities.forEach((pr) => {
           const b = document.getElementById(
             `edit-priority-${pr.toLowerCase()}-${taskId}`
           );
-          if (b) b.classList.remove(`edit-priority-${pr.toLowerCase()}-active`);
+          if (b) {
+            b.classList.remove(
+              "active",
+              "prio-urgent",
+              "prio-medium",
+              "prio-low"
+            );
+          }
         });
-        btn.classList.add(activeClass);
+
+        // Set active state
+        btn.classList.add("active", `prio-${p.toLowerCase()}`);
         _editSelectedPriority = p;
       });
     }
@@ -168,7 +177,7 @@ function updateEditAssigneeUI(taskId) {
       const contact = returnContactById(uid, contactsList);
       if (contact) {
         const div = document.createElement("div");
-        div.className = "edit-assignee-avatar";
+        div.className = "selected-badge-overlay";
         div.style.backgroundColor = contact.color;
         div.innerText = getInitials(contact.name);
         container.appendChild(div);

@@ -36,6 +36,7 @@ export function closeOverlayOnBtn() {
   overlay.classList.add("closing");
   setTimeout(() => {
     overlay.classList.remove("active", "closing");
+    document.body.style.overflow = ""; // Restore scrolling
   }, 200);
 }
 
@@ -50,6 +51,7 @@ export async function openTaskDetail(taskId) {
     const task = await getTask(taskId);
     renderOverlayContent(task);
     overlay.classList.add("active");
+    document.body.style.overflow = "hidden"; // Disable scrolling
 
     hydrateOverlay(task);
     setupOverlayCloseBtn();

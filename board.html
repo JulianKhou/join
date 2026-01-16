@@ -175,7 +175,7 @@
       </div>
 
       <!-- Form Content -->
-      <form class="add-task-form-overlay" id="addTaskFormOverlay">
+      <form class="add-task-form-overlay" id="addTaskFormOverlay" novalidate>
         <!-- Left Column -->
         <div class="form-column-left">
           <!-- Title -->
@@ -205,7 +205,7 @@
           <div class="form-group">
             <label>Priority</label>
             <div class="priority-button-group">
-              <button class="priority-button">
+              <button type="button" class="priority-button" id="prioUrgentOverlay" data-prio="Urgent">
                 <span class="priority-name">Urgent</span>
                 <svg class="priority-icon priority-button-icon-urgent" xmlns="http://www.w3.org/2000/svg" width="20"
                   height="15" viewBox="0 0 20 15" fill="none">
@@ -215,7 +215,7 @@
                     d="M18.9043 8.76057C18.6696 8.76097 18.4411 8.68612 18.2522 8.54702L10.0002 2.46386L1.7481 8.54702C1.51412 8.71983 1.22104 8.79269 0.93331 8.74956C0.645583 8.70643 0.386785 8.55086 0.213849 8.31706C0.0409137 8.08326 -0.0319941 7.79039 0.011165 7.50288C0.054324 7.21536 0.210015 6.95676 0.443986 6.78395L9.3481 0.213471C9.5368 0.0738799 9.76537 -0.00146484 10.0002 -0.00146484C10.2349 -0.00146484 10.4635 0.0738799 10.6522 0.213471L19.5563 6.78395C19.7422 6.92087 19.8801 7.11298 19.9503 7.33286C20.0204 7.55274 20.0193 7.78914 19.947 8.00832C19.8746 8.22751 19.7349 8.41826 19.5476 8.55335C19.3604 8.68844 19.1352 8.76096 18.9043 8.76057Z" />
                 </svg>
               </button>
-              <button class="priority-button">
+              <button type="button" class="priority-button" id="prioMediumOverlay" data-prio="Medium">
                 <span class="priority-name">Medium</span>
                 <svg class="priority-icon priority-button-icon-medium" xmlns="http://www.w3.org/2000/svg" width="20"
                   height="8" viewBox="0 0 20 8" fill="none">
@@ -225,7 +225,7 @@
                     d="M18.9041 2.2077H1.09589C0.805242 2.2077 0.526498 2.0914 0.320979 1.88439C0.11546 1.67738 0 1.39661 0 1.10385C0 0.81109 0.11546 0.530322 0.320979 0.32331C0.526498 0.116298 0.805242 0 1.09589 0L18.9041 0C19.1948 0 19.4735 0.116298 19.679 0.32331C19.8845 0.530322 20 0.81109 20 1.10385C20 1.39661 19.8845 1.67738 19.679 1.88439C19.4735 2.0914 19.1948 2.2077 18.9041 2.2077Z" />
                 </svg>
               </button>
-              <button class="priority-button">
+              <button type="button" class="priority-button" id="prioLowOverlay" data-prio="Low">
                 <span class="priority-name">Low</span>
                 <svg class="priority-icon priority-button-icon-low" xmlns="http://www.w3.org/2000/svg" width="20"
                   height="15" viewBox="0 0 20 15" fill="none">
@@ -245,6 +245,7 @@
               <div class="selected-box" id="overlaySelectedBox">Select contacts to assign</div>
               <div class="checkbox-list" id="overlayCheckboxList"></div>
             </div>
+            <div class="selected-badges" id="overlaySelectedBadges"></div>
           </div>
 
           <!-- Category -->
@@ -283,7 +284,7 @@
 
       <!-- Action Buttons -->
       <div class="overlay-actions add-task-actions">
-        <div class="required-text">
+        <div class="required-text d-none">
           <span class="required">*</span>
           <span>This field is required</span>
         </div>

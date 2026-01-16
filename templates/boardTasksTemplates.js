@@ -14,6 +14,22 @@ export function taskCardTemplate(tasks) {
       tasks.id
     }" draggable="true">
           <div class="tasks-card-content">
+            <div class="mobile-move-actions">
+              <button class="mobile-move-btn" onclick="event.stopPropagation(); moveTask('${
+                tasks.id
+              }', 'up')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                   <path d="M12 19V5M5 12l7-7 7 7"/>
+                </svg>
+              </button>
+               <button class="mobile-move-btn" onclick="event.stopPropagation(); moveTask('${
+                 tasks.id
+               }', 'down')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                   <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+              </button>
+            </div>
             <div class="task-category ${(tasks.category || "General")
               .toLowerCase()
               .replace(/\s+/g, "-")}">${tasks.category || "General"}

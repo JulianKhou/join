@@ -57,10 +57,17 @@ span {
   height: 24px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
   .userProfileInitials {
     height: 60px;
     width: 60px;
+  }
+  .main-content-legal {
+    padding-top: 220px;
+    padding-left: 65px;
+    padding-right: 65px;
+    position: relative;
+    bottom: 90px;
   }
 }
 
@@ -99,6 +106,15 @@ span {
   .header-title {
     font-size: 16px;
     padding-left: 0px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .legal-p,
+  .privacy-text,
+  .legal-bullets,
+  .legal-meta {
+    text-align: justify;
   }
 }
 
@@ -263,6 +279,16 @@ span {
   .header-logo-small {
     display: none;
   }
+}
+
+@media (min-width: 851px) and (max-width: 1050px) {
+  .h1-arrow {
+    display: block;
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 1051px) {
   .h1-arrow {
     display: none;
   }

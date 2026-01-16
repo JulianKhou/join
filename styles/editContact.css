@@ -108,6 +108,12 @@
   flex-shrink: 0;
 }
 
+.profile-circle-add img {
+  width: 64px;
+  height: 64px;
+  filter: brightness(0) invert(1); /* Ensure icon is white */
+}
+
 .edit-form .input-wrapper {
   position: relative;
   margin-bottom: 18px;
@@ -160,14 +166,31 @@
 }
 
 .delete-btn {
+  bottom: 5px;
+  position: relative;
   background: white;
   border: 2px solid #2a3647;
   color: #2a3647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px; /* Enforce explicit height */
 }
 
 .save-btn {
   background: #1f2b3a;
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 2px solid transparent; /* Match delete-btn border width */
+  height: 50px; /* Enforce explicit height matching delete-btn */
+}
+
+.save-btn img {
+  height: 13px;
+  width: auto;
 }
 
 .text {
@@ -265,7 +288,8 @@ h3 {
 }
 
 @media (max-width: 1270px) {
-  .profile-circle {
+  .profile-circle,
+  .profile-circle-add {
     width: 90px;
     height: 90px;
     font-size: 40px;
@@ -273,7 +297,8 @@ h3 {
 }
 
 @media (max-width: 1135px) {
-  .profile-circle {
+  .profile-circle,
+  .profile-circle-add {
     width: 85px;
     height: 85px;
     font-size: 32px;
@@ -393,7 +418,8 @@ h3 {
     position: static;
   }
 
-  .profile-circle {
+  .profile-circle,
+  .profile-circle-add {
     position: static;
     margin-top: -80px; /* Pull up to overlap */
     margin-bottom: 20px;
@@ -439,7 +465,8 @@ h3 {
 
 @media (min-width: 1051px) {
   /* Close button uses default absolute position inside right pane now */
-  .profile-circle {
+  .profile-circle,
+  .profile-circle-add {
     position: absolute;
     top: calc(100% - 60px);
     left: 100px;
@@ -556,7 +583,8 @@ h3 {
     width: 200px;
     margin-left: -16px;
   }
-  .profile-circle {
+  .profile-circle,
+  .profile-circle-add {
     width: 60px;
     height: 60px;
     font-size: 24px;

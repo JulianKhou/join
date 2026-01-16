@@ -1,7 +1,7 @@
 export var addContactTemplate = `
 
 <div class="edit-contact-overlay add-contact-overlay">
-        <div class="edit-contact-container">
+        <div class="edit-contact-container add-contact-container">
       
           <div class="edit-contact-left">
             <img src="./assets/sideboardAssets/joinLogo.svg" class="logo">
@@ -12,7 +12,9 @@ export var addContactTemplate = `
           <div class="edit-contact-right">
             <button class="close-btn" id="closeAddContactBtn">×</button>
       
-            <div class="profile-circle">TW</div>
+            <div class="profile-circle-add profile-icon-container">
+                <img src="./assets/LogIn&SignUp/person.svg" alt="Person Icon">
+            </div>
       
             <form class="edit-form">
               <div class="input-wrapper">
@@ -32,7 +34,10 @@ export var addContactTemplate = `
       
               <div class="buttons">
                 <button class="delete-btn">Delete</button>
-                <button class="save-btn" id="saveContactBtn">Save ✓</button>
+                <button class="save-btn" id="saveContactBtn">
+                    Create contact
+                    <img src="./assets/board/check_icon.svg" alt="Check Icon">
+                </button>
               </div>
             </form>
       

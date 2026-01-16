@@ -246,6 +246,32 @@
   transform-origin: bottom left;
 }
 
+.mobile-move-actions {
+  display: none;
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  gap: 8px;
+}
+
+.mobile-move-btn {
+  background: white;
+  border: 1px solid #d1d1d1;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #2a3647;
+}
+
+.mobile-move-btn:hover {
+  background-color: #eee;
+  color: #29abe2;
+}
+
 .task-category {
   display: inline-block;
   max-width: max-content;
@@ -418,7 +444,7 @@
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .overlay-edit.active {
@@ -1687,6 +1713,352 @@
   margin: 0 4px;
 }
 
+/* Shared Overlay Card Styles */
+.overlay-add-task-card,
+.edit-overlay-card {
+  width: 95%;
+  height: auto; /* Allow height to adapt */
+  max-height: 90vh; /* Cap at 90% view height */
+  border-radius: 30px;
+  padding: 20px 20px 80px 20px; /* Big bottom padding for fixed actions */
+  max-width: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
+  overflow-y: auto; /* Only scroll if content is too big */
+  background: white;
+}
+
+/* Specifically Hide Scrollbar for Cards */
+.overlay-add-task-card::-webkit-scrollbar,
+.edit-overlay-card::-webkit-scrollbar {
+  display: none;
+}
+
+/* Adjust Edit Overlay Actions to Stick to Bottom */
+.edit-overlay-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  background: white;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow separator */
+  display: flex;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+.add-task-title {
+  font-size: 24px !important; /* Smaller title */
+  margin-bottom: 12px !important;
+}
+
+.add-task-form-overlay {
+  flex-direction: column;
+  gap: 8px; /* Minimal gap */
+  margin-bottom: 0;
+}
+
+.form-divider {
+  display: none;
+}
+
+.form-column-left,
+.form-column-right {
+  gap: 8px; /* Tighter fields */
+}
+
+.form-group label {
+  font-size: 14px; /* Smaller labels */
+  margin-bottom: 4px;
+}
+
+.form-input,
+.form-textarea {
+  padding: 6px 10px; /* Smaller input padding */
+  font-size: 14px;
+  height: 36px; /* Explicit height for inputs */
+}
+
+.form-textarea {
+  min-height: 60px; /* drastically reduce textarea */
+  height: 60px;
+  resize: none;
+}
+
+.form-group {
+  gap: 0;
+}
+
+/* Adjust inputs for full width */
+.multi-select,
+.selected-box {
+  width: 100%; /* Smaller select padding */
+  font-size: 14px;
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+.priority-button-group {
+  gap: 4px;
+}
+
+/* Scrollable Contact List */
+#overlayCheckboxList {
+  max-height: 150px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+
+.contact-item-overlay:hover {
+  background-color: #eee;
+}
+
+.priority-button {
+  height: 36px; /* Compact priority buttons */
+  padding: 0;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.priority-button img,
+.priority-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Active Priority Styles */
+.priority-button.active.prio-urgent {
+  background-color: #ff3d00;
+  color: white;
+  font-weight: bold;
+}
+.priority-button.active.prio-urgent svg path {
+  fill: white;
+}
+
+.priority-button.active.prio-medium {
+  background-color: #ffa800;
+  color: white;
+  font-weight: bold;
+}
+.priority-button.active.prio-medium svg path {
+  fill: white;
+}
+
+.priority-button.active.prio-low {
+  background-color: #7ae229;
+  color: white;
+  font-weight: bold;
+}
+.priority-button.active.prio-low svg path {
+  fill: white;
+}
+
+/* Selected Badges */
+.selected-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.selected-badge-overlay {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white; /* Overlap effect if negative margin, but let's stick to gap for now */
+}
+
+.subtask-input-group input {
+  height: 36px;
+}
+
+/* Adjust buttons - Sticky Bottom */
+.add-task-actions {
+  display: flex; /* Ensure flex */
+  margin-top: 0;
+  justify-content: space-between;
+  flex-direction: column; /* Main container column to stack required text vs buttons */
+  gap: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 20px 20px 20px;
+  background: white;
+  border-radius: 0 0 30px 30px;
+  z-index: 10;
+}
+
+.cancel-create-buttons {
+  display: flex;
+  flex-direction: row; /* Force side by side */
+  gap: 16px;
+  width: 100%;
+}
+
+.btn-create,
+  .btn-create:hover, /* Ensure hover doesn't break layout */
+  .btn-cancel {
+  flex: 1;
+  height: 48px; /* Touch friendly */
+  font-size: 16px;
+  padding: 0;
+  border-radius: 12px; /* Nicer button radius */
+  display: flex;
+  justify-content: center; /* Center text */
+  align-items: center;
+}
+
+/* Make sure icons in create button are centered */
+.btn-create svg,
+.btn-create img {
+  margin-left: 8px; /* gap between text and icon */
+}
+
+/* Subtask Styles */
+.edit-subtasks-list {
+  max-height: 120px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+.subtask-item-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 4px;
+}
+
+.subtask-item-overlay:hover {
+  background-color: #eee;
+}
+
+.subtask-label-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 1;
+  overflow: hidden; /* Prevent text overflow */
+}
+
+.subtask-item-overlay .point {
+  width: 4px;
+  height: 4px;
+  background-color: black;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.subtask-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.edit-delete-subtask-buttons {
+  display: none; /* Hidden by default */
+  gap: 4px;
+  align-items: center;
+}
+
+.subtask-item-overlay:hover .edit-delete-subtask-buttons {
+  display: flex; /* Show on hover */
+}
+
+/* Button Styles */
+.edit-btn-overlay,
+.delete-btn-overlay {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.edit-btn-overlay:hover,
+.delete-btn-overlay:hover {
+  background-color: #ddd;
+}
+
+.edit-btn-overlay img,
+.delete-btn-overlay img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Edit Mode Styles */
+.subtask-label-active {
+  background: white !important; /* Force white background */
+  border-bottom: 1px solid #29abe2; /* Blue underline */
+  padding: 4px 0;
+  border-radius: 0; /* Remove hover radius */
+}
+
+.subtask-label-active:hover {
+  background: white; /* No gray hover in edit mode */
+}
+
+.edit-subtask-input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  flex-grow: 1;
+  font-family: "Inter", sans-serif;
+  padding: 4px 8px;
+  background: transparent;
+}
+
+.edit-subtask-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dividing-line {
+  width: 1px;
+  height: 14px;
+  background-color: #ccc;
+  margin: 0 4px;
+}
+
+.check-btn-overlay,
+.delete-btn-overlay-edit {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.check-btn-overlay img,
+.delete-btn-overlay-edit img {
+  width: 14px;
+  height: 14px;
+}
+
 @media (max-width: 1050px) {
   .main-content-board {
     padding: 120px 16px 100px 16px;
@@ -1755,6 +2127,55 @@
     box-sizing: border-box; /* Ensure padding doesn't overflow */
   }
 
+  /* Scrollable Subtasks List */
+  #subtasksListOverlay {
+    max-height: 120px;
+    overflow-y: auto;
+    margin-top: 8px;
+    padding-right: 4px; /* Space for scrollbar */
+    padding-bottom: 8px; /* Prevent last item cutoff */
+  }
+
+  /* Custom Scrollbar for subtasks */
+  #subtasksListOverlay::-webkit-scrollbar,
+  .edit-subtasks-list::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  #subtasksListOverlay::-webkit-scrollbar-track,
+  .edit-subtasks-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #subtasksListOverlay::-webkit-scrollbar-thumb,
+  .edit-subtasks-list::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+
+  .edit-subtasks-list {
+    max-height: 120px;
+    overflow-y: auto;
+    margin-top: 8px;
+    padding-right: 4px;
+    padding-bottom: 8px; /* Prevent last item cutoff */
+  }
+
+  /* Ensure detail card doesn't overflow screen */
+  .overlay-detail-card {
+    max-height: 95vh;
+    overflow-y: auto;
+    padding: 20px;
+    border-radius: 30px;
+    width: 95%;
+    max-width: none;
+    box-sizing: border-box;
+  }
+
+  .overlay-detail-card::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome/Safari */
+  }
+
   .add-task-btn {
     display: none; /* Hide desktop button */
   }
@@ -1765,10 +2186,23 @@
     margin-top: 24px;
   }
 
-  .board-column {
+  .kanban-column {
     width: 100%;
     min-width: 0; /* Allow shrinking */
     margin-bottom: 24px;
+  }
+
+  .tasks-container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 16px;
+    padding-bottom: 12px; /* Space for scrollbar */
+    align-items: stretch;
+  }
+
+  .tasks-container::-webkit-scrollbar {
+    height: 4px; /* Horizontal scrollbar height */
   }
 
   .board-column-header {
@@ -1802,8 +2236,15 @@
   }
 
   .task-card {
-    max-width: 240px;
-    width: 100%;
+    min-width: 250px;
+    width: 250px;
+    margin-bottom: 0; /* Vertical stacking handled by gap */
     box-sizing: border-box;
+    flex-shrink: 0;
+    position: relative; /* Ensure absolute positioning works */
+  }
+
+  .mobile-move-actions {
+    display: flex;
   }
 }

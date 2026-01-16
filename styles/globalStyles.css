@@ -233,6 +233,10 @@ body {
     width: 48px;
     height: 48px;
   }
+
+  .header-title {
+    display: none;
+  }
 }
 
 .header-title {
