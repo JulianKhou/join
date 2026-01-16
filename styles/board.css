@@ -1717,16 +1717,18 @@
 .overlay-add-task-card,
 .edit-overlay-card {
   width: 95%;
-  height: auto; /* Allow height to adapt */
-  max-height: 90vh; /* Cap at 90% view height */
+  height: 90%;
+  max-height: 90vh;
   border-radius: 30px;
-  padding: 20px 20px 80px 20px; /* Big bottom padding for fixed actions */
+  padding: 20px 20px 80px 20px;
   max-width: none;
   scrollbar-width: none;
   -ms-overflow-style: none;
   position: relative;
-  overflow-y: auto; /* Only scroll if content is too big */
+  overflow-y: auto;
   background: white;
+  max-width: 500px;
+  max-height: 750px;
 }
 
 /* Specifically Hide Scrollbar for Cards */
