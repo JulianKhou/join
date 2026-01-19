@@ -5,7 +5,6 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
-  overflow-x: hidden;
   z-index: 0;
 }
 
@@ -408,6 +407,7 @@ label {
     flex-direction: column;
     gap: 32px;
   }
+
   .task-column {
     width: 100%;
   }
@@ -431,6 +431,18 @@ label {
   }
 }
 
+@media (max-width: 1050px) {
+  .add-task-wrapper {
+    position: relative;
+    margin-left: 0px;
+    padding: 40px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    z-index: 0;
+  }
+}
+
 @media (max-width: 960px) {
   .add-task-form-overlay {
     flex-direction: column;
@@ -444,62 +456,6 @@ label {
 
   .add-task-wrapper {
     margin-left: 0px;
-  }
-}
-
-@media (max-width: 730px) {
-  .task-input {
-    width: 380px;
-  }
-
-  .task-input-description {
-    width: 380px;
-  }
-
-  .add-task-buttons {
-    padding-left: 45px;
-  }
-
-  .priority-buttons-size {
-    height: 52px;
-    width: 122px;
-  }
-
-  .selected-box {
-    width: 380px;
-  }
-
-  .subtask-buttons {
-    left: 320px;
-  }
-}
-
-@media (max-width: 660px) {
-  .task-input {
-    width: 333px;
-  }
-  .subtask-buttons {
-    top: 24%;
-  }
-  .task-input-description {
-    width: 333px;
-  }
-
-  .add-task-buttons {
-    padding-left: 0px;
-  }
-
-  .priority-buttons-size {
-    height: 48px;
-    width: 104px;
-  }
-
-  .selected-box {
-    width: 333px;
-  }
-
-  .subtask-buttons {
-    left: 275px;
   }
 }
 
@@ -583,7 +539,7 @@ label {
   }
 
   .header-title,
-  .header-right > .help {
+  .header-right>.help {
     display: none;
   }
 
@@ -601,75 +557,109 @@ label {
     width: 46px;
     height: 46px;
   }
+}
 
-  @media (max-width: 555px) {
-    .task-input {
-      width: 100%;
-    }
-
-    .task-input-description {
-      width: 100%;
-    }
-
-    .priority-buttons-size {
-      height: 53px;
-      width: 100%; /* Make flexible */
-    }
-
-    .add-task-wrapper {
-      margin-left: -30px;
-    }
-
-    .add-task-buttons {
-      padding-bottom: 48px;
-      padding-left: 0;
-    }
-
-    .selected-box {
-      width: 100%;
-    }
-
-    .subtask-buttons {
-      left: auto;
-      right: 10px;
-      position: absolute;
-    }
-
-    .subtask-input-area {
-      position: relative;
-    }
+@media (max-width: 730px) {
+  .task-input {
+    width: 380px;
   }
 
-  @media (max-width: 480px) {
-    .add-task-wrapper {
-      margin-left: -60px;
-    }
-    /* Redundant widths removed since 100% propagates from above */
+  .task-input-description {
+    width: 380px;
   }
 
-  @media (max-width: 430px) {
-    .add-task-wrapper {
-      margin-left: -55px;
-    }
+  .add-task-buttons {
+    padding-left: 45px;
   }
 
-  @media (max-width: 380px) {
-    .add-task-wrapper {
-      margin-left: -65px;
-    }
+  .priority-buttons-size {
+    height: 52px;
+    width: 122px;
+  }
 
-    .add-task-wrapper h1 {
-      font-size: 40px;
-    }
+  .selected-box {
+    width: 380px;
+  }
 
-    .task-cancel-button-size {
-      height: 48px;
-      width: 45%;
-    }
+  .subtask-buttons {
+    left: 320px;
+  }
+}
 
-    .task-create-button-size {
-      height: 48px;
-      width: 45%;
-    }
+@media (max-width: 660px) {
+  .task-input {
+    width: 333px;
+  }
+
+  .task-input-description {
+    width: 333px;
+  }
+
+  .add-task-buttons {
+    padding-left: 0px;
+  }
+
+  .priority-buttons-size {
+    height: 48px;
+    width: 104px;
+  }
+
+  .selected-box {
+    width: 333px;
+  }
+
+  .subtask-buttons {
+    left: 275px;
+  }
+}
+
+@media (max-width: 555px) {
+  .task-input {
+    width: 100%;
+  }
+
+  .task-input-description {
+    width: 100%;
+  }
+
+  .priority-buttons-size {
+    height: 53px;
+    width: 100%;
+    /* Make flexible */
+  }
+
+  .selected-box {
+    width: 100%;
+  }
+
+  .subtask-buttons {
+    left: auto;
+    right: 10px;
+    top: 10px;
+    position: absolute;
+  }
+
+  .subtask-input-area {
+    position: relative;
+  }
+
+  .main-content{
+    padding: 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .add-task-wrapper h1 {
+    font-size: 40px;
+  }
+
+  .task-cancel-button-size {
+    height: 48px;
+    width: 45%;
+  }
+
+  .task-create-button-size {
+    height: 48px;
+    width: 45%;
   }
 }
