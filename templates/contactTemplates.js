@@ -6,40 +6,44 @@ export var addContactTemplate = `
           <div class="edit-contact-left">
             <img src="./assets/sideboardAssets/joinLogo.svg" class="logo">
             <h2 class="add-contact-title">Add contact</h2>
+            <h3 class="add-contact-subtitle">Tasks are better with a team!</h3>
             <div class="blue-line"></div>
           </div>
       
           <div class="edit-contact-right">
             <button class="close-btn" id="closeAddContactBtn">×</button>
       
-            <div class="profile-circle-add profile-icon-container">
-                <img src="./assets/LogIn&SignUp/person.svg" alt="Person Icon">
+
+            <div class="prifile-and-input-form-wrapper">
+              <div class="profile-circle-add profile-icon-container">
+                  <img src="./assets/LogIn&SignUp/person.svg" alt="Person Icon">
+              </div>
+        
+              <form class="edit-form">
+                <div class="input-wrapper">
+                  <input type="text" id="AddContactNameInput" placeholder="Name">
+                  <span class="icon"><img src="./assets/LogIn&SignUp/person.svg" alt=""></span>
+                </div>
+        
+                <div class="input-wrapper">
+                  <input type="email" id="AddContactEmailInput" placeholder="Email">
+                  <span class="icon"><img src="./assets/LogIn&SignUp/mail.svg" alt=""></span>
+                </div>
+        
+                <div class="input-wrapper">
+                  <input type="tel" id="AddContactPhoneNumberInput" placeholder="Phone">
+                  <span class="icon"><img src="./assets/LogIn&SignUp/call.svg" alt=""></span>
+                </div>
+        
+                <div class="buttons">
+                  <button class="delete-btn">Delete</button>
+                  <button class="save-btn" id="saveContactBtn">
+                      Create contact
+                      <img src="./assets/board/check_icon.svg" alt="Check Icon">
+                  </button>
+                </div>
+              </form>
             </div>
-      
-            <form class="edit-form">
-              <div class="input-wrapper">
-                <input type="text" id="AddContactNameInput" placeholder="Name">
-                <span class="icon"><img src="./assets/LogIn&SignUp/person.svg" alt=""></span>
-              </div>
-      
-              <div class="input-wrapper">
-                <input type="email" id="AddContactEmailInput" placeholder="Mail">
-                <span class="icon"><img src="./assets/LogIn&SignUp/mail.svg" alt=""></span>
-              </div>
-      
-              <div class="input-wrapper">
-                <input type="tel" id="AddContactPhoneNumberInput" placeholder="Phone Number">
-                <span class="icon"><img src="./assets/LogIn&SignUp/call.svg" alt=""></span>
-              </div>
-      
-              <div class="buttons">
-                <button class="delete-btn">Delete</button>
-                <button class="save-btn" id="saveContactBtn">
-                    Create contact
-                    <img src="./assets/board/check_icon.svg" alt="Check Icon">
-                </button>
-              </div>
-            </form>
       
           </div>
         </div>
@@ -105,7 +109,7 @@ export function getContactDetailsTemplate(contact, color) {
         <h3>Contact Information </h3>
         <div>
             <h4> Email </h4>
-            <a href="mailto:${contact.email}">${contact.email}</a>
+            <a class="contact-email-link" href="mailto:${contact.email}">${contact.email}</a>
         </div>
         <div>
             <h4> Phone </h4>
