@@ -655,7 +655,8 @@
 }
 
 .custom-checkbox.checked {
-  background-color: transparent; /* Or #2a3647 if you want filled */
+  background-color: transparent;
+  /* Or #2a3647 if you want filled */
 }
 
 .custom-checkbox img {
@@ -1048,9 +1049,11 @@
 .technical-task {
   background-color: #1fd7c1;
 }
+
 .user-story {
   background-color: #0038ff;
 }
+
 .priority-urgent {
   background: url(../assets/board/priority-high.svg);
   background-repeat: no-repeat;
@@ -1060,6 +1063,7 @@
   width: 20px;
   height: 20px;
 }
+
 .priority-medium {
   background: url(../assets/board/priority-medium.svg);
   background-repeat: no-repeat;
@@ -1067,6 +1071,7 @@
   background-size: contain;
   fill: orange;
 }
+
 .priority-low {
   background: url(../assets/board/priority-low.svg);
   background-repeat: no-repeat;
@@ -1332,7 +1337,8 @@
   overflow-y: auto;
   /* Custom scrollbar */
   padding-right: 8px;
-  margin-right: 4px; /* Increased indent */
+  margin-right: 4px;
+  /* Increased indent */
 }
 
 /* Scrollbar styling */
@@ -1477,6 +1483,7 @@
     transform: translateX(400px);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -1488,6 +1495,7 @@
     transform: translateX(0);
     opacity: 1;
   }
+
   to {
     transform: translateX(400px);
     opacity: 0;
@@ -1581,7 +1589,8 @@
   border-radius: 8px;
   transition: background-color 0.2s ease;
   cursor: pointer;
-  min-height: 32px; /* Prevent jumpiness */
+  min-height: 32px;
+  /* Prevent jumpiness */
 }
 
 .subtask-label:hover {
@@ -1592,6 +1601,7 @@
 .subtask-label .edit-delete-subtask-buttons {
   display: none;
 }
+
 /* Show buttons on hover or when focused */
 .subtask-label:hover .edit-delete-subtask-buttons,
 .subtask-label.subtask-focus .edit-delete-subtask-buttons {
@@ -1641,7 +1651,8 @@
   border-bottom: 2px solid #29abe2;
   border-radius: 0;
   padding: 4px 0px;
-  margin-bottom: 4px; /* spacing while editing */
+  margin-bottom: 4px;
+  /* spacing while editing */
 }
 
 /* Force hover OFF when active for editing */
@@ -1689,7 +1700,8 @@
 
 .subtask-check-btn img,
 .subtask-delete-btn img {
-  width: 18px; /* Slightly larger for action buttons? */
+  width: 18px;
+  /* Slightly larger for action buttons? */
   height: 18px;
 }
 
@@ -1776,6 +1788,8 @@
   background: white;
   border-radius: 0 0 30px 30px;
   box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+  /* Subtle shadow separator */
   display: flex;
   justify-content: flex-end;
   box-sizing: border-box;
@@ -1784,13 +1798,15 @@
 }
 
 .add-task-title {
-  font-size: 24px !important; /* Smaller title */
+  font-size: 24px !important;
+  /* Smaller title */
   margin-bottom: 12px !important;
 }
 
 .add-task-form-overlay {
   flex-direction: column;
-  gap: 8px; /* Minimal gap */
+  gap: 8px;
+  /* Minimal gap */
   margin-bottom: 0;
 }
 
@@ -1800,23 +1816,28 @@
 
 .form-column-left,
 .form-column-right {
-  gap: 8px; /* Tighter fields */
+  gap: 8px;
+  /* Tighter fields */
 }
 
 .form-group label {
-  font-size: 14px; /* Smaller labels */
+  font-size: 14px;
+  /* Smaller labels */
   margin-bottom: 4px;
 }
 
 .form-input,
 .form-textarea {
-  padding: 6px 10px; /* Smaller input padding */
+  padding: 6px 10px;
+  /* Smaller input padding */
   font-size: 14px;
-  height: 36px; /* Explicit height for inputs */
+  height: 36px;
+  /* Explicit height for inputs */
 }
 
 .form-textarea {
-  min-height: 60px; /* drastically reduce textarea */
+  min-height: 60px;
+  /* drastically reduce textarea */
   height: 60px;
   resize: none;
 }
@@ -1828,9 +1849,11 @@
 /* Adjust inputs for full width */
 .multi-select,
 .selected-box {
-  width: 100%; /* Smaller select padding */
+  width: 100%;
+  /* Smaller select padding */
   font-size: 14px;
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  box-sizing: border-box;
+  /* Ensure padding doesn't affect width */
 }
 
 .priority-button-group {
@@ -1852,7 +1875,8 @@
 }
 
 .priority-button {
-  height: 36px; /* Compact priority buttons */
+  height: 36px;
+  /* Compact priority buttons */
   padding: 0;
   font-size: 14px;
   border-radius: 8px;
@@ -1870,6 +1894,7 @@
   color: white;
   font-weight: bold;
 }
+
 .priority-button.active.prio-urgent svg path {
   fill: white;
 }
@@ -1879,6 +1904,7 @@
   color: white;
   font-weight: bold;
 }
+
 .priority-button.active.prio-medium svg path {
   fill: white;
 }
@@ -1888,6 +1914,7 @@
   color: white;
   font-weight: bold;
 }
+
 .priority-button.active.prio-low svg path {
   fill: white;
 }
@@ -1909,7 +1936,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid white; /* Overlap effect if negative margin, but let's stick to gap for now */
+  border: 2px solid white;
+  /* Overlap effect if negative margin, but let's stick to gap for now */
 }
 
 .subtask-input-group input {
@@ -1918,10 +1946,12 @@
 
 /* Adjust buttons - Sticky Bottom */
 .add-task-actions {
-  display: flex; /* Ensure flex */
+  display: flex;
+  /* Ensure flex */
   margin-top: 0;
   justify-content: space-between;
-  flex-direction: column; /* Main container column to stack required text vs buttons */
+  flex-direction: column;
+  /* Main container column to stack required text vs buttons */
   gap: 12px;
   position: absolute;
   bottom: 0;
@@ -1936,28 +1966,46 @@
 
 .cancel-create-buttons {
   display: flex;
-  flex-direction: row; /* Force side by side */
+  flex-direction: row;
+  /* Force side by side */
   gap: 16px;
   width: 100%;
 }
 
 .btn-create,
-  .btn-create:hover, /* Ensure hover doesn't break layout */
-  .btn-cancel {
-  flex: 1;
-  height: 48px; /* Touch friendly */
+.btn-create:hover,
+/* Ensure hover doesn't break layout */
+.btn-cancel {
+  height: 48px;
+  /* Touch friendly */
   font-size: 16px;
   padding: 0;
-  border-radius: 12px; /* Nicer button radius */
+  border-radius: 12px;
+  /* Nicer button radius */
   display: flex;
-  justify-content: center; /* Center text */
+  justify-content: center;
+  /* Center text */
   align-items: center;
+}
+
+/* Ensure hover doesn't break layout */
+.btn-cancel {
+  width: 100px;
+}
+
+.btn-create {
+  width: 170px;
+}
+
+.btn-cancel:hover {
+  border-color: #29abe2;
 }
 
 /* Make sure icons in create button are centered */
 .btn-create svg,
 .btn-create img {
-  margin-left: 8px; /* gap between text and icon */
+  margin-left: 8px;
+  /* gap between text and icon */
 }
 
 /* Subtask Styles */
@@ -1989,7 +2037,8 @@
   align-items: center;
   gap: 12px;
   flex-grow: 1;
-  overflow: hidden; /* Prevent text overflow */
+  overflow: hidden;
+  /* Prevent text overflow */
 }
 
 .subtask-item-overlay .point {
@@ -2007,13 +2056,15 @@
 }
 
 .edit-delete-subtask-buttons {
-  display: none; /* Hidden by default */
+  display: none;
+  /* Hidden by default */
   gap: 4px;
   align-items: center;
 }
 
 .subtask-item-overlay:hover .edit-delete-subtask-buttons {
-  display: flex; /* Show on hover */
+  display: flex;
+  /* Show on hover */
 }
 
 /* Button Styles */
@@ -2042,14 +2093,18 @@
 
 /* Edit Mode Styles */
 .subtask-label-active {
-  background: white !important; /* Force white background */
-  border-bottom: 1px solid #29abe2; /* Blue underline */
+  background: white !important;
+  /* Force white background */
+  border-bottom: 1px solid #29abe2;
+  /* Blue underline */
   padding: 4px 0;
-  border-radius: 0; /* Remove hover radius */
+  border-radius: 0;
+  /* Remove hover radius */
 }
 
 .subtask-label-active:hover {
-  background: white; /* No gray hover in edit mode */
+  background: white;
+  /* No gray hover in edit mode */
 }
 
 .edit-subtask-input {
@@ -2109,11 +2164,13 @@
   }
 
   .board-header-responsive {
-    display: flex !important; /* Ensure flex is active */
+    display: flex !important;
+    /* Ensure flex is active */
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0; /* Tighten space between title/add row and search */
+    margin-bottom: 0;
+    /* Tighten space between title/add row and search */
   }
 
   .board-title {
@@ -2122,7 +2179,8 @@
   }
 
   .add-task-btn-responsiv {
-    display: flex !important; /* Force show on mobile */
+    display: flex !important;
+    /* Force show on mobile */
     width: 48px;
     height: 48px;
     border-radius: 10px;
@@ -2156,7 +2214,8 @@
 
   .search-input {
     width: 100%;
-    box-sizing: border-box; /* Ensure padding doesn't overflow */
+    box-sizing: border-box;
+    /* Ensure padding doesn't overflow */
   }
 
   /* Scrollable Subtasks List */
@@ -2164,8 +2223,10 @@
     max-height: 120px;
     overflow-y: auto;
     margin-top: 8px;
-    padding-right: 4px; /* Space for scrollbar */
-    padding-bottom: 8px; /* Prevent last item cutoff */
+    padding-right: 4px;
+    /* Space for scrollbar */
+    padding-bottom: 8px;
+    /* Prevent last item cutoff */
   }
 
   /* Custom Scrollbar for subtasks */
@@ -2185,6 +2246,15 @@
     border-radius: 4px;
   }
 
+  .edit-subtasks-list {
+    max-height: 120px;
+    overflow-y: auto;
+    margin-top: 8px;
+    padding-right: 4px;
+    padding-bottom: 8px;
+    /* Prevent last item cutoff */
+  }
+
   /* Ensure detail card doesn't overflow screen */
   .overlay-detail-card {
     max-height: 95vh;
@@ -2197,11 +2267,13 @@
   }
 
   .overlay-detail-card::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome/Safari */
+    display: none;
+    /* Hide scrollbar for Chrome/Safari */
   }
 
   .add-task-btn {
-    display: none; /* Hide desktop button */
+    display: none;
+    /* Hide desktop button */
   }
 
   .kanban-board {
@@ -2212,7 +2284,8 @@
 
   .kanban-column {
     width: 100%;
-    min-width: 0; /* Allow shrinking */
+    min-width: 0;
+    /* Allow shrinking */
     margin-bottom: 24px;
   }
 
@@ -2221,12 +2294,14 @@
     flex-direction: row;
     overflow-x: auto;
     gap: 16px;
-    padding-bottom: 12px; /* Space for scrollbar */
+    padding-bottom: 12px;
+    /* Space for scrollbar */
     align-items: stretch;
   }
 
   .tasks-container::-webkit-scrollbar {
-    height: 4px; /* Horizontal scrollbar height */
+    height: 4px;
+    /* Horizontal scrollbar height */
   }
 
   .board-column-header {
@@ -2246,26 +2321,30 @@
   .add-column-btn {
     width: 30px;
     height: 30px;
-    border: 2px solid #2a3647; /* Outlined box style */
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 8px;
+    /* Rounded corners */
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .add-column-btn-svg {
-    width: 12px; /* Smaller icon inside the box */
-    height: 12px;
-    stroke: #2a3647; /* Ensure color */
+    width: 30px;
+    /* Smaller icon inside the box */
+    height: 30px;
+    stroke: #2a3647;
+    /* Ensure color */
   }
 
   .task-card {
     min-width: 250px;
     width: 250px;
-    margin-bottom: 0; /* Vertical stacking handled by gap */
+    margin-bottom: 0;
+    /* Vertical stacking handled by gap */
     box-sizing: border-box;
     flex-shrink: 0;
-    position: relative; /* Ensure absolute positioning works */
+    position: relative;
+    /* Ensure absolute positioning works */
   }
 
   .mobile-move-actions {

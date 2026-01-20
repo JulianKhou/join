@@ -291,7 +291,8 @@ a {
   justify-content: center;
   align-items: flex-start;
   gap: 12px;
-  height: 560px; /* Match metrics height to vertically center content */
+  height: 560px;
+  /* Match metrics height to vertically center content */
 }
 
 /* Greeting Text */
@@ -308,14 +309,16 @@ a {
   font-weight: 700;
   color: #29abe2;
   line-height: 1.2;
-  white-space: nowrap; /* Prevent breaking name */
+  white-space: nowrap;
+  /* Prevent breaking name */
 }
 
 /* Ensure flex container aligns items nicely */
 .summary-content-row {
   display: flex;
   flex-direction: row;
-  align-items: center; /* Center greeting vertically relative to metrics */
+  align-items: center;
+  /* Center greeting vertically relative to metrics */
   gap: 80px;
 }
 
@@ -347,6 +350,7 @@ a {
   opacity: 1;
   transition: opacity 0.5s ease;
 }
+
 #splash-screen.fill-all {
   top: 0;
   height: 100vh;
@@ -355,15 +359,6 @@ a {
 #splash-screen.below-header {
   top: 80px;
   height: calc(100vh - 80px);
-}
-
-@media (max-width: 1150px) {
-  .summary-greeting-text {
-    font-size: 32px;
-  }
-  .summary-greeting-user {
-    font-size: 40px;
-  }
 }
 
 @media (max-width: 1350px) {
@@ -408,348 +403,396 @@ a {
 
   .main-content-summary {
     padding-left: 120px;
-  }
-  .summary-header-row {
-    margin-left: 39%;
-  }
-}
-
-@media (max-width: 750px) {
-  .sideBoard {
-    display: none;
-  }
-
-  .summary-subtitle-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .summary-divider-vertical {
-    width: 120px;
-    height: 4px;
-  }
-
-  .summary-subtitle {
-    text-align: left;
-    font-size: 20px;
-  }
-
-  .help {
-    display: none;
-  }
-
-  .summary-greeting-text,
-  .summary-greeting-user {
-    display: none;
-  }
-
-  .summary-subtitle-row {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .summary-subtitle-row .summary-subtitle {
-    display: inline;
-    font-size: 20px;
-    color: #2a3647;
-    font-weight: 400;
-    text-align: left;
-  }
-
-  .summary-subtitle {
-    font-size: 20px;
-    color: #2a3647;
-    font-weight: 400;
-    text-align: center;
-  }
-
-  .summary-divider-horizontal {
-    width: 120px;
-    height: 4px;
-    background-color: #29abe2;
-    border-radius: 2px;
-  }
-
-  .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 80px;
-    padding-left: 16px;
-    padding-right: 16px;
-    justify-content: space-between;
-  }
-
-  .header-title {
-    display: none;
+    align-items: center;
   }
 
   .main-content-summary {
-    padding: 120px 16px 120px 16px;
+    padding-left: 0px;
   }
+}
 
-  .summary-header-row {
-    flex-direction: column;
-    align-items: start;
-    text-align: center;
-    gap: 12px;
-    margin-left: 0;
-  }
-
-  .summary-title {
-    font-size: 48px;
-    white-space: normal;
-  }
-
-  .summary-subtitle,
-  .summary-divider {
-    display: none;
-  }
-
-  .summary-content-row {
-    flex-direction: column;
-    gap: 40px;
-    margin-left: 0;
-    align-items: center;
-  }
-
-  .summary-greeting {
-    text-align: center;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
+@media (max-width: 1150px) {
   .summary-greeting-text {
     font-size: 32px;
   }
 
   .summary-greeting-user {
-    font-size: 42px;
-  }
-
-  .summary-metrics {
-    width: 100%;
-    max-width: none;
-    gap: 24px;
-  }
-
-  .summary-metric-tile-row-1,
-  .summary-metric-tile-row-2,
-  .summary-metric-tile-row-3 {
-    width: 100%;
-    min-height: 120px;
-    flex: 1 1 0;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  .summary-metric-horizontal {
-    justify-content: center;
-    padding: 18px;
-  }
-
-  .summary-metric-wide {
-    flex-direction: column;
-    padding: 20px;
-    gap: 20px;
-  }
-
-  .summary-metric-divider {
-    display: none;
-  }
-
-  .summary-metric-tile-row-2,
-  .summary-metric-tile-row-3 {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .summary-metric-urgent {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex: 1;
-    margin-left: 12%;
-  }
-}
-
-@media (max-width: 570px) {
-  .main-content-summary {
-    padding-top: 96px; /* Increased to clear header */
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  /* Header adjustments to fit mobile */
-  .summary-header-row {
-    margin-bottom: 24px;
-    gap: 8px;
-  }
-
-  .summary-title {
-    font-size: 42px;
-  }
-
-  .summary-content-row {
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-    margin-left: 0;
-  }
-
-  .summary-metrics {
-    width: 100%;
-    height: auto; /* Allow auto height */
-    gap: 16px;
-  }
-
-  /* Row 1: Side by side (Todo, Done) */
-  .summary-metrics-row-1 {
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    height: auto;
-  }
-
-  .summary-metric-tile-row-1 {
-    flex: 1; /* Equal width */
-    height: auto;
-    min-height: 100px;
-    flex-direction: row; /* Icon left, text right? No, design shows column usually, checking... design shows Side-by-side inner? No, design shows Icon Left, Text Right or Stacked. Design image shows Icon Left, Text Right for Todo/Done */
-    /* Actually design shows: Icon Left, Text Right for Todo/Done */
-    padding: 16px;
-    justify-content: center;
-    align-items: center;
-  }
-
-  /* Adjust inner layout of Todo/Done for mobile to be compact */
-  .summary-metric-horizontal {
-    gap: 12px;
-    padding: 16px;
-  }
-
-  /* Row 2: Urgent (Full Width) */
-  .summary-metrics-row-2 {
-    height: auto;
-  }
-
-  .summary-metric-tile-row-2 {
-    padding: 16px;
-    gap: 12px;
-  }
-
-  .summary-metric-urgent {
-    margin-left: 0; /* Reset previous override */
-    justify-content: center;
-  }
-
-  /* Row 3: 3 Columns (Board, InProgress, Feedback) */
-  .summary-metrics-row-3 {
-    display: flex;
-    flex-direction: row; /* Force row */
-    gap: 12px; /* Smaller gap to fit 3 items */
-    height: auto;
-  }
-
-  .summary-metric-tile-row-3 {
-    flex: 1; /* Equal width */
-    width: 95%; /* Fallback */
-    height: auto;
-    min-height: 100px;
-    padding: 12px 8px; /* Very small padding */
-    gap: 8px;
-  }
-
-  /* Text Scaling for Mobile 3-Column Layout */
-  .summary-metric-value {
-    font-size: 32px;
-  }
-
-  .summary-metric-label {
-    font-size: 13px;
-    text-align: center;
-    line-height: 1.2;
-  }
-
-  /* Icons in row 3 need to be hidden or small? Design shows Counts + Text. No icons in Row 3 typically? 
-     Wait, standard Row 3 is just Count + Label. 
-     Row 1 has Icons. 
-  */
-
-  .summary-metric-icon {
-    width: 40px;
-    height: 40px;
-  }
-
-  .summary-metric-icon img,
-  .summary-metric-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  /* Hide greeting on mobile if needed to save space, or style it */
-  .summary-greeting {
-    margin-top: 0;
-    margin-bottom: 0;
-    height: auto;
-  }
-  .summary-greeting-text,
-  .summary-greeting-user {
-    display: none; /* Often hidden on strict mobile views to save space, user image shows no greeting, just title */
-  }
-}
-
-#summary-loading-overlay {
-  position: fixed;
-  top: 96px; /* Below Desktop Header */
-  left: 230px; /* Right of Sidebar */
-  right: 0;
-  bottom: 0;
-  width: auto;
-  height: auto;
-  background-color: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 900; /* Below Header (1000) but above content */
-  transition: opacity 0.3s ease;
-}
-
-#summary-loading-overlay.d-none {
-  display: none;
-}
-
-.loader {
-  border: 4px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 4px solid #29abe2;
-  width: 40px;
-  height: 40px;
-  -webkit-animation: spin 1s linear infinite; /* Safari */
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
+    font-size: 40px;
   }
 }
 
 @media (max-width: 1050px) {
   #summary-loading-overlay {
-    top: 80px; /* Below Mobile Header */
-    left: 0; /* No Sidebar */
-    bottom: 80px; /* Above Mobile Nav */
+    top: 80px;
+    /* Below Mobile Header */
+    left: 0;
+    /* No Sidebar */
+    bottom: 80px;
+    /* Above Mobile Nav */
+  }
+
+  .main-content-summary {
+    padding-left: 0px;
+  }
+
+  .summary-header-row {
+    margin-left: 0px;
+  }
+
+  .summary-content-row {
+    flex-direction: column;
+    gap: 40px;
+    margin-left: 0px;
   }
 }
+
+  @media (max-width: 750px) {
+    .sideBoard {
+      display: none;
+    }
+
+    .summary-subtitle-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .summary-divider-vertical {
+      width: 120px;
+      height: 4px;
+    }
+
+    .summary-subtitle {
+      text-align: left;
+      font-size: 20px;
+    }
+
+    .help {
+      display: none;
+    }
+
+    .summary-greeting-text,
+    .summary-greeting-user {
+      display: none;
+    }
+
+    .summary-subtitle-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .summary-subtitle-row .summary-subtitle {
+      display: inline;
+      font-size: 20px;
+      color: #2a3647;
+      font-weight: 400;
+      text-align: left;
+    }
+
+    .summary-subtitle {
+      font-size: 20px;
+      color: #2a3647;
+      font-weight: 400;
+      text-align: center;
+    }
+
+    .summary-divider-horizontal {
+      width: 120px;
+      height: 4px;
+      background-color: #29abe2;
+      border-radius: 2px;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 80px;
+      padding-left: 16px;
+      padding-right: 16px;
+      justify-content: space-between;
+    }
+
+    .header-title {
+      display: none;
+    }
+
+    .main-content-summary {
+      padding: 120px 16px 120px 16px;
+    }
+
+    .summary-header-row {
+      flex-direction: column;
+      align-items: start;
+      text-align: center;
+      gap: 12px;
+      margin-left: 0;
+    }
+
+    .summary-title {
+      font-size: 48px;
+      white-space: normal;
+    }
+
+    .summary-subtitle,
+    .summary-divider {
+      display: none;
+    }
+
+    .summary-content-row {
+      flex-direction: column;
+      gap: 40px;
+      margin-left: 0;
+      align-items: center;
+    }
+
+    .summary-greeting {
+      text-align: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .summary-greeting-text {
+      font-size: 32px;
+    }
+
+    .summary-greeting-user {
+      font-size: 42px;
+    }
+
+    .summary-metrics {
+      width: 100%;
+      max-width: none;
+      gap: 24px;
+    }
+
+    .summary-metric-tile-row-1,
+    .summary-metric-tile-row-2,
+    .summary-metric-tile-row-3 {
+      width: 100%;
+      min-height: 120px;
+      flex: 1 1 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .summary-metric-horizontal {
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .summary-metric-wide {
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .summary-metric-divider {
+      display: none;
+    }
+
+    .summary-metric-tile-row-2,
+    .summary-metric-tile-row-3 {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .summary-metric-urgent {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+      margin-left: 12%;
+    }
+  }
+
+  @media (max-width: 570px) {
+    .main-content-summary {
+      padding-top: 96px;
+      /* Increased to clear header */
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    /* Header adjustments to fit mobile */
+    .summary-header-row {
+      margin-bottom: 24px;
+      gap: 8px;
+    }
+
+    .summary-title {
+      font-size: 42px;
+    }
+
+    .summary-content-row {
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      margin-left: 0;
+    }
+
+    .summary-metrics {
+      width: 100%;
+      height: auto;
+      /* Allow auto height */
+      gap: 16px;
+    }
+
+    /* Row 1: Side by side (Todo, Done) */
+    .summary-metrics-row-1 {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      height: auto;
+    }
+
+    .summary-metric-tile-row-1 {
+      flex: 1;
+      /* Equal width */
+      height: auto;
+      min-height: 100px;
+      flex-direction: row;
+      /* Icon left, text right? No, design shows column usually, checking... design shows Side-by-side inner? No, design shows Icon Left, Text Right or Stacked. Design image shows Icon Left, Text Right for Todo/Done */
+      /* Actually design shows: Icon Left, Text Right for Todo/Done */
+      padding: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Adjust inner layout of Todo/Done for mobile to be compact */
+    .summary-metric-horizontal {
+      gap: 12px;
+      padding: 16px;
+    }
+
+    /* Row 2: Urgent (Full Width) */
+    .summary-metrics-row-2 {
+      height: auto;
+    }
+
+    .summary-metric-tile-row-2 {
+      padding: 16px;
+      gap: 12px;
+    }
+
+    .summary-metric-urgent {
+      margin-left: 0;
+      /* Reset previous override */
+      justify-content: center;
+    }
+
+    /* Row 3: 3 Columns (Board, InProgress, Feedback) */
+    .summary-metrics-row-3 {
+      display: flex;
+      flex-direction: row;
+      /* Force row */
+      gap: 12px;
+      /* Smaller gap to fit 3 items */
+      height: auto;
+    }
+
+    .summary-metric-tile-row-3 {
+      flex: 1;
+      /* Equal width */
+      width: 95%;
+      /* Fallback */
+      height: auto;
+      min-height: 100px;
+      padding: 12px 8px;
+      /* Very small padding */
+      gap: 8px;
+    }
+
+    /* Text Scaling for Mobile 3-Column Layout */
+    .summary-metric-value {
+      font-size: 32px;
+    }
+
+    .summary-metric-label {
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* Icons in row 3 need to be hidden or small? Design shows Counts + Text. No icons in Row 3 typically? 
+     Wait, standard Row 3 is just Count + Label. 
+     Row 1 has Icons. 
+  */
+
+    .summary-metric-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    .summary-metric-icon img,
+    .summary-metric-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Hide greeting on mobile if needed to save space, or style it */
+    .summary-greeting {
+      margin-top: 0;
+      margin-bottom: 0;
+      height: auto;
+    }
+
+    .summary-greeting-text,
+    .summary-greeting-user {
+      display: none;
+      /* Often hidden on strict mobile views to save space, user image shows no greeting, just title */
+    }
+  }
+
+  #summary-loading-overlay {
+    position: fixed;
+    top: 96px;
+    /* Below Desktop Header */
+    left: 230px;
+    /* Right of Sidebar */
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 900;
+    /* Below Header (1000) but above content */
+    transition: opacity 0.3s ease;
+  }
+
+  #summary-loading-overlay.d-none {
+    display: none;
+  }
+
+  .loader {
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 4px solid #29abe2;
+    width: 40px;
+    height: 40px;
+    -webkit-animation: spin 1s linear infinite;
+    /* Safari */
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }

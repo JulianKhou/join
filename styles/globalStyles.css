@@ -119,7 +119,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: auto;
+  margin-top: 110px;
   margin-bottom: auto;
 }
 
@@ -459,6 +459,7 @@ body {
 
 .save-btn:hover {
   background: #29abe2;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 .profileShowMore {
