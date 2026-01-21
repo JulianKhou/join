@@ -4,7 +4,7 @@ export function editTaskTemplate(task, categories, contacts) {
  
     <div class="overlay-edit-card" id="overlayEditCard-${task.id}">
       <!-- Close Button -->
-      <div class="overlay-header">
+      <div class="overlay-header-add-task">
         <div class="task-category-overlay card-detail-${task.category
           .toLowerCase()
           .replace(/\s+/g, "-")}">${task.category}</div>
@@ -80,7 +80,7 @@ export function editTaskTemplate(task, categories, contacts) {
 export function editTaskFormTemplate(task, categories, contacts) {
   return `
     <div class="edit-overlay-card" id="editOverlayCard-${task.id}">
-      <div class="overlay-header">
+      <div class="overlay-header-edit">
         <h2 class="overlay-title add-task-title">Edit Task</h2>
         <button class="overlay-close-btn" id="editOverlayCloseBtn">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -89,7 +89,7 @@ export function editTaskFormTemplate(task, categories, contacts) {
         </button>
       </div>
 
-      <form class="add-task-form-overlay" id="editTaskForm-${task.id}">
+      <form class="edit-form-overlay" id="editTaskForm-${task.id}">
         <!-- Left Column -->
         <div class="form-column-left">
           <div class="form-group">
@@ -120,8 +120,6 @@ export function editTaskFormTemplate(task, categories, contacts) {
           </div>
         </div>
 
-        <div class="form-divider"></div>
-
         <!-- Right Column -->
         <div class="form-column-right">
           <div class="form-group">
@@ -134,7 +132,7 @@ export function editTaskFormTemplate(task, categories, contacts) {
           </div>
 
           <div class="form-group">
-            <label>Prio</label>
+            <label>Priority</label>
             <div class="priority-button-group">
               <button type="button" class="priority-button" id="edit-priority-urgent-${
                 task.id
