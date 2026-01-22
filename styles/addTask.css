@@ -120,10 +120,6 @@
   padding-left: 16px;
 }
 
-.header-logo-small {
-  display: none;
-}
-
 .task-input {
   width: 440px;
   height: 48px;
@@ -503,38 +499,6 @@ label {
 
   .sideBoard {
     display: none;
-  }
-
-  .contact-header-icon {
-    display: none;
-  }
-
-  .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 80px;
-    padding-left: 16px;
-    padding-right: 16px;
-    justify-content: space-between;
-  }
-
-  .header-title {
-    display: none;
-  }
-
-  .help {
-    display: none;
-  }
-
-  .mobile-logo {
-    display: block;
-    position: fixed;
-    top: 16px;
-    left: 16px;
-    width: 40px;
-    height: auto;
-    z-index: 1000;
   }
 
   .main-content-summary {

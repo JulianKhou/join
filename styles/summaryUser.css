@@ -470,10 +470,6 @@ a {
       font-size: 20px;
     }
 
-    .help {
-      display: none;
-    }
-
     .summary-greeting-text,
     .summary-greeting-user {
       display: none;

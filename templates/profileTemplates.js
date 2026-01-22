@@ -1,4 +1,5 @@
 export var profileTemplate = `
+    <button class="btnListItem" id="helpProfileBtn"><a class="help-link-profile-dropdown"href="./help.html">Help</a></button>
     <button class="btnListItem" id="editProfileBtn">View Profile</button>
     <button class="btnListItem" id="legalNoticeBtn">Legal Notice</button>
     <button class="btnListItem" id="privacySettingsBtn">Privacy Policy</button>

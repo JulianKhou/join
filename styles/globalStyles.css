@@ -632,6 +632,27 @@ body {
   font-weight: 700;
 }
 
+#helpProfileBtn{
+  display: none;
+}
+
+.help-link-profile-dropdown{
+    text-decoration: none;
+    background: none;
+    border: none;
+    color: #cdcdcd;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.help-link-profile-dropdown:hover {
+  color: #29abe2;
+  font-weight: 700;
+}
+
 @media (max-width: 1050px) {
   .sideBoard {
     display: none;
@@ -640,4 +661,11 @@ body {
   .mobile-nav {
     display: flex;
   }
+
+  #helpProfileBtn{
+  display: block;
+}
+
+.help{
+  display: none;}
 }

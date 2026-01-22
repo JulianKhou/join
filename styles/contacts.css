@@ -318,10 +318,6 @@ body {
     display: none;
   }
 
-  .help {
-    display: none;
-  }
-
   .mobile-logo {
     display: block;
     position: fixed;
