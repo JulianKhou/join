@@ -851,7 +851,7 @@
 }
 
 .priority-button {
-  width: 136px;
+  width: 120px;
   height: 56px;
   padding: 20px 0;
   gap: 10px;
@@ -860,13 +860,14 @@
   background-color: #fff;
   box-shadow: 0px 0px 4px 0px #0000001a;
   color: #2a3647;
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 400;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  height: 46px;
 }
 
 .priority-button:hover {
@@ -1797,7 +1798,7 @@
 }
 
 .form-group label {
-  font-size: 14px;
+  font-size: 20px;
   /* Smaller labels */
   margin-bottom: 4px;
 }
@@ -1834,7 +1835,7 @@
 }
 
 .priority-button-group {
-  gap: 4px;
+  gap: 10px;
 }
 
 /* Scrollable Contact List */
@@ -1849,14 +1850,6 @@
 
 .contact-item-overlay:hover {
   background-color: #eee;
-}
-
-.priority-button {
-  height: 36px;
-  /* Compact priority buttons */
-  padding: 0;
-  font-size: 14px;
-  border-radius: 8px;
 }
 
 .priority-button img,
@@ -2360,5 +2353,19 @@
     justify-content: flex-start;
     flex-direction: column;
     padding: 0 0 0 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .form-group label{
+    font-size: 16px;
+  }
+
+  .priority-name{
+    font-size: 16px;
+  }
+
+  .add-task-form-overlay{
+    padding: 10px 10px 0 10px;
   }
 }
