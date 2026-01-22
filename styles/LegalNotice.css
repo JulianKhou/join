@@ -64,83 +64,42 @@ span {
 }
 
 @media (max-width: 1050px) {
+
   .legal-p,
   .privacy-text,
   .legal-bullets,
   .legal-meta {
     text-align: justify;
   }
+}
 
-  .userProfileInitials {
-    height: 60px;
-    width: 60px;
-  }
+.help {
+  display: none;
+}
 
-  .help {
-    display: none;
-  }
+.main-content-legal {
+  margin-left: 0;
+  width: 100%;
+  padding: 110px 16px 100px 16px;
+  text-align: left;
+  padding-left: 16px;
+  /* Reset padding-left from desktop/larger queries */
+  padding-right: 16px;
+}
 
-  .main-content-legal {
-    margin-left: 0;
-    width: 100%;
-    padding: 110px 16px 100px 16px;
-    text-align: left;
-    padding-left: 16px; /* Reset padding-left from desktop/larger queries */
-    padding-right: 16px;
-  }
-
-  .legal-bullets {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 12px 0;
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    left: 0 !important;
-    padding: 10px 16px;
-    box-sizing: border-box;
-    width: 100% !important;
-    position: fixed;
-    top: 0;
-  }
-
-  .header-title,
-  .header-right > .help {
-    display: none;
-  }
-
-  .header-logo {
-    width: 32px;
-    height: 39px;
-  }
-
-  .header-right {
-    display: none;
-  }
-
-  .userProfileInitials {
-    margin-right: 0;
-    width: 46px;
-    height: 46px;
-  }
-
-  .header-logo-small {
-    display: block;
-    width: 32px;
-    height: 39px;
-  }
+.legal-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+}
 }
 
 @media (max-width: 900px) {
   header-title {
     font-size: 16px;
   }
+
   h1 {
     font-size: 48px;
   }
 }
-
-
