@@ -39,7 +39,7 @@
   
   .logo {
     position: absolute;
-    top: 50px;
+    top: 10px;
     left: 50px;
     font-size: 30px;
     display: flex;
@@ -316,6 +316,11 @@
   .primary-btn, .outlined-btn {
     width: 180px;
     height: 123px;
+  }
+
+  .logo{
+    top: 50px;
+    left: 50px;
   }
 
   .top-nav {
