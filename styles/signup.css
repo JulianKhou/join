@@ -80,6 +80,15 @@ label span {
   padding-top: 20px;
 }
 
+.logo img {
+  height: 121.97px;
+  width: 100.03px;
+  top: 80px;
+  left: 77px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+
 .primary-btn {
   background: #2a3647;
   color: white;
@@ -88,6 +97,13 @@ label span {
   border: none;
   cursor: pointer;
   font-size: 15px;
+}
+
+@media (max-height:900px){
+  .logo img{
+    width: 64px;
+    height: 78px;
+  }
 }
 
 @media (max-width: 800px){
@@ -122,6 +138,13 @@ label span {
   .btn-group {
     flex-direction: column;
     gap: 20px;
+  }
+
+  .logo img{
+    height: 78px;
+    width: 64px;
+    top: 37px;
+    left: 38px;
   }
 
   .primary-btn {
