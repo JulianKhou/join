@@ -1,12 +1,14 @@
 import { profileTemplate, profileTemplateSimple } from "../templates/profileTemplates.js";
 import { logout } from "./firebase.js";
 
-console.log("profilePopup.js loaded");
-
 function isSimpleProfilePage() {
   const simplePages = ["addTask.html", "board.html", "summary.html", "privacyPolicyInt.html", "legalNoticeInt.html", "help.html"];
   return simplePages.some(page => window.location.pathname.endsWith(page));
 }
+
+document.getElementById("backBtn").addEventListener("click", () => {
+  history.back();
+});
 
 // Button & Dropdown abrufen
 const profileBtn = document.getElementById("userProfileInitialsBtn");

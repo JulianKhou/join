@@ -4,10 +4,10 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+
 import {
   getFirestore,
   doc,
@@ -36,9 +36,6 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const analytics = getAnalytics(app);
-
-// Configure Google Auth Provider
-const googleProvider = new GoogleAuthProvider();
 
 /**
  * Creates a new user with email and password
@@ -104,43 +101,6 @@ export function loginWithEmail(email, password) {
       throw new Error(message);
     });
 }
-
-/**
- * Google Sign-In with popup
- * Opens a popup window for Google authentication
- * Creates or updates user profile if it doesn't exist
- * @returns {Promise} User object on successful login
- */
-export function signInWithGoogle() {
-  return signInWithPopup(auth, googleProvider)
-    .then((result) => {
-      const user = result.user;
-      
-      // Create/update user profile
-      return createOrUpdateUserProfile(user.uid, user.displayName, user.email)
-        .then(() => {
-          // Also create/update contact
-          return editOrAddContact(
-            user.uid,
-            user.displayName,
-            user.email,
-            "",
-            generateRandomColor()
-          );
-        })
-        .then(() => user);
-    })
-    .catch((error) => {
-      let message = "Google login failed.";
-      if (error.code === "auth/popup-blocked") {
-        message = "Popup was blocked! Please allow popups for this site.";
-      } else if (error.code === "auth/popup-closed-by-user") {
-        return null;
-      }
-      throw new Error(message);
-    });
-}
-
 /**
  * Creates or updates a user profile in Firestore
  * Uses merge to avoid overwriting existing data (e.g., createdAt)
