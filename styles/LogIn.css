@@ -274,9 +274,8 @@ footer a {
 
 .error-message {
   color: #e60000;
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 5px;
-  height: 0px;
 }
 
 @media (min-width: 501px){

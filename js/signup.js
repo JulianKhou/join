@@ -1,10 +1,19 @@
-import {createUser} from "./firebase.js";
+import { createUser } from "./firebase.js";
 
-// ← KEINE onAuthStateChanged hier!
+/* -------------------------
+   ELEMENTE
+------------------------- */
 
-var signUpBtn= document.getElementById("signUpBtn");
+const form = document.querySelector("form");
+const signUpBtn = document.getElementById("signUpBtn");
+
+const nameInput = document.getElementById("nameInput");
+const emailInput = document.getElementById("emailInput");
 const passwordInput = document.getElementById("passwordInput");
 const confirmInput = document.getElementById("confirmInput");
+const privacyCheck = document.getElementById("privacyCheck");
+
+const errorBox = document.getElementById("loginError");
 
 const passwordIconImg = passwordInput.nextElementSibling.querySelector("img");
 const confirmIconImg = confirmInput.nextElementSibling.querySelector("img");
@@ -13,26 +22,32 @@ const lockIcon = "./assets/LogIn&SignUp/lock.svg";
 const visibilityIcon = "./assets/LogIn&SignUp/visibility.svg";
 const visibilityOffIcon = "./assets/LogIn&SignUp/visibility_off.svg";
 
-signUpBtn.addEventListener("click",function(event){
-    event.preventDefault(); // Verhindert das Standard-Formularverhalten
-
-    if(checkCorrectPassword()){
-        createUser(getEmailInput(),getPasswordInput(),getUsernameInput())
-            .then((user) => {
-                console.log("Registration successful!");
-                // Formular leeren nach erfolgreicher Registrierung
-                event.target.closest('form').reset();
-                // Optional: Weiterleitung zum Login
-                alert("Registrierung erfolgreich! Du kannst dich jetzt einloggen.");
-                window.location.href = "logIn.html";
-            })
-            .catch((error) => {
-                console.error("Registration failed:", error);
-                alert("Registrierung fehlgeschlagen: " + error.message);
-            });
+nameInput.addEventListener("blur", () => {
+    if (nameInput.value.trim().length < 2) {
+        errorBox.textContent = "Please enter your name.";
     } else {
-        // Password validation failed — don't proceed
-        console.log("Form validation failed, not submitting");
+        errorBox.textContent = "";
+    }
+});
+
+emailInput.addEventListener("blur", () => {
+    if (!emailInput.value.includes("@")) {
+        errorBox.textContent = "Please enter a valid email address.";
+    } else {
+        errorBox.textContent = "";
+    }
+});
+
+passwordInput.addEventListener("blur", () => {
+    if (!validatePassword(passwordInput.value)) return;
+    errorBox.textContent = "";
+});
+
+confirmInput.addEventListener("blur", () => {
+    if (confirmInput.value !== passwordInput.value) {
+        errorBox.textContent = "Passwords do not match.";
+    } else {
+        errorBox.textContent = "";
     }
 });
 
@@ -62,69 +77,80 @@ function setupPasswordToggle(inputEl, iconImg) {
 setupPasswordToggle(passwordInput, passwordIconImg);
 setupPasswordToggle(confirmInput, confirmIconImg);
 
-function getEmailInput(){
-    return document.getElementById("emailInput").value;
-}
-function getPasswordInput(){
-    return document.getElementById("passwordInput").value;
-}
-function getConfirmPasswordInput(){
-    return document.getElementById("confirmInput").value;
-}
-function getUsernameInput(){
-    return document.getElementById("nameInput").value;
+signUpBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    errorBox.textContent = "";
+
+    if (!validateForm()) return;
+
+    createUser(
+        emailInput.value,
+        passwordInput.value,
+        nameInput.value
+    )
+        .then(() => {
+            form.reset();
+            alert("Registration successful! You can now log in.");
+            window.location.href = "logIn.html";
+        })
+        .catch((error) => {
+            errorBox.textContent = error.message;
+        });
+});
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    signUpBtn.click();
+});
+
+function validateForm() {
+    if (nameInput.value.trim().length < 2) {
+        errorBox.textContent = "Please enter your name.";
+        return false;
+    }
+
+    if (!emailInput.value.includes("@")) {
+        errorBox.textContent = "Please enter a valid email address.";
+        return false;
+    }
+
+    if (!validatePassword(passwordInput.value)) return false;
+
+    if (confirmInput.value !== passwordInput.value) {
+        errorBox.textContent = "Passwords do not match.";
+        return false;
+    }
+
+    if (!privacyCheck.checked) {
+        errorBox.textContent = "You must accept the privacy policy.";
+        return false;
+    }
+
+    return true;
 }
 
+function validatePassword(password) {
+    if (password.length < 6) {
+        errorBox.textContent = "Password must be at least 6 characters.";
+        return false;
+    }
 
+    if (!/[A-Z]/.test(password)) {
+        errorBox.textContent = "Password must contain a capital letter.";
+        return false;
+    }
 
-function checkCorrectPassword(){
-    const password= getPasswordInput();
-    const confirmPassword= getConfirmPasswordInput();
-    
-    if(!checkPasswordMatch(password,confirmPassword)){
-        alert("Password and confirm password do not match");
-        return false; // ← wichtig!
-    }
-    if(!checkLengthPassword(password)){
-        alert("Password must be at least 6 characters long");
+    if (!/[a-z]/.test(password)) {
+        errorBox.textContent = "Password must contain a lowercase letter.";
         return false;
     }
-    if(!checkCApitalLetter(password)){
-        alert("Password must contain at least one capital letter");
+
+    if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) {
+        errorBox.textContent = "Password must contain a special character.";
         return false;
     }
-    if(!checkLowerCaseLetter(password)){
-        alert("Password must contain at least one lowercase letter");
-        return false;
-    }
-    if(!checkSpecialCharacter(password)){
-        alert("Password must contain at least one special character");
-        return false;
-    }
-    if(!checkIfPrivacyChecked()){
-        alert("You must accept the privacy policy");
-        return false;
-    }
-    
-    return true; // ← alle Checks bestanden
+
+    return true;
 }
 
-function checkPasswordMatch(password,confirmPassword){
-    return password===confirmPassword;
-}
-function checkLengthPassword(password){
-    return password.length>=6;
-}
-function checkCApitalLetter(password){
-        return /[A-Z]/.test(password);
-}
-function checkLowerCaseLetter(password){
-    return /[a-z]/.test(password);
-}
-function checkSpecialCharacter(password){
-    return /[!@#$%^&*(),.?":{}|<>]/.test(password);
-}
-function checkIfPrivacyChecked(){
-    return document.getElementById("privacyCheck").checked;
-}
 
