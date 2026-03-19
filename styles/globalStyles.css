@@ -1,4 +1,4 @@
-* {
+﻿* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -90,6 +90,10 @@ h3 {
 
 html {
   scroll-behavior: smooth;
+}
+
+body, p, span, a, li, label, input, textarea, select, button {
+  font-size: max(16px, 1em) !important;
 }
 
 body {
@@ -348,6 +352,10 @@ body {
 .profileShowMore:not(.d-none) {
   display: flex;
 }
+
+
+
+
 
 
 

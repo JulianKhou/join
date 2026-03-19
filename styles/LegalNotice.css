@@ -1,4 +1,4 @@
-  .main-content-legal{
+﻿  .main-content-legal{
     padding-top: 220px;
     padding-left: 330px;
     padding-right: 65px;
@@ -270,7 +270,7 @@
   .mobile-nav .nav-item-icon img {
     width: 24px;
     height: 24px;
-    margin-bottom: 4px; /* Abstand Icon → Text */
+    margin-bottom: 4px; /* Abstand Icon â†’ Text */
   }
 
   .mobile-nav .nav-right {
@@ -285,7 +285,7 @@
   .mobile-nav .nav-item-text span {
     padding: 4px 8px; /* Abstand innerhalb des Hintergrundkastens */
     border-radius: 6px; /* runde Ecken */
-    transition: background 0.3s ease; /* sanfter Übergang beim Hover */
+    transition: background 0.3s ease; /* sanfter Ãœbergang beim Hover */
     color: white;
   }
 

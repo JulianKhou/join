@@ -1,75 +1,96 @@
-import { profileTemplate, profileTemplateSimple } from "../templates/profileTemplates.js";
+﻿import { profileTemplate, profileTemplateSimple } from "../templates/profileTemplates.js";
 import { logout } from "./firebase.js";
 
 function isSimpleProfilePage() {
-  const simplePages = ["addTask.html", "board.html", "summary.html", "privacyPolicyInt.html", "legalNoticeInt.html", "help.html"];
-  return simplePages.some(page => window.location.pathname.endsWith(page));
+  const simplePages = [
+    "addTask.html",
+    "board.html",
+    "summaryUser.html",
+    "privacyPolicyInt.html",
+    "legalNoticeInt.html",
+    "help.html",
+  ];
+
+  return simplePages.some((page) => window.location.pathname.endsWith(page));
 }
 
-document.getElementById("backBtn").addEventListener("click", () => {
-  history.back();
-});
+function initBackButtons() {
+  const backTargets = [
+    ...document.querySelectorAll("#backBtn"),
+    ...document.querySelectorAll(".h1-arrow"),
+    ...document.querySelectorAll(".back-btn"),
+  ];
 
-// Button & Dropdown abrufen
+  backTargets.forEach((target) => {
+    target.addEventListener("click", (event) => {
+      event.preventDefault();
+      const currentPage = window.location.pathname.split("/").pop();
+      const internalPages = [
+        "summaryUser.html",
+        "addTask.html",
+        "board.html",
+        "contacts.html",
+        "help.html",
+        "privacyPolicyInt.html",
+        "legalNoticeInt.html",
+      ];
+      const fallbackTarget = internalPages.includes(currentPage) ? "summaryUser.html" : "logIn.html";
+
+      if (document.referrer && document.referrer !== window.location.href) {
+        window.history.back();
+      } else {
+        window.location.href = fallbackTarget;
+      }
+    });
+  });
+}
+
+initBackButtons();
+
 const profileBtn = document.getElementById("userProfileInitialsBtn");
 const profileMenu = document.getElementById("profileShowMore");
 
 if (profileBtn && profileMenu) {
-  // Template nur EINMAL setzen
-  if (isSimpleProfilePage()) {
-    profileMenu.innerHTML = profileTemplateSimple;
-  } else {
-    profileMenu.innerHTML = profileTemplate;
-  }
+  profileMenu.innerHTML = isSimpleProfilePage() ? profileTemplateSimple : profileTemplate;
 
-  // Buttons aus dem Template holen
   const editProfileBtn = profileMenu.querySelector("#editProfileBtn");
   const logoutBtn = profileMenu.querySelector("#logoutBtn");
   const privacyBtn = profileMenu.querySelector("#privacySettingsBtn");
   const legalBtn = profileMenu.querySelector("#legalNoticeBtn");
 
-  // Logout → zurück zur Login-Seite
   logoutBtn?.addEventListener("click", () => {
     logout().then(() => (window.location.href = "logIn.html"));
   });
 
-  // Privacy Settings → weiterleiten
   privacyBtn?.addEventListener("click", () => {
     window.location.href = "privacyPolicyInt.html";
   });
 
-  // Legal Notice → weiterleiten
   legalBtn?.addEventListener("click", () => {
     window.location.href = "legalNoticeInt.html";
   });
 
-  // Dropdown toggle
-  profileBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
+  profileBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
     profileMenu.classList.toggle("d-none");
   });
 
-  // Klick im Dropdown → nicht schließen
-  profileMenu.addEventListener("click", (e) => {
-    e.stopPropagation();
+  profileMenu.addEventListener("click", (event) => {
+    event.stopPropagation();
   });
 
-  // Klick außerhalb → schließen
   document.addEventListener("click", () => {
     profileMenu.classList.add("d-none");
   });
 
-  // Edit Profile → Overlay öffnen
-  editProfileBtn?.addEventListener("click", (e) => {
-    e.stopPropagation(); // Dropdown nicht sofort schließen
+  editProfileBtn?.addEventListener("click", (event) => {
+    event.stopPropagation();
 
     const editOverlay = document.getElementById("editProfileOverlay");
     if (editOverlay) {
       editOverlay.classList.remove("d-none");
-    } else {
-      console.warn("Kein Edit Profile Overlay auf dieser Seite vorhanden.");
     }
 
-    profileMenu.classList.add("d-none"); // Dropdown schließen
+    profileMenu.classList.add("d-none");
   });
 }

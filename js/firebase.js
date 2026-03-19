@@ -1,10 +1,8 @@
-// Firebase SDK Imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signInWithPopup,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 
@@ -18,7 +16,6 @@ import {
   collection,
   getDocs,
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCgMFf3jcbG-pl3II5aRK9r4XxfF4ysc1c",
@@ -29,36 +26,25 @@ export const firebaseConfig = {
   appId: "1:80172784787:web:2922fbb80429f90e34c166",
   measurementId: "G-TC3XZWJL58",
 };
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 
-// Export Firebase Services
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-export const analytics = getAnalytics(app);
 
-/**
- * Creates a new user with email and password
- * @param {string} email - The email address for the new account
- * @param {string} password - The password for the new account (min. 6 characters)
- * @param {string} username - The username for the new account
- * @returns {Promise} User object on successful registration
- */
 export function createUser(email, password, username) {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const uid = userCredential.user.uid;
-      
-      // Create user profile first
+
       return createOrUpdateUserProfile(uid, username, email)
         .then(() => {
-          // Then create contact with user's data
           return editOrAddContact(
-            uid,           // use uid as contact ID so it's linked
+            uid,
             username,
             email,
-            "",            // no phone number initially
-            generateRandomColor() // or pass a default color
+            "",
+            generateRandomColor()
           );
         })
         .then(() => userCredential.user);
@@ -76,83 +62,64 @@ export function createUser(email, password, username) {
     });
 }
 
-/**
- * Login with email and password
- * @param {string} email - The user's email address
- * @param {string} password - The user's password
- * @returns {Promise} User object on successful login
- */
 export function loginWithEmail(email, password) {
   return signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      console.log("✅ Login successful, user:", userCredential.user); // ← Debug
-      return userCredential.user; // ← wichtig!
-    })
+    .then((userCredential) => userCredential.user)
     .catch((error) => {
-      console.error("❌ Login failed:", error); // ← Debug
       let message = "Login failed, check email and password.";
       if (error.code === "auth/user-not-found") {
         message = "User not found.";
       } else if (error.code === "auth/wrong-password") {
         message = "Incorrect password.";
+      } else if (error.code === "auth/invalid-credential") {
+        message = "Invalid email address or password.";
       } else if (error.code === "auth/invalid-email") {
         message = "Invalid email address or password.";
       }
       throw new Error(message);
     });
 }
-/**
- * Creates or updates a user profile in Firestore
- * Uses merge to avoid overwriting existing data (e.g., createdAt)
- *
- * @param {string} uid - The unique user ID from Firebase Authentication
- * @param {string} username - The user's username
- * @param {string} email - The user's email address
- * @returns {Promise<void>} Promise that resolves when the profile is created/updated
- */
+
 export async function createOrUpdateUserProfile(uid, username, email) {
-  try {
-    const userRef = doc(db, "users", uid);
-    const userSnap = await getDoc(userRef);
-    
-    // Only create if doesn't exist (avoid overwriting existing data)
-    if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        username,
-        email,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-        color: generateRandomColor(),
-      });
-    } else {
-      // Just update timestamp if already exists
-      await setDoc(userRef, {
-        updatedAt: serverTimestamp(),
-      }, { merge: true });
-    }
-  } catch (error) {
-    console.error("Error creating/updating user profile:", error);
-    throw error;
+  const userRef = doc(db, "users", uid);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    await setDoc(userRef, {
+      username,
+      email,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+      color: generateRandomColor(),
+    });
+    return;
   }
+
+  await setDoc(
+    userRef,
+    {
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true }
+  );
 }
 
-// Helper function to generate a random color
 function generateRandomColor() {
   const colors = [
-    "#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF",
-    "#33FFF5", "#F5FF33", "#FF8C33", "#8C33FF", "#33FF8C"
+    "#FF5733",
+    "#33FF57",
+    "#3357FF",
+    "#FF33A1",
+    "#A133FF",
+    "#33FFF5",
+    "#F5FF33",
+    "#FF8C33",
+    "#8C33FF",
+    "#33FF8C",
   ];
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
-/**
- * Deletes a user profile from Firestore and Firebase Authentication
- * First deletes the user from Authentication, then removes their profile from Firestore
- *
- * @param {string} uid - The unique user ID to delete
- * @returns {Promise<void>} Promise that resolves when the user is completely deleted
- * @throws {Error} If the user is not authenticated or deletion fails
- */
 export async function deleteUserProfile(uid) {
   const user = auth.currentUser;
 
@@ -160,28 +127,14 @@ export async function deleteUserProfile(uid) {
     throw new Error("No user is currently logged in.");
   }
 
-  try {
-    await user.delete();
-
-    await deleteDoc(doc(db, "users", uid));
-  } catch (error) {
-    console.error("Error deleting user:", error);
-    throw error;
-  }
+  await user.delete();
+  await deleteDoc(doc(db, "users", uid));
 }
 
-/**
- * Logs out the current user
- * @returns {Promise<void>}
- */
 export function logout() {
   return auth.signOut();
 }
 
-/**
- * Checks if a user is currently logged in
- * @param {Function} callback - Called with user object or null
- */
 export function onAuthChange(callback) {
   return onAuthStateChanged(auth, callback);
 }
@@ -189,67 +142,72 @@ export function onAuthChange(callback) {
 export async function getUsername(uid) {
   const myRef = doc(db, "users", uid);
   const snapshot = await getDoc(myRef);
-  const username = snapshot.data().username;
-  return username;
+  const data = snapshot.data();
+  return data?.username || "";
 }
 
-export async function editOrAddContact(
-  docIdOrName,
-  name,
-  email,
-  phoneNumber,
-  color
-) {
-  try {
-    // Wenn ein docId übergeben wurde, verwenden; sonst Fallback auf name ohne Whitespace
-    const docId = docIdOrName ?? name.replace(/\s+/g, "");
-    const userRef = doc(db, "contacts", docId);
-    await setDoc(
-      userRef,
-      {
-        name,
-        email,
-        phoneNumber,
-        color,
-        updatedAt: serverTimestamp(),
-        createdAt: serverTimestamp(),
-      },
-      { merge: true }
-    );
-    return docId;
-  } catch (error) {
-    console.error("Error creating/updating contact profile:", error);
-    throw error;
-  }
+export async function editOrAddContact(docIdOrName, name, email, phoneNumber, color) {
+  const docId = docIdOrName ?? name.replace(/\s+/g, "");
+  const userRef = doc(db, "contacts", docId);
+
+  await setDoc(
+    userRef,
+    {
+      name,
+      email,
+      phoneNumber,
+      color,
+      updatedAt: serverTimestamp(),
+      createdAt: serverTimestamp(),
+    },
+    { merge: true }
+  );
+
+  return docId;
 }
 
 export async function deleteContact(uuid) {
-  try {
-    await deleteDoc(doc(db, "contacts", uuid));
-  } catch (error) {
-    console.error("Error deleting contact:", error);
-    throw error;
-  }
+  const tasksRef = collection(db, "tasks");
+  const snapshot = await getDocs(tasksRef);
+
+  const updates = [];
+  snapshot.forEach((taskDoc) => {
+    const taskData = taskDoc.data();
+    const assignedTo = Array.isArray(taskData.assignedTo) ? taskData.assignedTo : [];
+    if (!assignedTo.includes(uuid)) return;
+
+    const filteredAssignedTo = assignedTo.filter((entry) => entry !== uuid);
+    updates.push(
+      setDoc(
+        doc(db, "tasks", taskDoc.id),
+        { assignedTo: filteredAssignedTo, updatedAt: serverTimestamp() },
+        { merge: true }
+      )
+    );
+  });
+
+  await Promise.all(updates);
+  await deleteDoc(doc(db, "contacts", uuid));
 }
 
 export async function getContacts() {
-  try {
-    const contactsRef = collection(db, "contacts");
-    const snapshot = await getDocs(contactsRef);
+  const contactsRef = collection(db, "contacts");
+  const snapshot = await getDocs(contactsRef);
 
-    const contacts = [];
-    snapshot.forEach((doc) => {
-      contacts.push({ id: doc.id, ...doc.data() });
-    });
+  const contacts = [];
+  snapshot.forEach((contactDoc) => {
+    contacts.push({ id: contactDoc.id, ...contactDoc.data() });
+  });
 
-    return contacts;
-  } catch (error) {
-    console.error("Error fetching contacts:", error);
-    throw error;
-  }
+  return contacts;
 }
+
 export async function createTask(task) {
-const user = auth.currentUser;
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("Please log in again to create tasks.");
+  }
+
   const taskRef = doc(collection(db, "tasks"));
   const createData = {
     title: task.title,
@@ -264,6 +222,7 @@ const user = auth.currentUser;
     updatedAt: serverTimestamp(),
     progress: "toDo",
   };
+
   await setDoc(taskRef, createData);
   return taskRef.id;
 }
@@ -274,31 +233,20 @@ export async function updateTask(taskId, updateData) {
   return taskRef.id;
 }
 
-
-
-
 export async function addEditTask(task) {
-createTask(task).then((taskId) => {
-    console.log("Task added with ID:", taskId);
-  });
-  //später mal updateTask aufrufen, wenn taskId existiert
+  return createTask(task);
 }
-
 
 export function deleteTask(taskId) {
   const taskRef = doc(db, "tasks", taskId);
   return deleteDoc(taskRef);
 }
 
-function checkIfTaskExists(taskId) {
-  const taskRef = doc(db, "tasks", taskId);
-  return getDoc(taskRef).then((docSnap) => docSnap.exists());
-}
-
 export function changeTaskProgress(taskId, newProgress) {
-  if (!["toDo", "inProgress", "awaitFeedback" ,"done"].includes(newProgress)) {
+  if (!["toDo", "inProgress", "awaitFeedback", "done"].includes(newProgress)) {
     throw new Error("Invalid progress status");
   }
+
   const taskRef = doc(db, "tasks", taskId);
   return setDoc(
     taskRef,
@@ -312,70 +260,70 @@ export async function getTask(taskId) {
   const taskSnap = await getDoc(taskRef);
   if (taskSnap.exists()) {
     return { id: taskSnap.id, ...taskSnap.data() };
-  } else {
-    throw new Error("Task not found");
   }
+  throw new Error("Task not found");
 }
+
 export async function getAllTasks() {
   const tasksRef = collection(db, "tasks");
   const snapshot = await getDocs(tasksRef);
   const tasks = [];
-  snapshot.forEach((doc) => {
-    tasks.push({ id: doc.id, ...doc.data() });
+  snapshot.forEach((taskDoc) => {
+    tasks.push({ id: taskDoc.id, ...taskDoc.data() });
   });
   return tasks;
 }
+
 export async function getTaskIds() {
   const tasksRef = collection(db, "tasks");
   const snapshot = await getDocs(tasksRef);
   const taskIds = [];
-  snapshot.forEach((doc) => {
-    taskIds.push(doc.id);
-  }
-  );
+  snapshot.forEach((taskDoc) => {
+    taskIds.push(taskDoc.id);
+  });
   return taskIds;
 }
 
 export async function getSubtasksCompletionState(taskId) {
   const taskRef = doc(db, "tasks", taskId);
   const taskSnap = await getDoc(taskRef);
-  if (taskSnap.exists()) {
-    const subtasks = taskSnap.data().subtasks || [];
-    const totalSubtasks = subtasks.length;
-    const completedSubtasks = subtasks.filter(subtask => subtask.completed).length;
-    console.log("Subtasks for task", taskId, ":", totalSubtasks, "total,", completedSubtasks, "completed");
-    return { totalSubtasks, completedSubtasks };
-  } else {
+
+  if (!taskSnap.exists()) {
     throw new Error("Task not found");
   }
+
+  const subtasks = taskSnap.data().subtasks || [];
+  const totalSubtasks = subtasks.length;
+  const completedSubtasks = subtasks.filter((subtask) => subtask.completed).length;
+  return { totalSubtasks, completedSubtasks };
 }
 
 export async function getContact(uid) {
   const contactRef = doc(db, "contacts", uid);
-  const contactSnap = await getDoc(contactRef); 
-  if (contactSnap.exists()) { 
+  const contactSnap = await getDoc(contactRef);
+  if (contactSnap.exists()) {
     return { id: contactSnap.id, ...contactSnap.data() };
-  } else {
-    throw new Error("Contact not found");
   }
+  throw new Error("Contact not found");
 }
 
 export async function changeSubtaskCompletion(taskId, subtaskIndex, completed) {
   const taskRef = doc(db, "tasks", taskId);
   const taskSnap = await getDoc(taskRef);
-  if (taskSnap.exists()) {
-    const taskData = taskSnap.data();
-    const subtasks = taskData.subtasks || [];
-    
-    if (subtaskIndex >= 0 && subtaskIndex < subtasks.length) {
-      subtasks[subtaskIndex].completed = completed;
-      await setDoc(taskRef, { subtasks, updatedAt: serverTimestamp() }, { merge: true });
-    } else {
-      throw new Error("Invalid subtask index");
-    }
-  } else {
+
+  if (!taskSnap.exists()) {
     throw new Error("Task not found");
   }
+
+  const taskData = taskSnap.data();
+  const subtasks = taskData.subtasks || [];
+
+  if (subtaskIndex < 0 || subtaskIndex >= subtasks.length) {
+    throw new Error("Invalid subtask index");
+  }
+
+  subtasks[subtaskIndex].completed = completed;
+  await setDoc(taskRef, { subtasks, updatedAt: serverTimestamp() }, { merge: true });
 }
 
 export async function getUserById(uid) {
@@ -383,7 +331,7 @@ export async function getUserById(uid) {
   const userSnap = await getDoc(userRef);
   if (userSnap.exists()) {
     return { id: userSnap.id, ...userSnap.data() };
-  } else {
-    throw new Error("User not found");
   }
+  throw new Error("User not found");
 }
+

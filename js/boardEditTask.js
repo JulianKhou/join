@@ -1,0 +1,316 @@
+import { getTask, updateTask } from "./firebase.js";
+import { assigneeAvatarTemplate, editTaskFormTemplate } from "../templates/boardTasksTemplates.js";
+import { iconTemplate } from "../templates/profileTemplates.js";
+import { escapeHtml, getInitials, returnContactById } from "./utility.js";
+import { showPopup } from "./feedback.js";
+
+export function createBoardEditTaskController({ overlay, getContactsList, refreshTaskCard, showTaskDetail }) {
+  function getContacts() {
+    const contacts = getContactsList?.();
+    return Array.isArray(contacts) ? contacts : [];
+  }
+
+  async function openEditTaskOverlay(taskId) {
+    try {
+      const task = await getTask(taskId);
+      const detailCard = overlay.querySelector(`#overlayDetailCard-${taskId}`);
+      if (!detailCard) return;
+      detailCard.insertAdjacentHTML("beforeend", editTaskFormTemplate(task));
+      initEditModeSubtasks(task);
+      attachEditFormEventListeners(taskId);
+    } catch (error) {
+      showPopup(error.message || "Could not open the edit form.");
+    }
+  }
+
+  function attachEditFormEventListeners(taskId) {
+    overlay.querySelector("#editOverlayCloseBtn")?.addEventListener("click", closeEditOverlay);
+    initEditPriorityButtons(taskId);
+    initEditDropdown(taskId);
+    initEditAssignedTo(taskId);
+    initEditSubtaskButtons(taskId);
+    initEditBlurValidation(taskId);
+    applyEditContentLimits(taskId);
+    initEditFormSubmit(taskId);
+  }
+
+  function populateContactList(listEl, task) {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const sortedContacts = [...getContacts()].sort((a, b) => {
+      if (currentUser && a.id === currentUser.uid) return -1;
+      if (currentUser && b.id === currentUser.uid) return 1;
+      return a.name.localeCompare(b.name);
+    });
+
+    listEl.innerHTML = "";
+    sortedContacts.forEach((contact) => {
+      const isYou = currentUser && contact.id === currentUser.uid;
+      const displayName = isYou ? `${contact.name} (You)` : contact.name;
+      const isChecked = Array.isArray(task.assignedTo) && task.assignedTo.includes(contact.id);
+      const avatarIcon = iconTemplate(getInitials(contact.name), contact.color);
+      const label = document.createElement("label");
+
+      label.className = "checkbox-item";
+      label.innerHTML = `
+        <div class="assignedToCheckboxNameIcon">${avatarIcon} ${escapeHtml(displayName)}</div>
+        <input
+          type="checkbox"
+          class="assignedToCheckbox"
+          name="assignedTo"
+          value="${escapeHtml(contact.id)}"
+          ${isChecked ? "checked" : ""}
+        >
+      `;
+      listEl.appendChild(label);
+    });
+  }
+
+  function updateAssignedToSummary(listEl, selectedBox, iconsEl) {
+    const checkedIds = [...listEl.querySelectorAll(".assignedToCheckbox")]
+      .filter((checkbox) => checkbox.checked)
+      .map((checkbox) => checkbox.value);
+
+    if (selectedBox) selectedBox.value = "";
+    if (!iconsEl) return;
+
+    iconsEl.innerHTML = "";
+    checkedIds.forEach((id) => {
+      const contact = returnContactById(id, getContacts());
+      if (!contact) return;
+      iconsEl.insertAdjacentHTML("beforeend", assigneeAvatarTemplate(getInitials(contact.name), contact.color));
+    });
+  }
+
+  function initEditAssignedTo(taskId) {
+    const listEl = overlay.querySelector(`#editCheckboxList-${taskId}`);
+    const selectedBox = overlay.querySelector(`#editSelectedBox-${taskId}`);
+    const iconsEl = overlay.querySelector(`#editAssignees-${taskId}`);
+    if (!listEl) return;
+
+    getTask(taskId).then((task) => {
+      populateContactList(listEl, task);
+      const syncSummary = () => updateAssignedToSummary(listEl, selectedBox, iconsEl);
+      syncSummary();
+      listEl.addEventListener("change", syncSummary);
+    }).catch((error) => {
+      showPopup(error.message || "Assigned contacts could not be loaded.", "info");
+    });
+  }
+
+  function initEditModeSubtasks(task) {
+    const subtasksList = overlay.querySelector(`#editSubtasksList-${task.id}`);
+    if (!subtasksList) return;
+
+    subtasksList.innerHTML = "";
+    if (!Array.isArray(task.subtasks) || task.subtasks.length === 0) return;
+
+    task.subtasks.forEach((subtask) => {
+      subtasksList.insertAdjacentHTML("beforeend", createEditSubtaskElement(subtask.text));
+      addEditSubtaskEventListeners(subtasksList.lastElementChild);
+    });
+  }
+
+  function createEditSubtaskElement(subtaskText) {
+    return `
+      <div class="subtask-label">
+        <div class="subtask-label-left">
+          <div class="point"></div>
+          <span>${escapeHtml(subtaskText)}</span>
+        </div>
+        <div class="edit-delete-subtask-buttons">
+          <button class="edit-subtask-button-size" style="display:none" type="button">
+            <img src="./assets/contacts/editButton.svg" alt="edit subtask button">
+          </button>
+          <button class="delete-subtask-button-size" style="display:none" type="button">
+            <img src="./assets/contacts/deleteButton.svg" alt="delete subtask button">
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function addEditSubtaskEventListeners(subtaskElement) {
+    const editBtn = subtaskElement.querySelector(".edit-subtask-button-size");
+    const deleteBtn = subtaskElement.querySelector(".delete-subtask-button-size");
+
+    subtaskElement.addEventListener("dblclick", (event) => {
+      event.preventDefault();
+      if (editBtn) editBtn.style.display = "inline-block";
+      if (deleteBtn) deleteBtn.style.display = "inline-block";
+    });
+
+    editBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      const textSpan = subtaskElement.querySelector("span");
+      if (!textSpan) return;
+
+      textSpan.contentEditable = true;
+      textSpan.focus();
+      textSpan.addEventListener("blur", () => {
+        textSpan.contentEditable = false;
+        editBtn.style.display = "none";
+        if (deleteBtn) deleteBtn.style.display = "none";
+      }, { once: true });
+      textSpan.addEventListener("keydown", (keyboardEvent) => {
+        if (keyboardEvent.key !== "Enter") return;
+        keyboardEvent.preventDefault();
+        textSpan.blur();
+      }, { once: true });
+    });
+
+    deleteBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      subtaskElement.remove();
+    });
+  }
+
+  function initEditPriorityButtons(taskId) {
+    const priorityButtons = overlay.querySelectorAll(`#editTaskForm-${taskId} .edit-priority-btn`);
+
+    getTask(taskId).then((task) => {
+      const initialPriority = task?.priority || "Medium";
+      priorityButtons.forEach((button) => {
+        if (button.dataset.priority !== initialPriority) return;
+        button.classList.add(`edit-priority-${initialPriority.toLowerCase()}-active`);
+      });
+    });
+
+    priorityButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        priorityButtons.forEach((priorityButton) => {
+          priorityButton.classList.remove(
+            "edit-priority-urgent-active",
+            "edit-priority-medium-active",
+            "edit-priority-low-active",
+          );
+        });
+        button.classList.add(`edit-priority-${button.dataset.priority.toLowerCase()}-active`);
+      });
+    });
+  }
+
+  function initEditDropdown(taskId) {
+    const selectedBox = overlay.querySelector(`#editSelectedBox-${taskId}`);
+    const checkboxList = overlay.querySelector(`#editCheckboxList-${taskId}`);
+
+    selectedBox?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      checkboxList?.classList.toggle("active");
+      if (!checkboxList?.classList.contains("active")) return;
+
+      const onDocumentClick = (docEvent) => {
+        if (checkboxList.contains(docEvent.target) || selectedBox.contains(docEvent.target)) return;
+        checkboxList.classList.remove("active");
+        document.removeEventListener("click", onDocumentClick);
+      };
+
+      document.addEventListener("click", onDocumentClick);
+    });
+  }
+
+  function applyEditContentLimits(taskId) {
+    const titleInput = overlay.querySelector(`#editTaskTitle-${taskId}`);
+    const descriptionInput = overlay.querySelector(`#editTaskDescription-${taskId}`);
+    const subtaskInput = overlay.querySelector(`#editSubtasks-${taskId}`);
+
+    if (titleInput) titleInput.maxLength = 80;
+    if (descriptionInput) descriptionInput.maxLength = 500;
+    if (subtaskInput) subtaskInput.maxLength = 120;
+  }
+
+  function initEditBlurValidation(taskId) {
+    const titleInput = overlay.querySelector(`#editTaskTitle-${taskId}`);
+    const dateInput = overlay.querySelector(`#editTaskDate-${taskId}`);
+
+    titleInput?.addEventListener("blur", () => {
+      if (titleInput.value.trim()) {
+        titleInput.style.borderColor = "";
+        return;
+      }
+
+      titleInput.style.borderColor = "red";
+      showPopup("Please enter a task title.", "info");
+    });
+
+    dateInput?.addEventListener("blur", () => {
+      if (dateInput.value) {
+        dateInput.style.borderColor = "";
+        return;
+      }
+
+      dateInput.style.borderColor = "red";
+      showPopup("Please select a due date.", "info");
+    });
+  }
+
+  function initEditSubtaskButtons(taskId) {
+    const addBtn = overlay.querySelector(`#editAddSubtaskBtn-${taskId}`);
+    const removeBtn = overlay.querySelector(`#editRemoveSubtaskBtn-${taskId}`);
+    const input = overlay.querySelector(`#editSubtasks-${taskId}`);
+    const list = overlay.querySelector(`#editSubtasksList-${taskId}`);
+
+    addBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      const text = input?.value.trim();
+      if (!text || !list) return;
+
+      list.insertAdjacentHTML("beforeend", createEditSubtaskElement(text));
+      addEditSubtaskEventListeners(list.lastElementChild);
+      input.value = "";
+    });
+
+    removeBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      list?.lastElementChild?.remove();
+    });
+  }
+
+  function initEditFormSubmit(taskId) {
+    overlay.querySelector(`#editTaskForm-${taskId}`)?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const title = overlay.querySelector(`#editTaskTitle-${taskId}`)?.value;
+      if (!title?.trim()) {
+        showPopup("Please enter a task title.", "info");
+        return;
+      }
+
+      try {
+        const updateData = collectEditFormData(taskId);
+        await updateTask(taskId, updateData);
+        const updatedTask = await getTask(taskId);
+        await refreshTaskCard(taskId, updatedTask);
+        closeEditOverlay();
+        showTaskDetail(updatedTask);
+        overlay.querySelector(".overlay-detail-card")?.classList.add("no-animation");
+      } catch (error) {
+        showPopup(error.message || "Task could not be updated.");
+      }
+    });
+  }
+
+  function collectEditFormData(taskId) {
+    const title = overlay.querySelector(`#editTaskTitle-${taskId}`)?.value.trim();
+    const description = overlay.querySelector(`#editTaskDescription-${taskId}`)?.value || "";
+    const dueDate = overlay.querySelector(`#editTaskDate-${taskId}`)?.value || "";
+    const category = overlay.querySelector(`#editTaskCategory-${taskId}`)?.value || "No Category";
+    const activePriorityBtn = overlay.querySelector(`#editTaskForm-${taskId} .edit-priority-btn[class*="-active"]`);
+    const priority = activePriorityBtn?.dataset.priority || "Medium";
+    const assignedTo = [...overlay.querySelectorAll(`#editCheckboxList-${taskId} .assignedToCheckbox:checked`)]
+      .map((checkbox) => checkbox.value);
+    const subtasks = [...overlay.querySelectorAll(`#editSubtasksList-${taskId} .subtask-label span`)]
+      .filter((span) => span.textContent.trim())
+      .map((span) => ({ text: span.textContent.trim(), completed: false }));
+
+    return { title, description, dueDate, priority, category, assignedTo, subtasks };
+  }
+
+  function closeEditOverlay() {
+    overlay.querySelector(".edit-overlay-card")?.remove();
+  }
+
+  return {
+    openEditTaskOverlay,
+    closeEditOverlay,
+  };
+}

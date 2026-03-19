@@ -1,0 +1,17 @@
+node_modules/
+
+# Temporary local test tooling
+package.json
+package-lock.json
+.tmp_*
+diff.txt
+diff-utf8.txt
+
+# Local editor / OS files
+.DS_Store
+.vscode/
+
+# Local test pages and helpers
+test.html
+js/test-*.js
+js/*.backup

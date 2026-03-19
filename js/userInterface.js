@@ -1,120 +1,107 @@
-import {
-  deleteUserProfile,
-  onAuthChange,
-  getUsername,
-  logout,
-} from "./firebase.js";
-import { profileTemplate } from "../templates/profileTemplates.js";
+﻿import { onAuthChange, getUsername, logout } from "./firebase.js";
+import { showPopup } from "./feedback.js";
 
-// Global variables for user data and UI elements
-var uid = null;
-var username = null;
-var logoutBtn = null;
-var privacySettingsBtn = null;
-var legalNoticeBtn = null;
+let uid = null;
+let username = null;
 
-// Listen for authentication state changes
 onAuthChange(async (user) => {
   if (user) {
-    
     uid = user.uid;
 
     try {
       username = await getUsername(uid);
-      
-
       if (username) {
         editProfileInitials();
-      } else {
-        console.error("Username is null or undefined!");
       }
-    } catch (error) {
-      console.error("Error fetching username:", error);
+    } catch {
+      showPopup("Could not load your user profile.");
     }
-  } else {
-    // Redirect to login if not authenticated and not already on login page
-    // Get current page filename
-const currentPage = window.location.pathname.split('/').pop();
 
-// Redirect to login ONLY if not already on login or signup page
-if (currentPage !== "logIn.html" && currentPage !== "signUp.html") {
-  window.location.href = "logIn.html";
-}
+    return;
+  }
 
+  const currentPage = window.location.pathname.split("/").pop();
+  if (currentPage !== "logIn.html" && currentPage !== "signUp.html") {
+    window.location.href = "logIn.html";
   }
 });
 
-// Extract initials from full name
-export function getInitials(Name) {
-  if (!Name) return "";
-  const names = Name.split(" ");
+export function getInitials(name) {
+  if (!name) return "";
+  const names = name.split(" ");
   let initials = names[0].charAt(0).toUpperCase();
+
   if (names.length > 1) {
     initials += names[names.length - 1].charAt(0).toUpperCase();
   }
-  // Use second letter if only one name
-  if (initials.length === 1) {
+
+  if (initials.length === 1 && names[0].length > 1) {
     initials += names[0].charAt(1).toUpperCase();
   }
+
   return initials;
 }
 
-// Display user initials in profile button
 export function editProfileInitials() {
-
   const nameInitialsElement = document.getElementById("nameInitials");
-
   if (nameInitialsElement) {
     nameInitialsElement.innerHTML = getInitials(username);
-  } else {
-    console.error("Element 'nameInitials' not found in DOM");
   }
 }
 
-// Handle user logout
 function logoutUser() {
   logout()
     .then(() => {
       window.location.href = "logIn.html";
     })
     .catch((error) => {
-      console.error("Logout failed:", error);
-      alert("Logout fehlgeschlagen: " + error.message);
+      showPopup("Logout failed: " + (error.message || "Unknown error"));
     });
 }
 
-// Attach event listeners to profile dropdown buttons
 function addEventListenersToProfileButtons() {
-  privacySettingsBtn = document.getElementById("privacySettingsBtn");
-  legalNoticeBtn = document.getElementById("legalNoticeBtn");
-  logoutBtn = document.getElementById("logoutBtn");
-  
-  privacySettingsBtn.addEventListener("click", function (event) {
+  const privacySettingsBtn = document.getElementById("privacySettingsBtn");
+  const legalNoticeBtn = document.getElementById("legalNoticeBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  privacySettingsBtn?.addEventListener("click", () => {
     window.location.href = "privacyPolicyInt.html";
   });
-  legalNoticeBtn.addEventListener("click", function (event) {
+
+  legalNoticeBtn?.addEventListener("click", () => {
     window.location.href = "legalNoticeInt.html";
   });
-  logoutBtn.addEventListener("click", function (event) {
-   
+
+  logoutBtn?.addEventListener("click", () => {
     logoutUser();
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const arrow = document.querySelector(".h1-arrow");
+function initBackButtons() {
+  const backTargets = [
+    ...document.querySelectorAll(".h1-arrow"),
+    ...document.querySelectorAll("#backBtn"),
+    ...document.querySelectorAll(".back-btn"),
+  ];
 
-  arrow.addEventListener("click", () => {
-    if (document.referrer && document.referrer !== window.location.href) {
-      window.history.back(); 
-    } else {
-      window.location.href = "summaryUser.html"; 
-    }
+  backTargets.forEach((target) => {
+    target.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      const currentPage = window.location.pathname.split("/").pop();
+      const publicPages = ["signUp.html", "logIn.html", "legalNoticeExt.html", "privacyPolicyExt.html"];
+      const fallbackTarget = publicPages.includes(currentPage) ? "logIn.html" : "summaryUser.html";
+
+      if (document.referrer && document.referrer !== window.location.href) {
+        window.history.back();
+      } else {
+        window.location.href = fallbackTarget;
+      }
+    });
   });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  addEventListenersToProfileButtons();
+  initBackButtons();
 });
-
-
-
-
-
-

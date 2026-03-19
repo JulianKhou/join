@@ -6,62 +6,59 @@ import {
 } from "../templates/contactTemplates.js";
 import { initOutsideClickHandler, getRandomColor } from "./utility.js";
 import { editOrAddContact, getContacts, auth, getContact, deleteContact } from "./firebase.js";
+import { showPopup } from "./feedback.js";
+import { configureContactFormValidation, getAddContactFormValues, isValidEmail } from "./contactsFormHelpers.js";
 
-const contacts = await getContacts();
+let contacts = [];
 let currentShownContact = null;
 
-/* Groups contacts by first letter, computes initials and stores a stable _index
-   _index corresponds to the position in the contacts array */
-function groupContacts(contacts) {
+function groupContacts(contactList) {
   const grouped = {};
-  contacts.forEach((contact, idx) => {
-    contact._index = idx;
+  contactList.forEach((contact, index) => {
+    contact._index = index;
 
-    const letter = contact.name.charAt(0).toUpperCase();
-    const initials = contact.name
+    const letter = (contact.name || "#").charAt(0).toUpperCase();
+    const initials = (contact.name || "")
       .split(" ")
-      .map((n) => n.charAt(0).toUpperCase())
+      .map((namePart) => namePart.charAt(0).toUpperCase())
       .join("")
       .substring(0, 2);
+
     contact.initials = initials;
 
     if (!grouped[letter]) grouped[letter] = [];
     grouped[letter].push(contact);
   });
+
   return grouped;
 }
 
-/* Render all contacts using templates.
-   We use event delegation instead of per-item listeners (see below). */
 function renderContacts() {
   const container = document.getElementById("contactsList");
+  if (!container) return;
+
   const groupedContacts = groupContacts(contacts);
   let html = "";
 
   for (const letter in groupedContacts) {
     html += getContactsGroupTemplate(letter, groupedContacts[letter]);
   }
+
   container.innerHTML = html;
 }
 
-/* Initial render */
-renderContacts();
-
-/* Event delegation for contact items:
-   Single click handler on the list container. Finds the clicked .contact-item,
-   reads data-contact-id and shows details. This avoids adding/removing many listeners. */
 const contactsList = document.getElementById("contactsList");
-function contactListClickHandler(e) {
-  const item = e.target.closest(".contact-item");
+function contactListClickHandler(event) {
+  const item = event.target.closest(".contact-item");
   if (!item) return;
+
   const id = Number(item.dataset.contactId);
-  // find contact by stored _index (preferred) or fallback by id
-  const contact = contacts.find((c) => c._index === id) || contacts[id];
+  const contact = contacts.find((entry) => entry._index === id) || contacts[id];
   if (contact) {
     contactShowDetails(contact, contact._index);
   }
 }
-// attach once
+
 if (contactsList) contactsList.addEventListener("click", contactListClickHandler);
 
 const addContactBtn = document.getElementById("addContactBtn");
@@ -69,13 +66,12 @@ const addContactMobileBtn = document.getElementById("addContactMobileBtn");
 
 let closeAddBtn = null;
 let saveContactBtn = null;
-/* Open add-contact overlay (prevents multiple overlays). */
+
 function openAddContactOverlay() {
   if (document.querySelector(".add-contact-overlay")) return;
 
   const addContent = document.getElementById("addContact");
   addContent.insertAdjacentHTML("beforeend", addContactTemplate);
-
   addEventListenerToAddContactForm();
 }
 
@@ -87,84 +83,75 @@ if (addContactMobileBtn) {
   addContactMobileBtn.addEventListener("click", openAddContactOverlay);
 }
 
-/* Add listeners for add-contact overlay: close button, outside click, save. */
+loadContactsData();
+
+async function loadContactsData() {
+  try {
+    contacts = await getContacts();
+  } catch {
+    contacts = [];
+    showPopup("Contacts could not be loaded.");
+  }
+
+  renderContacts();
+}
+
 function addEventListenerToAddContactForm() {
   closeAddBtn = document.getElementById("closeAddContactBtn");
   if (closeAddBtn) {
     closeAddBtn.addEventListener("click", () => {
-    
       closeAddContactOverlay();
     });
   }
 
-  // close when clicking outside the overlay container
-  initOutsideClickHandler(
-    document.querySelector(".add-contact-container"),
-    closeAddContactOverlay,
-    [closeAddBtn]
-  );
+  initOutsideClickHandler(document.querySelector(".add-contact-container"), closeAddContactOverlay, [closeAddBtn]);
+
+  const nameInput = document.getElementById("AddContactNameInput");
+  const emailInput = document.getElementById("AddContactEmailInput");
+  const phoneInput = document.getElementById("AddContactPhoneNumberInput");
+  configureContactFormValidation(nameInput, emailInput, phoneInput);
 
   saveContactBtn = document.getElementById("saveContactBtn");
   if (saveContactBtn) {
-    saveContactBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      
-      await addContact(); // await so we have correct id before updating UI
-      closeAddContactOverlay();
+    saveContactBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      const success = await addContact();
+      if (success) closeAddContactOverlay();
     });
   }
 }
 
-/* Remove add-contact overlay from DOM */
 function closeAddContactOverlay() {
   const overlay = document.querySelector(".add-contact-overlay");
   if (overlay) overlay.remove();
 }
 
-/* Input helpers */
-function getName() {
-  const el = document.getElementById("AddContactNameInput");
-  return el ? el.value : "";
-}
-function getEmail() {
-  const el = document.getElementById("AddContactEmailInput");
-  return el ? el.value : "";
-}
-function getPhoneNumber() {
-  const el = document.getElementById("AddContactPhoneNumberInput");
-  return el ? el.value : "";
-}
-
-/* Create new contact: generate uuid, validate, save to Firestore, update local array and re-render.
-   - generate uuid
-   - save to Firestore (await)
-   - add local copy with returned doc id
-   - re-render */
 async function addContact() {
-  const id = crypto.randomUUID(); // UUID used as Firestore doc id
+  const id = crypto.randomUUID();
 
-  const name = getName();
-  const email = getEmail();
-  const phoneNumber = getPhoneNumber();
+  const { name, email, phoneNumber } = getAddContactFormValues();
   const color = getRandomColor();
 
-  if (!name || !email) {
-    alert("Please provide at least a name and an email.");
-    return;
+  if (name.length < 2) {
+    showPopup("Please provide a valid contact name.");
+    return false;
+  }
+
+  if (!isValidEmail(email)) {
+    showPopup("Please provide a valid contact email.");
+    return false;
   }
 
   const initials = name
     .split(" ")
-    .map((n) => n.charAt(0).toUpperCase())
+    .map((part) => part.charAt(0).toUpperCase())
     .join("")
     .substring(0, 2);
 
   try {
-    // await Firestore write and use returned doc id
     const returnedId = await editOrAddContact(id, name, email, phoneNumber, color);
     const docId = returnedId || id;
 
-    // keep local copy in memory, include stable doc id
     contacts.push({
       id: docId,
       name,
@@ -173,23 +160,22 @@ async function addContact() {
       initials,
       color,
     });
-    // ensure last pushed contact has a correct _index
+
     contacts[contacts.length - 1]._index = contacts.length - 1;
     renderContacts();
+    showPopup("Contact saved.", "success");
+    return true;
   } catch (error) {
-    console.error("Error saving contact:", error);
-    alert("There was an error saving the contact. Please try again.");
-    return;
+    showPopup(error.message || "There was an error saving the contact.");
+    return false;
   }
 }
 
-/* Show contact details in right panel and mark active contact */
 function contactShowDetails(contact, index) {
   let contactButton;
+
   if (currentShownContact != null) {
-    contactButton = document.querySelector(
-      `[data-contact-id="${currentShownContact._index}"]`
-    );
+    contactButton = document.querySelector(`[data-contact-id="${currentShownContact._index}"]`);
     if (contactButton) contactButton.classList.remove("active-contact");
   }
 
@@ -203,153 +189,151 @@ function contactShowDetails(contact, index) {
   contactDetailsAddEventListeners();
 }
 
-/* Add listeners to buttons inside the contact details panel (delete, edit)
-   - delete contact from Firestore and update UI
-   - open edit overlay for the current contact */
 function contactDetailsAddEventListeners() {
-  var deleteDetailsBtn = document.getElementById("deleteContactDetailsBtn");
-  var editDetailsBtn = document.getElementById("editContactBtn");
-  var contact = currentShownContact;
+  const deleteDetailsBtn = document.getElementById("deleteContactDetailsBtn");
+  const editDetailsBtn = document.getElementById("editContactBtn");
+  const contact = currentShownContact;
 
   if (deleteDetailsBtn) {
-    // delete contact from Firestore and update UI
     deleteDetailsBtn.addEventListener("click", async () => {
       try {
         await deleteContact(contact.id);
-        // remove from local array by id
-        const idx = contacts.findIndex((c) => c.id === contact.id);
-        if (idx !== -1) contacts.splice(idx, 1);
+        const index = contacts.findIndex((entry) => entry.id === contact.id);
+        if (index !== -1) contacts.splice(index, 1);
         renderContacts();
-        // clear details panel
+
         const contactDetailsOverlay = document.getElementById("contactDetailsOverlay");
         if (contactDetailsOverlay) contactDetailsOverlay.innerHTML = "";
         currentShownContact = null;
+        showPopup("Contact deleted.", "success");
       } catch (error) {
-        console.error("Error deleting contact:", error);
-        alert("There was an error deleting the contact. Please try again.");
+        showPopup(error.message || "There was an error deleting the contact.");
       }
     });
   }
 
   if (editDetailsBtn) {
-    // open edit overlay for the current contact
     editDetailsBtn.addEventListener("click", () => {
-      
       editContact(currentShownContact);
     });
   }
 }
 
-/* Build and insert edit-contact overlay, prefill values.
-   Uses template and DOM to set input values (safer than string replace). */
 function editContact(contact) {
-  var name = contact.name;
-  var email = contact.email;
-  var phoneNumber = contact.phoneNumber;
-  var uuid = contact.id;
+  const contactTemplate = editContactTemplate(
+    contact.name,
+    contact.email,
+    contact.phoneNumber,
+    contact.id,
+    contact.color,
+    contact.initials
+  );
 
-  var contactTemplate = editContactTemplate(name, email, phoneNumber, uuid, contact.color, contact.initials);
-  var addContent = document.getElementById("addContact");
-
+  const addContent = document.getElementById("addContact");
   addContent.insertAdjacentHTML("beforeend", contactTemplate);
 
-  // safer: set values directly on inputs (template may expose either Edit* or Add* ids)
   const nameInput = document.getElementById("EditContactNameInput") || document.getElementById("AddContactNameInput");
   const emailInput = document.getElementById("EditContactEmailInput") || document.getElementById("AddContactEmailInput");
-  const phoneInput = document.getElementById("EditContactPhoneNumberInput") || document.getElementById("AddContactPhoneNumberInput");
+  const phoneInput =
+    document.getElementById("EditContactPhoneNumberInput") || document.getElementById("AddContactPhoneNumberInput");
 
-  if (nameInput) nameInput.value = name || "";
-  if (emailInput) emailInput.value = email || "";
-  if (phoneInput) phoneInput.value = phoneNumber || "";
+  if (nameInput) nameInput.value = contact.name || "";
+  if (emailInput) emailInput.value = contact.email || "";
+  if (phoneInput) phoneInput.value = contact.phoneNumber || "";
 
+  configureContactFormValidation(nameInput, emailInput, phoneInput);
   addEventListenerToEditContactForm(contact);
 }
 
-/* Attach listeners for edit overlay: close, outside click, save, delete */
 function addEventListenerToEditContactForm(contact) {
   const closeEditBtn = document.getElementById("closeEditContactBtn");
   if (closeEditBtn) {
     closeEditBtn.addEventListener("click", () => {
-  
       closeEditContactOverlay();
     });
   }
 
-  initOutsideClickHandler(
-    document.querySelector(".edit-contact-container"),
-    closeEditContactOverlay,
-    [closeEditBtn]
-  );
+  initOutsideClickHandler(document.querySelector(".edit-contact-container"), closeEditContactOverlay, [closeEditBtn]);
 
   const saveEditContactBtn = document.getElementById("saveEditContactBtn");
   if (saveEditContactBtn) {
-    saveEditContactBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-    
-      saveEditedContact(contact);
-      closeEditContactOverlay();
+    saveEditContactBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      const success = await saveEditedContact(contact);
+      if (success) closeEditContactOverlay();
     });
   }
 
   const deleteContactBtn = document.getElementById("deleteEditContactBtn");
   if (deleteContactBtn) {
-    deleteContactBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-     
+    deleteContactBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+
       try {
         await deleteContact(contact.id);
-        const idx = contacts.findIndex((c) => c.id === contact.id);
-        if (idx !== -1) contacts.splice(idx, 1);
+        const index = contacts.findIndex((entry) => entry.id === contact.id);
+        if (index !== -1) contacts.splice(index, 1);
         renderContacts();
         closeEditContactOverlay();
+        showPopup("Contact deleted.", "success");
       } catch (error) {
-        console.error("Error deleting contact:", error);
-        alert("There was an error deleting the contact. Please try again.");
-        return;
+        showPopup(error.message || "There was an error deleting the contact.");
       }
     });
   }
 }
 
-/* Save edited values: update Firestore and local array then re-render.
-   Uses contact.id as the stable document id. */
 async function saveEditedContact(contact) {
-  const nameEl = document.getElementById("EditContactNameInput") || document.getElementById("AddContactNameInput");
-  const emailEl = document.getElementById("EditContactEmailInput") || document.getElementById("AddContactEmailInput");
-  const phoneEl = document.getElementById("EditContactPhoneNumberInput") || document.getElementById("AddContactPhoneNumberInput");
+  const nameElement = document.getElementById("EditContactNameInput") || document.getElementById("AddContactNameInput");
+  const emailElement =
+    document.getElementById("EditContactEmailInput") || document.getElementById("AddContactEmailInput");
+  const phoneElement =
+    document.getElementById("EditContactPhoneNumberInput") || document.getElementById("AddContactPhoneNumberInput");
 
-  const name = nameEl ? nameEl.value : contact.name;
-  const email = emailEl ? emailEl.value : contact.email;
-  const phoneNumber = phoneEl ? phoneEl.value : contact.phoneNumber;
+  const name = nameElement ? nameElement.value.trim() : contact.name;
+  const email = emailElement ? emailElement.value.trim() : contact.email;
+  const phoneNumber = phoneElement ? phoneElement.value.trim() : contact.phoneNumber;
+
+  if (name.length < 2) {
+    showPopup("Please provide a valid contact name.");
+    return false;
+  }
+
+  if (!isValidEmail(email)) {
+    showPopup("Please provide a valid contact email.");
+    return false;
+  }
 
   try {
     await editOrAddContact(contact.id, name, email, phoneNumber, contact.color);
-    // update local copy by id
-    const idx = contacts.findIndex((c) => c.id === contact.id);
-    if (idx !== -1) {
-      contacts[idx].name = name;
-      contacts[idx].email = email;
-      contacts[idx].phoneNumber = phoneNumber;
-      // recompute initials when name changed
-      contacts[idx].initials = name
+
+    const index = contacts.findIndex((entry) => entry.id === contact.id);
+    if (index !== -1) {
+      contacts[index].name = name;
+      contacts[index].email = email;
+      contacts[index].phoneNumber = phoneNumber;
+      contacts[index].initials = name
         .split(" ")
-        .map((n) => n.charAt(0).toUpperCase())
+        .map((part) => part.charAt(0).toUpperCase())
         .join("")
         .substring(0, 2);
     }
 
     renderContacts();
-    // show updated details panel for the same contact
-    const updatedIdx = contacts.findIndex((c) => c.id === contact.id);
-    if (updatedIdx !== -1) contactShowDetails(contacts[updatedIdx], contacts[updatedIdx]._index);
+
+    const updatedIndex = contacts.findIndex((entry) => entry.id === contact.id);
+    if (updatedIndex !== -1) {
+      contactShowDetails(contacts[updatedIndex], contacts[updatedIndex]._index);
+    }
+
+    showPopup("Contact updated.", "success");
+    return true;
   } catch (error) {
-    console.error("Error saving contact:", error);
-    alert("There was an error saving the contact. Please try again.");
-    return;
+    showPopup(error.message || "There was an error saving the contact.");
+    return false;
   }
 }
 
-/* Remove edit-contact overlay from DOM */
 function closeEditContactOverlay() {
   const overlay = document.querySelector(".edit-contact-overlay");
   if (overlay) overlay.remove();
@@ -365,19 +349,16 @@ if (editProfileBtn) {
   editProfileBtn.addEventListener("click", async () => {
     const user = auth.currentUser;
     if (!user) {
-      alert("No user logged in.");
+      showPopup("No user logged in.");
       return;
     }
 
     try {
-      // Holt die Kontaktdaten des aktuell eingeloggten Users
       const contact = await getContact(user.uid);
-      editContact(contact); // ruft die existierende editContact-Funktion auf
+      editContact(contact);
     } catch (error) {
-      console.error("Could not fetch user contact:", error);
-      alert("Could not load your profile.");
+      showPopup(error.message || "Could not load your profile.");
     }
   });
 }
-
 

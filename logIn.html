@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -13,6 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="./assets/favicon/logoFavicon.png">
 </head>
 
 <body>  
@@ -50,14 +51,14 @@
 
         <form id="loginForm" novalidate onsubmit="return false;">
           <div class="input-field">
-            <input id="emailInput" type="email" placeholder="Email">
+            <input id="emailInput" type="text" inputmode="email" autocomplete="email username" placeholder="Email">
             <span class="icon">
               <img src="./assets/LogIn&SignUp/mail.svg">
             </span>
           </div>
 
           <div class="input-field">
-            <input id="passwordInput" type="password" placeholder="Password">
+            <input id="passwordInput" type="password" autocomplete="current-password" placeholder="Password">
             <span class="icon" id="passwordIcon">
               <img src="./assets/LogIn&SignUp/lock.svg" id="passwordIconImg">
             </span>
@@ -84,3 +85,4 @@
 
 </body>
 </html>
+

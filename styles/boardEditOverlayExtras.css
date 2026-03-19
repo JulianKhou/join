@@ -1,0 +1,102 @@
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+.notification {
+    animation: slideIn 0.3s ease-in-out;
+}
+
+/* Match Add Task Assigned-to styles in edit overlay */
+.multi-select {
+    width: 440px;
+    position: relative;
+    margin-top: 12px;
+}
+
+.selected-box {
+    padding: 10px;
+    border: 1px solid #d1d1d1;
+    cursor: pointer;
+    background: white;
+    border-radius: 10px;
+    width: 100%;
+    gap: 8px;
+}
+
+.checkbox-list {
+    display: none;
+    border: 1px solid #aaa;
+    background: white;
+    position: absolute;
+    padding-top: 10px;
+    width: 100%;
+    top: 42px;
+    z-index: 10;
+    flex-direction: column;
+    gap: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 250px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox-list.active {
+    display: flex;
+}
+
+.checkbox-list label {
+    display: flex;
+    margin-bottom: 6px;
+    width: 95%;
+}
+
+.checkbox-item {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0%;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkbox-item .assignedToCheckboxNameIcon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.assignedIcons {
+    display: flex;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    margin: 5px;
+    gap: 8px;
+    overflow: auto;
+    max-height: 70px;
+}
+
+.mobile-nav {

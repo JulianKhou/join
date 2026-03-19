@@ -1,3 +1,5 @@
+import { escapeHtml, sanitizeColor } from "../js/utility.js";
+
 export var profileTemplate = `
 <div class="btnList">
     <button class="btnListItem" id="editProfileBtn">Edit Profile</button>
@@ -16,9 +18,11 @@ export var profileTemplateSimple = `
 `;
 
 export function iconTemplate(initials,color,addedClass="") {
+    const safeInitials = escapeHtml(initials);
+    const safeColor = sanitizeColor(color);
     return `
-    <div class="profileIconContainer ${addedClass}" style="background-color: ${color};">
-        ${initials}
+    <div class="profileIconContainer ${addedClass}" style="background-color: ${safeColor};">
+        ${safeInitials}
     </div>
     `;
 }

@@ -1,7 +1,6 @@
-import { getContacts, addEditTask, getContact } from "./firebase.js";
+﻿import { getContacts, addEditTask, getContact } from "./firebase.js";
 import {
   addAssignedToBarTask,
-  addSubTask,
 } from "../templates/addTaskTemplates.js";
 import {
   getInitials,
@@ -9,47 +8,45 @@ import {
   returnContactById,
 } from "./utility.js";
 import {
-  toggleUrgentButtonOnClick,
-  toggleMediumButtonOnClick,
-  toggleLowButtonOnClick,
-  removeClickedFromPriorityButtons,
-} from "./addTaskPriorityButtons.js";
+  applyContentLimits,
+  initBlurValidation,
+  validateTaskForm,
+  resetAddTaskForm,
+  initPriorityButtons,
+} from "./addTaskFormHelpers.js";
+import { getSubtasksList, initSubtaskEventListeners } from "./addTaskSubtasks.js";
 import { iconTemplate } from "../templates/profileTemplates.js";
-// replace top-level var queries with declarations only so functions can still access them
+import { showPopup } from "./feedback.js";
+
 const PRIORITY = Object.freeze({
   LOW: "Low",
   MEDIUM: "Medium",
   URGENT: "Urgent",
 });
-let selectedPriority = PRIORITY.MEDIUM; // default
+let selectedPriority = PRIORITY.MEDIUM;
 
-// declare DOM refs here (no queries yet)
 let priorityUrgentBtn;
 let priorityMediumBtn;
 let priorityLowBtn;
-let priorityUrgentImg;
-let priorityMediumImg;
-let priorityLowImg;
 let selectBox;
 let checkboxList;
 let contactsList = [];
+const ASSIGNED_TO_PLACEHOLDER = "Select contacts to assign";
 
 // On DOM ready: set up UI, attach handlers and load contacts.
 document.addEventListener("DOMContentLoaded", async () => {
-  contactsList = await getContacts();
+  const form = document.querySelector(".add-task-form");
+  if (form) form.noValidate = true;
   const addTaskBtn = document.getElementById("addTaskBtn");
   const cancelTaskBtn = document.getElementById("cancelTaskBtn");
 
   priorityUrgentBtn = document.getElementById("priorityUrgentBtn");
   priorityMediumBtn = document.getElementById("priorityMediumBtn");
   priorityLowBtn = document.getElementById("priorityLowBtn");
-  priorityUrgentImg = document.getElementById("priorityUrgentImg");
-  priorityMediumImg = document.getElementById("priorityMediumImg");
-  priorityLowImg = document.getElementById("priorityLowImg");
   selectBox = document.getElementById("selectedBox");
   checkboxList = document.getElementById("chooseContactsCheckboxList");
 
-  // ✅ Initialize outside click handler ONCE
+  // âœ… Initialize outside click handler ONCE
   if (selectBox && checkboxList) {
     selectBox.addEventListener("click", (e) => {
       const wasVisible = checkboxList.style.display === "flex";
@@ -80,7 +77,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   addTaskBtn.addEventListener("click", (e) => {
     e.preventDefault();
 
-    if (!validateTaskForm()) {
+    if (!validateTaskForm({
+      getTitle: getTitleTask,
+      getDueDate: getDueDateTask,
+      getCategory: getCategoryTask,
+      showInfo: (message) => showPopup(message, "info"),
+    })) {
       return;
     }
     createTaskObject();
@@ -90,12 +92,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     resetAddTaskForm();
   });
 
-  await addContactsToAssignTask(contactsList);
-  checkCheckboxChanges();
+  applyContentLimits();
+  initBlurValidation({
+    getTitle: getTitleTask,
+    getDueDate: getDueDateTask,
+    getCategory: getCategoryTask,
+    showInfo: (message) => showPopup(message, "info"),
+  });
   addCategoryOptionsTask();
   initSubtaskEventListeners();
-  initAddEventListeners();
+  initPriorityButtons({
+    lowBtn: priorityLowBtn,
+    mediumBtn: priorityMediumBtn,
+    urgentBtn: priorityUrgentBtn,
+    priorities: {
+      low: PRIORITY.LOW,
+      medium: PRIORITY.MEDIUM,
+      urgent: PRIORITY.URGENT,
+    },
+    setPriority: (value) => {
+      selectedPriority = value;
+    },
+  });
+  await loadAddTaskContacts();
 });
+
+async function loadAddTaskContacts() {
+  try {
+    contactsList = await getContacts();
+  } catch {
+    contactsList = [];
+    showPopup("Contacts could not be loaded right now.", "info");
+  }
+
+  addContactsToAssignTask(contactsList);
+  checkCheckboxChanges();
+}
 
 // Insert contact options into the assign-to checkbox list.
 // If filterString is provided, only show contacts matching the name (case-insensitive)
@@ -110,11 +142,11 @@ function addContactsToAssignTask(contacts, filterString = "") {
   // Filter contacts if search string provided
   const filteredContacts = filterString.trim()
     ? contacts.filter((contact) =>
-        contact.name.toLowerCase().includes(filterString.toLowerCase())
+        contact?.name?.toLowerCase().includes(filterString.toLowerCase())
       )
     : contacts;
 
-  // ✅ Sort: current user first, then alphabetically
+  // âœ… Sort: current user first, then alphabetically
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const sortedContacts = filteredContacts.sort((a, b) => {
     // Current user comes first
@@ -122,16 +154,17 @@ function addContactsToAssignTask(contacts, filterString = "") {
     if (currentUser && b.id === currentUser.uid) return 1;
 
     // Then sort alphabetically by name
-    return a.name.localeCompare(b.name);
+    return (a.name || "").localeCompare(b.name || "");
   });
 
   sortedContacts.forEach((contact) => {
-    // ✅ Add (YOU) label for current user
+    if (!contact?.id || !contact?.name) return;
+    // âœ… Add (YOU) label for current user
     const isCurrentUser = currentUser && contact.id === currentUser.uid;
     const displayName = isCurrentUser ? `${contact.name} (You)` : contact.name;
 
     const option = addAssignedToBarTask(
-      displayName, // ← use modified name
+      displayName, // â† use modified name
       contact.id,
       iconTemplate(
         getInitials(contact.name),
@@ -146,7 +179,7 @@ function addContactsToAssignTask(contacts, filterString = "") {
     } else if (option instanceof Node) {
       assignedSelect.appendChild(option);
     } else {
-      console.warn("Unexpected option type:", option);
+      return;
     }
   });
 
@@ -181,15 +214,9 @@ function getPriorityTask() {
   return selectedPriority;
 }
 
-// Append the assigned area UI and populate contacts.
-async function addAssignToBarTask() {
-  const assignedToSelect = document.getElementById("assignedArea");
-  assignedToSelect.appendChild(addAssignedToBarTask());
-  addContactsToAssignTask(await getContacts());
-}
-
 // Wire change handlers for assign-to checkboxes and update the select box text + icons.
 function checkCheckboxChanges() {
+  if (!checkboxList || !selectBox) return;
   const checkboxes = checkboxList.querySelectorAll(".assignedToCheckbox");
   const selectedNamesIconContainer = document.getElementById("assignedIcons");
 
@@ -198,13 +225,14 @@ function checkCheckboxChanges() {
       // Update select box text
       const selected = [...checkboxes]
         .filter((cb) => cb.checked)
-        .map((cb) => returnContactById(cb.value, contactsList).name);
+        .map((cb) => returnContactById(cb.value, contactsList)?.name)
+        .filter(Boolean);
 
       selectBox.innerText = selected.length
         ? selected.join(", ")
-        : "Bitte auswählen";
+        : ASSIGNED_TO_PLACEHOLDER;
 
-      // ✅ Update icons container
+      // âœ… Update icons container
       updateAssignedIcons(selectedNamesIconContainer, checkboxes);
     });
   });
@@ -240,6 +268,7 @@ function updateAssignedIcons(container, checkboxes) {
 }
 
 function getSelectedAssignedTo() {
+  if (!checkboxList) return [];
   const checkboxes = checkboxList.querySelectorAll(".assignedToCheckbox");
   const selectedIds = [...checkboxes]
     .filter((cb) => cb.checked)
@@ -271,167 +300,9 @@ function getCategoryTask() {
   return categorySelect.value;
 }
 
-// Initialize add/remove subtask buttons and handlers.
-function initSubtaskEventListeners() {
-  const addSubtaskBtn = document.getElementById("addSubtaskBtn");
-  const removeSubtaskBtn = document.getElementById("removeSubtaskBtn");
-  const subtasksList = document.getElementById("subtasksList");
-  const subtaskInput = document.getElementById("subtasks");
-  addSubtaskBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const subtaskText = subtaskInput.value.trim();
-    if (subtaskText) {
-      const subtaskElement = addSubTask(subtaskText);
-      subtasksList.insertAdjacentHTML("beforeend", subtaskElement);
-
-      // Get the actual DOM element that was just inserted
-      const lastAddedElement = subtasksList.lastElementChild;
-      addSubtaskEventListeners(lastAddedElement);
-
-      subtaskInput.value = ""; // Clear input field
-    }
-  });
-  removeSubtaskBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const lastSubtask = subtasksList.lastElementChild;
-    if (lastSubtask) {
-      subtasksList.removeChild(lastSubtask);
-    }
-  });
-}
-function addSubtaskEventListeners(subtaskElement) {
-  const editBtn = subtaskElement.querySelector(".edit-subtask-button-size");
-  const deleteBtn = subtaskElement.querySelector(".delete-subtask-button-size");
-
-  // ✅ Fixed: "dblclick" not "dbclick", use subtaskElement not subtaskNode
-  subtaskElement.addEventListener("dblclick", (e) => {
-    e.preventDefault();
-    editBtn.style.display = "inline-block";
-    deleteBtn.style.display = "inline-block";
-    // Get the text span element
-    const textSpan = subtaskElement.querySelector("span") || subtaskElement;
-    addSubtaskBtnEventListeners(subtaskElement);
-  });
-}
-
-function addSubtaskBtnEventListeners(subtaskNode) {
-  const editBtn = subtaskNode.querySelector(".edit-subtask-button-size");
-  const deleteBtn = subtaskNode.querySelector(".delete-subtask-button-size");
-  const subtaskElement =
-    subtaskNode.querySelector(".subtask-label-left") || subtaskNode;
-  if (editBtn && editBtn.style.display !== "none") {
-    editBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      // Make the span editable
-      const textSpan = subtaskElement.querySelector("span");
-      if (textSpan) {
-        editableSubtaskText(subtaskNode);
-
-        // Helper to close edit mode
-        const closeEdit = () => {
-          removeEditableSubtaskText(subtaskNode);
-          document.removeEventListener("click", handleOutsideClick);
-        };
-
-        // Handle outside clicks
-        const handleOutsideClick = (event) => {
-          // Check if click is inside the subtask row using closest
-          const clickedInside = event.target.closest(".subtask-label");
-          // Ensure the clicked row is THIS row (compare references)
-          // Note: subtaskNode refers to the div created in addSubTask template which HAS class 'subtask-label'
-          if (clickedInside !== subtaskNode) {
-            closeEdit();
-          }
-        };
-
-        // Save on click outside (delayed to avoid immediate trigger)
-        setTimeout(() => {
-          document.addEventListener("click", handleOutsideClick);
-        }, 0);
-
-        // Save on Enter key
-        textSpan.addEventListener(
-          "keydown",
-          (e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              closeEdit();
-            }
-          },
-          { once: true }
-        );
-      }
-    });
-  }
-
-  if (deleteBtn && deleteBtn.style.display !== "none") {
-    deleteBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      subtaskNode.remove();
-    });
-  }
-}
-
-function editableSubtaskText(subtaskElement) {
-  const textSpan = subtaskElement.querySelector("span");
-  const pointDiv = subtaskElement.querySelector(".point");
-  if (pointDiv) {
-    pointDiv.style.display = "none"; // Hide the point while editing
-  }
-  // Change: Set contentEditable on the SPAN, not the parent container
-  if (textSpan) {
-    textSpan.contentEditable = true;
-    textSpan.focus(); // Ensure focus is set
-  }
-
-  subtaskElement.classList.add("subtask-label-active");
-
-  // Selection range handling (optional but good for UX: select all text)
-  if (textSpan) {
-    const range = document.createRange();
-    range.selectNodeContents(textSpan);
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-}
-
-function removeEditableSubtaskText(subtaskElement) {
-  const textSpan = subtaskElement.querySelector("span");
-  const pointDiv = subtaskElement.querySelector(".point");
-
-  if (pointDiv) {
-    pointDiv.style.display = "block"; // Show the point again
-  }
-  // Change: Remove contentEditable from the SPAN
-  if (textSpan) {
-    textSpan.contentEditable = false;
-  }
-  subtaskElement.classList.remove("subtask-label-active");
-}
-
-// Collect subtask texts from the DOM and return them as an array of objects with completion state.
-function getSubtasksList() {
-  const subtasksList = document.getElementById("subtasksList");
-  const subtasks = [];
-  subtasksList.querySelectorAll("span").forEach((span) => {
-    // if template includes a checkbox, read its checked state; else default to false
-    const checkbox = span.querySelector('input[type="checkbox"]');
-    const subtaskText = span.textContent.trim();
-    subtasks.push({
-      text: subtaskText,
-      completed: checkbox ? checkbox.checked : false,
-    });
-  });
-
-  return subtasks;
-}
-
 // Build task object from inputs and send to firebase handler.
-function createTaskObject() {
-  var task = {
+async function createTaskObject() {
+  const task = {
     title: getTitleTask(),
     description: getDescriptionTask(),
     dueDate: getDueDateTask(),
@@ -440,158 +311,36 @@ function createTaskObject() {
     category: getCategoryTask(),
     subtasks: getSubtasksList(),
   };
-  addEditTask(task);
+
+  const addTaskBtn = document.getElementById("addTaskBtn");
+  if (addTaskBtn) addTaskBtn.style.pointerEvents = "none";
+
+  try {
+    await addEditTask(task);
+    showPopup("Task created.", "success");
+    resetTaskFormState();
+  } catch (error) {
+    showPopup(error.message || "Task could not be created.");
+    throw error;
+  } finally {
+    if (addTaskBtn) addTaskBtn.style.pointerEvents = "";
+  }
 
   return task;
-}
-function validateTaskForm() {
-  const taskName = getTitleTask();
-  const taskDate = getDueDateTask();
-  const taskCategory = getCategoryTask();
-
-  removeRedBorderTaskName();
-  removeRedBorderTaskDate();
-  // Priority has default, no validation needed usually.
-  removeRedBorderTaskCategory();
-
-  let isValid = true;
-
-  if (!taskName) {
-    showRedBorderTaskName();
-    isValid = false;
-  }
-  if (!taskDate) {
-    showRedBorderTaskDate();
-    isValid = false;
-  }
-  if (!taskCategory) {
-    console.log("Category invalid"); // Debug
-    showRedBorderTaskCategory();
-    isValid = false;
-  }
-
-  return isValid;
-}
-
-function showRedBorderTaskName() {
-  const taskNameInput = document.getElementById("taskTitle");
-  if (taskNameInput) taskNameInput.style.borderColor = "red";
-}
-function showRedBorderTaskDate() {
-  const taskDateInput = document.getElementById("taskDate");
-  if (taskDateInput) taskDateInput.style.borderColor = "red";
-}
-
-function showRedBorderTaskCategory() {
-  const taskCategoryInput = document.getElementById("categorySelect");
-  if (taskCategoryInput) taskCategoryInput.style.borderColor = "red";
-}
-
-function removeRedBorderTaskName() {
-  const taskNameInput = document.getElementById("taskTitle");
-  if (taskNameInput) taskNameInput.style.borderColor = "";
-}
-function removeRedBorderTaskDate() {
-  const taskDateInput = document.getElementById("taskDate");
-  if (taskDateInput) taskDateInput.style.borderColor = "";
-}
-
-function removeRedBorderTaskCategory() {
-  const taskCategoryInput = document.getElementById("categorySelect");
-  if (taskCategoryInput) taskCategoryInput.style.borderColor = "";
-}
-
-function clearTitleInput() {
-  const titleInput = document.getElementById("taskTitle");
-  titleInput.value = "";
-}
-function clearDescriptionInput() {
-  const descriptionInput = document.getElementById("taskDescription");
-  descriptionInput.value = "";
-}
-function clearDueDateInput() {
-  const dueDateInput = document.getElementById("taskDate");
-  dueDateInput.value = "";
-}
-function clearSubtasksList() {
-  const subtasksList = document.getElementById("subtasksList");
-  subtasksList.innerHTML = "";
-}
-function clearAssignedToSelection() {
-  const checkboxes = checkboxList.querySelectorAll(".assignedToCheckbox");
-  checkboxes.forEach((cb) => (cb.checked = false));
 }
 function resetPrioritySelection() {
   selectedPriority = PRIORITY.MEDIUM;
 }
-function resetCategorySelection() {
-  const categorySelect = document.getElementById("categorySelect");
-  categorySelect.selectedIndex = 0;
-}
-function resetAssignToSelectBox() {
-  selectBox.innerText = "Bitte auswählen";
-}
-function resetAddTaskForm() {
-  clearTitleInput();
-  clearDescriptionInput();
-  clearDueDateInput();
-  clearSubtasksList();
-  clearAssignedToSelection();
-  resetPrioritySelection();
-  resetCategorySelection();
-  resetAssignToSelectBox();
-  removeRedBorderTaskName();
-  removeRedBorderTaskDate();
-  removeRedBorderTaskCategory();
-}
-function initAddEventListeners() {
-  if (priorityLowBtn) {
-    priorityLowBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (priorityLowBtn.classList.contains("clicked")) {
-        priorityLowBtn.classList.remove("clicked");
-        toggleLowButtonOnClick(priorityLowBtn); // Resets icon
-        selectedPriority = null;
-      } else {
-        selectedPriority = PRIORITY.LOW;
-        removeClickedFromPriorityButtons();
-        priorityLowBtn.classList.add("clicked");
-        toggleLowButtonOnClick(priorityLowBtn);
-      }
-    });
-  }
-  if (priorityMediumBtn) {
-    priorityMediumBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (priorityMediumBtn.classList.contains("clicked")) {
-        priorityMediumBtn.classList.remove("clicked");
-        toggleMediumButtonOnClick(priorityMediumBtn); // Resets icon
-        selectedPriority = null;
-      } else {
-        selectedPriority = PRIORITY.MEDIUM;
-        removeClickedFromPriorityButtons();
-        priorityMediumBtn.classList.add("clicked");
-        toggleMediumButtonOnClick(priorityMediumBtn);
-      }
-    });
-  }
 
-  if (priorityUrgentBtn) {
-    priorityUrgentBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (priorityUrgentBtn.classList.contains("clicked")) {
-        priorityUrgentBtn.classList.remove("clicked");
-        toggleUrgentButtonOnClick(priorityUrgentBtn);
-        selectedPriority = null;
-      } else {
-        selectedPriority = PRIORITY.URGENT;
-        removeClickedFromPriorityButtons();
-        priorityUrgentBtn.classList.add("clicked");
-        toggleUrgentButtonOnClick(priorityUrgentBtn);
-      }
-    });
-  }
+function resetTaskFormState() {
+  resetAddTaskForm({
+    checkboxList,
+    selectBox,
+    placeholder: ASSIGNED_TO_PLACEHOLDER,
+    resetPriority: resetPrioritySelection,
+  });
 }
+
+
+
+

@@ -2,6 +2,37 @@ export function removeWhitespace(str) {
   return str.replace(/\s+/g, '');
 }
 
+export function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+export function sanitizeColor(value, fallback = "var(--mainColor-default)") {
+  const color = String(value ?? "").trim();
+  const allowedPatterns = [
+    /^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i,
+    /^rgb(a)?\(\s*[\d.%\s,/-]+\)$/i,
+    /^hsl(a)?\(\s*[\d.%\s,/-]+\)$/i,
+    /^var\(--[a-z0-9-]+\)$/i,
+  ];
+
+  return allowedPatterns.some((pattern) => pattern.test(color)) ? color : fallback;
+}
+
+export function sanitizeClassToken(value, fallback = "default") {
+  const token = String(value ?? "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-_]/g, "");
+
+  return token || fallback;
+}
+
 
 /**
  * Registers a global outside-click handler to close target.

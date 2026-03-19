@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,8 +7,7 @@
     <script type="module" src="./js/userInterface.js" defer></script>
     <script type="module" src="./js/addTask.js" defer></script>
     <script type="module" src="./js/addTaskPriorityButtons.js" defer></script>
-    <script type="module" src="./js/editProfileOverlay.js"></script>
-    <link rel="stylesheet" href="./styles/globalStyles.css" />
+<link rel="stylesheet" href="./styles/globalStyles.css" />
     <link rel="stylesheet" href="./styles/addTask.css" />
     <title>Add Task</title>
     <script type="module" src="./js/profilePopup.js" defer></script>
@@ -71,15 +70,15 @@
       <div class="add-task-wrapper">
         <h1>Add Task</h1>
 
-        <form class="add-task-form" autocomplete="off">
+        <form class="add-task-form" autocomplete="off" novalidate>
           <div class="task-column">
             <label for="task-title">Title<span>*</span></label>
             <input
               class="task-input"
               type="text"
               id="taskTitle"
-              placeholder="Enter a title"
-              required
+              placeholder="Enter a title" maxlength="80"
+
             />
             <p class="required-hint">*This field is required</p>
 
@@ -87,11 +86,11 @@
             <textarea
               class="task-input-description task-input"
               id="taskDescription"
-              placeholder="Enter a Description"
+              placeholder="Enter a Description" maxlength="500"
             ></textarea>
 
             <label for="task-date">Due date<span>*</span></label>
-            <input class="task-input" type="date" id="taskDate" required />
+            <input class="task-input" type="date" id="taskDate" />
 
             <p class="required-hint">*This field is required</p>
           </div>
@@ -128,9 +127,7 @@
               <label for="assigned">Assigned to</label>
 
               <div class="multi-select">
-                <input class="selected-box task-input" id="selectedBox" placeholder=" Select contacts to assign">
-                  
-                </input>
+                <input class="selected-box task-input" id="selectedBox" placeholder=" Select contacts to assign" maxlength="120" />
                 <div
                   class="checkbox-list"
                   id="chooseContactsCheckboxList"
@@ -140,7 +137,7 @@
             </div>
            <p class="required-hint">*This field is required</p>
             <label for="category">Category<span>*</span></label>
-            <select class="task-input" id="categorySelect" required>
+            <select class="task-input" id="categorySelect">
               <option>Select task category</option>
             </select>
             <p class="required-hint">*This field is required</p>
@@ -150,7 +147,7 @@
                 class="task-input"
                 type="text"
                 id="subtasks"
-                placeholder="Add new subtask"
+                placeholder="Add new subtask" maxlength="120"
               />
               <div class="subtask-buttons">
                 <button
@@ -212,3 +209,12 @@
     </nav>
   </body>
 </html>
+
+
+
+
+
+
+
+
+

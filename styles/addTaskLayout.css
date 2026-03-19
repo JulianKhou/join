@@ -1,0 +1,258 @@
+html {
+  scroll-behavior: auto !important;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.main-content {
+  overflow-x: hidden;
+}
+
+.add-task-wrapper {
+  position: relative;
+  margin-left: 260px;
+  padding: 40px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  overflow-x: hidden;
+  z-index: 0;
+  max-width: 1280px;
+}
+
+.add-task-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  width: min(1100px, 100%);
+  align-items: start;
+}
+
+.task-column {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: auto;
+  min-width: 0;
+}
+
+.add-task-wrapper h1 {
+  font-size: 61px;
+  font-weight: 700;
+  padding-top: 120px;
+}
+
+.add-task-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+  box-sizing: border-box;
+  width: min(1100px, 100%);
+}
+
+.add-task-buttons:hover {
+  cursor: pointer;
+}
+
+.cancel-btn {
+  width: 110px;
+  height: 56px;
+  border-radius: 10px;
+  border: 1px solid #2a3647;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 16px;
+}
+
+.create-task-btn {
+  width: 183px;
+  height: 56px;
+  border-radius: 10px;
+  background: #2a3647;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  padding: 16px;
+}
+
+.create-task-btn:hover {
+  background: #091931;
+}
+
+.priority-buttons {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.priority-buttons-size {
+  height: 56px;
+  width: 100%;
+  max-width: 136px;
+}
+
+.priority-buttons:hover {
+  cursor: pointer;
+}
+
+
+
+.priority-btn {
+  border-radius: 10px;
+  padding: 12px 20px;
+  border: 1px solid #d1d1d1;
+  background: #fff;
+  cursor: pointer;
+}
+
+.priority-btn img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transition: 0.2s ease-in-out;
+}
+
+.required-hint {
+  font-size: 14px;
+  color: #f26262;
+  margin-top: -8px;
+  margin-bottom: 8px;
+  display: none;
+}
+
+.task-column:first-child {
+  border-right: 1px solid #d1d1d1;
+  padding-right: 40px;
+}
+
+.task-column:last-child {
+  padding-left: 8px;
+}
+
+.header-logo-small {
+  display: none;
+}
+
+.task-input {
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid #d1d1d1;
+  padding: 12px 21px;
+  box-sizing: border-box;
+  outline: none;
+  font-size: 16px;
+  gap: 10px;
+}
+
+.task-input:focus {
+  border: 2px solid var(--lightBlue-default);
+}
+
+.task-input-description {
+  width: 100%;
+  height: 120px;
+  gap: 10px;
+  border-radius: 10px;
+  border-width: 1px;
+  padding-top: 18px;
+  padding-right: 16px;
+  padding-bottom: 18px;
+  padding-left: 16px;
+  border: 1px solid #d1d1d1;
+}
+
+.add-task-form label {
+  margin-bottom: -8px;
+}
+
+label {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 120%;
+  letter-spacing: 0%;
+}
+
+.remove-background {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.multi-select {
+  width: 100%;
+  position: relative;
+}
+
+.assigned-area {
+  width: 100%;
+}
+
+.selected-box {
+  padding: 10px;
+  border: 1px solid #d1d1d1;
+  cursor: pointer;
+  background: white;
+  border-radius: 10px;
+  width: 100%;
+  gap: 8px;
+}
+
+.checkbox-list {
+  display: none;
+  border: 1px solid #aaa;
+  background: white;
+  position: absolute;
+  padding-top: 10px;
+  width: 100%;
+  top: 42px;
+  z-index: 10;
+
+  flex-direction: column;
+  gap: 5px;
+  scroll-behavior: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 250px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox-list label {
+  display: flex;
+  margin-bottom: 6px;
+  width: 95%;
+}
+
+.checkbox-item {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 120%;
+  letter-spacing: 0%;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: unset;
+  justify-content: space-between;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 8px;
+  width: 100%;
+  padding: 6px 8px;
+}
+
+.checkbox-item:hover {
+  background-color: var(--mainColor-default);
+  cursor: pointer;
+  color: white;
+}
