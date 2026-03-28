@@ -4,27 +4,35 @@ const percentText = document.getElementById("percent-text");
 const progressBar = document.getElementById("progress-bar");
 const loader = document.getElementById("loader");
 
-const interval = setInterval(() => {
-  percent++;
+const hasSeenLoader = localStorage.getItem("hasSeenLoader");
 
-  percentText.textContent = percent + "%";
+if (!hasSeenLoader) {
+  const interval = setInterval(() => {
+    percent++;
 
-  const radius = 55;
-  const circumference = 2 * Math.PI * 80;
-  const offset = circumference - (percent / 100) * circumference;
-  progressBar.style.strokeDashoffset = offset;
+    percentText.textContent = percent + "%";
 
-  if (percent >= 100) {
-    clearInterval(interval);
+    const circumference = 2 * Math.PI * 80;
+    const offset = circumference - (percent / 100) * circumference;
+    progressBar.style.strokeDashoffset = offset;
 
-    setTimeout(() => {
-      loader.style.opacity = "0";
-      loader.style.transition = "opacity 0.5s ease";
+    if (percent >= 100) {
+      clearInterval(interval);
 
       setTimeout(() => {
-        loader.style.display = "none";
-      }, 500);
-    }, 300);
-  }
+        loader.style.opacity = "0";
+        loader.style.transition = "opacity 0.5s ease";
 
-}, 8);
+        setTimeout(() => {
+          loader.style.display = "none";
+          
+          localStorage.setItem("hasSeenLoader", "true");
+        }, 500);
+      }, 300);
+    }
+
+  }, 8);
+
+} else {
+  loader.style.display = "none";
+}
