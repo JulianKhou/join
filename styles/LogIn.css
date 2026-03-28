@@ -5,33 +5,34 @@
   font-family: Arial, sans-serif;
 }
 
+html, body {
+  height: auto;
+  overflow-x: 1;
+}
+
 body, p, span, a, li, label, input, textarea, select, button {
   font-size: max(16px, 1em);
 }
 
-/* 🔥 BODY */
 body {
   background: #e0e0e0;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* 🔥 WRAPPER (1920x1080 Bühne) */
 .page-wrapper {
   width: 100%;
   max-width: 1920px;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   background: #f6f7f8;
   display: flex;
   flex-direction: column;
 }
 
-/* 🔥 HEADER */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -67,19 +68,17 @@ body {
   align-items: center;
 }
 
-/* 🔥 MAIN */
 .main-content {
   position: relative;
   flex: 1;
+  margin-bottom: 10vh;
 }
 
-/* 🔥 LOGIN BOX */
 .login-box {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   background: white;
   width: 652px;
   padding: 48px 115px;
@@ -102,7 +101,6 @@ body {
   margin: 0 auto 25px;
 }
 
-/* 🔥 INPUTS */
 .input-field {
   position: relative;
   margin-bottom: 20px;
@@ -128,7 +126,6 @@ body {
   height: 24px;
 }
 
-/* 🔥 BUTTONS */
 .btn-group {
   display: flex;
   justify-content: center;
@@ -168,7 +165,6 @@ footer a {
   color: #c5c5c6;
 }
 
-/* 🔥 LOADER */
 .loader-overlay {
   position: fixed;
   top: 0;
@@ -242,31 +238,33 @@ footer a {
   margin-top: 5px;
 }
 
-/* 🔥 MOBILE */
-@media (max-width: 500px) {
+@media (max-width: 680px) {
 
-  body {
-    overflow: auto;
-  }
 
   .page-header {
     padding: 20px;
   }
 
-  .logo img {
-    height: 70px;
+  .logo {
+    top: 50px;
   }
 
-  .top-nav {
-    position: absolute;
-    bottom: 140px;
-    width: 100%;
-    justify-content: center;
+  .logo img {
+    height: 100px;
   }
+
+.top-nav {
+  position: absolute;
+  width: 100%;
+  justify-content: center;
+  margin-top: 40px;  
+  bottom: 140px;
+}
 
   .login-box {
     width: calc(100vw - 32px);
     max-width: 396px;
+    height: 475px;
     padding: 32px 24px;
   }
 
@@ -276,7 +274,9 @@ footer a {
 
   .btn-group {
     flex-direction: column;
+    align-items: center;
     gap: 20px;
+    margin-top: 50px;
   }
 
   .primary-btn,
