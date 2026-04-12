@@ -1,4 +1,4 @@
-import { loginWithEmail, createUser } from "./firebase.js";
+import { loginWithEmail } from "./firebase.js";
 import { showPopup } from "./feedback.js";
 
 const emailInput = document.getElementById("emailInput");
@@ -13,7 +13,10 @@ const passwordIconImg = document.getElementById("passwordIconImg");
 const lockIcon = "./assets/LogIn&SignUp/lock.svg";
 const visibilityIcon = "./assets/LogIn&SignUp/visibility.svg";
 const visibilityOffIcon = "./assets/LogIn&SignUp/visibility_off.svg";
-const GUEST_CREDENTIALS_KEY = "join_guest_credentials_v1";
+// Single shared guest account – create this user once in Firebase Console:
+// Email: guest@join-demo.com | Password: Guest#Join2024!
+const GUEST_EMAIL = "guest@join-demo.com";
+const GUEST_PASSWORD = "Guest#Join2024!";
 
 if (form) {
   form.noValidate = true;
@@ -54,52 +57,8 @@ function persistCurrentUser(user, fallbackName = "Guest") {
   );
 }
 
-function readGuestCredentials() {
-  const raw = localStorage.getItem(GUEST_CREDENTIALS_KEY);
-  if (!raw) return null;
-
-  try {
-    const parsed = JSON.parse(raw);
-    if (!parsed?.email || !parsed?.password) return null;
-    return parsed;
-  } catch {
-    return null;
-  }
-}
-
-function saveGuestCredentials(credentials) {
-  localStorage.setItem(GUEST_CREDENTIALS_KEY, JSON.stringify(credentials));
-}
-
-function clearGuestCredentials() {
-  localStorage.removeItem(GUEST_CREDENTIALS_KEY);
-}
-
-function generateGuestCredentials() {
-  const nonce = `${Date.now()}${Math.floor(Math.random() * 100000)}`;
-  const random = Math.random().toString(36).slice(2, 8);
-
-  return {
-    email: `guest.${nonce}@example.com`,
-    password: `Guest#${random}Aa1`,
-  };
-}
-
-async function loginOrCreateGuestUser() {
-  const savedCredentials = readGuestCredentials();
-
-  if (savedCredentials) {
-    try {
-      return await loginWithEmail(savedCredentials.email, savedCredentials.password);
-    } catch {
-      clearGuestCredentials();
-    }
-  }
-
-  const newCredentials = generateGuestCredentials();
-  const user = await createUser(newCredentials.email, newCredentials.password, "Guest");
-  saveGuestCredentials(newCredentials);
-  return user;
+async function loginAsGlobalGuest() {
+  return loginWithEmail(GUEST_EMAIL, GUEST_PASSWORD);
 }
 
 emailInput?.addEventListener("blur", validateEmailOnBlur);
@@ -110,7 +69,7 @@ loginGuest?.addEventListener("click", async (event) => {
   loginGuest.disabled = true;
 
   try {
-    const user = await loginOrCreateGuestUser();
+    const user = await loginAsGlobalGuest();
     persistCurrentUser(user, "Guest");
     window.location.href = "summaryUser.html";
   } catch (error) {
