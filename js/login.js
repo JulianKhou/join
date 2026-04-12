@@ -1,4 +1,4 @@
-import { loginWithEmail } from "./firebase.js";
+import { loginWithEmail, createOrUpdateUserProfile } from "./firebase.js";
 import { showPopup } from "./feedback.js";
 
 const emailInput = document.getElementById("emailInput");
@@ -58,7 +58,10 @@ function persistCurrentUser(user, fallbackName = "Guest") {
 }
 
 async function loginAsGlobalGuest() {
-  return loginWithEmail(GUEST_EMAIL, GUEST_PASSWORD);
+  const user = await loginWithEmail(GUEST_EMAIL, GUEST_PASSWORD);
+  // Ensure the Firestore user document exists (e.g. after DB wipe or first run)
+  await createOrUpdateUserProfile(user.uid, "Guest", GUEST_EMAIL);
+  return user;
 }
 
 emailInput?.addEventListener("blur", validateEmailOnBlur);

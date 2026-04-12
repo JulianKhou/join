@@ -1,6 +1,5 @@
-﻿import { getAllTasksFromContacts } from "./utility.js";
+import { getAllTasksFromContacts } from "./utility.js";
 import { getUserById, getAllTasks } from "./firebase.js";
-import { showPopup } from "./feedback.js";
 
 let currentUser = null;
 let allTasks = [];
@@ -36,32 +35,37 @@ function loadUserData() {
   getUserById(currentUser.uid)
     .then((user) => {
       currentUser = user;
-      const usernameTarget = document.getElementById("shownUsernameOnSummary");
-
-      if (currentUser.username === "Guest") {
-        if (usernameTarget) usernameTarget.textContent = "";
-      } else if (usernameTarget) {
-        usernameTarget.textContent = currentUser.username || currentUser.name || "Unknown";
-      }
-
-      const effectiveUid = currentUser.id || currentUser.uid;
-      const userTasks = getUserTasks(effectiveUid);
-
-      updateTaskCount("summaryUserToDoCount", userTasks, (task) => task.progress === PROGRESS.TODO);
-      updateTaskCount("summaryUserDoneCount", userTasks, (task) => task.progress === PROGRESS.DONE);
-      updateTaskCount("summaryUserInProgressCount", userTasks, (task) => task.progress === PROGRESS.IN_PROGRESS);
-      updateTaskCount(
-        "summaryUserAwaitFeedbackCount",
-        userTasks,
-        (task) => task.progress === PROGRESS.AWAIT_FEEDBACK
-      );
-
-      updateUrgentTasksAndDeadline(userTasks);
-      updateTotalTasksOnBoard();
+      renderSummaryForUser(currentUser);
     })
     .catch(() => {
-      showPopup("Failed to load summary data.");
+      // Firestore document missing – fall back to localStorage data (e.g. guest account)
+      renderSummaryForUser(currentUser);
     });
+}
+
+function renderSummaryForUser(user) {
+  const usernameTarget = document.getElementById("shownUsernameOnSummary");
+
+  if (user.username === "Guest") {
+    if (usernameTarget) usernameTarget.textContent = "";
+  } else if (usernameTarget) {
+    usernameTarget.textContent = user.username || user.name || "Unknown";
+  }
+
+  const effectiveUid = user.id || user.uid;
+  const userTasks = getUserTasks(effectiveUid);
+
+  updateTaskCount("summaryUserToDoCount", userTasks, (task) => task.progress === PROGRESS.TODO);
+  updateTaskCount("summaryUserDoneCount", userTasks, (task) => task.progress === PROGRESS.DONE);
+  updateTaskCount("summaryUserInProgressCount", userTasks, (task) => task.progress === PROGRESS.IN_PROGRESS);
+  updateTaskCount(
+    "summaryUserAwaitFeedbackCount",
+    userTasks,
+    (task) => task.progress === PROGRESS.AWAIT_FEEDBACK
+  );
+
+  updateUrgentTasksAndDeadline(userTasks);
+  updateTotalTasksOnBoard();
 }
 
 function getUserTasks(uid) {
