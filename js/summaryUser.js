@@ -19,7 +19,11 @@ const PRIORITY = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  allTasks = await getAllTasks();
+  try {
+    allTasks = await getAllTasks();
+  } catch {
+    allTasks = [];
+  }
   loadUserData();
 });
 
