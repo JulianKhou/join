@@ -5,6 +5,10 @@
     padding-top: 80px;
 }
 
+.fab-add-contact {
+    display: none;
+}
+
 .contacts-container {
   display: flex;
   height: auto;
@@ -30,6 +34,12 @@
     border-bottom: 1px solid #f0f0f0;
 }
 
+.contact-details-header {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
 .btn-add-contact {
     display: flex;
     align-items: center;
@@ -53,6 +63,7 @@
 }
 
 .contacts-list {
+    max-height: 1050px;
     flex: 1;
     overflow-y: auto;
     padding: 16px 24px 40px 24px;
@@ -109,6 +120,10 @@
     font-size: 18px;
     font-weight: 500;
     color: black;
+}
+
+.contact-name-large {
+    font-size: 47px;
 }
 
 .contact-email {
@@ -168,12 +183,10 @@
     }
 }
 
-.contact-details-container{
+.contact-details-container {
     display: flex;
-    flex-direction:row;
-    align-items: center;
-    gap: 20px;
-    ;
+    flex-direction: column;
+    gap: 40px;
 }
 
 .contact-details-overlay{
@@ -183,16 +196,22 @@
     
 }
 
-.contact-details-content{
+.contact-details-content {
     display: flex;
-    justify-content: flex-start;
     flex-direction: column;
-    gap: 5px;
-    width: 70%;
-    position: static;
-    margin-left: 40px;
+    gap: 8px;
 }
-
 .contact-buttons{
     display: flex;
+    gap: 24px;
+}
+
+.contact-buttons button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }

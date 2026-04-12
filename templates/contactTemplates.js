@@ -96,13 +96,13 @@ export function getContactDetailsTemplate(contact, color) {
   </div>
 
   <div class="contact-details-body">
-    <h3>Contact Information</h3>
+    <h3>Contact Information</h3><br><br>
     <div>
-      <h4>Email</h4>
-      <a href="mailto:${safeEmail}">${safeEmail}</a>
-    </div>
+      <h4>Email</h4><br>
+      <a href="mailto:${safeEmail}">${safeEmail}</a><br>
+    </div><br>
     <div>
-      <h4>Phone</h4>
+      <h4>Phone</h4><br>
       <span>${safePhone}</span>
     </div>
   </div>
