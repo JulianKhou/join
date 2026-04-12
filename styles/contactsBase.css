@@ -134,6 +134,7 @@
     align-items: center;
     color: black;
     gap: 28px;
+    margin-bottom: 32px;
 }
 
 .contacts-right .divider {
@@ -195,5 +196,3 @@
 .contact-buttons{
     display: flex;
 }
-
-.contact-btn{

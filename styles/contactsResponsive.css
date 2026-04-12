@@ -1,13 +1,3 @@
-        background: transparent;
-    border: 0;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    width: 81px;
-    height: 24px;
-}
-
 .contact-btn:hover{
     cursor: pointer;
     text-decoration: underline;

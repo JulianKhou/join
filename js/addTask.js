@@ -35,6 +35,11 @@ const ASSIGNED_TO_PLACEHOLDER = "Select contacts to assign";
 
 // On DOM ready: set up UI, attach handlers and load contacts.
 document.addEventListener("DOMContentLoaded", async () => {
+    const dateInput = document.getElementById("taskDate");
+  if (dateInput) {
+    const today = new Date().toISOString().split("T")[0];
+    dateInput.min = today;
+  }
   const form = document.querySelector(".add-task-form");
   if (form) form.noValidate = true;
   const addTaskBtn = document.getElementById("addTaskBtn");
