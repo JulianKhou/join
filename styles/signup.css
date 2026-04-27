@@ -134,6 +134,7 @@ label a {
 
 .error-message {
   margin-bottom: 16px;
+  color: red;
 }
 
 @media (max-height: 1000px) {
