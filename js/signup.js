@@ -28,29 +28,22 @@ confirmInput.maxLength = 64;
 nameInput.addEventListener("blur", () => {
   if (nameInput.value.trim().length < 2) {
     errorBox.textContent = "Please enter your name.";
-  } else {
-    errorBox.textContent = "";
   }
 });
 
 emailInput.addEventListener("blur", () => {
   if (!isValidEmail(emailInput.value.trim())) {
     errorBox.textContent = "Please enter a valid email address.";
-  } else {
-    errorBox.textContent = "";
   }
 });
 
 passwordInput.addEventListener("blur", () => {
   if (!validatePassword(passwordInput.value)) return;
-  errorBox.textContent = "";
 });
 
 confirmInput.addEventListener("blur", () => {
   if (confirmInput.value !== passwordInput.value) {
     errorBox.textContent = "Passwords do not match.";
-  } else {
-    errorBox.textContent = "";
   }
 });
 
