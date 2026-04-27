@@ -15,7 +15,7 @@ body, p, span, a, li, label, input, textarea, select, button {
 }
 
 body {
-  background: #e0e0e0;
+  background: #F6F7F8;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,6 +69,7 @@ body {
 }
 
 .main-content {
+  background-color: #F6F7F8;
   position: relative;
   flex: 1;
   margin-bottom: 10vh;
