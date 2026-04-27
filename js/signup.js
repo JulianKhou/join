@@ -20,10 +20,32 @@ const visibilityIcon = "./assets/LogIn&SignUp/visibility.svg";
 const visibilityOffIcon = "./assets/LogIn&SignUp/visibility_off.svg";
 
 if (form) form.noValidate = true;
+
 nameInput.maxLength = 50;
 emailInput.maxLength = 120;
 passwordInput.maxLength = 64;
 confirmInput.maxLength = 64;
+
+signUpBtn.disabled = true; // 🔥 wichtig
+
+/* -----------------------------
+   🔥 LIVE VALIDATION
+----------------------------- */
+
+function checkFormValid() {
+  const isValid =
+    nameInput.value.trim().length >= 2 &&
+    isValidEmail(emailInput.value.trim()) &&
+    validatePasswordSilent(passwordInput.value) &&
+    confirmInput.value === passwordInput.value &&
+    privacyCheck.checked;
+
+  signUpBtn.disabled = !isValid;
+}
+
+/* -----------------------------
+   blur (Fehler anzeigen bleibt!)
+----------------------------- */
 
 nameInput.addEventListener("blur", () => {
   if (nameInput.value.trim().length < 2) {
@@ -46,6 +68,20 @@ confirmInput.addEventListener("blur", () => {
     errorBox.textContent = "Passwords do not match.";
   }
 });
+
+/* -----------------------------
+   LIVE EVENTS (neu 🔥)
+----------------------------- */
+
+nameInput.addEventListener("input", checkFormValid);
+emailInput.addEventListener("input", checkFormValid);
+passwordInput.addEventListener("input", checkFormValid);
+confirmInput.addEventListener("input", checkFormValid);
+privacyCheck.addEventListener("change", checkFormValid);
+
+/* -----------------------------
+   PASSWORD TOGGLE
+----------------------------- */
 
 function setupPasswordToggle(inputEl, iconImg) {
   inputEl.addEventListener("input", () => {
@@ -70,12 +106,28 @@ function setupPasswordToggle(inputEl, iconImg) {
   });
 }
 
+setupPasswordToggle(passwordInput, passwordIconImg);
+setupPasswordToggle(confirmInput, confirmIconImg);
+
+/* -----------------------------
+   VALIDATION HELPERS
+----------------------------- */
+
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-setupPasswordToggle(passwordInput, passwordIconImg);
-setupPasswordToggle(confirmInput, confirmIconImg);
+function validatePasswordSilent(password) {
+  if (password.length < 6) return false;
+  if (!/[A-Z]/.test(password)) return false;
+  if (!/[a-z]/.test(password)) return false;
+  if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) return false;
+  return true;
+}
+
+/* -----------------------------
+   FORM SUBMIT
+----------------------------- */
 
 signUpBtn.addEventListener("click", async (event) => {
   event.preventDefault();
@@ -87,9 +139,17 @@ signUpBtn.addEventListener("click", async (event) => {
   }
 
   try {
-    await createUser(emailInput.value.trim(), passwordInput.value, nameInput.value.trim());
+    await createUser(
+      emailInput.value.trim(),
+      passwordInput.value,
+      nameInput.value.trim()
+    );
+
     form.reset();
+    checkFormValid(); // 🔥 reset button state
+
     showPopup("Registration successful. You can now log in.", "success", 2200);
+
     setTimeout(() => {
       window.location.href = "logIn.html";
     }, 900);
@@ -103,6 +163,10 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   signUpBtn.click();
 });
+
+/* -----------------------------
+   FINAL VALIDATION (submit)
+----------------------------- */
 
 function validateForm() {
   if (nameInput.value.trim().length < 2) {
