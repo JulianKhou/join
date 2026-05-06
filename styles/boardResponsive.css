@@ -180,7 +180,8 @@
     .overlay-detail-card {
         background-color: #fff;
         border-radius: 30px;
-        width: 520px;
+        width: 100%;
+        max-width: 520px;
         max-height: 90vh;
         margin: 20px;
         overflow: hidden;

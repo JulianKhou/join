@@ -14,10 +14,18 @@ let currentShownContact = null;
 
 function groupContacts(contactList) {
   const grouped = {};
-  contactList.forEach((contact, index) => {
-    contact._index = index;
 
-    const letter = (contact.name || "#").charAt(0).toUpperCase();
+  // Sort contacts alphabetically by name first
+  const sorted = [...contactList].sort((a, b) =>
+    (a.name || "").localeCompare(b.name || "", undefined, { sensitivity: "base" })
+  );
+
+  sorted.forEach((contact, index) => {
+    contact._index = contactList.indexOf(contact);
+
+    const firstChar = (contact.name || "").trim().charAt(0).toUpperCase();
+    const letter = firstChar >= "A" && firstChar <= "Z" ? firstChar : "#";
+
     const initials = (contact.name || "")
       .split(" ")
       .map((namePart) => namePart.charAt(0).toUpperCase())
@@ -40,7 +48,9 @@ function renderContacts() {
   const groupedContacts = groupContacts(contacts);
   let html = "";
 
-  for (const letter in groupedContacts) {
+  // Iterate over sorted keys to guarantee alphabetical group order
+  const sortedLetters = Object.keys(groupedContacts).sort((a, b) => a.localeCompare(b));
+  for (const letter of sortedLetters) {
     html += getContactsGroupTemplate(letter, groupedContacts[letter]);
   }
 
@@ -187,6 +197,51 @@ function contactShowDetails(contact, index) {
   currentShownContact = contact;
   contactDetailsOverlay.innerHTML = getContactDetailsTemplate(contact, contact.color);
   contactDetailsAddEventListeners();
+
+  // On mobile: switch from list view to detail view
+  if (window.innerWidth <= 500) {
+    showMobileDetailView();
+  }
+}
+
+function showMobileDetailView() {
+  const left = document.querySelector(".contacts-left");
+  const right = document.querySelector(".contacts-right");
+  if (!left || !right) return;
+
+  left.classList.add("mobile-hidden");
+  right.classList.remove("mobile-hidden");
+  right.classList.add("mobile-detail-visible");
+
+  // Inject back button if not already present
+  if (!document.getElementById("mobileBackBtn")) {
+    const backBtn = document.createElement("button");
+    backBtn.id = "mobileBackBtn";
+    backBtn.className = "mobile-back-btn";
+    backBtn.innerHTML = `<img src="./assets/sideboardAssets/back.svg" alt="Back" onerror="this.style.display='none'"> Back`;
+    backBtn.addEventListener("click", hideMobileDetailView);
+    right.prepend(backBtn);
+  }
+}
+
+function hideMobileDetailView() {
+  const left = document.querySelector(".contacts-left");
+  const right = document.querySelector(".contacts-right");
+  const backBtn = document.getElementById("mobileBackBtn");
+
+  if (left) left.classList.remove("mobile-hidden");
+  if (right) {
+    right.classList.add("mobile-hidden");
+    right.classList.remove("mobile-detail-visible");
+  }
+  if (backBtn) backBtn.remove();
+
+  // Deselect current contact
+  if (currentShownContact != null) {
+    const btn = document.querySelector(`[data-contact-id="${currentShownContact._index}"]`);
+    if (btn) btn.classList.remove("active-contact");
+    currentShownContact = null;
+  }
 }
 
 function contactDetailsAddEventListeners() {

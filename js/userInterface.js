@@ -1,4 +1,4 @@
-﻿import { onAuthChange, getUsername, logout } from "./firebase.js";
+import { onAuthChange, getUsername, logout } from "./firebase.js";
 import { showPopup } from "./feedback.js";
 
 let uid = null;
@@ -14,16 +14,21 @@ onAuthChange(async (user) => {
         editProfileInitials();
       }
     } catch {
-      showPopup("Could not load your user profile.");
+      // Silently ignore: guest accounts or missing Firestore profiles
+      // are expected and don't need an error popup
+      editProfileInitials();
     }
 
     return;
   }
 
-  const currentPage = window.location.pathname.split("/").pop();
-  if (currentPage !== "logIn.html" && currentPage !== "signUp.html") {
-    window.location.href = "logIn.html";
-  }
+  // Small delay to avoid false-positive logout during history.back() navigation
+  setTimeout(() => {
+    const currentPage = window.location.pathname.split("/").pop();
+    if (currentPage !== "logIn.html" && currentPage !== "signUp.html") {
+      window.location.href = "logIn.html";
+    }
+  }, 300);
 });
 
 export function getInitials(name) {
@@ -84,6 +89,12 @@ function initBackButtons() {
     ...document.querySelectorAll(".back-btn"),
   ];
 
+  const internalPages = [
+    "summaryUser.html", "board.html", "contacts.html",
+    "addTask.html", "help.html", "legalNoticeInt.html",
+    "privacyPolicyInt.html"
+  ];
+
   backTargets.forEach((target) => {
     target.addEventListener("click", (event) => {
       event.preventDefault();
@@ -92,7 +103,18 @@ function initBackButtons() {
       const publicPages = ["signUp.html", "logIn.html", "legalNoticeExt.html", "privacyPolicyExt.html"];
       const fallbackTarget = publicPages.includes(currentPage) ? "logIn.html" : "summaryUser.html";
 
-      if (document.referrer && document.referrer !== window.location.href) {
+      // Only use history.back() when the referrer is a known internal app page,
+      // never back to logIn.html (would trigger auth-change logout)
+      const referrerPage = document.referrer
+        ? new URL(document.referrer).pathname.split("/").pop()
+        : "";
+
+      const canGoBack =
+        document.referrer &&
+        document.referrer !== window.location.href &&
+        internalPages.includes(referrerPage);
+
+      if (canGoBack) {
         window.history.back();
       } else {
         window.location.href = fallbackTarget;

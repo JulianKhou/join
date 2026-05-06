@@ -1,4 +1,4 @@
-import { loginWithEmail, createOrUpdateUserProfile } from "./firebase.js";
+import { loginWithEmail, createOrUpdateUserProfile, editOrAddContact } from "./firebase.js";
 import { showPopup } from "./feedback.js";
 
 const emailInput = document.getElementById("emailInput");
@@ -61,6 +61,8 @@ async function loginAsGlobalGuest() {
   const user = await loginWithEmail(GUEST_EMAIL, GUEST_PASSWORD);
   // Ensure the Firestore user document exists (e.g. after DB wipe or first run)
   await createOrUpdateUserProfile(user.uid, "Guest", GUEST_EMAIL);
+  // Ensure Guest is also in Contacts so they can be assigned tasks
+  await editOrAddContact(user.uid, "Guest", GUEST_EMAIL, "", "#A133FF");
   return user;
 }
 
