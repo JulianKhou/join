@@ -26,11 +26,7 @@ emailInput.maxLength = 120;
 passwordInput.maxLength = 64;
 confirmInput.maxLength = 64;
 
-signUpBtn.disabled = true; // 🔥 wichtig
-
-/* -----------------------------
-   🔥 LIVE VALIDATION
------------------------------ */
+signUpBtn.disabled = true; 
 
 function checkFormValid() {
   const isValid =
@@ -42,10 +38,6 @@ function checkFormValid() {
 
   signUpBtn.disabled = !isValid;
 }
-
-/* -----------------------------
-   blur (Fehler anzeigen bleibt!)
------------------------------ */
 
 nameInput.addEventListener("blur", () => {
   if (nameInput.value.trim().length < 2) {
@@ -69,19 +61,11 @@ confirmInput.addEventListener("blur", () => {
   }
 });
 
-/* -----------------------------
-   LIVE EVENTS (neu 🔥)
------------------------------ */
-
 nameInput.addEventListener("input", checkFormValid);
 emailInput.addEventListener("input", checkFormValid);
 passwordInput.addEventListener("input", checkFormValid);
 confirmInput.addEventListener("input", checkFormValid);
 privacyCheck.addEventListener("change", checkFormValid);
-
-/* -----------------------------
-   PASSWORD TOGGLE
------------------------------ */
 
 function setupPasswordToggle(inputEl, iconImg) {
   inputEl.addEventListener("input", () => {
@@ -109,9 +93,6 @@ function setupPasswordToggle(inputEl, iconImg) {
 setupPasswordToggle(passwordInput, passwordIconImg);
 setupPasswordToggle(confirmInput, confirmIconImg);
 
-/* -----------------------------
-   VALIDATION HELPERS
------------------------------ */
 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -124,10 +105,6 @@ function validatePasswordSilent(password) {
   if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) return false;
   return true;
 }
-
-/* -----------------------------
-   FORM SUBMIT
------------------------------ */
 
 signUpBtn.addEventListener("click", async (event) => {
   event.preventDefault();
@@ -146,7 +123,7 @@ signUpBtn.addEventListener("click", async (event) => {
     );
 
     form.reset();
-    checkFormValid(); // 🔥 reset button state
+    checkFormValid(); 
 
     showPopup("Registration successful. You can now log in.", "success", 2200);
 
@@ -163,10 +140,6 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   signUpBtn.click();
 });
-
-/* -----------------------------
-   FINAL VALIDATION (submit)
------------------------------ */
 
 function validateForm() {
   if (nameInput.value.trim().length < 2) {
