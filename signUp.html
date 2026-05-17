@@ -34,28 +34,33 @@
           <input id="nameInput" type="text" autocomplete="name" placeholder="Name">
           <span class="icon"><img src="./assets/LogIn&SignUp/person.svg"></span>
         </div>
-  
+        <div class="field-error" id="nameError"></div>
+
         <div class="input-field">
           <input id="emailInput" type="text" inputmode="email" autocomplete="email" placeholder="Email">
           <span class="icon"><img src="./assets/LogIn&SignUp/mail.svg"></span>
         </div>
-  
+        <div class="field-error" id="emailError"></div>
+
         <div class="input-field">
           <input id="passwordInput" type="password" autocomplete="new-password" placeholder="Password">
           <span class="icon"><img src="./assets/LogIn&SignUp/lock.svg"></span>
         </div>
-  
+        <div class="field-error" id="passwordError"></div>
+
         <div class="input-field">
           <input id="confirmInput" type="password" autocomplete="new-password" placeholder="Confirm Password">
           <span class="icon"><img src="./assets/LogIn&SignUp/lock.svg"></span>
         </div>
+        <div class="field-error" id="confirmError"></div>
 
-        <div id="loginError" class="error-message"></div>
-  
         <label>
           <input type="checkbox" name="privacy" id="privacyCheck">
           I accept the <a href="./privacyPolicyExt.html">Privacy Policy</a>
         </label>
+        <div class="field-error" id="privacyError"></div>
+
+        <div id="loginError" class="error-message"></div>
   
         <div class="btn-group">
           <button class="primary-btn" id="signUpBtn" disabled>Sign up</button>

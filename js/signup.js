@@ -1,4 +1,4 @@
-﻿import { createUser } from "./firebase.js";
+import { createUser } from "./firebase.js";
 import { showPopup } from "./feedback.js";
 
 const form = document.querySelector("form");
@@ -11,6 +11,26 @@ const confirmInput = document.getElementById("confirmInput");
 const privacyCheck = document.getElementById("privacyCheck");
 
 const errorBox = document.getElementById("loginError");
+
+const fieldErrors = {
+  name: document.getElementById("nameError"),
+  email: document.getElementById("emailError"),
+  password: document.getElementById("passwordError"),
+  confirm: document.getElementById("confirmError"),
+  privacy: document.getElementById("privacyError"),
+};
+
+function setFieldError(field, message) {
+  if (fieldErrors[field]) fieldErrors[field].textContent = message;
+}
+
+function clearFieldError(field) {
+  if (fieldErrors[field]) fieldErrors[field].textContent = "";
+}
+
+function clearAllFieldErrors() {
+  Object.keys(fieldErrors).forEach(clearFieldError);
+}
 
 const passwordIconImg = passwordInput.nextElementSibling.querySelector("img");
 const confirmIconImg = confirmInput.nextElementSibling.querySelector("img");
@@ -26,7 +46,7 @@ emailInput.maxLength = 120;
 passwordInput.maxLength = 64;
 confirmInput.maxLength = 64;
 
-signUpBtn.disabled = true; 
+signUpBtn.disabled = true;
 
 function checkFormValid() {
   const isValid =
@@ -41,31 +61,52 @@ function checkFormValid() {
 
 nameInput.addEventListener("blur", () => {
   if (nameInput.value.trim().length < 2) {
-    errorBox.textContent = "Please enter your name.";
+    setFieldError("name", "Please enter your name.");
+  } else {
+    clearFieldError("name");
   }
 });
 
 emailInput.addEventListener("blur", () => {
   if (!isValidEmail(emailInput.value.trim())) {
-    errorBox.textContent = "Please enter a valid email address.";
+    setFieldError("email", "Please enter a valid email address.");
+  } else {
+    clearFieldError("email");
   }
 });
 
 passwordInput.addEventListener("blur", () => {
-  if (!validatePassword(passwordInput.value)) return;
+  validatePassword(passwordInput.value);
 });
 
 confirmInput.addEventListener("blur", () => {
   if (confirmInput.value !== passwordInput.value) {
-    errorBox.textContent = "Passwords do not match.";
+    setFieldError("confirm", "Passwords do not match.");
+  } else {
+    clearFieldError("confirm");
   }
 });
 
-nameInput.addEventListener("input", checkFormValid);
-emailInput.addEventListener("input", checkFormValid);
-passwordInput.addEventListener("input", checkFormValid);
-confirmInput.addEventListener("input", checkFormValid);
-privacyCheck.addEventListener("change", checkFormValid);
+nameInput.addEventListener("input", () => {
+  clearFieldError("name");
+  checkFormValid();
+});
+emailInput.addEventListener("input", () => {
+  clearFieldError("email");
+  checkFormValid();
+});
+passwordInput.addEventListener("input", () => {
+  clearFieldError("password");
+  checkFormValid();
+});
+confirmInput.addEventListener("input", () => {
+  clearFieldError("confirm");
+  checkFormValid();
+});
+privacyCheck.addEventListener("change", () => {
+  clearFieldError("privacy");
+  checkFormValid();
+});
 
 function setupPasswordToggle(inputEl, iconImg) {
   inputEl.addEventListener("input", () => {
@@ -109,6 +150,7 @@ function validatePasswordSilent(password) {
 signUpBtn.addEventListener("click", async (event) => {
   event.preventDefault();
   errorBox.textContent = "";
+  clearAllFieldErrors();
 
   if (!validateForm()) {
     showPopup("Please check your sign up data.", "info");
@@ -123,7 +165,8 @@ signUpBtn.addEventListener("click", async (event) => {
     );
 
     form.reset();
-    checkFormValid(); 
+    clearAllFieldErrors();
+    checkFormValid();
 
     showPopup("Registration successful. You can now log in.", "success", 2200);
 
@@ -142,51 +185,54 @@ form.addEventListener("submit", (event) => {
 });
 
 function validateForm() {
+  let valid = true;
+
   if (nameInput.value.trim().length < 2) {
-    errorBox.textContent = "Please enter your name.";
-    return false;
+    setFieldError("name", "Please enter your name.");
+    valid = false;
   }
 
   if (!isValidEmail(emailInput.value.trim())) {
-    errorBox.textContent = "Please enter a valid email address.";
-    return false;
+    setFieldError("email", "Please enter a valid email address.");
+    valid = false;
   }
 
-  if (!validatePassword(passwordInput.value)) return false;
+  if (!validatePassword(passwordInput.value)) valid = false;
 
   if (confirmInput.value !== passwordInput.value) {
-    errorBox.textContent = "Passwords do not match.";
-    return false;
+    setFieldError("confirm", "Passwords do not match.");
+    valid = false;
   }
 
   if (!privacyCheck.checked) {
-    errorBox.textContent = "You must accept the privacy policy.";
-    return false;
+    setFieldError("privacy", "You must accept the privacy policy.");
+    valid = false;
   }
 
-  return true;
+  return valid;
 }
 
 function validatePassword(password) {
   if (password.length < 6) {
-    errorBox.textContent = "Password must be at least 6 characters.";
+    setFieldError("password", "Password must be at least 6 characters.");
     return false;
   }
 
   if (!/[A-Z]/.test(password)) {
-    errorBox.textContent = "Password must contain a capital letter.";
+    setFieldError("password", "Password must contain a capital letter.");
     return false;
   }
 
   if (!/[a-z]/.test(password)) {
-    errorBox.textContent = "Password must contain a lowercase letter.";
+    setFieldError("password", "Password must contain a lowercase letter.");
     return false;
   }
 
   if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) {
-    errorBox.textContent = "Password must contain a special character.";
+    setFieldError("password", "Password must contain a special character.");
     return false;
   }
 
+  clearFieldError("password");
   return true;
 }
