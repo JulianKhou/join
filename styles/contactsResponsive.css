@@ -26,6 +26,65 @@
     flex-direction: column;
 }
 
+/* Allow the detail header (avatar + name + buttons) and the button row
+   to wrap once the right pane gets narrow, so nothing pushes off-screen. */
+.contact-details-header {
+  flex-wrap: wrap;
+}
+
+.contact-buttons {
+  flex-wrap: wrap;
+}
+
+.contact-name-large {
+  overflow-wrap: anywhere;
+}
+
+/* Right pane: scale the big "Contacts | Better with a team" headline
+   progressively so it never overflows. */
+@media (max-width: 1280px) {
+  .contacts-right {
+    padding: 100px 32px;
+  }
+  .contacts-right h1 {
+    font-size: 48px;
+    gap: 20px;
+  }
+  .contacts-right .subtitle {
+    font-size: 22px;
+  }
+  .contacts-right .divider {
+    height: 48px;
+  }
+  .contact-name-large {
+    font-size: 40px;
+  }
+}
+
+/* Shrink the left pane + add-contact button + detail header so the
+   layout still fits between sideboard (230px) and right pane. */
+@media (max-width: 1100px) {
+  .contacts-left {
+    width: 380px;
+  }
+  .btn-add-contact {
+    width: 100%;
+    max-width: 320px;
+    font-size: 18px;
+  }
+  .contact-details-header {
+    gap: 32px;
+  }
+  .contact-avatar-large {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+  .contact-name-large {
+    font-size: 32px;
+  }
+}
+
 @media (max-width: 1000px){
   .edit-form input{
     padding-right: 92px;
@@ -33,7 +92,42 @@
 }
 }
 
-@media (max-width: 500px) {
+/* Final compression step before we switch to the mobile layout at 768px. */
+@media (max-width: 900px) {
+  .contacts-left {
+    width: 320px;
+  }
+  .contacts-right {
+    padding: 80px 24px;
+  }
+  .contacts-right h1 {
+    font-size: 36px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .contacts-right .subtitle {
+    font-size: 18px;
+  }
+  .contacts-right .divider {
+    height: 36px;
+  }
+  .contact-details-header {
+    gap: 20px;
+  }
+  .contact-avatar-large {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+  .contact-name-large {
+    font-size: 26px;
+  }
+  .contact-buttons {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
     .sideBoard {
       display: none;
     }

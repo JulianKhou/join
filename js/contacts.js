@@ -199,7 +199,7 @@ function contactShowDetails(contact, index) {
   contactDetailsAddEventListeners();
 
   // On mobile: switch from list view to detail view
-  if (window.innerWidth <= 500) {
+  if (window.innerWidth <= 768) {
     showMobileDetailView();
   }
 }
