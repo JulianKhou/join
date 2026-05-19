@@ -49,6 +49,7 @@
   .contacts-right h1 {
     font-size: 48px;
     gap: 20px;
+    flex-wrap: wrap;
   }
   .contacts-right .subtitle {
     font-size: 22px;
@@ -82,6 +83,16 @@
   }
   .contact-name-large {
     font-size: 32px;
+  }
+  /* Once the right pane is < ~420px wide, the subtitle must wrap
+     to its own line — hide the vertical divider so the layout looks clean. */
+  .contacts-right h1 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .contacts-right .divider {
+    display: none;
   }
 }
 
