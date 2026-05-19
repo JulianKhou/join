@@ -26,8 +26,6 @@
     flex-direction: column;
 }
 
-/* Allow the detail header (avatar + name + buttons) and the button row
-   to wrap once the right pane gets narrow, so nothing pushes off-screen. */
 .contact-details-header {
   flex-wrap: wrap;
 }
@@ -40,8 +38,6 @@
   overflow-wrap: anywhere;
 }
 
-/* Right pane: scale the big "Contacts | Better with a team" headline
-   progressively so it never overflows. */
 @media (max-width: 1280px) {
   .contacts-right {
     padding: 100px 32px;
@@ -62,8 +58,6 @@
   }
 }
 
-/* Shrink the left pane + add-contact button + detail header so the
-   layout still fits between sideboard (230px) and right pane. */
 @media (max-width: 1100px) {
   .contacts-left {
     width: 380px;
@@ -84,8 +78,6 @@
   .contact-name-large {
     font-size: 32px;
   }
-  /* Once the right pane is < ~420px wide, the subtitle must wrap
-     to its own line — hide the vertical divider so the layout looks clean. */
   .contacts-right h1 {
     flex-direction: column;
     align-items: flex-start;
@@ -103,7 +95,6 @@
 }
 }
 
-/* Final compression step before we switch to the mobile layout at 768px. */
 @media (max-width: 900px) {
   .contacts-left {
     width: 320px;
@@ -300,7 +291,6 @@
         height: 24px;
       }
 
-      /* Mobile panel switching */
       .mobile-hidden {
         display: none !important;
       }

@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     showInfo: (message) => showPopup(message, "info"),
   });
   addCategoryOptionsTask();
+  defaultCategoryOnMobile();
   initSubtaskEventListeners();
   initPriorityButtons({
     lowBtn: priorityLowBtn,
@@ -296,7 +297,13 @@ function addCategoryOptionsTask() {
   }
 }
 
-// Return currently selected category.
+function defaultCategoryOnMobile() {
+  if (window.innerWidth > 768) return;
+  const categorySelect = document.getElementById("categorySelect");
+  if (!categorySelect) return;
+  categorySelect.value = CATEGORY.TECHTASK;
+}
+
 function getCategoryTask() {
   const categorySelect = document.getElementById("categorySelect");
   if (categorySelect.value === "Select task category") {

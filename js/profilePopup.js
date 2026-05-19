@@ -38,8 +38,6 @@ function initBackButtons() {
       const currentPage = window.location.pathname.split("/").pop();
       const fallbackTarget = internalPages.includes(currentPage) ? "summaryUser.html" : "logIn.html";
 
-      // Only return via history when the referrer is a known internal page —
-      // otherwise fall back, so we never land on logIn.html (which feels like a logout)
       const referrerPage = document.referrer
         ? new URL(document.referrer).pathname.split("/").pop()
         : "";
