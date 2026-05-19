@@ -21,22 +21,35 @@ function initBackButtons() {
     ...document.querySelectorAll(".back-btn"),
   ];
 
+  const internalPages = [
+    "summaryUser.html",
+    "addTask.html",
+    "board.html",
+    "contacts.html",
+    "help.html",
+    "privacyPolicyInt.html",
+    "legalNoticeInt.html",
+  ];
+
   backTargets.forEach((target) => {
     target.addEventListener("click", (event) => {
       event.preventDefault();
+
       const currentPage = window.location.pathname.split("/").pop();
-      const internalPages = [
-        "summaryUser.html",
-        "addTask.html",
-        "board.html",
-        "contacts.html",
-        "help.html",
-        "privacyPolicyInt.html",
-        "legalNoticeInt.html",
-      ];
       const fallbackTarget = internalPages.includes(currentPage) ? "summaryUser.html" : "logIn.html";
 
-      if (document.referrer && document.referrer !== window.location.href) {
+      // Only return via history when the referrer is a known internal page —
+      // otherwise fall back, so we never land on logIn.html (which feels like a logout)
+      const referrerPage = document.referrer
+        ? new URL(document.referrer).pathname.split("/").pop()
+        : "";
+
+      const canGoBack =
+        document.referrer &&
+        document.referrer !== window.location.href &&
+        internalPages.includes(referrerPage);
+
+      if (canGoBack) {
         window.history.back();
       } else {
         window.location.href = fallbackTarget;
