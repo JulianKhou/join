@@ -1,91 +1,83 @@
-@media (max-width: 1080px) {
+/* Slight padding/typography compression so the form stays inside the
+   visible area when the window narrows from FullHD. */
+@media (max-width: 1280px) {
+  .add-task-wrapper {
+    padding: 32px 48px;
+  }
+  .add-task-wrapper h1 {
+    font-size: 48px;
+    padding-top: 100px;
+  }
+}
+
+/* Drop the two-column form to a single column. */
+@media (max-width: 1100px) {
   .add-task-form {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 32px;
   }
-
   .task-column:first-child {
     border-right: none;
     padding-right: 0;
   }
-
   .task-column:last-child {
     padding-left: 0;
   }
-
   .add-task-buttons {
     padding-left: 0;
   }
-
   .priority-buttons-size {
     height: 53px;
-    width: 145px;
+    max-width: 145px;
   }
 }
 
-@media (max-width: 960px) {
-  .add-task-form-overlay{
+/* The form overlay (used in board.html "add task" modal) stacks too. */
+@media (max-width: 1000px) {
+  .add-task-wrapper {
+    padding: 32px 32px;
+  }
+  .add-task-wrapper h1 {
+    font-size: 40px;
+    padding-top: 80px;
+  }
+  .add-task-form-overlay {
     flex-direction: column;
   }
 }
 
-@media (max-width: 850px) {
-
-  .add-task-wrapper h1 {
-  font-size: 47px;
-  }
-
+/* Last step before switching to the mobile layout at 768px. */
+@media (max-width: 900px) {
   .add-task-wrapper {
-    margin-left: 190px;
+    padding: 32px 24px;
   }
-}
-
-@media (max-width: 730px) {
-  .task-input {
-    width: 380px;
+  .add-task-wrapper h1 {
+    font-size: 36px;
   }
-
-  .task-input-description {
-    width: 380px;
-  }
-
-  .add-task-buttons {
-    padding-left: 45px;
-  }
-
   .priority-buttons-size {
-    height: 52px;
-    width: 122px;
-  }
-
-  .selected-box {
-    width: 380px;
+    max-width: 130px;
   }
 }
 
-
-@media (min-width: 611px) {
-  .header-logo-small {
-    display: none;
-  }
-}
-
-@media (max-width: 610px) {
+/* Mobile layout aligned with contacts.html (≤ 768px). */
+@media (max-width: 768px) {
   .sideBoard {
     display: none;
   }
 
-  .search-wrapper {
-    width: 100%;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    left: 0 !important;
+    padding: 10px 16px;
+    box-sizing: border-box;
+    width: 100% !important;
   }
 
-  .selected-box {
-    width: 100%;
-  }
-
-  .subtask-buttons {
-    right: 8px;
-    left: auto;
+  .header-title,
+  .help {
+    display: none;
   }
 
   .header-logo-small {
@@ -97,8 +89,26 @@
     height: 39px;
   }
 
+  .userProfileInitials {
+    margin-right: 16px;
+    width: 46px;
+    height: 46px;
+  }
+
+  .add-task-wrapper {
+    margin-left: 0;
+    /* bottom padding clears the 74px mobile-nav with a small gap */
+    padding: 24px 16px 110px;
+  }
+
+  .add-task-wrapper h1 {
+    font-size: 32px;
+    padding-top: 80px;
+  }
+
   .task-input,
-  .task-input-description {
+  .task-input-description,
+  .selected-box {
     width: 100%;
   }
 
@@ -108,35 +118,19 @@
     max-width: 160px;
   }
 
-  .add-task-wrapper {
-    margin-left: 0;
-    padding: 40px 16px;
+  .priority-buttons {
+    gap: 8px;
   }
 
   .add-task-buttons {
-    padding-bottom: 48px;
+    padding-bottom: 0;
     padding-left: 0;
     justify-content: flex-end;
   }
 
-  .help {
-    display: none;
-  }
-
-  .main-content-legal {
-    margin-left: 0;
-    width: 100%;
-    padding: 120px 16px 100px;
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    left: 0 !important;
-    padding: 10px 16px;
-    box-sizing: border-box;
-    width: 100% !important;
+  .subtask-buttons {
+    right: 8px;
+    left: auto;
   }
 
   .mobile-nav {
@@ -159,19 +153,9 @@
     text-align: center;
     text-decoration: none;
   }
-
-  .header-title,
-  .header-right > .help {
-    display: none;
-  }
-
-  .userProfileInitials {
-    margin-right: 16px;
-    width: 46px;
-    height: 46px;
-  }
 }
 
+/* Very narrow phones: trim further. */
 @media (max-width: 430px) {
   .priority-buttons-size {
     height: 53px;
@@ -179,17 +163,8 @@
     max-width: 111px;
   }
 
-  .priority-buttons {
-    gap: 8px;
-  }
-
-  .add-task-buttons {
-    padding-bottom: 48px;
-    padding-left: 0;
-  }
-
   .add-task-wrapper h1 {
-    font-size: 40px;
+    font-size: 28px;
   }
 
   .task-cancel-button-size {
@@ -201,4 +176,3 @@
     height: 48px;
   }
 }
-

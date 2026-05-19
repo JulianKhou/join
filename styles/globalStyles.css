@@ -282,8 +282,10 @@ body {
   justify-content: flex-end;
   align-items: center;
   height: 100%;
-  margin: 10px;
-  margin-right: 32px;
+  margin: 0;
+  /* Push to the right edge even when it's the only flex child in .header
+     (mobile views absolute-position the logo and hide the title). */
+  margin-left: auto;
 }
 
 .join-text {
