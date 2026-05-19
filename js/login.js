@@ -6,6 +6,8 @@ const passwordInput = document.getElementById("passwordInput");
 const loginBtn = document.getElementById("loginBtn");
 const loginGuest = document.getElementById("guestLoginBtn");
 const errorBox = document.getElementById("loginError");
+const emailError = document.getElementById("emailError");
+const passwordError = document.getElementById("passwordError");
 const form = document.querySelector("form");
 
 const passwordIconImg = document.getElementById("passwordIconImg");
@@ -27,21 +29,21 @@ if (passwordInput) passwordInput.maxLength = 64;
 
 function validateEmailOnBlur() {
   if (!emailInput.value.trim().includes("@")) {
-    errorBox.textContent = "Please enter a valid email address.";
+    emailError.textContent = "Please enter a valid email address.";
     return false;
   }
 
-  errorBox.textContent = "";
+  emailError.textContent = "";
   return true;
 }
 
 function validatePasswordOnBlur() {
   if (passwordInput.value.trim().length < 6) {
-    errorBox.textContent = "Password must be at least 6 characters.";
+    passwordError.textContent = "Password must be at least 6 characters.";
     return false;
   }
 
-  errorBox.textContent = "";
+  passwordError.textContent = "";
   return true;
 }
 
@@ -69,6 +71,10 @@ async function loginAsGlobalGuest() {
 emailInput?.addEventListener("blur", validateEmailOnBlur);
 passwordInput?.addEventListener("blur", validatePasswordOnBlur);
 
+emailInput?.addEventListener("input", () => {
+  emailError.textContent = "";
+});
+
 loginGuest?.addEventListener("click", async (event) => {
   event.preventDefault();
   loginGuest.disabled = true;
@@ -85,6 +91,8 @@ loginGuest?.addEventListener("click", async (event) => {
 });
 
 passwordInput?.addEventListener("input", () => {
+  passwordError.textContent = "";
+
   if (passwordInput.value.length > 0) {
     passwordIconImg.src = visibilityIcon;
   } else {
@@ -110,6 +118,8 @@ loginBtn?.addEventListener("click", async (event) => {
   const password = passwordInput.value;
 
   errorBox.textContent = "";
+  emailError.textContent = "";
+  passwordError.textContent = "";
 
   if (!validateEmailOnBlur() || !validatePasswordOnBlur()) {
     showPopup("Please check the highlighted login fields.", "info");
