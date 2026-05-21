@@ -12,6 +12,7 @@
   .legal-section {
     max-width: 1014px;
     margin-bottom: 16px;
+    overflow-wrap: anywhere;
   }
   
   .legal-meta {

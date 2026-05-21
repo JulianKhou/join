@@ -2,12 +2,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
 }
 
 html, body {
   height: auto;
-  overflow-x: 1;
+  overflow-x: hidden;
 }
 
 body, p, span, a, li, label, input, textarea, select, button {
@@ -24,6 +24,7 @@ body {
 }
 
 .page-wrapper {
+  position: relative;
   width: 100%;
   max-width: 1920px;
   min-height: 100vh;
@@ -47,6 +48,10 @@ body {
 }
 
 .top-nav {
+  position: absolute;
+  top: 40px;
+  right: 60px;
+  height: 120px;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -70,18 +75,18 @@ body {
 
 .main-content {
   background-color: #F6F7F8;
-  position: relative;
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 16px;
   margin-bottom: 10vh;
 }
 
 .login-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   background: white;
-  width: 652px;
+  width: 100%;
+  max-width: 652px;
   padding: 48px 115px;
   border-radius: 30px;
   text-align: center;
@@ -264,17 +269,17 @@ footer a {
   }
 
 .top-nav {
-  position: absolute;
+  position: static;
   width: 100%;
+  height: auto;
   justify-content: center;
-  margin-top: 40px;  
-  bottom: 140px;
+  padding: 20px 16px;
+  top: auto;
+  right: auto;
 }
 
   .login-box {
-    width: calc(100vw - 32px);
     max-width: 396px;
-    height: 475px;
     padding: 32px 24px;
   }
 

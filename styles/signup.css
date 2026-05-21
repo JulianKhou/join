@@ -5,48 +5,53 @@
 }
 
 html, body {
-  height: 100%;
+  height: auto;
   overflow-x: hidden;
   font-family: "Inter", sans-serif;
 }
 
 body {
   background: #e0e0e0;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .page-wrapper {
+  position: relative;
   width: 100%;
   max-width: 1920px;
   min-height: 100vh;
-  margin: auto;
-  overflow: hidden;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+  flex-direction: column;
+}
+
+.page-header {
+  padding: 40px 60px;
 }
 
 .logo img {
   height: 121.97px;
   width: 100.03px;
-  position: absolute;
-  top: 10vh;
-  left: 77px;
+}
+
+.Box-position {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 16px;
 }
 
 .login-box-signup {
   background: white;
-  width: 598px;
+  width: 100%;
+  max-width: 598px;
   min-height: 630px;
   padding: 48px;
   border-radius: 30px;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin: 40px auto;
-  margin-top: 125px;
   position: relative;
 }
 
@@ -124,11 +129,10 @@ label {
 }
 
 footer {
-  position: absolute;
-  bottom: 0px;
   display: flex;
+  justify-content: center;
   gap: 20px;
-  margin-bottom: 32px;
+  padding: 32px 50px;
 }
 
 footer a {
@@ -156,19 +160,15 @@ label a {
     pointer-events: none;
 }
 
-@media (max-height: 1000px) {
-  .logo img {
-    top: 3%;
-  }
-}
-
 @media (max-width: 680px) {
 
+  .page-header {
+    padding: 20px 32px;
+  }
+
   .login-box-signup {
-    width: calc(100vw - 32px);
     min-height: auto;
-    padding: 50px;
-    margin: 40px 16px;
+    padding: 50px 24px;
   }
 
   .login-box-signup h1 {
@@ -182,11 +182,11 @@ label a {
 
   .btn-group {
     flex-direction: column;
+    align-items: center;
     gap: 20px;
   }
 
   .primary-btn {
-    width: 100%;
     height: 51px;
   }
 
@@ -197,15 +197,6 @@ label a {
   .logo img {
     height: 78px;
     width: 64px;
-    left: 32px;
-    top: 10vh;
-  }
-}
-
-@media (max-width: 370px) {
-  .login-box-signup {
-    margin-left: 16px;
-    margin-right: 16px;
   }
 }
 
