@@ -1,319 +1,86 @@
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-
-.edit-form {
-  padding-top: 0px;
-}
-
-.input-wrapper {
-  padding-left: 180px;
-}
-
-.buttons {
-  padding-right: 0px;
-}
-
-.close-btn {
-  position: absolute;
-  top: -40px;
-  background: none;
-  border: none;
-  font-size: 28px;
-  cursor: pointer;
-  padding-right: 16px;
-}
-
-.delete-btn {
-  padding: 10px 14px;
-}
-.save-btn {
-  padding: 10px 14px;
-}
-
-@media (max-width: 1625px) {
-  .icon {
-    right: -27%;
-  }
-  .edit-form input {
-    width: 370px;
-  }
-  .buttons {
-    padding-right: 180px;
-    margin-left: 181px;
-  }
-}
-
-@media (max-width: 1425px) {
-  .icon {
-    right: -18%;
-  }
-  .edit-form input {
-    width: 330px;
-    padding-left: 10px;
-  }
-}
-
-@media (max-width: 1270px) {
-  .profile-circle {
-    width: 90px;
-    height: 90px;
-    font-size: 40px;
-  }
-}
-
-@media (max-width: 1135px) {
-  .profile-circle {
-    width: 85px;
-    height: 85px;
-    font-size: 32px;
-  }
-}
-
-@media (max-width: 1065px) {
-  .edit-form .input-wrapper {
-    position: relative;
-    margin-bottom: 18px;
-    width: 0px;
-  }
-
-  .edit-form input {
-    width: 260px;
-  }
-
-  .icon {
-    right: -140%;
-  }
-  .buttons {
-    max-height: 45px;
-    margin-left: 180px;
-}
-  .close-btn {
-    top: -12%;
-  }
-}
-
-@media (max-width: 1030px) {
-  .edit-form .input-wrapper {
-    position: relative;
-    margin-bottom: 18px;
-  }
-}
-
-@media (max-width: 1000px) {
+@media (max-width: 1240px) {
   .edit-contact-container {
-    position: relative;
     flex-direction: column;
+    width: 100%;
+    max-width: 480px;
     height: auto;
-    padding-bottom: 30px;
-  }
-  .edit-blue-line {
-    border-bottom: 3px solid #4bb1ff;
   }
 
   .edit-contact-left {
     width: 100%;
-    padding: 60px 20px;
+    padding: 32px 24px 56px;
+    align-items: center;
     text-align: center;
-    position: relative;
   }
 
-  .blue-line {
-    display: none;
+  .logo {
+    margin-bottom: 14px;
   }
 
   .edit-contact-right {
-    margin-top: 60px;
+    flex-direction: column;
+    padding: 0 24px 24px;
+    align-items: center;
+    gap: 16px;
+    margin-top: -40px;
   }
 
-  .blue-line {
-    margin-left: 215px;
+  .profile-circle,
+  .profile-circle-add {
+    border: 3px solid white;
   }
 
-  .profile-circle {
-    position: absolute;
-    top: calc(100% - 60px);
-    left: 100px;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    top: -18%;
-    left: 50%;
-  }
-  .icon {
-    display: unset;
-    right: -160%;
-  }
-  .edit-form .input-wrapper {
-    margin-right: 225px;
-    margin-left: 40px;
-  }
   .edit-form {
-    padding-right: 100px;
-  }
-  .edit-form input {
-    width: 300px;
-  }
-  .buttons {
-    margin-left: 264px;
-}
-}
-
-@media (min-width: 1001px) {
-  .close-btn {
-    position: fixed;
-    top: 30%;
-    right: 11%;
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    z-index: 9999;
-  }
-  .profile-circle {
-    position: absolute;
-    top: calc(100% - 60px);
-    left: 100px;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    top: 45%;
-    left: 95px;
-  }
-}
-
-@media (max-width: 670px) {
-  .edit-form input {
-    width: 300px;
-  }
-  .icon {
-    right: -160%;
-  }
-}
-
-@media (max-width: 500px) {
-  .buttons {
-    margin-left: 264px;
-  }
-  .edit-form .input-wrapper {
-    margin-left: 32px;
-  }
-}
-
-@media (max-width: 480px) {
-  .edit-contact-left {
     width: 100%;
-    padding: 60px 10px;
-    text-align: center;
   }
-  .edit-form input {
-    width: 300px;
-    font-size: 0.9rem;
-  }
-  .blue-line {
-    margin-left: 480px;
-  }
-  .icon {
-    right: -160%;
-  }
-  .delete-btn,
-  .save-btn {
-    padding: 8px 14px;
-    border-radius: 10px;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  .edit-contact-left h2 {
-    margin-top: 40px;
-    font-size: 32px;
-    font-weight: bold;
-  }
+
   .close-btn {
-    font-size: 22px;
+    color: white;
+    top: 14px;
+    right: 14px;
   }
-  .edit-form .input-wrapper {
-    margin-right: 300px;
-    margin-left: 34px;
-  }
+
   .buttons {
-    margin-left: 264px;
+    justify-content: center;
   }
 }
 
-@media (max-width: 430px) {
-  .edit-form input {
-    width: 300px;
+@media (max-width: 420px) {
+  .edit-contact-overlay {
+    padding: 10px;
   }
-  .icon {
-    right: -160%;
-  }
-}
 
-@media (max-width: 400px) {
-  .edit-form input {
-    width: 230px;
-    margin-left: -20px;
-}
+  .edit-contact-container {
+    border-radius: 24px;
+  }
+
   .edit-contact-left {
-    padding: 40px 5px;
+    padding: 28px 16px 50px;
   }
-  .edit-contact-left h2 {
-    font-size: 24px;
+
+  .edit-contact-left h2,
+  .add-contact-title {
+    font-size: 30px;
   }
-  .blue-line {
-    width: 45px;
-    height: 3px;
-    background: #4bb1ff;
-    margin-top: -15px;
+
+  .add-contact-subtitle {
+    font-size: 14px;
   }
-  .icon {
-    right: -112%;
+
+  .edit-contact-right {
+    padding: 0 16px 20px;
   }
-  .delete-btn,
-  .save-btn {
-    padding: 6px 12px;
-    border-radius: 10px;
-    font-size: 18px;
-    cursor: pointer;
-  }
+}
+
+@media (max-width: 360px) {
   .buttons {
-    margin-right: -16px;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
   }
-  .edit-form .input-wrapper {
-    margin-left: 74px;
-}
-}
-@media (max-width: 380px) {
-  .edit-form input {
-    width: 200px;
-    margin-left: -16px;
-}
-  .profile-circle {
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
-  }
-  .icon {
-    right: -99%;
-  }
+
   .delete-btn,
   .save-btn {
-    padding: 3px 6px;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
+    width: 100%;
   }
 }
-
-@media (max-width: 350px) {
-  .icon {
-    right: -94%;
-  }
-  .edit-form input {
-    width: 200px;
-    margin-left: -24px;
-}
-}
-
-
-

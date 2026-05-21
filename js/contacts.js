@@ -114,7 +114,14 @@ function addEventListenerToAddContactForm() {
     });
   }
 
-  initOutsideClickHandler(document.querySelector(".add-contact-container"), closeAddContactOverlay, [closeAddBtn]);
+  const cancelAddBtn = document.getElementById("cancelAddContactBtn");
+  if (cancelAddBtn) {
+    cancelAddBtn.addEventListener("click", () => {
+      closeAddContactOverlay();
+    });
+  }
+
+  initOutsideClickHandler(document.querySelector(".add-contact-container"), closeAddContactOverlay, [closeAddBtn, cancelAddBtn]);
 
   const nameInput = document.getElementById("AddContactNameInput");
   const emailInput = document.getElementById("AddContactEmailInput");

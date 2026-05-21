@@ -6,12 +6,15 @@ export const addContactTemplate = `
     <div class="edit-contact-left">
       <img src="./assets/sideboardAssets/joinLogo.svg" class="logo" alt="Join logo">
       <h2 class="add-contact-title">Add contact</h2>
+      <h3 class="add-contact-subtitle">Tasks are better with a team!</h3>
       <div class="blue-line"></div>
     </div>
 
     <div class="edit-contact-right">
       <button class="close-btn" id="closeAddContactBtn" type="button">&times;</button>
-      <div class="profile-circle">TW</div>
+      <div class="profile-circle profile-circle-add">
+        <img src="./assets/LogIn&SignUp/person1.svg" class="icon-profile" alt="">
+      </div>
 
       <form class="edit-form" novalidate>
         <div class="input-wrapper">
@@ -20,18 +23,18 @@ export const addContactTemplate = `
         </div>
 
         <div class="input-wrapper">
-          <input type="text" id="AddContactEmailInput" placeholder="Mail" maxlength="120" autocomplete="off" inputmode="email">
+          <input type="text" id="AddContactEmailInput" placeholder="Email" maxlength="120" autocomplete="off" inputmode="email">
           <span class="icon"><img src="./assets/LogIn&SignUp/mail.svg" alt=""></span>
         </div>
 
         <div class="input-wrapper">
-          <input type="text" id="AddContactPhoneNumberInput" placeholder="Phone Number" maxlength="30" autocomplete="off" inputmode="tel">
+          <input type="text" id="AddContactPhoneNumberInput" placeholder="Phone" maxlength="30" autocomplete="off" inputmode="tel">
           <span class="icon"><img src="./assets/LogIn&SignUp/call.svg" alt=""></span>
         </div>
 
         <div class="buttons">
-          <button class="delete-btn" type="button">Delete</button>
-          <button class="save-btn" id="saveContactBtn" type="submit">Save &#10003;</button>
+          <button class="delete-btn" id="cancelAddContactBtn" type="button">Cancel &times;</button>
+          <button class="save-btn" id="saveContactBtn" type="submit">Create contact &#10003;</button>
         </div>
       </form>
     </div>
