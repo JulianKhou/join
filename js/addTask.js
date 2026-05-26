@@ -86,7 +86,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       getTitle: getTitleTask,
       getDueDate: getDueDateTask,
       getCategory: getCategoryTask,
-      showInfo: (message) => showPopup(message, "info"),
     })) {
       return;
     }
@@ -94,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   cancelTaskBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    resetAddTaskForm();
+    resetTaskFormState();
   });
 
   applyContentLimits();
@@ -102,7 +101,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     getTitle: getTitleTask,
     getDueDate: getDueDateTask,
     getCategory: getCategoryTask,
-    showInfo: (message) => showPopup(message, "info"),
   });
   addCategoryOptionsTask();
   defaultCategoryOnMobile();

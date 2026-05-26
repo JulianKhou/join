@@ -10,6 +10,11 @@ function setBorderColor(id, color = "") {
   if (input) input.style.borderColor = color;
 }
 
+function toggleHint(hintId, show) {
+  const hint = document.getElementById(hintId);
+  if (hint) hint.classList.toggle("show", show);
+}
+
 export function applyContentLimits() {
   const titleInput = document.getElementById("taskTitle");
   const descriptionInput = document.getElementById("taskDescription");
@@ -22,67 +27,48 @@ export function applyContentLimits() {
   if (selectInput) selectInput.maxLength = 120;
 }
 
-export function initBlurValidation({ getTitle, getDueDate, getCategory, showInfo }) {
+export function initBlurValidation({ getTitle, getDueDate, getCategory }) {
   const titleInput = document.getElementById("taskTitle");
   const dueDateInput = document.getElementById("taskDate");
   const categoryInput = document.getElementById("categorySelect");
 
   titleInput?.addEventListener("blur", () => {
-    if (!getTitle().trim()) {
-      setBorderColor("taskTitle", "red");
-      showInfo("Please enter a task title.");
-      return;
-    }
-    setBorderColor("taskTitle");
+    const invalid = !getTitle().trim();
+    setBorderColor("taskTitle", invalid ? "red" : "");
+    toggleHint("taskTitleHint", invalid);
   });
 
   dueDateInput?.addEventListener("blur", () => {
-    if (!getDueDate()) {
-      setBorderColor("taskDate", "red");
-      showInfo("Please select a due date.");
-      return;
-    }
-    setBorderColor("taskDate");
+    const invalid = !getDueDate();
+    setBorderColor("taskDate", invalid ? "red" : "");
+    toggleHint("taskDateHint", invalid);
   });
 
   categoryInput?.addEventListener("blur", () => {
-    if (!getCategory()) {
-      setBorderColor("categorySelect", "red");
-      showInfo("Please select a category.");
-      return;
-    }
-    setBorderColor("categorySelect");
+    const invalid = !getCategory();
+    setBorderColor("categorySelect", invalid ? "red" : "");
+    toggleHint("categoryHint", invalid);
   });
 }
 
-export function validateTaskForm({ getTitle, getDueDate, getCategory, showInfo }) {
-  const taskName = getTitle();
+export function validateTaskForm({ getTitle, getDueDate, getCategory }) {
+  const taskName = getTitle().trim();
   const taskDate = getDueDate();
   const taskCategory = getCategory();
 
-  setBorderColor("taskTitle");
-  setBorderColor("taskDate");
-  setBorderColor("categorySelect");
+  const titleInvalid = !taskName;
+  const dateInvalid = !taskDate;
+  const categoryInvalid = !taskCategory;
 
-  let isValid = true;
+  setBorderColor("taskTitle", titleInvalid ? "red" : "");
+  setBorderColor("taskDate", dateInvalid ? "red" : "");
+  setBorderColor("categorySelect", categoryInvalid ? "red" : "");
 
-  if (!taskName) {
-    setBorderColor("taskTitle", "red");
-    isValid = false;
-  }
+  toggleHint("taskTitleHint", titleInvalid);
+  toggleHint("taskDateHint", dateInvalid);
+  toggleHint("categoryHint", categoryInvalid);
 
-  if (!taskDate) {
-    setBorderColor("taskDate", "red");
-    isValid = false;
-  }
-
-  if (!taskCategory) {
-    setBorderColor("categorySelect", "red");
-    showInfo("Please select a category.");
-    isValid = false;
-  }
-
-  return isValid;
+  return !(titleInvalid || dateInvalid || categoryInvalid);
 }
 
 export function resetAddTaskForm({ checkboxList, selectBox, placeholder, resetPriority }) {
@@ -99,14 +85,28 @@ export function resetAddTaskForm({ checkboxList, selectBox, placeholder, resetPr
   if (categorySelect) categorySelect.selectedIndex = 0;
   if (selectBox) selectBox.innerText = placeholder;
 
+  const assignedIcons = document.getElementById("assignedIcons");
+  if (assignedIcons) assignedIcons.innerHTML = "";
+
   checkboxList?.querySelectorAll(".assignedToCheckbox").forEach((cb) => {
     cb.checked = false;
   });
+
+  removeClickedFromPriorityButtons();
+  const mediumBtn = document.getElementById("priorityMediumBtn");
+  if (mediumBtn) {
+    mediumBtn.classList.add("clicked");
+    toggleMediumButtonOnClick(mediumBtn);
+  }
 
   resetPriority();
   setBorderColor("taskTitle");
   setBorderColor("taskDate");
   setBorderColor("categorySelect");
+
+  toggleHint("taskTitleHint", false);
+  toggleHint("taskDateHint", false);
+  toggleHint("categoryHint", false);
 }
 
 export function initPriorityButtons({ lowBtn, mediumBtn, urgentBtn, priorities, setPriority }) {
@@ -134,4 +134,10 @@ export function initPriorityButtons({ lowBtn, mediumBtn, urgentBtn, priorities, 
       toggle(button);
     });
   });
+
+  if (mediumBtn) {
+    mediumBtn.classList.add("clicked");
+    toggleMediumButtonOnClick(mediumBtn);
+    setPriority(priorities.medium);
+  }
 }

@@ -80,7 +80,7 @@
               placeholder="Enter a title" maxlength="80"
 
             />
-            <p class="required-hint">*This field is required</p>
+            <p class="required-hint" id="taskTitleHint">*This field is required</p>
 
             <label for="task-description">Description</label>
             <textarea
@@ -92,35 +92,32 @@
             <label for="task-date">Due date<span>*</span></label>
             <input class="task-input" type="date" id="taskDate" />
 
-            <p class="required-hint">*This field is required</p>
+            <p class="required-hint" id="taskDateHint">*This field is required</p>
           </div>
 
           <div class="task-column">
             <label>Priority</label>
             <div class="priority-buttons">
-              <button class="remove-background" id="priorityUrgentBtn">
-                <img
-                  class="priority-buttons-size"
-                  src="./assets/addTask/urgent.svg"
-                  alt="urgent priority button"
-                  id="priorityUrgentImg"
-                />
+              <button class="priority-btn priority-urgent" id="priorityUrgentBtn" type="button">
+                <span>Urgent</span>
+                <svg class="priority-icon" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M1.5 8L10.5 1L19.5 8" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M1.5 15L10.5 8L19.5 15" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </button>
-              <button class="remove-background" id="priorityMediumBtn">
-                <img
-                  class="priority-buttons-size"
-                  src="./assets/addTask/medium.svg"
-                  alt="medium priority button"
-                  id="priorityMediumImg"
-                />
+              <button class="priority-btn priority-medium" id="priorityMediumBtn" type="button">
+                <span>Medium</span>
+                <svg class="priority-icon" viewBox="0 0 21 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M1.5 2H19.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M1.5 10H19.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                </svg>
               </button>
-              <button class="remove-background" id="priorityLowBtn">
-                <img
-                  class="priority-buttons-size"
-                  src="./assets/addTask/low.svg"
-                  alt="low oriority button"
-                  id="priorityLowImg"
-                />
+              <button class="priority-btn priority-low" id="priorityLowBtn" type="button">
+                <span>Low</span>
+                <svg class="priority-icon" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M1.5 1L10.5 8L19.5 1" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M1.5 8L10.5 15L19.5 8" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </button>
             </div>
             <div class="assigned-area" id="assignedArea">
@@ -135,12 +132,11 @@
               </div>
               <div class="assignedIcons" id="assignedIcons"></div>
             </div>
-           <p class="required-hint">*This field is required</p>
             <label for="category">Category<span>*</span></label>
             <select class="task-input" id="categorySelect">
               <option>Select task category</option>
             </select>
-            <p class="required-hint">*This field is required</p>
+            <p class="required-hint" id="categoryHint">*This field is required</p>
             <label for="subtasks">Subtasks</label>
             <div class="subtask-input-area">
               <input
@@ -178,18 +174,12 @@
         </form>
 
         <div class="add-task-buttons">
-          <img
-            class="task-cancel-button-size remove-background-size"
-            src="./assets/addTask/Secondary.svg"
-            id="cancelTaskBtn"
-            alt="cancel button"
-          />
-          <img
-            class="task-create-button-size remove-background-size"
-            src="./assets/addTask/Primary check button.svg"
-            id="addTaskBtn"
-            alt="create task button"
-          />
+          <button class="task-action-btn" id="cancelTaskBtn" type="button" aria-label="Clear">
+            <img src="./assets/addTask/Clear.svg" alt="Clear">
+          </button>
+          <button class="task-action-btn" id="addTaskBtn" type="button" aria-label="Create Task">
+            <img src="./assets/addTask/Primary check button.svg" alt="Create Task">
+          </button>
         </div>
       </div>
     </main>

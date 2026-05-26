@@ -25,7 +25,6 @@
   }
   .priority-buttons-size {
     height: 53px;
-    max-width: 145px;
   }
 }
 
@@ -48,9 +47,6 @@
   }
   .add-task-wrapper h1 {
     font-size: 36px;
-  }
-  .priority-buttons-size {
-    max-width: 130px;
   }
 }
 
@@ -108,7 +104,6 @@
   .priority-buttons-size {
     height: 56px;
     width: 100%;
-    max-width: 160px;
   }
 
   .priority-buttons {
@@ -161,19 +156,9 @@
   .priority-buttons-size {
     height: 53px;
     width: 100%;
-    max-width: 111px;
   }
 
   .add-task-wrapper h1 {
     font-size: 28px;
-  }
-
-  .task-cancel-button-size {
-    height: 48px;
-    width: 120px;
-  }
-
-  .task-create-button-size {
-    height: 48px;
   }
 }
