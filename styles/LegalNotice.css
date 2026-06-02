@@ -203,13 +203,13 @@
   }
   }
 
-  @media (min-width:427px){
+  @media (min-width:769px){
     .mobile-nav {
       display: none;
     }
   }
 
-  @media (max-width: 428px) {
+  @media (max-width: 768px) {
 
     .sideBoard {
       display: none;
@@ -316,7 +316,7 @@
     }
   }
 
-  @media (min-width: 429px) {
+  @media (min-width: 769px) {
     .header-logo-small {
       display: none;
     }

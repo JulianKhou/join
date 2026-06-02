@@ -28,7 +28,8 @@
 
 /* Match Add Task Assigned-to styles in edit overlay */
 .multi-select {
-    width: 440px;
+    width: 100%;
+    max-width: 440px;
     position: relative;
     margin-top: 12px;
 }

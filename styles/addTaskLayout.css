@@ -74,6 +74,18 @@ body {
   width: auto;
 }
 
+.task-action-btn .btn-img-hover {
+  display: none;
+}
+
+.task-action-btn:hover .btn-img-default {
+  display: none;
+}
+
+.task-action-btn:hover .btn-img-hover {
+  display: block;
+}
+
 .task-action-btn:hover {
   transform: translateY(-1px);
 }
