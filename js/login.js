@@ -27,8 +27,12 @@ if (form) {
 if (emailInput) emailInput.maxLength = 120;
 if (passwordInput) passwordInput.maxLength = 64;
 
+function isValidEmail(email) {
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email) && !email.includes("..");
+}
+
 function validateEmailOnBlur() {
-  if (!emailInput.value.trim().includes("@")) {
+  if (!isValidEmail(emailInput.value.trim())) {
     emailError.textContent = "Please enter a valid email address.";
     return false;
   }

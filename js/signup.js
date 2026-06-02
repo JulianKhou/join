@@ -136,7 +136,7 @@ setupPasswordToggle(confirmInput, confirmIconImg);
 
 
 function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email) && !email.includes("..");
 }
 
 function validatePasswordSilent(password) {

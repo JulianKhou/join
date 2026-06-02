@@ -1,7 +1,7 @@
 import { showPopup } from "./feedback.js";
 
 export function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email) && !email.includes("..");
 }
 
 export function configureContactFormValidation(nameInput, emailInput, phoneInput) {
