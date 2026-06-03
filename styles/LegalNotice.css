@@ -144,24 +144,8 @@
     .legal-bullets{
       font-size: 16px;
     }
-    .header-title{
-      font-size: 12px;
-    }
-    .main-content-legal {
-      padding-right: 30px;
-      padding-left: 220px;
-    }
     .legal-meta {
       font-size: 16px;
-    }
-    .sideBoard{
-      width: 200px;
-    }
-    .navLeftTop{
-      width: 110%;
-    }
-    .header{
-      left: 200px;
     }
   }
 
@@ -169,38 +153,6 @@
     h1{
       font-size: 32px;
     }
-    .header-title{
-      font-size: 16px;
-    }
-    .main-content-legal {
-      padding-right: 20px;
-      padding-left: 200px;
-    }
-    .legal-meta {
-      font-size: 16px;
-    }
-    .sideBoard{
-      width: 200px;
-    }
-    .navLeftTop{
-      width: 110%;
-    }
-    .header{
-      left: 180px;
-    }
-    .userProfileInitials{
-      height: 54px;
-      width: 54px;
-    }
-    .sideBoard {
-      width: 180px;
-    }
-    .navLeftTop {
-      margin-right: 24px;
-  }
-  .navLeftBottom a{
-    padding: 12px 0 12px 40px;
-  }
   }
 
   @media (min-width:769px){

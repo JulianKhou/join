@@ -45,7 +45,7 @@
   }
 }
 
-@media (max-width: 750px) {
+@media (max-width: 768px) {
   .header {
     display: flex;
     justify-content: space-between;

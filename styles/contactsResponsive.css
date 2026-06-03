@@ -133,11 +133,7 @@
     .sideBoard {
       display: none;
     }
-  
-    .mobile-bottom-nav {
-      display: flex;
-    }
-  
+
     .header {
       position: fixed;
       top: 0;
