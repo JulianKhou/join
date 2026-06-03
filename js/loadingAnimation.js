@@ -1,13 +1,9 @@
 const loader = document.getElementById("loader");
-const hasSeenLoader = localStorage.getItem("hasSeenLoader");
 
-if (hasSeenLoader) {
-  loader.style.display = "none";
-} else {
-  loader.addEventListener("animationend", (event) => {
-    if (event.animationName === "loaderFadeOut") {
-      loader.style.display = "none";
-      localStorage.setItem("hasSeenLoader", "true");
-    }
-  });
-}
+// Die Logo-Animation soll bei jedem Öffnen von LogIn.html abspielen,
+// daher wird der zuvor gesetzte Merker (vorerst) ignoriert.
+loader.addEventListener("animationend", (event) => {
+  if (event.animationName === "loaderFadeOut") {
+    loader.style.display = "none";
+  }
+});
