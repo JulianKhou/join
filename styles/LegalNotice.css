@@ -1,4 +1,4 @@
-﻿  .main-content-legal{
+  .main-content-legal{
     padding-top: 220px;
     padding-left: 330px;
     padding-right: 65px;
@@ -168,7 +168,9 @@
     }
 
     .help {
-      display: none;
+      display: block;
+      width: 32px !important;
+      height: 32px !important;
     }
   
     .main-content-legal {
@@ -212,6 +214,19 @@
       align-items: center;
     }
 
+    /* Style override for internal mobile nav links (Summary, Add Task, etc.) */
+    .mobile-nav a:not(.nav-item-icon):not(.nav-item-text) {
+      font-size: 12px !important;
+      display: inline-block !important;
+      text-align: center;
+    }
+
+    /* Style override for internal mobile nav container */
+    .mobile-nav:not(:has(.mobile-nav-right)) {
+      justify-content: space-around !important;
+      padding: 0 !important;
+    }
+
     .mobile-nav {
       display: flex !important;
     }
@@ -242,8 +257,7 @@
     color: white;
   }
 
-    .header-title,
-    .header-right > .help {
+    .header-title {
       display: none;
     }
     

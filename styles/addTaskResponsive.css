@@ -23,7 +23,7 @@
   .add-task-buttons {
     padding-left: 0;
   }
-  .priority-buttons-size {
+  .priority-btn {
     height: 53px;
   }
 }
@@ -101,19 +101,38 @@
     width: 100%;
   }
 
-  .priority-buttons-size {
-    height: 56px;
+  .priority-btn {
+    height: 48px;
     width: 100%;
+    padding: 0 8px;
+    font-size: 14px;
+    gap: 6px;
+  }
+
+  .priority-btn .priority-icon {
+    width: 18px;
+    height: 14px;
   }
 
   .priority-buttons {
     gap: 8px;
   }
 
+  .priority-buttons > :nth-child(1),
+  .priority-buttons > :nth-child(2),
+  .priority-buttons > :nth-child(3) {
+    justify-self: stretch;
+  }
+
   .add-task-buttons {
     padding-bottom: 0;
     padding-left: 0;
     justify-content: flex-end;
+    gap: 16px;
+  }
+
+  .task-action-btn img {
+    height: 48px;
   }
 
   .subtask-buttons {
@@ -153,12 +172,28 @@
 }
 
 @media (max-width: 430px) {
-  .priority-buttons-size {
-    height: 53px;
+  .priority-btn {
+    height: 44px;
     width: 100%;
+    font-size: 12px;
+    padding: 0 6px;
+    gap: 4px;
+  }
+
+  .priority-btn .priority-icon {
+    width: 14px;
+    height: 10px;
   }
 
   .add-task-wrapper h1 {
     font-size: 28px;
+  }
+
+  .add-task-buttons {
+    gap: 12px;
+  }
+
+  .task-action-btn img {
+    height: 40px;
   }
 }
