@@ -28,7 +28,10 @@
   align-items: center;
   justify-content: space-between;
   cursor: default;
-  pointer-events: none;
+  pointer-events: auto;
+  border-radius: 8px;
+  padding: 4px 8px;
+  transition: background-color 0.15s ease;
   /* â† verhindert Label-Hover */
 }
 
@@ -40,11 +43,14 @@
   /* â† erlaubt Button-Hover */
 }
 
+.subtask-label:hover {
+  background-color: var(--gray-default);
+}
+
 .subtasks-list {
-  min-height: 150px;
-  max-height: 200px;
+  height: 150px;
   overflow-y: auto;
-  margin-top: -20px;
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -84,11 +90,29 @@
   margin-right: 10px;
   gap: 8px;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.subtask-label:hover .edit-delete-subtask-buttons,
+.subtask-label-active .edit-delete-subtask-buttons {
+  opacity: 1;
+}
+
+.edit-delete-subtask-buttons img {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 .edit-delete-subtask-buttons button {
-  pointer-events: auto;
+  pointer-events: none;
   isolation: isolate;
+}
+
+.subtask-label:hover .edit-delete-subtask-buttons button,
+.subtask-label-active .edit-delete-subtask-buttons button {
+  pointer-events: auto;
 }
 
 .subtask-label-left {

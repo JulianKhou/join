@@ -29,64 +29,65 @@ function disableEditableSubtask(subtaskElement) {
   subtaskElement.classList.remove("subtask-label-active");
 }
 
+function startEditingSubtask(subtaskNode) {
+  const textSpan = subtaskNode.querySelector("span");
+  if (!textSpan) return;
+
+  enableEditableSubtask(subtaskNode);
+
+  const closeEdit = () => {
+    disableEditableSubtask(subtaskNode);
+    document.removeEventListener("click", handleOutsideClick);
+  };
+
+  const handleOutsideClick = (event) => {
+    if (event.target.closest(".subtask-label") !== subtaskNode) {
+      closeEdit();
+    }
+  };
+
+  setTimeout(() => {
+    document.addEventListener("click", handleOutsideClick);
+  }, 0);
+
+  textSpan.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      closeEdit();
+    },
+    { once: true }
+  );
+}
+
 function wireInlineEditButtons(subtaskNode) {
   const editBtn = subtaskNode.querySelector(".edit-subtask-button-size");
   const deleteBtn = subtaskNode.querySelector(".delete-subtask-button-size");
-  const subtaskElement = subtaskNode.querySelector(".subtask-label-left") || subtaskNode;
 
-  if (editBtn && editBtn.style.display !== "none") {
+  if (editBtn) {
     editBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const textSpan = subtaskElement.querySelector("span");
-      if (!textSpan) return;
-
-      enableEditableSubtask(subtaskNode);
-
-      const closeEdit = () => {
-        disableEditableSubtask(subtaskNode);
-        document.removeEventListener("click", handleOutsideClick);
-      };
-
-      const handleOutsideClick = (event) => {
-        if (event.target.closest(".subtask-label") !== subtaskNode) {
-          closeEdit();
-        }
-      };
-
-      setTimeout(() => {
-        document.addEventListener("click", handleOutsideClick);
-      }, 0);
-
-      textSpan.addEventListener(
-        "keydown",
-        (event) => {
-          if (event.key !== "Enter") return;
-          event.preventDefault();
-          closeEdit();
-        },
-        { once: true }
-      );
+      startEditingSubtask(subtaskNode);
     });
   }
 
-  if (deleteBtn && deleteBtn.style.display !== "none") {
+  if (deleteBtn) {
     deleteBtn.addEventListener("click", (e) => {
       e.preventDefault();
+      e.stopPropagation();
       subtaskNode.remove();
     });
   }
 }
 
 function addSubtaskEventListeners(subtaskElement) {
-  const editBtn = subtaskElement.querySelector(".edit-subtask-button-size");
-  const deleteBtn = subtaskElement.querySelector(".delete-subtask-button-size");
+  wireInlineEditButtons(subtaskElement);
 
   subtaskElement.addEventListener("dblclick", (e) => {
     e.preventDefault();
-    editBtn.style.display = "inline-block";
-    deleteBtn.style.display = "inline-block";
-    wireInlineEditButtons(subtaskElement);
+    startEditingSubtask(subtaskElement);
   });
 }
 
