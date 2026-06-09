@@ -349,6 +349,36 @@ body {
   display: flex;
 }
 
+/* "Help" only appears in the dropdown on mobile; on desktop the header button is used */
+.help-menu-item {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .headerRight a:has(.help) {
+    display: none;
+  }
+
+  .help-menu-item {
+    display: block;
+  }
+
+  .profileShowMore:not(.d-none) {
+    animation: profileSlideInRight 250ms ease-out;
+  }
+}
+
+@keyframes profileSlideInRight {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 
 
 

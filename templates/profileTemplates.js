@@ -2,6 +2,7 @@ import { escapeHtml, sanitizeColor } from "../js/utility.js";
 
 export var profileTemplate = `
 <div class="btnList">
+    <a href="help.html" class="btnListItem help-menu-item" id="helpMenuBtn">Help</a>
     <button class="btnListItem" id="editProfileBtn">Edit Profile</button>
     <button class="legalNoticeBtn btnListItem" id="legalNoticeBtn">Legal Notice</button>
     <button class="btnListItem" id="privacySettingsBtn">Privacy Settings</button>
@@ -11,6 +12,7 @@ export var profileTemplate = `
 
 export var profileTemplateSimple = `
 <div class="btnList">
+    <a href="help.html" class="btnListItem help-menu-item" id="helpMenuBtn">Help</a>
     <button class="legalNoticeBtn btnListItem" id="legalNoticeBtn">Legal Notice</button>
     <button class="btnListItem" id="privacySettingsBtn">Privacy Settings</button>
     <button class="btnListItem" id="logoutBtn">Logout</button>
