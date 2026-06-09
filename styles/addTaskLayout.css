@@ -7,7 +7,7 @@ body {
 }
 
 .main-content {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .add-task-wrapper {
@@ -17,7 +17,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 32px;
-  overflow-x: hidden;
+  overflow-x: clip;
   z-index: 0;
   max-width: 1280px;
 }
@@ -47,11 +47,16 @@ body {
 }
 
 .add-task-buttons {
+  position: sticky;
+  bottom: 0;
   display: flex;
   justify-content: flex-end;
   gap: 24px;
   box-sizing: border-box;
   width: min(1100px, 100%);
+  background: #f6f7f8;
+  padding: 16px 0;
+  z-index: 5;
 }
 
 .add-task-buttons:hover {

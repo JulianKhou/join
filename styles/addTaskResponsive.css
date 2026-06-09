@@ -125,10 +125,10 @@
   }
 
   .add-task-buttons {
-    padding-bottom: 0;
     padding-left: 0;
     justify-content: flex-end;
     gap: 16px;
+    bottom: 74px;
   }
 
   .task-action-btn img {
