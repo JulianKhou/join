@@ -326,6 +326,7 @@ label {
   justify-content: flex-start;
   flex-direction: unset;
   justify-content: space-between;
+  align-items: center;
   margin-left: 10px;
   margin-right: 10px;
   border-radius: 8px;
@@ -342,4 +343,10 @@ label {
 .checkbox-item:has(.assignedToCheckbox:checked) {
   background-color: var(--mainColor-default);
   color: white;
+}
+
+.assignedToCheckbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
