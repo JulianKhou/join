@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     selectBox.addEventListener("click", (e) => {
       const wasVisible = checkboxList.style.display === "flex";
       checkboxList.style.display = wasVisible ? "none" : "flex";
+      selectBox.closest(".multi-select")?.classList.toggle("open", !wasVisible);
 
       // Only init outside click handler when OPENING the list
       if (!wasVisible) {
@@ -64,6 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           () => {
             // onClose callback
             checkboxList.style.display = "none";
+            selectBox.closest(".multi-select")?.classList.remove("open");
           },
           [checkboxList] // ignore: also treat clicks on list as "inside"
         );

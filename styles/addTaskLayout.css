@@ -203,6 +203,21 @@ body {
   border: 2px solid var(--lightBlue-default);
 }
 
+#categorySelect {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  padding-right: 38px;
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232a3647' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+}
+
+#categorySelect::-ms-expand {
+  display: none;
+}
+
 .task-input-description {
   width: 100%;
   height: 120px;
@@ -240,12 +255,31 @@ label {
   position: relative;
 }
 
+.multi-select::after {
+  content: "";
+  position: absolute;
+  top: 21px;
+  right: 14px;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232a3647' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  transition: transform 0.15s ease;
+}
+
+.multi-select.open::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
 .assigned-area {
   width: 100%;
 }
 
 .selected-box {
-  padding: 10px;
+  padding: 10px 38px 10px 10px;
   border: 1px solid #d1d1d1;
   cursor: pointer;
   background: white;
@@ -300,7 +334,12 @@ label {
 }
 
 .checkbox-item:hover {
-  background-color: var(--mainColor-default);
+  background-color: var(--gray-default);
   cursor: pointer;
+  color: white;
+}
+
+.checkbox-item:has(.assignedToCheckbox:checked) {
+  background-color: var(--mainColor-default);
   color: white;
 }
