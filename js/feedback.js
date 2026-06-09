@@ -84,6 +84,77 @@ function clearPopup() {
   popupRoot.innerHTML = "";
 }
 
+function ensureBoardToastStyles() {
+  if (document.getElementById("board-toast-styles")) return;
+
+  const style = document.createElement("style");
+  style.id = "board-toast-styles";
+  style.textContent = `
+    .board-toast {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, 150vh);
+      background: #2a3647;
+      color: #fff;
+      padding: 22px 30px;
+      border-radius: 20px;
+      font-size: 20px;
+      font-weight: 500;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+      z-index: 13000;
+      white-space: nowrap;
+      transition: transform 350ms ease-out;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .board-toast img {
+      width: 28px;
+      height: 28px;
+    }
+
+    .board-toast.show {
+      transform: translate(-50%, -50%);
+    }
+
+    @media (max-width: 600px) {
+      .board-toast {
+        font-size: 17px;
+        padding: 18px 24px;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+}
+
+export function showBoardToast(message = "Task added to board", duration = 1000) {
+  ensureBoardToastStyles();
+
+  const toast = document.createElement("div");
+  toast.className = "board-toast";
+  toast.setAttribute("role", "status");
+
+  const label = document.createElement("span");
+  label.textContent = message;
+
+  const icon = document.createElement("img");
+  icon.src = "./assets/sideboardAssets/board.svg";
+  icon.alt = "";
+
+  toast.append(label, icon);
+
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add("show"));
+
+  setTimeout(() => {
+    if (toast.parentElement) toast.remove();
+  }, duration + 400);
+}
+
 export function showPopup(message, type = "error", duration = 3200) {
   if (!message) return;
 

@@ -16,7 +16,7 @@ import {
 } from "./addTaskFormHelpers.js";
 import { getSubtasksList, initSubtaskEventListeners } from "./addTaskSubtasks.js";
 import { iconTemplate } from "../templates/profileTemplates.js";
-import { showPopup } from "./feedback.js";
+import { showPopup, showBoardToast } from "./feedback.js";
 
 const PRIORITY = Object.freeze({
   LOW: "Low",
@@ -329,8 +329,11 @@ async function createTaskObject() {
 
   try {
     await addEditTask(task);
-    showPopup("Task created.", "success");
+    showBoardToast("Task added to board");
     resetTaskFormState();
+    setTimeout(() => {
+      window.location.href = "board.html";
+    }, 1000);
   } catch (error) {
     showPopup(error.message || "Task could not be created.");
     throw error;

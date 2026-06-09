@@ -76,11 +76,13 @@ export function resetAddTaskForm({ checkboxList, selectBox, placeholder, resetPr
   const descriptionInput = document.getElementById("taskDescription");
   const dueDateInput = document.getElementById("taskDate");
   const subtasksList = document.getElementById("subtasksList");
+  const subtaskInput = document.getElementById("subtasks");
   const categorySelect = document.getElementById("categorySelect");
 
   if (titleInput) titleInput.value = "";
   if (descriptionInput) descriptionInput.value = "";
   if (dueDateInput) dueDateInput.value = "";
+  if (subtaskInput) subtaskInput.value = "";
   if (subtasksList) subtasksList.innerHTML = "";
   if (categorySelect) categorySelect.selectedIndex = 0;
   if (selectBox) selectBox.innerText = placeholder;
