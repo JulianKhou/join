@@ -64,13 +64,13 @@ window.openAddTaskOverlay = () => addTaskOverlayController.openAddTaskOverlay();
 
 function initDragAndDrop() {
   const cards = document.querySelectorAll('[draggable="true"]');
-  const dropZones = document.querySelectorAll(".tasks-container");
+  const dropZones = document.querySelectorAll(".kanban-column");
   cards.forEach((card) => card.addEventListener("dragstart", handleDragStart));
   dropZones.forEach((zone) => {
     zone.addEventListener("dragover", handleDragOver);
-    zone.addEventListener("dragleave", handleDragLeave);
     zone.addEventListener("drop", handleDrop);
   });
+  document.addEventListener("dragend", handleDragEnd);
 }
 
 function initTaskCardClicks() {
@@ -179,13 +179,14 @@ function handleDragStart(event) {
   card.classList.add("dragging");
 }
 
+function handleDragEnd(event) {
+  const card = event.target.closest('[draggable="true"]');
+  if (card) card.classList.remove("dragging");
+}
+
 function handleDragOver(event) {
   event.preventDefault();
   event.dataTransfer.dropEffect = "move";
-}
-
-function handleDragLeave() {
-  this.style.backgroundColor = "";
 }
 
 function handleDrop(event) {
@@ -194,12 +195,14 @@ function handleDrop(event) {
   const movedCard = document.getElementById(cardId);
   if (!movedCard) return;
 
-  this.appendChild(movedCard);
-  this.style.backgroundColor = "";
+  const container = this.querySelector(".tasks-container");
+  if (!container) return;
+
+  container.appendChild(movedCard);
   movedCard.classList.remove("dragging");
 
   const taskId = (movedCard.dataset.taskId || movedCard.id).replace("task-card-", "");
-  updateTaskProgressInFirebase(taskId, getNewProgressFromDropZone(this));
+  updateTaskProgressInFirebase(taskId, getNewProgressFromDropZone(container));
   checkColumnVisibility();
 }
 
@@ -241,11 +244,19 @@ function addAssigneeAvatar(task) {
   const container = document.getElementById(`task-card-${task.id}`)?.querySelector(".task-assignees");
   if (!container) return;
 
-  (Array.isArray(task.assignedTo) ? task.assignedTo : []).forEach((uid) => {
-    const contact = returnContactById(uid, contactsList);
-    if (!contact) return;
+  const assigned = (Array.isArray(task.assignedTo) ? task.assignedTo : [])
+    .map((uid) => returnContactById(uid, contactsList))
+    .filter(Boolean);
+
+  const maxVisible = 3;
+  assigned.slice(0, maxVisible).forEach((contact) => {
     container.insertAdjacentHTML("beforeend", assigneeAvatarTemplate(getInitials(contact.name), contact.color));
   });
+
+  const remaining = assigned.length - maxVisible;
+  if (remaining > 0) {
+    container.insertAdjacentHTML("beforeend", `<div class="assignee-avatar assignee-more-badge">+${remaining}</div>`);
+  }
 }
 
 function addAssigneeAvatartoDetail(task) {

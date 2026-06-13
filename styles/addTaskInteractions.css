@@ -196,3 +196,9 @@
   font-size: 16px;
   font-weight: 500;
 }
+
+.assigned-more-badge {
+  background-color: var(--mainColor-default);
+  cursor: pointer;
+  padding: 0;
+}

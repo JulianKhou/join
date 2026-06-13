@@ -49,6 +49,14 @@
     color: #FF0000;
 }
 
+.required-text {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-start;
+    margin-top: 8px;
+    font-size: 16px;
+}
+
 .form-input,
 .form-textarea {
     padding: 12px 16px;
@@ -90,10 +98,12 @@
 .priority-button-group {
     display: flex;
     gap: 8px;
+    width: 100%;
 }
 
 .priority-button {
-    width: 136px;
+    flex: 1;
+    min-width: 0;
     height: 56px;
     padding: 20px 0;
     gap: 10px;
@@ -165,8 +175,49 @@
     position: relative;
 }
 
+.select-arrow {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232a3647' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.select-arrow:hover {
+    background-color: var(--gray-default);
+}
+
+.multi-select-overlay.open .select-arrow {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+#overlayCategory {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    padding-right: 40px;
+    width: 100%;
+}
+
+#overlayCategory::-ms-expand {
+    display: none;
+}
+
 .selected-box {
-    padding: 12px 16px;
+    padding: 12px 40px 12px 16px;
     border: 1px solid #D1D1D1;
     border-radius: 8px;
     background: white;
@@ -202,9 +253,22 @@
 .checkbox-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 8px;
-    padding: 8px 0;
+    padding: 6px 8px;
     font-size: 16px;
+    border-radius: 8px;
+}
+
+.checkbox-item:hover {
+    background-color: var(--gray-default);
+    color: white;
+    cursor: pointer;
+}
+
+.checkbox-item:has(.assignedToCheckbox:checked) {
+    background-color: var(--mainColor-default);
+    color: white;
 }
 
 .checkbox-item input[type="checkbox"] {
@@ -212,19 +276,42 @@
     accent-color: #0066ff;
 }
 
-.subtask-input-area {
+.assignedToCheckbox {
+    width: 20px;
+    height: 20px;
+}
+
+.checkbox-item .assignedToCheckboxNameIcon {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
+.subtask-input-area {
+    position: relative;
+    width: 100%;
+}
+
+.subtask-input-area #overlaySubtask {
+    width: 100%;
+    padding-right: 72px;
+}
+
 .subtask-buttons {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
     align-items: center;
-    justify-content: center;
-    height: 24px;
-    width: auto;
     gap: 8px;
+}
+
+.subtask-add-button-size,
+.subtask-remove-button-size {
+    width: 16px;
+    height: 16px;
+    display: block;
 }
 
 .subtask-btn {
@@ -250,7 +337,7 @@
 }
 
 .subtasks-list {
-    min-height: 150px;
+    min-height: 0;
     max-height: 200px;
     overflow-y: auto;
     margin-top: 8px;
@@ -274,13 +361,66 @@
     align-items: center;
     justify-content: space-between;
     cursor: default;
-    pointer-events: none;
+    pointer-events: auto;
+    border-radius: 8px;
+    padding: 4px 8px;
+    transition: background-color 0.15s ease;
+}
+
+.subtask-label:hover {
+    background-color: var(--gray-default);
 }
 
 .subtask-label span,
 .subtask-label button,
 .subtask-label input[type="checkbox"] {
     pointer-events: auto;
+}
+
+.subtask-label-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.subtask-label .point {
+    height: 8px;
+    width: 8px;
+    background-color: var(--mainColor-default);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.edit-delete-subtask-buttons {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.subtask-label:hover .edit-delete-subtask-buttons {
+    opacity: 1;
+}
+
+.edit-subtask-button-size,
+.delete-subtask-button-size {
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    padding: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.edit-subtask-button-size:hover,
+.delete-subtask-button-size:hover {
+    background-color: #f5f5f5;
+}
+
+.edit-delete-subtask-buttons img {
+    width: 18px;
+    height: 18px;
+    display: block;
 }
 
 .subtask-remove-btn {
@@ -299,8 +439,17 @@
 .add-task-actions {
     display: flex;
     justify-content: space-between;
-    margin-top: 110px;
-    align-items: flex-end;
+    align-items: center;
+    margin-top: 40px;
+    position: sticky;
+    bottom: 0;
+    background-color: #fff;
+    padding: 16px 0;
+    z-index: 5;
+}
+
+.add-task-actions .cancel-create-buttons {
+    margin-left: auto;
 }
 
 .cancel-create-buttons {

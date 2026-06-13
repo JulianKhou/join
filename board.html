@@ -149,6 +149,7 @@
             <label for="overlayAssigned">Assigned to</label>
             <div class="multi-select-overlay">
               <div class="selected-box" id="overlaySelectedBox">Select contacts to assign</div>
+              <span class="select-arrow" id="overlaySelectedBoxArrow" aria-hidden="true"></span>
               <div class="checkbox-list" id="overlayCheckboxList"></div>
             </div>
           </div>
@@ -156,11 +157,14 @@
           <!-- Category -->
           <div class="form-group">
             <label for="overlayCategory">Category<span class="required">*</span></label>
-            <select id="overlayCategory" class="form-input">
-              <option>Select task category</option>
-              <option value="user-story">User Story</option>
-              <option value="technical">Technical Task</option>
-            </select>
+            <div class="select-wrapper">
+              <select id="overlayCategory" class="form-input">
+                <option>Select task category</option>
+                <option value="user-story">User Story</option>
+                <option value="technical">Technical Task</option>
+              </select>
+              <span class="select-arrow" id="overlayCategoryArrow" aria-hidden="true"></span>
+            </div>
           </div>
 
           <!-- Subtasks -->
@@ -170,31 +174,27 @@
               <input type="text" id="overlaySubtask" class="form-input" placeholder="Add new subtask" maxlength="120">
               <div class="subtask-buttons">
                 <button type="button" class="remove-background subtask-btn" id="addSubtaskBtnOverlay">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M5 12h14M12 5v14" stroke="#2A3647" stroke-width="2" stroke-linecap="round" />
-                  </svg>
+                  <img class="subtask-add-button-size" src="./assets/utilitys/check.svg" alt="add subtask button">
                 </button>
                 <div class="divider-line"></div>
                 <button type="button" class="remove-background subtask-btn" id="removeSubtaskBtnOverlay">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M18 6L6 18M6 6L18 18" stroke="#2A3647" stroke-width="2" stroke-linecap="round" />
-                  </svg>
+                  <img class="subtask-remove-button-size" src="./assets/utilitys/close.svg" alt="remove subtask button">
                 </button>
               </div>
             </div>
             <div class="subtasks-list" id="subtasksListOverlay"></div>
+            <div class="required-text">
+              <span class="required">*</span>
+              <span>This field is required</span>
+            </div>
           </div>
         </div>
       </form>
 
       <!-- Action Buttons -->
       <div class="overlay-actions add-task-actions">
-        <div class="required-text">
-          <span class="required">*</span>
-          <span>This field is required</span>
-        </div>
         <div class="cancel-create-buttons">
-          <button type="button" class="btn-cancel" id="addTaskCancelBtn">Cancel</button>
+          <button type="button" class="btn-cancel" id="addTaskCancelBtn">Clear</button>
           <button type="submit" form="addTaskFormOverlay" class="btn-create">Create Task
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
               <path

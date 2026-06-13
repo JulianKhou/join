@@ -268,29 +268,40 @@ function checkCheckboxChanges() {
 function updateAssignedIcons(container, checkboxes) {
   if (!container) return;
 
-  // Clear existing icons
   container.innerHTML = "";
 
-  // Add icon for each checked checkbox
-  [...checkboxes]
-    .filter((cb) => cb.checked)
-    .forEach((cb) => {
-      const contact = returnContactById(cb.value, contactsList);
-      if (contact) {
-        const icon = iconTemplate(
-          getInitials(contact.name),
-          contact.color,
-          "assignedToContainerChecked" // CSS class for styling
-        );
+  const checked = [...checkboxes].filter((cb) => cb.checked);
+  const maxVisible = 3;
 
-        // Insert icon (handle both string and Node)
-        if (typeof icon === "string") {
-          container.insertAdjacentHTML("beforeend", icon);
-        } else if (icon instanceof Node) {
-          container.appendChild(icon);
-        }
-      }
+  const renderIcon = (cb) => {
+    const contact = returnContactById(cb.value, contactsList);
+    if (!contact) return;
+    const icon = iconTemplate(
+      getInitials(contact.name),
+      contact.color,
+      "assignedToContainerChecked"
+    );
+    if (typeof icon === "string") {
+      container.insertAdjacentHTML("beforeend", icon);
+    } else if (icon instanceof Node) {
+      container.appendChild(icon);
+    }
+  };
+
+  checked.slice(0, maxVisible).forEach(renderIcon);
+
+  const remaining = checked.length - maxVisible;
+  if (remaining > 0) {
+    const badge = document.createElement("button");
+    badge.type = "button";
+    badge.className = "profileIconContainer assignedToContainerChecked assigned-more-badge";
+    badge.textContent = `+${remaining}`;
+    badge.addEventListener("click", () => {
+      container.innerHTML = "";
+      checked.forEach(renderIcon);
     });
+    container.appendChild(badge);
+  }
 }
 
 function getSelectedAssignedTo() {

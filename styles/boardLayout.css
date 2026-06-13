@@ -358,6 +358,10 @@
     margin-left: 0;
 }
 
+.assignee-more-badge {
+    background-color: var(--mainColor-default);
+}
+
 .priority-icon {
     width: 20px;
     height: 20px;

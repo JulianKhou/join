@@ -1,6 +1,6 @@
 import { createTask } from "./firebase.js";
 import { iconTemplate } from "../templates/profileTemplates.js";
-import { addAssignedToBarTask } from "../templates/addTaskTemplates.js";
+import { addAssignedToBarTask, addSubTask } from "../templates/addTaskTemplates.js";
 import { getInitials, returnContactById } from "./utility.js";
 import { showPopup } from "./feedback.js";
 
@@ -19,14 +19,30 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
     populateOverlayContacts();
     initOverlayPriorityButtons();
     initOverlayAssignedTo();
+    initOverlayCategoryArrow();
     initOverlaySubtasks();
     initOverlayFormSubmit();
     bindOverlayCloseHandlers();
   }
 
+  function initOverlayCategoryArrow() {
+    const categorySelect = document.getElementById("overlayCategory");
+    const categoryArrow = document.getElementById("overlayCategoryArrow");
+    categoryArrow?.addEventListener("click", () => {
+      if (typeof categorySelect?.showPicker === "function") {
+        categorySelect.showPicker();
+      } else {
+        categorySelect?.focus();
+      }
+    });
+  }
+
   function bindOverlayCloseHandlers() {
     document.getElementById("addTaskCloseBtn")?.addEventListener("click", closeAddTaskOverlay);
-    document.getElementById("addTaskCancelBtn")?.addEventListener("click", closeAddTaskOverlay);
+    document.getElementById("addTaskCancelBtn")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      resetOverlayForm();
+    });
     document.getElementById("addTaskOverlay")?.addEventListener("click", (event) => {
       if (event.target !== document.getElementById("addTaskOverlay")) return;
       closeAddTaskOverlay();
@@ -91,21 +107,39 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
   function initOverlayAssignedTo() {
     const selectBox = document.getElementById("overlaySelectedBox");
     const checkboxList = document.getElementById("overlayCheckboxList");
+    const selectArrow = document.getElementById("overlaySelectedBoxArrow");
+    const multiSelect = selectBox?.closest(".multi-select-overlay");
     if (!selectBox || !checkboxList) return;
 
-    selectBox.addEventListener("click", (event) => {
-      event.stopPropagation();
+    const toggleList = () => {
       const isVisible = checkboxList.style.display === "flex";
       checkboxList.style.display = isVisible ? "none" : "flex";
+      multiSelect?.classList.toggle("open", !isVisible);
       if (isVisible) return;
 
       const closeOnOutsideClick = (docEvent) => {
-        if (checkboxList.contains(docEvent.target) || selectBox.contains(docEvent.target)) return;
+        if (
+          checkboxList.contains(docEvent.target) ||
+          selectBox.contains(docEvent.target) ||
+          selectArrow?.contains(docEvent.target)
+        ) return;
         checkboxList.style.display = "none";
+        multiSelect?.classList.remove("open");
         document.removeEventListener("click", closeOnOutsideClick);
       };
 
       document.addEventListener("click", closeOnOutsideClick);
+    };
+
+    selectBox.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleList();
+    });
+
+    selectArrow?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleList();
     });
   }
 
@@ -148,22 +182,47 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
   }
 
   function addOverlaySubtask(text, list) {
-    const subtaskDiv = document.createElement("div");
-    const textSpan = document.createElement("span");
-    const removeBtn = document.createElement("button");
+    list.insertAdjacentHTML("beforeend", addSubTask(text));
+    wireOverlaySubtaskButtons(list.lastElementChild);
+  }
 
-    subtaskDiv.className = "subtask-item-overlay";
-    textSpan.textContent = text;
-    removeBtn.type = "button";
-    removeBtn.className = "subtask-remove-btn";
-    removeBtn.textContent = "×";
-    removeBtn.addEventListener("click", (event) => {
+  function startEditingOverlaySubtask(subtaskNode) {
+    const textSpan = subtaskNode.querySelector("span");
+    if (!textSpan) return;
+
+    textSpan.contentEditable = true;
+    textSpan.focus();
+    textSpan.addEventListener("blur", () => {
+      textSpan.contentEditable = false;
+    }, { once: true });
+    textSpan.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
       event.preventDefault();
-      subtaskDiv.remove();
+      textSpan.blur();
+    }, { once: true });
+  }
+
+  function wireOverlaySubtaskButtons(subtaskNode) {
+    if (!subtaskNode) return;
+    const editBtn = subtaskNode.querySelector(".edit-subtask-button-size");
+    const deleteBtn = subtaskNode.querySelector(".delete-subtask-button-size");
+
+    editBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      startEditingOverlaySubtask(subtaskNode);
     });
 
-    subtaskDiv.append(textSpan, removeBtn);
-    list.appendChild(subtaskDiv);
+    deleteBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      subtaskNode.remove();
+    });
+
+    subtaskNode.addEventListener("dblclick", (event) => {
+      event.preventDefault();
+      startEditingOverlaySubtask(subtaskNode);
+    });
   }
 
   function applyOverlayContentLimits() {
@@ -260,8 +319,9 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
   }
 
   function getOverlaySubtasks() {
-    return Array.from(document.querySelectorAll("#subtasksListOverlay .subtask-item-overlay span"))
-      .map((span) => ({ text: span.textContent.trim(), completed: false }));
+    return Array.from(document.querySelectorAll("#subtasksListOverlay .subtask-label .subtask-text"))
+      .map((span) => ({ text: span.textContent.trim(), completed: false }))
+      .filter((subtask) => subtask.text);
   }
 
   function validateOverlayForm(taskData) {
