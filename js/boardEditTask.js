@@ -292,6 +292,12 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
         return;
       }
 
+      const dateInput = overlay.querySelector(`#editTaskDate-${taskId}`);
+      if (dateInput?.value && dateInput.min && dateInput.value < dateInput.min) {
+        showPopup("The due date cannot be in the past.", "info");
+        return;
+      }
+
       try {
         const updateData = collectEditFormData(taskId);
         await updateTask(taskId, updateData);

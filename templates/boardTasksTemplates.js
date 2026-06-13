@@ -1,5 +1,13 @@
 import { escapeHtml, sanitizeClassToken, sanitizeColor } from "../js/utility.js";
 
+function getTodayISO() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 function getSafeTask(task = {}) {
   const subtasks = Array.isArray(task.subtasks) ? task.subtasks : [];
   const totalSubtasks = subtasks.length;
@@ -210,7 +218,7 @@ export function editTaskFormTemplate(task) {
 
         <div class="edit-form-group">
           <label for="editTaskDate-${safeTask.id}">Due date</label>
-          <input type="date" id="editTaskDate-${safeTask.id}" class="edit-form-input" value="${safeTask.dueDate}">
+          <input type="date" id="editTaskDate-${safeTask.id}" class="edit-form-input" value="${safeTask.dueDate}" min="${getTodayISO()}">
         </div>
 
         <input type="hidden" id="editTaskCategory-${safeTask.id}" value="${safeTask.category}">
