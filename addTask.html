@@ -126,6 +126,7 @@
 
               <div class="multi-select">
                 <input class="selected-box task-input" id="selectedBox" placeholder=" Select contacts to assign" maxlength="120" />
+                <span class="select-arrow" id="selectedBoxArrow" aria-hidden="true"></span>
                 <div
                   class="checkbox-list"
                   id="chooseContactsCheckboxList"
@@ -134,9 +135,12 @@
               <div class="assignedIcons" id="assignedIcons"></div>
             </div>
             <label for="category">Category<span>*</span></label>
-            <select class="task-input" id="categorySelect">
-              <option>Select task category</option>
-            </select>
+            <div class="select-wrapper">
+              <select class="task-input" id="categorySelect">
+                <option>Select task category</option>
+              </select>
+              <span class="select-arrow" id="categoryArrow" aria-hidden="true"></span>
+            </div>
             <p class="required-hint" id="categoryHint">*This field is required</p>
             <label for="subtasks">Subtasks</label>
             <div class="subtask-input-area">

@@ -118,11 +118,11 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
           <span>${escapeHtml(subtaskText)}</span>
         </div>
         <div class="edit-delete-subtask-buttons">
-          <button class="edit-subtask-button-size" style="display:none" type="button">
-            <img src="./assets/contacts/editButton.svg" alt="edit subtask button">
+          <button class="edit-subtask-button-size" type="button" aria-label="Edit subtask">
+            <img src="./assets/contacts/editButton.svg" alt="">
           </button>
-          <button class="delete-subtask-button-size" style="display:none" type="button">
-            <img src="./assets/contacts/deleteButton.svg" alt="delete subtask button">
+          <button class="delete-subtask-button-size" type="button" aria-label="Delete subtask">
+            <img src="./assets/contacts/deleteButton.svg" alt="">
           </button>
         </div>
       </div>
@@ -133,14 +133,7 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
     const editBtn = subtaskElement.querySelector(".edit-subtask-button-size");
     const deleteBtn = subtaskElement.querySelector(".delete-subtask-button-size");
 
-    subtaskElement.addEventListener("dblclick", (event) => {
-      event.preventDefault();
-      if (editBtn) editBtn.style.display = "inline-block";
-      if (deleteBtn) deleteBtn.style.display = "inline-block";
-    });
-
-    editBtn?.addEventListener("click", (event) => {
-      event.preventDefault();
+    const startEditing = () => {
       const textSpan = subtaskElement.querySelector("span");
       if (!textSpan) return;
 
@@ -148,14 +141,23 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
       textSpan.focus();
       textSpan.addEventListener("blur", () => {
         textSpan.contentEditable = false;
-        editBtn.style.display = "none";
-        if (deleteBtn) deleteBtn.style.display = "none";
       }, { once: true });
       textSpan.addEventListener("keydown", (keyboardEvent) => {
         if (keyboardEvent.key !== "Enter") return;
         keyboardEvent.preventDefault();
         textSpan.blur();
       }, { once: true });
+    };
+
+    subtaskElement.addEventListener("dblclick", (event) => {
+      event.preventDefault();
+      startEditing();
+    });
+
+    editBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      startEditing();
     });
 
     deleteBtn?.addEventListener("click", (event) => {
@@ -193,19 +195,34 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
   function initEditDropdown(taskId) {
     const selectedBox = overlay.querySelector(`#editSelectedBox-${taskId}`);
     const checkboxList = overlay.querySelector(`#editCheckboxList-${taskId}`);
+    const selectArrow = overlay.querySelector(`#editSelectedBoxArrow-${taskId}`);
 
-    selectedBox?.addEventListener("click", (event) => {
-      event.stopPropagation();
+    const toggleList = () => {
       checkboxList?.classList.toggle("active");
       if (!checkboxList?.classList.contains("active")) return;
 
       const onDocumentClick = (docEvent) => {
-        if (checkboxList.contains(docEvent.target) || selectedBox.contains(docEvent.target)) return;
+        if (
+          checkboxList.contains(docEvent.target) ||
+          selectedBox.contains(docEvent.target) ||
+          selectArrow?.contains(docEvent.target)
+        ) return;
         checkboxList.classList.remove("active");
         document.removeEventListener("click", onDocumentClick);
       };
 
       document.addEventListener("click", onDocumentClick);
+    };
+
+    selectedBox?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleList();
+    });
+
+    selectArrow?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleList();
     });
   }
 

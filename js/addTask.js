@@ -53,7 +53,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // âœ… Initialize outside click handler ONCE
   if (selectBox && checkboxList) {
-    selectBox.addEventListener("click", (e) => {
+    const selectArrow = selectBox.closest(".multi-select")?.querySelector(".select-arrow");
+
+    const toggleCheckboxList = () => {
       const wasVisible = checkboxList.style.display === "flex";
       checkboxList.style.display = wasVisible ? "none" : "flex";
       selectBox.closest(".multi-select")?.classList.toggle("open", !wasVisible);
@@ -67,9 +69,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             checkboxList.style.display = "none";
             selectBox.closest(".multi-select")?.classList.remove("open");
           },
-          [checkboxList] // ignore: also treat clicks on list as "inside"
+          [checkboxList, selectArrow].filter(Boolean) // ignore: also treat clicks on list/arrow as "inside"
         );
       }
+    };
+
+    selectBox.addEventListener("click", toggleCheckboxList);
+
+    selectArrow?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleCheckboxList();
     });
 
     // Filter contacts while typing
@@ -80,6 +90,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       checkCheckboxChanges();
     });
   }
+
+  const categorySelect = document.getElementById("categorySelect");
+  const categoryArrow = document.getElementById("categoryArrow");
+  categoryArrow?.addEventListener("click", () => {
+    if (typeof categorySelect?.showPicker === "function") {
+      categorySelect.showPicker();
+    } else {
+      categorySelect?.focus();
+    }
+  });
 
   addTaskBtn.addEventListener("click", (e) => {
     e.preventDefault();

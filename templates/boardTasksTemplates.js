@@ -237,6 +237,7 @@ export function editTaskFormTemplate(task) {
           <label class="assigned-label" for="assigned">Assigned to</label>
           <div class="multi-select">
             <input class="selected-box task-input" id="editSelectedBox-${safeTask.id}" placeholder=" Select contacts to assign">
+            <span class="select-arrow" id="editSelectedBoxArrow-${safeTask.id}" aria-hidden="true"></span>
             <div class="checkbox-list" id="editCheckboxList-${safeTask.id}"></div>
           </div>
           <div class="assignedIcons" id="editAssignees-${safeTask.id}"></div>

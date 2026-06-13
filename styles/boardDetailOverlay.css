@@ -41,7 +41,8 @@
     background-color: #fff;
     border-radius: 30px;
     width: 520px;
-    max-height: 90vh;
+    height: 92vh;
+    max-height: 92vh;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     animation: slideInRight 0.2s ease-out;
@@ -55,6 +56,9 @@
     min-height: 0;
     overflow-y: auto;
     padding: 40px 40px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /* Skip the entry animation when explicitly requested (e.g. after saving edits) */

@@ -183,6 +183,7 @@
         border-radius: 30px;
         width: 100%;
         max-width: 520px;
+        height: auto;
         max-height: 90vh;
         margin: 20px;
         overflow: hidden;

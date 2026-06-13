@@ -260,7 +260,14 @@
     align-items: center;
     justify-content: space-between;
     cursor: default;
-    pointer-events: none;
+    pointer-events: auto;
+    border-radius: 8px;
+    padding: 4px 8px;
+    transition: background-color 0.15s ease;
+}
+
+.subtask-label:hover {
+    background-color: var(--gray-default);
 }
 
 .subtask-label span,
@@ -288,11 +295,21 @@
     gap: 8px;
     pointer-events: none;
     isolation: isolate;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.subtask-label:hover .edit-delete-subtask-buttons {
+    opacity: 1;
 }
 
 .edit-delete-subtask-buttons button {
-    pointer-events: auto;
+    pointer-events: none;
     isolation: isolate;
+}
+
+.subtask-label:hover .edit-delete-subtask-buttons button {
+    pointer-events: auto;
 }
 
 .edit-subtask-button-size,

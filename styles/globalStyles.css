@@ -349,7 +349,6 @@ body {
   display: flex;
 }
 
-/* "Help" only appears in the dropdown on mobile; on desktop the header button is used */
 .help-menu-item {
   display: none;
 }
