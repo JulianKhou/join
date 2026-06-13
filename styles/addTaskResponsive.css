@@ -87,7 +87,7 @@
 
   .add-task-wrapper {
     margin-left: 0;
-    padding: 24px 16px 110px;
+    padding: 24px 16px 74px;
   }
 
   .add-task-wrapper h1 {
@@ -140,6 +140,11 @@
     left: auto;
   }
 
+  .subtasks-list {
+    height: auto;
+    max-height: 200px;
+  }
+
   .mobile-nav {
     position: fixed;
     bottom: 0;
@@ -163,10 +168,7 @@
 
   label[for="category"],
   #categorySelect,
-  #categorySelect + .required-hint,
-  label[for="subtasks"],
-  .subtask-input-area,
-  #subtasksList {
+  #categorySelect + .required-hint {
     display: none !important;
   }
 }
