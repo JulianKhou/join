@@ -65,7 +65,10 @@ window.openAddTaskOverlay = (status) => addTaskOverlayController.openAddTaskOver
 function initDragAndDrop() {
   const cards = document.querySelectorAll('[draggable="true"]');
   const dropZones = document.querySelectorAll(".kanban-column");
-  cards.forEach((card) => card.addEventListener("dragstart", handleDragStart));
+  cards.forEach((card) => {
+    card.addEventListener("dragstart", handleDragStart);
+    initTouchDrag(card);
+  });
   dropZones.forEach((zone) => {
     zone.addEventListener("dragover", handleDragOver);
     zone.addEventListener("dragenter", handleDragEnter);
@@ -360,6 +363,7 @@ async function updateTaskCard(taskId, updatedTask) {
   newCard.querySelector(".task-assignees").innerHTML = "";
   addAssigneeAvatar(updatedTask);
   newCard.addEventListener("dragstart", handleDragStart);
+  initTouchDrag(newCard);
 }
 
 function deleteTaskFromBoard(taskId) {
@@ -391,6 +395,153 @@ function appendNewTaskToBoard(task) {
   column.insertAdjacentHTML("beforeend", taskCardTemplate(task));
   changeSubtaskProgressbar(task);
   addAssigneeAvatar(task);
-  document.getElementById(`task-card-${task.id}`)?.addEventListener("dragstart", handleDragStart);
+  const newCard = document.getElementById(`task-card-${task.id}`);
+  if (newCard) {
+    newCard.addEventListener("dragstart", handleDragStart);
+    initTouchDrag(newCard);
+  }
   checkColumnVisibility();
+}
+
+function initTouchDrag(card) {
+  let touchStartTimer = null;
+  let isDragging = false;
+  let placeholder = null;
+  let startX = 0;
+  let startY = 0;
+  let offsetX = 0;
+  let offsetY = 0;
+  let currentColumn = null;
+  let originalParent = null;
+  let originalSibling = null;
+
+  card.addEventListener("touchstart", handleTouchStart, { passive: false });
+  card.addEventListener("touchmove", handleTouchMove, { passive: false });
+  card.addEventListener("touchend", handleTouchEnd, { passive: false });
+  card.addEventListener("contextmenu", handleContextMenu);
+
+  function handleContextMenu(e) {
+    e.preventDefault();
+  }
+
+  function handleTouchStart(e) {
+    if (e.touches.length !== 1) return;
+
+    const touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+
+    const rect = card.getBoundingClientRect();
+    offsetX = startX - rect.left;
+    offsetY = startY - rect.top;
+
+    touchStartTimer = setTimeout(() => {
+      startDrag(touch, rect);
+    }, 150);
+  }
+
+  function startDrag(touch, rect) {
+    isDragging = true;
+    card.classList.add("dragging");
+
+    placeholder = document.createElement("div");
+    placeholder.className = "task-card-placeholder";
+    placeholder.style.height = `${rect.height}px`;
+    placeholder.style.marginBottom = "20px";
+    placeholder.style.borderRadius = "24px";
+    placeholder.style.border = "2px dashed #D1D1D1";
+    placeholder.style.backgroundColor = "rgba(0,0,0,0.02)";
+
+    originalParent = card.parentNode;
+    originalSibling = card.nextSibling;
+    originalParent.insertBefore(placeholder, card);
+
+    card.style.position = "fixed";
+    card.style.width = `${rect.width}px`;
+    card.style.height = `${rect.height}px`;
+    card.style.zIndex = "10000";
+    card.style.pointerEvents = "none";
+    card.style.transform = "rotate(4deg)";
+    card.style.transition = "none";
+
+    updatePosition(touch);
+  }
+
+  function handleTouchMove(e) {
+    if (e.touches.length !== 1) return;
+    const touch = e.touches[0];
+
+    if (!isDragging) {
+      const moveDist = Math.hypot(touch.clientX - startX, touch.clientY - startY);
+      if (moveDist > 25) {
+        clearTimeout(touchStartTimer);
+      }
+      return;
+    }
+
+    e.preventDefault();
+    updatePosition(touch);
+
+    const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+    const col = elem?.closest(".kanban-column");
+
+    document.querySelectorAll(".tasks-container").forEach((c) => {
+      c.classList.remove("dragover-highlight");
+    });
+
+    if (col) {
+      currentColumn = col;
+      const container = col.querySelector(".tasks-container");
+      if (container) {
+        container.classList.add("dragover-highlight");
+      }
+    } else {
+      currentColumn = null;
+    }
+  }
+
+  function updatePosition(touch) {
+    card.style.left = `${touch.clientX - offsetX}px`;
+    card.style.top = `${touch.clientY - offsetY}px`;
+  }
+
+  function handleTouchEnd(e) {
+    clearTimeout(touchStartTimer);
+
+    if (!isDragging) return;
+    isDragging = false;
+    card.classList.remove("dragging");
+
+    card.style.position = "";
+    card.style.width = "";
+    card.style.height = "";
+    card.style.zIndex = "";
+    card.style.pointerEvents = "";
+    card.style.transform = "";
+    card.style.left = "";
+    card.style.top = "";
+    card.style.transition = "";
+
+    document.querySelectorAll(".tasks-container").forEach((c) => {
+      c.classList.remove("dragover-highlight");
+    });
+
+    if (currentColumn) {
+      const container = currentColumn.querySelector(".tasks-container");
+      if (container) {
+        container.appendChild(card);
+        const taskId = (card.dataset.taskId || card.id).replace("task-card-", "");
+        updateTaskProgressInFirebase(taskId, getNewProgressFromDropZone(container));
+      }
+    } else {
+      originalParent.insertBefore(card, placeholder);
+    }
+
+    if (placeholder) {
+      placeholder.remove();
+      placeholder = null;
+    }
+
+    checkColumnVisibility();
+  }
 }

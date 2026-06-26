@@ -238,6 +238,9 @@
     padding: 16px;
     transition: box-shadow 0.15s ease, transform 0.15s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .grabbable {
