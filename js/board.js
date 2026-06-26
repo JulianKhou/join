@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   checkColumnVisibility();
 });
 
-window.openAddTaskOverlay = () => addTaskOverlayController.openAddTaskOverlay();
+window.openAddTaskOverlay = (status) => addTaskOverlayController.openAddTaskOverlay(status);
 
 function initDragAndDrop() {
   const cards = document.querySelectorAll('[draggable="true"]');
@@ -68,6 +68,8 @@ function initDragAndDrop() {
   cards.forEach((card) => card.addEventListener("dragstart", handleDragStart));
   dropZones.forEach((zone) => {
     zone.addEventListener("dragover", handleDragOver);
+    zone.addEventListener("dragenter", handleDragEnter);
+    zone.addEventListener("dragleave", handleDragLeave);
     zone.addEventListener("drop", handleDrop);
   });
   document.addEventListener("dragend", handleDragEnd);
@@ -182,11 +184,35 @@ function handleDragStart(event) {
 function handleDragEnd(event) {
   const card = event.target.closest('[draggable="true"]');
   if (card) card.classList.remove("dragging");
+  document.querySelectorAll(".tasks-container").forEach((container) => {
+    container.classList.remove("dragover-highlight");
+  });
 }
 
 function handleDragOver(event) {
   event.preventDefault();
   event.dataTransfer.dropEffect = "move";
+}
+
+function handleDragEnter(event) {
+  event.preventDefault();
+  const container = this.querySelector(".tasks-container");
+  if (container) {
+    container.classList.add("dragover-highlight");
+  }
+}
+
+function handleDragLeave(event) {
+  const rect = this.getBoundingClientRect();
+  const x = event.clientX;
+  const y = event.clientY;
+
+  if (x < rect.left || x >= rect.right || y < rect.top || y >= rect.bottom) {
+    const container = this.querySelector(".tasks-container");
+    if (container) {
+      container.classList.remove("dragover-highlight");
+    }
+  }
 }
 
 function handleDrop(event) {
@@ -200,6 +226,7 @@ function handleDrop(event) {
 
   container.appendChild(movedCard);
   movedCard.classList.remove("dragging");
+  container.classList.remove("dragover-highlight");
 
   const taskId = (movedCard.dataset.taskId || movedCard.id).replace("task-card-", "");
   updateTaskProgressInFirebase(taskId, getNewProgressFromDropZone(container));

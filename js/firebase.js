@@ -17,6 +17,8 @@ import {
   getDocs,
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
+import { demoContacts, demoTasks } from "./demoData.js";
+
 export const firebaseConfig = {
   apiKey: "AIzaSyCgMFf3jcbG-pl3II5aRK9r4XxfF4ysc1c",
   authDomain: "join-44e84.firebaseapp.com",
@@ -190,7 +192,58 @@ export async function deleteContact(uuid) {
   await deleteDoc(doc(db, "contacts", uuid));
 }
 
+let seedingPromise = null;
+
+async function seedDemoDataIfEmpty() {
+  if (seedingPromise) return seedingPromise;
+
+  seedingPromise = (async () => {
+    try {
+      const contactsRef = collection(db, "contacts");
+      const contactsSnap = await getDocs(contactsRef);
+
+      const tasksRef = collection(db, "tasks");
+      const tasksSnap = await getDocs(tasksRef);
+
+      if (contactsSnap.empty && tasksSnap.empty) {
+        for (const contact of demoContacts) {
+          await setDoc(doc(db, "contacts", contact.id), {
+            name: contact.name,
+            email: contact.email,
+            phoneNumber: contact.phoneNumber,
+            color: contact.color,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+        }
+
+        for (const task of demoTasks) {
+          await setDoc(doc(db, "tasks", task.id), {
+            title: task.title,
+            description: task.description,
+            dueDate: task.dueDate,
+            priority: task.priority,
+            category: task.category,
+            assignedTo: task.assignedTo,
+            progress: task.progress,
+            subtasks: task.subtasks,
+            createdBy: "demo_user",
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+        }
+        console.log("Demo data successfully seeded to Firebase Firestore.");
+      }
+    } catch (e) {
+      console.error("Error seeding demo data:", e);
+    }
+  })();
+
+  return seedingPromise;
+}
+
 export async function getContacts() {
+  await seedDemoDataIfEmpty();
   const contactsRef = collection(db, "contacts");
   const snapshot = await getDocs(contactsRef);
 
@@ -265,6 +318,7 @@ export async function getTask(taskId) {
 }
 
 export async function getAllTasks() {
+  await seedDemoDataIfEmpty();
   const tasksRef = collection(db, "tasks");
   const snapshot = await getDocs(tasksRef);
   const tasks = [];

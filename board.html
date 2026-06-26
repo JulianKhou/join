@@ -212,7 +212,7 @@
       <section class="board-header-row">
         <div class="board-header-responsive">
           <h1 class="board-title">Board</h1>
-          <button class="add-task-btn-responsiv" id="addTaskBtnResponsiv" onclick="openAddTaskOverlay()">
+          <button class="add-task-btn-responsiv" id="addTaskBtnResponsiv" onclick="openAddTaskOverlay('toDo')">
             <svg class="plus-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"
               fill="none">
               <mask id="mask0_400464_4357" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="32"
@@ -236,7 +236,7 @@
                 fill="#2A3647" />
             </svg>
           </div>
-          <button class="add-task-btn" id="addTaskBtn" onclick="openAddTaskOverlay()">Add task
+          <button class="add-task-btn" id="addTaskBtn" onclick="openAddTaskOverlay('toDo')">Add task
             <svg class="plus-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"
               fill="none">
               <mask id="mask0_400464_4357" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="32"
@@ -257,7 +257,7 @@
         <div class="kanban-column" id="todoColumnContainer">
           <div class="column-header">
             <h2 class="column-title">To do</h2>
-            <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay()">
+            <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay('toDo')">
               <svg class="add-column-btn-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 viewBox="0 0 24 24" fill="none">
                 <rect x="1" y="1" width="22" height="22" rx="7" stroke-width="2" />
@@ -280,7 +280,7 @@
         <div class="kanban-column" id="inProgressColumnContainer">
           <div class="column-header">
             <h2 class="column-title">In progress</h2>
-            <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay()">
+            <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay('inProgress')">
               <svg class="add-column-btn-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 viewBox="0 0 24 24" fill="none">
                 <rect x="1" y="1" width="22" height="22" rx="7" stroke-width="2" />
@@ -302,7 +302,7 @@
         <div class="kanban-column" id="feedbackColumnContainer">
           <div class="column-header">
             <h2 class="column-title">Await feedback</h2>
-            <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay()">
+            <button class="add-column-btn" title="Add new task" onclick="openAddTaskOverlay('awaitFeedback')">
               <svg class="add-column-btn-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 viewBox="0 0 24 24" fill="none">
                 <rect x="1" y="1" width="22" height="22" rx="7" stroke-width="2" />

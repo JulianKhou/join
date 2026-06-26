@@ -15,6 +15,7 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
       const task = await getTask(taskId);
       const detailCard = overlay.querySelector(`#overlayDetailCard-${taskId}`);
       if (!detailCard) return;
+      detailCard.classList.add("editing");
       detailCard.insertAdjacentHTML("beforeend", editTaskFormTemplate(task));
       initEditModeSubtasks(task);
       attachEditFormEventListeners(taskId);
@@ -121,8 +122,18 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
           <button class="edit-subtask-button-size" type="button" aria-label="Edit subtask">
             <img src="./assets/contacts/editButton.svg" alt="">
           </button>
+          <div class="dividing-line"></div>
           <button class="delete-subtask-button-size" type="button" aria-label="Delete subtask">
             <img src="./assets/contacts/deleteButton.svg" alt="">
+          </button>
+        </div>
+        <div class="edit-mode-buttons">
+          <button class="cancel-subtask-button-size" type="button" aria-label="Cancel edit">
+            <img src="./assets/utilitys/close.svg" alt="Cancel">
+          </button>
+          <div class="dividing-line"></div>
+          <button class="confirm-subtask-button-size" type="button" aria-label="Confirm edit">
+            <img src="./assets/utilitys/check.svg" alt="Confirm">
           </button>
         </div>
       </div>
@@ -132,21 +143,29 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
   function addEditSubtaskEventListeners(subtaskElement) {
     const editBtn = subtaskElement.querySelector(".edit-subtask-button-size");
     const deleteBtn = subtaskElement.querySelector(".delete-subtask-button-size");
+    const cancelBtn = subtaskElement.querySelector(".cancel-subtask-button-size");
+    const confirmBtn = subtaskElement.querySelector(".confirm-subtask-button-size");
+    const textSpan = subtaskElement.querySelector("span");
+
+    let originalText = "";
 
     const startEditing = () => {
-      const textSpan = subtaskElement.querySelector("span");
       if (!textSpan) return;
-
+      originalText = textSpan.textContent.trim();
       textSpan.contentEditable = true;
       textSpan.focus();
-      textSpan.addEventListener("blur", () => {
-        textSpan.contentEditable = false;
-      }, { once: true });
-      textSpan.addEventListener("keydown", (keyboardEvent) => {
-        if (keyboardEvent.key !== "Enter") return;
-        keyboardEvent.preventDefault();
-        textSpan.blur();
-      }, { once: true });
+      subtaskElement.classList.add("subtask-label-active");
+
+      const range = document.createRange();
+      range.selectNodeContents(textSpan);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    };
+
+    const stopEditing = () => {
+      if (textSpan) textSpan.contentEditable = false;
+      subtaskElement.classList.remove("subtask-label-active");
     };
 
     subtaskElement.addEventListener("dblclick", (event) => {
@@ -163,6 +182,25 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
     deleteBtn?.addEventListener("click", (event) => {
       event.preventDefault();
       subtaskElement.remove();
+    });
+
+    cancelBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (textSpan) textSpan.textContent = originalText;
+      stopEditing();
+    });
+
+    confirmBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      stopEditing();
+    });
+
+    textSpan?.addEventListener("keydown", (keyboardEvent) => {
+      if (keyboardEvent.key !== "Enter") return;
+      keyboardEvent.preventDefault();
+      stopEditing();
     });
   }
 
@@ -330,6 +368,7 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
 
   function closeEditOverlay() {
     overlay.querySelector(".edit-overlay-card")?.remove();
+    overlay.querySelector(".overlay-detail-card")?.classList.remove("editing");
   }
 
   return {

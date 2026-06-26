@@ -33,6 +33,8 @@ function startEditingSubtask(subtaskNode) {
   const textSpan = subtaskNode.querySelector("span");
   if (!textSpan) return;
 
+  subtaskNode.dataset.originalText = textSpan.textContent.trim();
+
   enableEditableSubtask(subtaskNode);
 
   const closeEdit = () => {
@@ -64,6 +66,9 @@ function startEditingSubtask(subtaskNode) {
 function wireInlineEditButtons(subtaskNode) {
   const editBtn = subtaskNode.querySelector(".edit-subtask-button-size");
   const deleteBtn = subtaskNode.querySelector(".delete-subtask-button-size");
+  const cancelBtn = subtaskNode.querySelector(".cancel-subtask-button-size");
+  const confirmBtn = subtaskNode.querySelector(".confirm-subtask-button-size");
+  const textSpan = subtaskNode.querySelector("span");
 
   if (editBtn) {
     editBtn.addEventListener("click", (e) => {
@@ -78,6 +83,25 @@ function wireInlineEditButtons(subtaskNode) {
       e.preventDefault();
       e.stopPropagation();
       subtaskNode.remove();
+    });
+  }
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (textSpan && subtaskNode.dataset.originalText) {
+        textSpan.textContent = subtaskNode.dataset.originalText;
+      }
+      disableEditableSubtask(subtaskNode);
+    });
+  }
+
+  if (confirmBtn) {
+    confirmBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      disableEditableSubtask(subtaskNode);
     });
   }
 }

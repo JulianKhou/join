@@ -1,4 +1,4 @@
-﻿* {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -376,6 +376,68 @@ body {
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+/* Shared Subtask Edit Mode Styles */
+.edit-mode-buttons {
+    display: none !important;
+}
+
+.subtask-label-active {
+    background: white !important;
+    border-bottom: 2px solid var(--lightBlue-default) !important;
+    width: 100% !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 4px 8px !important;
+}
+
+.subtask-label-active .point {
+    display: none !important;
+}
+
+.subtask-label-active .edit-delete-subtask-buttons {
+    display: none !important;
+}
+
+.subtask-label-active .edit-mode-buttons {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    margin-right: 10px;
+}
+
+.confirm-subtask-button-size,
+.cancel-subtask-button-size {
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    padding: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm-subtask-button-size:hover,
+.cancel-subtask-button-size:hover {
+    background-color: #f5f5f5;
+}
+
+.confirm-subtask-button-size img,
+.cancel-subtask-button-size img {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+.dividing-line {
+    width: 1px;
+    height: 20px;
+    background-color: #D1D1D1;
+    margin: 0 4px;
 }
 
 

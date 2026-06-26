@@ -8,6 +8,11 @@
     padding-right: 65px;
 }
 
+.board-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
 .board-header-row {
     display: flex;
     justify-content: space-between;
@@ -191,6 +196,22 @@
 .tasks-card-content {
     display: flex;
     flex-direction: column;
+}
+
+.tasks-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    height: 100%;
+    border: 2px solid transparent;
+    border-radius: 24px;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.tasks-container.dragover-highlight {
+    background-color: rgba(41, 171, 226, 0.06);
+    border-color: #29ABE2;
+    border-style: dashed;
 }
 
 .tasks-container::-webkit-scrollbar {

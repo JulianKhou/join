@@ -5,6 +5,8 @@ import { getInitials, returnContactById } from "./utility.js";
 import { showPopup } from "./feedback.js";
 
 export function createBoardAddOverlayController({ getContactsList, appendNewTaskToBoard }) {
+  let currentStatus = "toDo";
+
   function getContacts() {
     const contacts = getContactsList?.();
     return Array.isArray(contacts) ? contacts : [];
@@ -49,7 +51,8 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
     });
   }
 
-  function openAddTaskOverlay() {
+  function openAddTaskOverlay(status) {
+    currentStatus = status || "toDo";
     document.getElementById("addTaskOverlay")?.classList.add("active");
   }
 
@@ -79,6 +82,10 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
   function initOverlayPriorityButtons() {
     const priorityBtns = document.querySelectorAll(".priority-button-group .priority-button");
     priorityBtns.forEach((button) => {
+      if (button.textContent.includes("Medium")) {
+        button.classList.add("priority-button-medium-active");
+      }
+
       button.addEventListener("click", (event) => {
         event.preventDefault();
         priorityBtns.forEach((priorityButton) => {
@@ -190,22 +197,31 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
     const textSpan = subtaskNode.querySelector("span");
     if (!textSpan) return;
 
+    subtaskNode.dataset.originalText = textSpan.textContent.trim();
     textSpan.contentEditable = true;
     textSpan.focus();
-    textSpan.addEventListener("blur", () => {
-      textSpan.contentEditable = false;
-    }, { once: true });
-    textSpan.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter") return;
-      event.preventDefault();
-      textSpan.blur();
-    }, { once: true });
+    subtaskNode.classList.add("subtask-label-active");
+
+    const range = document.createRange();
+    range.selectNodeContents(textSpan);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  function stopEditingOverlaySubtask(subtaskNode) {
+    const textSpan = subtaskNode.querySelector("span");
+    if (textSpan) textSpan.contentEditable = false;
+    subtaskNode.classList.remove("subtask-label-active");
   }
 
   function wireOverlaySubtaskButtons(subtaskNode) {
     if (!subtaskNode) return;
     const editBtn = subtaskNode.querySelector(".edit-subtask-button-size");
     const deleteBtn = subtaskNode.querySelector(".delete-subtask-button-size");
+    const cancelBtn = subtaskNode.querySelector(".cancel-subtask-button-size");
+    const confirmBtn = subtaskNode.querySelector(".confirm-subtask-button-size");
+    const textSpan = subtaskNode.querySelector("span");
 
     editBtn?.addEventListener("click", (event) => {
       event.preventDefault();
@@ -219,9 +235,30 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
       subtaskNode.remove();
     });
 
+    cancelBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (textSpan && subtaskNode.dataset.originalText) {
+        textSpan.textContent = subtaskNode.dataset.originalText;
+      }
+      stopEditingOverlaySubtask(subtaskNode);
+    });
+
+    confirmBtn?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      stopEditingOverlaySubtask(subtaskNode);
+    });
+
     subtaskNode.addEventListener("dblclick", (event) => {
       event.preventDefault();
       startEditingOverlaySubtask(subtaskNode);
+    });
+
+    textSpan?.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      stopEditingOverlaySubtask(subtaskNode);
     });
   }
 
@@ -280,7 +317,7 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
       const taskData = collectOverlayFormData();
       if (!validateOverlayForm(taskData)) return;
 
-      const newTask = { ...taskData, progress: "toDo" };
+      const newTask = { ...taskData, progress: currentStatus };
       try {
         const taskId = await createTask(newTask);
         newTask.id = taskId;
@@ -360,6 +397,9 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
         "priority-button-medium-active",
         "priority-button-low-active",
       );
+      if (button.textContent.includes("Medium")) {
+        button.classList.add("priority-button-medium-active");
+      }
     });
   }
 

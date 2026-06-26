@@ -41,7 +41,7 @@
     background-color: #fff;
     border-radius: 30px;
     width: 520px;
-    height: 92vh;
+    height: auto;
     max-height: 92vh;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
