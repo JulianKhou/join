@@ -65,10 +65,10 @@ function persistCurrentUser(user, fallbackName = "Guest") {
 
 async function loginAsGlobalGuest() {
   const user = await loginWithEmail(GUEST_EMAIL, GUEST_PASSWORD);
-  // Ensure the Firestore user document exists (e.g. after DB wipe or first run)
-  await createOrUpdateUserProfile(user.uid, "Guest", GUEST_EMAIL);
-  // Ensure Guest is also in Contacts so they can be assigned tasks
-  await editOrAddContact(user.uid, "Guest", GUEST_EMAIL, "", "#A133FF");
+  // Ensure the Firestore user document exists in the background without blocking the UI
+  createOrUpdateUserProfile(user.uid, "Guest", GUEST_EMAIL).catch(console.error);
+  // Ensure Guest is in Contacts in the background without blocking the UI
+  editOrAddContact(user.uid, "Guest", GUEST_EMAIL, "", "#A133FF").catch(console.error);
   return user;
 }
 
