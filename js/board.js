@@ -304,7 +304,7 @@ function addSubtaskToDetail(task) {
   const subtaskDetails = document.getElementById(`subtaskDetails-${task.id}`);
   if (!subtaskDetails) return;
 
-  subtaskDetails.innerHTML = '<span class="overlay-label">Subtasks</span>';
+  subtaskDetails.innerHTML = '<span class="overlay-label">Subtasks:</span>';
   task.subtasks?.forEach((subtask, index) => {
     subtaskDetails.insertAdjacentHTML("beforeend", addSubtaskToDetailTemplate(subtask.text, subtask.completed, index));
   });

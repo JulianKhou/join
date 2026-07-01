@@ -189,6 +189,9 @@
     flex-direction: column;
     gap: 16px;
     margin-bottom: 24px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 8px;
 }
 
 .overlay-assignee-item {

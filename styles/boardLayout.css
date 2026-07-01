@@ -104,7 +104,7 @@
     font-weight: 700;
     font-family: 'Inter', sans-serif;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .add-task-btn-responsiv {
@@ -127,6 +127,7 @@
 
 .add-task-btn:hover {
     background-color: #29ABE2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
 }
 
 .add-task-btn:active {
