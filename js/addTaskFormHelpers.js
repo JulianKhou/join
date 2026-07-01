@@ -84,7 +84,7 @@ export function resetAddTaskForm({ checkboxList, selectBox, placeholder, resetPr
   if (dueDateInput) dueDateInput.value = "";
   if (subtaskInput) subtaskInput.value = "";
   if (subtasksList) subtasksList.innerHTML = "";
-  if (categorySelect) categorySelect.selectedIndex = 0;
+  if (categorySelect) categorySelect.value = "";
   if (selectBox) selectBox.innerText = placeholder;
 
   const assignedIcons = document.getElementById("assignedIcons");

@@ -13,10 +13,10 @@ body {
 .add-task-wrapper {
   position: relative;
   margin-left: 260px;
-  padding: 40px 80px;
+  padding: 20px 80px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
   overflow-x: clip;
   z-index: 0;
   max-width: 1280px;
@@ -43,7 +43,7 @@ body {
 .add-task-wrapper h1 {
   font-size: 61px;
   font-weight: 700;
-  padding-top: 120px;
+  padding-top: 108px;
 }
 
 .add-task-buttons {
@@ -51,12 +51,23 @@ body {
   bottom: 0;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 24px;
   box-sizing: border-box;
   width: min(1100px, 100%);
   background: #f6f7f8;
   padding: 16px 0;
   z-index: 5;
+}
+
+.required-note {
+  margin-right: auto;
+  font-size: 16px;
+  color: #2a3647;
+}
+
+.required-note span {
+  color: #FF0000;
 }
 
 .add-task-buttons:hover {
@@ -70,7 +81,8 @@ body {
   cursor: pointer;
   display: inline-flex;
   line-height: 0;
-  transition: transform 0.1s ease;
+  border-radius: 10px;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
 }
 
 .task-action-btn img {
@@ -93,6 +105,7 @@ body {
 
 .task-action-btn:hover {
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
 }
 
 .task-action-btn:active {
@@ -123,12 +136,12 @@ body {
   font-size: 16px;
   font-weight: 400;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
 }
 
 .priority-btn:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .priority-btn:active {
@@ -242,6 +255,10 @@ body {
   margin-bottom: -8px;
 }
 
+.add-task-form label span {
+  color: #FF0000;
+}
+
 label {
   font-family: "Inter", sans-serif;
   font-weight: 400;
@@ -301,12 +318,12 @@ label {
 
 .checkbox-list {
   display: none;
-  border: 1px solid #aaa;
+  border: none;
   background: white;
   position: absolute;
   padding-top: 10px;
   width: 100%;
-  top: 42px;
+  top: calc(100% + 4px);
   z-index: 10;
 
   flex-direction: column;
@@ -346,14 +363,24 @@ label {
 }
 
 .checkbox-item:hover {
-  background-color: var(--gray-default);
+  background-color: var(--lightGray-default);
   cursor: pointer;
-  color: white;
 }
 
 .checkbox-item:has(.assignedToCheckbox:checked) {
   background-color: var(--mainColor-default);
   color: white;
+}
+
+.category-option {
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.category-option:hover {
+  background-color: var(--lightGray-default);
 }
 
 .assignedToCheckbox {

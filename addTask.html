@@ -135,11 +135,10 @@
               <div class="assignedIcons" id="assignedIcons"></div>
             </div>
             <label for="category">Category<span>*</span></label>
-            <div class="select-wrapper">
-              <select class="task-input" id="categorySelect">
-                <option>Select task category</option>
-              </select>
+            <div class="multi-select category-select">
+              <input class="selected-box task-input" id="categorySelect" placeholder="Select task category" readonly />
               <span class="select-arrow" id="categoryArrow" aria-hidden="true"></span>
+              <div class="checkbox-list" id="categoryOptionsList"></div>
             </div>
             <p class="required-hint" id="categoryHint">*This field is required</p>
             <label for="subtasks">Subtasks</label>
@@ -179,6 +178,7 @@
         </form>
 
         <div class="add-task-buttons">
+          <span class="required-note"><span>*</span>This field is required</span>
           <button class="task-action-btn" id="cancelTaskBtn" type="button" aria-label="Clear">
             <img src="./assets/addTask/Clear.svg" alt="Clear" class="btn-img-default">
             <img src="./assets/addTask/Clear-hover.svg" alt="" aria-hidden="true" class="btn-img-hover">

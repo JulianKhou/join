@@ -91,15 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  const categorySelect = document.getElementById("categorySelect");
-  const categoryArrow = document.getElementById("categoryArrow");
-  categoryArrow?.addEventListener("click", () => {
-    if (typeof categorySelect?.showPicker === "function") {
-      categorySelect.showPicker();
-    } else {
-      categorySelect?.focus();
-    }
-  });
+  initCategoryDropdown();
 
   addTaskBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -317,30 +309,73 @@ const CATEGORY = Object.freeze({
   TECHTASK: "Technical Task",
   USERSTORY: "User Story",
 });
-// Populate category select with options.
 function addCategoryOptionsTask() {
-  const categorySelect = document.getElementById("categorySelect");
+  const list = document.getElementById("categoryOptionsList");
+  if (!list) return;
+  list.innerHTML = "";
   for (const key in CATEGORY) {
-    const option = document.createElement("option");
-    option.value = CATEGORY[key];
-    option.text = CATEGORY[key];
-    categorySelect.appendChild(option);
+    const option = document.createElement("div");
+    option.className = "category-option";
+    option.dataset.value = CATEGORY[key];
+    option.textContent = CATEGORY[key];
+    list.appendChild(option);
   }
+}
+
+function initCategoryDropdown() {
+  const box = document.getElementById("categorySelect");
+  const arrow = document.getElementById("categoryArrow");
+  const list = document.getElementById("categoryOptionsList");
+  const multiSelect = box?.closest(".multi-select");
+  if (!box || !list) return;
+
+  const toggle = () => {
+    const wasVisible = list.style.display === "flex";
+    list.style.display = wasVisible ? "none" : "flex";
+    multiSelect?.classList.toggle("open", !wasVisible);
+    if (!wasVisible) {
+      initOutsideClickHandler(
+        box,
+        () => {
+          list.style.display = "none";
+          multiSelect?.classList.remove("open");
+        },
+        [list, arrow].filter(Boolean)
+      );
+    }
+  };
+
+  box.addEventListener("click", toggle);
+  arrow?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toggle();
+  });
+
+  list.addEventListener("click", (event) => {
+    const option = event.target.closest(".category-option");
+    if (!option) return;
+    box.value = option.dataset.value;
+    list.style.display = "none";
+    multiSelect?.classList.remove("open");
+    box.style.borderColor = "";
+    document.getElementById("categoryHint")?.classList.remove("show");
+  });
 }
 
 function defaultCategoryOnMobile() {
   if (window.innerWidth > 768) return;
-  const categorySelect = document.getElementById("categorySelect");
-  if (!categorySelect) return;
-  categorySelect.value = CATEGORY.TECHTASK;
+  const box = document.getElementById("categorySelect");
+  if (box) box.value = CATEGORY.TECHTASK;
 }
 
 function getCategoryTask() {
-  const categorySelect = document.getElementById("categorySelect");
-  if (categorySelect.value === "Select task category") {
+  const box = document.getElementById("categorySelect");
+  const value = box?.value || "";
+  if (value === "Select task category") {
     return "";
   }
-  return categorySelect.value;
+  return value;
 }
 
 // Build task object from inputs and send to firebase handler.

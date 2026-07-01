@@ -57,13 +57,14 @@
     font-size: 21px;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, box-shadow 0.2s ease;
     width: 352px;
     height: 56px;
 }
 
 .btn-add-contact:hover {
     background-color: var(--skyBlue-default);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
 }
 
 .contacts-list {

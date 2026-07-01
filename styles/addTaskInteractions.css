@@ -44,7 +44,7 @@
 }
 
 .subtask-label:hover {
-  background-color: var(--gray-default);
+  background-color: #E9E9E9;
 }
 
 .subtasks-list {
@@ -145,15 +145,14 @@
   border: 0;
   position: relative;
   z-index: 1;
-  border-radius: 8px;
   padding: 4px;
-  transition: background-color 0.2s ease;
+  transition: transform 0.15s ease;
 }
 
 /* Only hover THIS button, not siblings */
 .edit-subtask-button-size:hover:not(:disabled) {
   cursor: pointer;
-  background-color: var(--gray-default);
+  transform: scale(1.15);
 }
 
 .delete-subtask-button-size {
@@ -161,15 +160,14 @@
   border: 0;
   position: relative;
   z-index: 1;
-  border-radius: 8px;
   padding: 4px;
-  transition: background-color 0.2s ease;
+  transition: transform 0.15s ease;
 }
 
 /* Only hover THIS button, not siblings */
 .delete-subtask-button-size:hover:not(:disabled) {
   cursor: pointer;
-  background-color: var(--gray-default);
+  transform: scale(1.15);
 }
 
 .mobile-nav {

@@ -167,7 +167,7 @@
   }
 
   label[for="category"],
-  .select-wrapper,
+  .category-select,
   #categoryHint {
     display: none !important;
   }
