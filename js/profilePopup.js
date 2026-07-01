@@ -58,6 +58,18 @@ function initBackButtons() {
 
 initBackButtons();
 
+function highlightActiveMobileNav() {
+  const currentPage = window.location.pathname.split("/").pop() || "summaryUser.html";
+  document.querySelectorAll(".mobile-nav a").forEach((link) => {
+    const linkPage = link.getAttribute("href")?.split("/").pop();
+    if (linkPage && linkPage === currentPage) {
+      link.classList.add("mobile-active");
+    }
+  });
+}
+
+highlightActiveMobileNav();
+
 const profileBtn = document.getElementById("userProfileInitialsBtn");
 const profileMenu = document.getElementById("profileShowMore");
 
