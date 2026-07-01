@@ -118,14 +118,63 @@ label {
   border: none;
   cursor: pointer;
   font-size: 15px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary-btn:hover {
+  background: #29ABE2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .back-btn {
   position: absolute;
   top: 48px;
   left: 48px;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #EDEDED;
+}
+
+#privacyCheck {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  border: 1px solid #2a3647;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: box-shadow 0.15s ease;
+}
+
+#privacyCheck:checked {
+  background-color: #2a3647;
+}
+
+#privacyCheck:checked::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0px;
+  width: 3px;
+  height: 7px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+#privacyCheck:hover {
+  box-shadow: 0 0 0 4px #D1D1D1;
 }
 
 footer {
@@ -138,6 +187,13 @@ footer {
 footer a {
   text-decoration: none;
   color: #c5c5c6;
+  display: inline-block;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+footer a:hover {
+  color: #29ABE2;
+  transform: scale(1.08);
 }
 
 label a {
