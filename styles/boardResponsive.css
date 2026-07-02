@@ -250,8 +250,17 @@
         margin-bottom: 12px;
     }
 
+    /* Keep the whole task visible: only the contact list scrolls, capped at ~2 rows */
     .overlay-assignees{
         margin-bottom: 12px;
+        max-height: 112px;
+        overflow-y: auto;
+        gap: 12px;
+    }
+
+    .overlay-subtasks{
+        max-height: 176px;
+        overflow-y: auto;
     }
 
     .overlay-field-content{
@@ -311,9 +320,16 @@
 
      .tasks-container{
         display: flex;
+        flex-direction: row;
         gap: 12px;
         overflow-x: auto;
         padding: 12px 20px 16px 12px;
+    }
+
+    /* Horizontal layout: extra drop space sits to the right instead of below */
+    body.drag-active .tasks-container {
+        padding-bottom: 16px;
+        padding-right: 262px;
     }
 
     .task-card{
@@ -327,13 +343,10 @@
 @media (max-width: 540px) {
 
     .overlay-actions{
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: flex-end;
         gap: 12px;
-        align-items: flex-start;
-    }
-
-    .action-btn-divider {
-        display: none;
+        align-items: center;
     }
 }
 

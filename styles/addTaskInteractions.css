@@ -17,10 +17,9 @@
   justify-content: center;
   height: 24px;
   position: absolute;
-  right: 16px;
+  right: 10px;
   top: 24px;
   transform: translateY(-50%);
-  width: 50px;
 }
 
 .subtask-label {
@@ -58,6 +57,20 @@
 
 .subtask-btn {
   cursor: pointer;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease;
+}
+
+.subtask-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .point {
@@ -140,34 +153,12 @@
   outline: none;
 }
 
-.edit-subtask-button-size {
-  background: transparent;
-  border: 0;
-  position: relative;
-  z-index: 1;
-  padding: 4px;
-  transition: transform 0.15s ease;
-}
-
-/* Only hover THIS button, not siblings */
-.edit-subtask-button-size:hover:not(:disabled) {
-  cursor: pointer;
-  transform: scale(1.15);
-}
-
+.edit-subtask-button-size,
 .delete-subtask-button-size {
   background: transparent;
   border: 0;
   position: relative;
   z-index: 1;
-  padding: 4px;
-  transition: transform 0.15s ease;
-}
-
-/* Only hover THIS button, not siblings */
-.delete-subtask-button-size:hover:not(:disabled) {
-  cursor: pointer;
-  transform: scale(1.15);
 }
 
 .mobile-nav {

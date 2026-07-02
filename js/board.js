@@ -178,15 +178,21 @@ function renderTasks(tasks) {
   });
 }
 
+let dragActivateTimer = null;
+
 function handleDragStart(event) {
   const card = event.target.closest('[draggable="true"]');
   event.dataTransfer.setData("text/plain", card.id);
   card.classList.add("dragging");
+  // Deferred: layout changes inside dragstart would cancel the native drag
+  dragActivateTimer = setTimeout(() => document.body.classList.add("drag-active"), 0);
 }
 
 function handleDragEnd(event) {
   const card = event.target.closest('[draggable="true"]');
   if (card) card.classList.remove("dragging");
+  clearTimeout(dragActivateTimer);
+  document.body.classList.remove("drag-active");
   document.querySelectorAll(".tasks-container").forEach((container) => {
     container.classList.remove("dragover-highlight");
   });
@@ -411,6 +417,9 @@ function initTouchDrag(card) {
   let startY = 0;
   let offsetX = 0;
   let offsetY = 0;
+  let lastTouchX = 0;
+  let lastTouchY = 0;
+  let autoScrollFrame = null;
   let currentColumn = null;
   let originalParent = null;
   let originalSibling = null;
@@ -443,10 +452,13 @@ function initTouchDrag(card) {
   function startDrag(touch, rect) {
     isDragging = true;
     card.classList.add("dragging");
+    document.body.classList.add("drag-active");
 
     placeholder = document.createElement("div");
     placeholder.className = "task-card-placeholder";
     placeholder.style.height = `${rect.height}px`;
+    placeholder.style.minWidth = `${rect.width}px`;
+    placeholder.style.flexShrink = "0";
     placeholder.style.marginBottom = "20px";
     placeholder.style.borderRadius = "24px";
     placeholder.style.border = "2px dashed #D1D1D1";
@@ -465,6 +477,7 @@ function initTouchDrag(card) {
     card.style.transition = "none";
 
     updatePosition(touch);
+    startAutoScroll();
   }
 
   function handleTouchMove(e) {
@@ -481,8 +494,11 @@ function initTouchDrag(card) {
 
     e.preventDefault();
     updatePosition(touch);
+    updateDropTarget();
+  }
 
-    const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+  function updateDropTarget() {
+    const elem = document.elementFromPoint(lastTouchX, lastTouchY);
     const col = elem?.closest(".kanban-column");
 
     document.querySelectorAll(".tasks-container").forEach((c) => {
@@ -501,8 +517,33 @@ function initTouchDrag(card) {
   }
 
   function updatePosition(touch) {
+    lastTouchX = touch.clientX;
+    lastTouchY = touch.clientY;
     card.style.left = `${touch.clientX - offsetX}px`;
     card.style.top = `${touch.clientY - offsetY}px`;
+  }
+
+  function startAutoScroll() {
+    const scrollZone = 120;
+    const scrollSpeed = 10;
+
+    const step = () => {
+      if (lastTouchY > window.innerHeight - scrollZone) {
+        window.scrollBy(0, scrollSpeed);
+        updateDropTarget();
+      } else if (lastTouchY < scrollZone && window.scrollY > 0) {
+        window.scrollBy(0, -scrollSpeed);
+        updateDropTarget();
+      }
+      autoScrollFrame = requestAnimationFrame(step);
+    };
+
+    autoScrollFrame = requestAnimationFrame(step);
+  }
+
+  function stopAutoScroll() {
+    if (autoScrollFrame) cancelAnimationFrame(autoScrollFrame);
+    autoScrollFrame = null;
   }
 
   function handleTouchEnd(e) {
@@ -510,7 +551,9 @@ function initTouchDrag(card) {
 
     if (!isDragging) return;
     isDragging = false;
+    stopAutoScroll();
     card.classList.remove("dragging");
+    document.body.classList.remove("drag-active");
 
     card.style.position = "";
     card.style.width = "";

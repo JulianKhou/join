@@ -206,13 +206,18 @@
     height: 100%;
     border: 2px solid transparent;
     border-radius: 24px;
-    transition: background-color 0.25s ease, border-color 0.25s ease;
+    transition: background-color 0.25s ease, border-color 0.25s ease, padding 0.2s ease;
 }
 
 .tasks-container.dragover-highlight {
     background-color: rgba(41, 171, 226, 0.06);
     border-color: #29ABE2;
     border-style: dashed;
+}
+
+/* While a card is being dragged, every drop zone offers one card of extra space */
+body.drag-active .tasks-container {
+    padding-bottom: 260px;
 }
 
 .tasks-container::-webkit-scrollbar {
