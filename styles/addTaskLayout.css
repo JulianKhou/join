@@ -70,6 +70,10 @@ body {
   color: #FF0000;
 }
 
+.required-note-mobile {
+  display: none;
+}
+
 .add-task-buttons:hover {
   cursor: pointer;
 }
@@ -115,16 +119,15 @@ body {
 .priority-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
   width: 100%;
 }
 
-.priority-buttons > :nth-child(1) { justify-self: start; }
-.priority-buttons > :nth-child(2) { justify-self: center; }
-.priority-buttons > :nth-child(3) { justify-self: end; }
-
 .priority-btn {
   height: 48px;
-  padding: 0 32px;
+  width: 100%;
+  min-width: 0;
+  padding: 0 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
