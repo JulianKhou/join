@@ -332,6 +332,10 @@
         padding-right: 262px;
     }
 
+    body.drag-active .no-task {
+        display: none;
+    }
+
     .task-card{
         width: 250px;
         min-width: 250px;

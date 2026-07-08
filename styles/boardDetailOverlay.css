@@ -37,6 +37,10 @@
     display: flex;
 }
 
+body:has(.overlay-edit.active) {
+    overflow: hidden;
+}
+
 .overlay-detail-card {
     background-color: #fff;
     border-radius: 30px;
