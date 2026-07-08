@@ -117,7 +117,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     getCategory: getCategoryTask,
   });
   addCategoryOptionsTask();
-  defaultCategoryOnMobile();
   initSubtaskEventListeners();
   initPriorityButtons({
     lowBtn: priorityLowBtn,
@@ -361,12 +360,6 @@ function initCategoryDropdown() {
     box.style.borderColor = "";
     document.getElementById("categoryHint")?.classList.remove("show");
   });
-}
-
-function defaultCategoryOnMobile() {
-  if (window.innerWidth > 768) return;
-  const box = document.getElementById("categorySelect");
-  if (box) box.value = CATEGORY.TECHTASK;
 }
 
 function getCategoryTask() {

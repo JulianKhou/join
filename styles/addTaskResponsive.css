@@ -175,12 +175,6 @@
     text-align: center;
     text-decoration: none;
   }
-
-  label[for="category"],
-  .category-select,
-  #categoryHint {
-    display: none !important;
-  }
 }
 
 @media (max-width: 430px) {
