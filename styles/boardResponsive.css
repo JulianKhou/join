@@ -11,17 +11,30 @@
     display: none;
 }
 
+@media (max-width: 1440px) {
+    .main-content-board {
+        padding-left: 260px;
+        padding-top: 130px;
+        padding-right: 32px;
+    }
+
+    .kanban-board {
+        gap: 18px;
+    }
+
+    .board-header-row {
+        margin-bottom: 32px;
+    }
+}
+
 @media (max-width: 1190px) {
     .kanban-board {
-        flex-direction: column;
+        flex-wrap: wrap;
+        row-gap: 32px;
     }
 
     .kanban-column {
-        width: 100%;
-    }
-
-    .task-card {
-        width: 70%;
+        width: calc(50% - 9px);
     }
 
     .overlay-add-task-card {
@@ -207,16 +220,25 @@
 
     .overlay-detail-card {
         background-color: #fff;
-        border-radius: 30px;
+        border-radius: 0;
         width: 100%;
-        max-width: 520px;
-        height: auto;
-        max-height: 90vh;
-        margin: 20px;
+        max-width: none;
+        height: 100vh;
+        height: 100dvh;
+        max-height: none;
+        margin: 0;
         overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: none;
         animation: slideInRight 0.2s ease-out;
         position: relative;
+    }
+
+    .edit-overlay-card {
+        border-radius: 0;
+        flex: 1 1 auto;
+        min-height: 0;
+        height: 100%;
+        max-height: none;
     }
 
     .overlay-detail-content {
@@ -225,6 +247,10 @@
 
     .overlay-actions {
         padding: 10px 24px 20px 24px;
+    }
+
+    .overlay-detail-card .overlay-actions {
+        padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     }
 
     .task-category-overlay{
@@ -316,6 +342,15 @@
     .priority-button {
         width: 120px;
         height: 40px;
+    }
+
+    .kanban-board {
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
+
+    .kanban-column {
+        width: 100%;
     }
 
      .tasks-container{

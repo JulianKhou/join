@@ -26,7 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  cursor: default;
+  cursor: pointer;
   pointer-events: auto;
   border-radius: 8px;
   padding: 4px 8px;
@@ -159,6 +159,7 @@
   border: 0;
   position: relative;
   z-index: 1;
+  cursor: pointer;
 }
 
 .mobile-nav {

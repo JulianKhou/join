@@ -258,12 +258,11 @@
     padding: 6px 8px;
     font-size: 16px;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 .checkbox-item:hover {
-    background-color: var(--gray-default);
-    color: white;
-    cursor: pointer;
+    background-color: var(--lightGray-default);
 }
 
 .checkbox-item:has(.assignedToCheckbox:checked) {
@@ -360,7 +359,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    cursor: default;
+    cursor: pointer;
     pointer-events: auto;
     border-radius: 8px;
     padding: 4px 8px;
@@ -368,7 +367,7 @@
 }
 
 .subtask-label:hover {
-    background-color: var(--gray-default);
+    background-color: #E9E9E9;
 }
 
 .subtask-label span,
@@ -406,15 +405,14 @@
 .delete-subtask-button-size {
     background: transparent;
     border: 0;
-    border-radius: 8px;
     padding: 4px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: transform 0.15s ease;
 }
 
 .edit-subtask-button-size:hover,
 .delete-subtask-button-size:hover {
-    background-color: #f5f5f5;
+    transform: scale(1.15);
 }
 
 .edit-delete-subtask-buttons img {

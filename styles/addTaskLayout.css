@@ -74,10 +74,6 @@ body {
   display: none;
 }
 
-.add-task-buttons:hover {
-  cursor: pointer;
-}
-
 .task-action-btn {
   background: none;
   border: none;
@@ -363,11 +359,11 @@ label {
   border-radius: 8px;
   width: 100%;
   padding: 6px 8px;
+  cursor: pointer;
 }
 
 .checkbox-item:hover {
   background-color: var(--lightGray-default);
-  cursor: pointer;
 }
 
 .checkbox-item:has(.assignedToCheckbox:checked) {

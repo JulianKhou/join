@@ -38,7 +38,17 @@
   overflow-wrap: anywhere;
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1440px) {
+  .contacts-left {
+    width: 400px;
+  }
+  .btn-add-contact {
+    width: 100%;
+    max-width: 352px;
+  }
+  .contact-details-header {
+    gap: 40px;
+  }
   .contacts-right {
     padding: 100px 32px;
   }
@@ -48,7 +58,7 @@
     flex-wrap: wrap;
   }
   .contacts-right .subtitle {
-    font-size: 22px;
+    font-size: 22px !important;
   }
   .contacts-right .divider {
     height: 48px;
@@ -108,7 +118,7 @@
     flex-wrap: wrap;
   }
   .contacts-right .subtitle {
-    font-size: 18px;
+    font-size: 18px !important;
   }
   .contacts-right .divider {
     height: 36px;
@@ -315,8 +325,22 @@
         align-self: flex-start;
       }
 
+      .mobile-back-btn img {
+        width: 24px;
+        height: 24px;
+        display: block;
+      }
+
       .mobile-back-btn:hover {
         color: var(--skyBlue-default);
+      }
+
+      .contacts-right h1 {
+        font-size: 32px;
+      }
+
+      .contacts-right .subtitle {
+        font-size: 16px !important;
       }
   }
 

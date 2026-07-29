@@ -107,12 +107,11 @@
     align-items: center;
     border-radius: 8px;
     padding: 6px 8px;
+    cursor: pointer;
 }
 
 .checkbox-item:hover {
-    background-color: var(--gray-default);
-    cursor: pointer;
-    color: white;
+    background-color: var(--lightGray-default);
 }
 
 .checkbox-item:has(.assignedToCheckbox:checked) {
@@ -139,7 +138,12 @@
     margin: 5px;
     gap: 8px;
     overflow: auto;
-    max-height: 70px;
+    max-height: 72px;
+}
+
+.assignedIcons .assignee-avatar {
+    margin-left: 0;
+    flex-shrink: 0;
 }
 
 .mobile-nav {

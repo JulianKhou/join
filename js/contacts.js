@@ -225,7 +225,8 @@ function showMobileDetailView() {
     const backBtn = document.createElement("button");
     backBtn.id = "mobileBackBtn";
     backBtn.className = "mobile-back-btn";
-    backBtn.innerHTML = `<img src="./assets/sideboardAssets/back.svg" alt="Back" onerror="this.style.display='none'"> Back`;
+    backBtn.setAttribute("aria-label", "Back");
+    backBtn.innerHTML = `<img src="./assets/utilitys/arrowBack.svg" alt="">`;
     backBtn.addEventListener("click", hideMobileDetailView);
     right.prepend(backBtn);
   }

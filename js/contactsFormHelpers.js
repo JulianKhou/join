@@ -11,6 +11,11 @@ export function configureContactFormValidation(nameInput, emailInput, phoneInput
   emailInput.maxLength = 120;
   phoneInput.maxLength = 30;
 
+  phoneInput.addEventListener("input", () => {
+    const cleaned = phoneInput.value.replace(/[^0-9+\-()/ ]/g, "");
+    if (cleaned !== phoneInput.value) phoneInput.value = cleaned;
+  });
+
   nameInput.addEventListener("blur", () => {
     if (nameInput.value.trim().length >= 2) {
       nameInput.style.borderColor = "";

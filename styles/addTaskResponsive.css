@@ -1,3 +1,10 @@
+@media (max-width: 1440px) {
+  .add-task-wrapper {
+    margin-left: 230px;
+    padding: 20px 48px;
+  }
+}
+
 @media (max-width: 1280px) {
   .add-task-wrapper {
     padding: 32px 48px;
@@ -5,6 +12,14 @@
   .add-task-wrapper h1 {
     font-size: 48px;
     padding-top: 100px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .priority-btn {
+    font-size: 14px;
+    padding: 0 6px;
+    gap: 6px;
   }
 }
 

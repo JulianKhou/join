@@ -104,12 +104,12 @@ body, p, span, a, li, label, input, textarea, select, button {
   right: 24px;
   background: none;
   border: none;
-  font-size: 32px;
+  font-size: 40px !important;
   line-height: 1;
   cursor: pointer;
   color: #2a3647;
   z-index: 10;
-  padding: 4px 8px;
+  padding: 8px 12px;
 }
 
 .profile-circle,
