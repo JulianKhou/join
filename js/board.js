@@ -184,7 +184,6 @@ function handleDragStart(event) {
   const card = event.target.closest('[draggable="true"]');
   event.dataTransfer.setData("text/plain", card.id);
   card.classList.add("dragging");
-  // Deferred: layout changes inside dragstart would cancel the native drag
   dragActivateTimer = setTimeout(() => document.body.classList.add("drag-active"), 0);
 }
 

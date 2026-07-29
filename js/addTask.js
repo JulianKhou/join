@@ -4,6 +4,7 @@ import {
 } from "../templates/addTaskTemplates.js";
 import {
   getInitials,
+  getStoredCurrentUser,
   initOutsideClickHandler,
   returnContactById,
 } from "./utility.js";
@@ -33,7 +34,6 @@ let checkboxList;
 let contactsList = [];
 const ASSIGNED_TO_PLACEHOLDER = "Select contacts to assign";
 
-// On DOM ready: set up UI, attach handlers and load contacts.
 document.addEventListener("DOMContentLoaded", async () => {
     const dateInput = document.getElementById("taskDate");
   if (dateInput) {
@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   selectBox = document.getElementById("selectedBox");
   checkboxList = document.getElementById("chooseContactsCheckboxList");
 
-  // âœ… Initialize outside click handler ONCE
   if (selectBox && checkboxList) {
     const selectArrow = selectBox.closest(".multi-select")?.querySelector(".select-arrow");
 
@@ -60,16 +59,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       checkboxList.style.display = wasVisible ? "none" : "flex";
       selectBox.closest(".multi-select")?.classList.toggle("open", !wasVisible);
 
-      // Only init outside click handler when OPENING the list
       if (!wasVisible) {
         initOutsideClickHandler(
-          selectBox, // target: clicks on this are "inside"
+          selectBox,
           () => {
-            // onClose callback
             checkboxList.style.display = "none";
             selectBox.closest(".multi-select")?.classList.remove("open");
           },
-          [checkboxList, selectArrow].filter(Boolean) // ignore: also treat clicks on list/arrow as "inside"
+          [checkboxList, selectArrow].filter(Boolean)
         );
       }
     };
@@ -82,7 +79,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       toggleCheckboxList();
     });
 
-    // Filter contacts while typing
     selectBox.addEventListener("input", () => {
       const searchTerm = selectBox.value;
 
@@ -146,42 +142,33 @@ async function loadAddTaskContacts() {
   checkCheckboxChanges();
 }
 
-// Insert contact options into the assign-to checkbox list.
-// If filterString is provided, only show contacts matching the name (case-insensitive)
-// Current user appears first in the list
 function addContactsToAssignTask(contacts, filterString = "") {
   const assignedSelect = document.getElementById("chooseContactsCheckboxList");
   if (!assignedSelect) return;
 
-  // Clear existing options before re-rendering
   assignedSelect.innerHTML = "";
 
-  // Filter contacts if search string provided
   const filteredContacts = filterString.trim()
     ? contacts.filter((contact) =>
         contact?.name?.toLowerCase().includes(filterString.toLowerCase())
       )
     : contacts;
 
-  // âœ… Sort: current user first, then alphabetically
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUser = getStoredCurrentUser();
   const sortedContacts = filteredContacts.sort((a, b) => {
-    // Current user comes first
     if (currentUser && a.id === currentUser.uid) return -1;
     if (currentUser && b.id === currentUser.uid) return 1;
 
-    // Then sort alphabetically by name
     return (a.name || "").localeCompare(b.name || "");
   });
 
   sortedContacts.forEach((contact) => {
     if (!contact?.id || !contact?.name) return;
-    // âœ… Add (YOU) label for current user
     const isCurrentUser = currentUser && contact.id === currentUser.uid;
     const displayName = isCurrentUser ? `${contact.name} (You)` : contact.name;
 
     const option = addAssignedToBarTask(
-      displayName, // â† use modified name
+      displayName,
       contact.id,
       iconTemplate(
         getInitials(contact.name),
@@ -190,7 +177,6 @@ function addContactsToAssignTask(contacts, filterString = "") {
       )
     );
 
-    // if function returns a string of HTML, insert as HTML; if Node, append
     if (typeof option === "string") {
       assignedSelect.insertAdjacentHTML("beforeend", option);
     } else if (option instanceof Node) {
@@ -200,38 +186,32 @@ function addContactsToAssignTask(contacts, filterString = "") {
     }
   });
 
-  // Show "No results" message if nothing found
   if (filteredContacts.length === 0) {
     assignedSelect.innerHTML =
       '<div class="no-results">No contacts found</div>';
   }
 }
 
-// Return the task title input value.
 function getTitleTask() {
   const titleTask = document.getElementById("taskTitle").value;
   return titleTask;
 }
 
-// Return the task description input value.
 function getDescriptionTask() {
   const descriptionTask = document.getElementById("taskDescription").value;
   return descriptionTask;
 }
 
-// Return the task due date input value.
 function getDueDateTask() {
   const dueDateTask = document.getElementById("taskDate").value;
 
   return dueDateTask;
 }
 
-// Return the currently selected priority.
 function getPriorityTask() {
   return selectedPriority;
 }
 
-// Wire change handlers for assign-to checkboxes and update the select box text + icons.
 function checkCheckboxChanges() {
   if (!checkboxList || !selectBox) return;
   const checkboxes = checkboxList.querySelectorAll(".assignedToCheckbox");
@@ -239,7 +219,6 @@ function checkCheckboxChanges() {
 
   checkboxes.forEach((cb) => {
     cb.addEventListener("change", () => {
-      // Update select box text
       const selected = [...checkboxes]
         .filter((cb) => cb.checked)
         .map((cb) => returnContactById(cb.value, contactsList)?.name)
@@ -249,13 +228,11 @@ function checkCheckboxChanges() {
         ? selected.join(", ")
         : ASSIGNED_TO_PLACEHOLDER;
 
-      // âœ… Update icons container
       updateAssignedIcons(selectedNamesIconContainer, checkboxes);
     });
   });
 }
 
-// Update the icons container based on checked checkboxes
 function updateAssignedIcons(container, checkboxes) {
   if (!container) return;
 
@@ -371,7 +348,6 @@ function getCategoryTask() {
   return value;
 }
 
-// Build task object from inputs and send to firebase handler.
 async function createTaskObject() {
   const task = {
     title: getTitleTask(),

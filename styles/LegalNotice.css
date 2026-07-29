@@ -202,7 +202,6 @@
       padding: 0 16px; /* Abstand links/rechts */
       z-index: 500;
       gap: 8px;
-      font-style: open sans;
     }
     
     .mobile-nav a {
@@ -214,14 +213,12 @@
       align-items: center;
     }
 
-    /* Style override for internal mobile nav links (Summary, Add Task, etc.) */
     .mobile-nav a:not(.nav-item-icon):not(.nav-item-text) {
       font-size: 12px !important;
       display: inline-block !important;
       text-align: center;
     }
 
-    /* Style override for internal mobile nav container */
     .mobile-nav:not(:has(.mobile-nav-right)) {
       justify-content: space-around !important;
       padding: 0 !important;

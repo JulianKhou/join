@@ -1,7 +1,7 @@
 import { getTask, updateTask } from "./firebase.js";
 import { assigneeAvatarTemplate, editTaskFormTemplate } from "../templates/boardTasksTemplates.js";
 import { iconTemplate } from "../templates/profileTemplates.js";
-import { escapeHtml, getInitials, returnContactById } from "./utility.js";
+import { escapeHtml, getInitials, getStoredCurrentUser, returnContactById } from "./utility.js";
 import { showPopup } from "./feedback.js";
 
 export function createBoardEditTaskController({ overlay, getContactsList, refreshTaskCard, showTaskDetail }) {
@@ -36,7 +36,7 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
   }
 
   function populateContactList(listEl, task) {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const currentUser = getStoredCurrentUser();
     const sortedContacts = [...getContacts()].sort((a, b) => {
       if (currentUser && a.id === currentUser.uid) return -1;
       if (currentUser && b.id === currentUser.uid) return 1;

@@ -15,7 +15,6 @@ let currentShownContact = null;
 function groupContacts(contactList) {
   const grouped = {};
 
-  // Sort contacts alphabetically by name first
   const sorted = [...contactList].sort((a, b) =>
     (a.name || "").localeCompare(b.name || "", undefined, { sensitivity: "base" })
   );
@@ -48,7 +47,6 @@ function renderContacts() {
   const groupedContacts = groupContacts(contacts);
   let html = "";
 
-  // Iterate over sorted keys to guarantee alphabetical group order
   const sortedLetters = Object.keys(groupedContacts).sort((a, b) => a.localeCompare(b));
   for (const letter of sortedLetters) {
     html += getContactsGroupTemplate(letter, groupedContacts[letter]);
@@ -205,7 +203,6 @@ function contactShowDetails(contact, index) {
   contactDetailsOverlay.innerHTML = getContactDetailsTemplate(contact, contact.color);
   contactDetailsAddEventListeners();
 
-  // On mobile: switch from list view to detail view
   if (window.innerWidth <= 768) {
     showMobileDetailView();
   }
@@ -220,7 +217,6 @@ function showMobileDetailView() {
   right.classList.remove("mobile-hidden");
   right.classList.add("mobile-detail-visible");
 
-  // Inject back button if not already present
   if (!document.getElementById("mobileBackBtn")) {
     const backBtn = document.createElement("button");
     backBtn.id = "mobileBackBtn";
@@ -244,7 +240,6 @@ function hideMobileDetailView() {
   }
   if (backBtn) backBtn.remove();
 
-  // Deselect current contact
   if (currentShownContact != null) {
     const btn = document.querySelector(`[data-contact-id="${currentShownContact._index}"]`);
     if (btn) btn.classList.remove("active-contact");

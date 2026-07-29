@@ -34,12 +34,6 @@ export function sanitizeClassToken(value, fallback = "default") {
 }
 
 
-/**
- * Registers a global outside-click handler to close target.
- * @param {HTMLElement} target - Element to close on outside click.
- * @param {Function} onClose - Callback invoked on outside click.
- * @param {HTMLElement[]} ignore - Elements to ignore for clicks.
- */
 export function initOutsideClickHandler(target, onClose, ignore = []) {
     if (!target) return;
     function handleClick(e) {
@@ -68,7 +62,7 @@ export function getRandomColor() {
 
   export function getInitials(name) {
     if (!name || typeof name !== 'string') return '';
-    const names = name.trim().split(/\s+/); // split by any whitespace, remove leading/trailing
+    const names = name.trim().split(/\s+/);
     if (names.length === 0) return '';
     
     let initials = names[0].charAt(0).toUpperCase();
@@ -80,6 +74,14 @@ export function getRandomColor() {
 export function returnContactById(id,contactsList){
     let contact = contactsList.find(contact => contact.id === id);
     return contact;
+}
+
+export function getStoredCurrentUser() {
+  try {
+    return JSON.parse(localStorage.getItem("currentUser"));
+  } catch {
+    return null;
+  }
 }
 
 export function getTaskIndexById(id, tasksList) {

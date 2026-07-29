@@ -1,4 +1,3 @@
-/* Overlay */
 
 @keyframes slideInRight {
     from {
@@ -65,12 +64,10 @@ body:has(.overlay-edit.active) {
     justify-content: space-between;
 }
 
-/* Skip the entry animation when explicitly requested (e.g. after saving edits) */
 .overlay-detail-card.no-animation {
     animation: none !important;
 }
 
-/* Preserve the close animation even when entry is suppressed */
 .overlay-edit.closing .overlay-detail-card.no-animation {
     animation: slideOutRight 0.2s ease-out forwards;
 }
@@ -317,8 +314,3 @@ body:has(.overlay-edit.active) {
     height: 16px;
 }
 
-.subtask-checkbox {
-    accent-color: red !important;
-}
-
-/* Add Task Overlay Styles */

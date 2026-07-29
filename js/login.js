@@ -15,8 +15,6 @@ const passwordIconImg = document.getElementById("passwordIconImg");
 const lockIcon = "./assets/LogIn&SignUp/lock.svg";
 const visibilityIcon = "./assets/LogIn&SignUp/visibility.svg";
 const visibilityOffIcon = "./assets/LogIn&SignUp/visibility_off.svg";
-// Single shared guest account – create this user once in Firebase Console:
-// Email: guest@join-demo.com | Password: Guest#Join2024!
 const GUEST_EMAIL = "guest@join-demo.com";
 const GUEST_PASSWORD = "Guest#Join2024!";
 
@@ -65,9 +63,7 @@ function persistCurrentUser(user, fallbackName = "Guest") {
 
 async function loginAsGlobalGuest() {
   const user = await loginWithEmail(GUEST_EMAIL, GUEST_PASSWORD);
-  // Ensure the Firestore user document exists in the background without blocking the UI
   createOrUpdateUserProfile(user.uid, "Guest", GUEST_EMAIL).catch(console.error);
-  // Ensure Guest is in Contacts in the background without blocking the UI
   editOrAddContact(user.uid, "Guest", GUEST_EMAIL, "", "#A133FF").catch(console.error);
   return user;
 }

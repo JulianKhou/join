@@ -86,7 +86,6 @@
   }
 }
 
-/* Hide Add Contact floating button when overlay is open */
 body:has(.edit-contact-overlay) #addContactMobileBtn {
   display: none !important;
 }

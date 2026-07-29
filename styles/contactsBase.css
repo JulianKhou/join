@@ -2,7 +2,7 @@
 .main-content-contacts {
     flex: 1;
     margin-left: 230px;
-    padding-top: 95px; /* height of header */
+    padding-top: 95px;
     height: 100vh;
     box-sizing: border-box;
     overflow: hidden;
@@ -210,6 +210,18 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+.contact-details-body h3 {
+    margin-bottom: 40px;
+}
+
+.contact-details-body > div {
+    margin-bottom: 20px;
+}
+
+.contact-details-body h4 {
+    margin-bottom: 20px;
 }
 .contact-buttons{
     display: flex;

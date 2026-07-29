@@ -1,4 +1,4 @@
-import { getAllTasksFromContacts } from "./utility.js";
+import { getAllTasksFromContacts, getStoredCurrentUser } from "./utility.js";
 import { getUserById, getAllTasks } from "./firebase.js";
 
 let currentUser = null;
@@ -28,13 +28,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function loadUserData() {
-  const storedUser = localStorage.getItem("currentUser");
-  if (!storedUser) {
+  currentUser = getStoredCurrentUser();
+  if (!currentUser) {
     window.location.href = "logIn.html";
     return;
   }
-
-  currentUser = JSON.parse(storedUser);
 
   getUserById(currentUser.uid)
     .then((user) => {
@@ -42,7 +40,6 @@ function loadUserData() {
       renderSummaryForUser(currentUser);
     })
     .catch(() => {
-      // Firestore document missing – fall back to localStorage data (e.g. guest account)
       renderSummaryForUser(currentUser);
     });
 }
@@ -133,14 +130,11 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  const storedUser = localStorage.getItem("currentUser");
+  const user = getStoredCurrentUser();
   let greeting = "Good morning!";
 
-  if (storedUser) {
-    const user = JSON.parse(storedUser);
-    if (user.username && user.username !== "Guest") {
-      greeting = `Good morning, ${user.username}!`;
-    }
+  if (user?.username && user.username !== "Guest") {
+    greeting = `Good morning, ${user.username}!`;
   }
 
   splash.textContent = greeting;

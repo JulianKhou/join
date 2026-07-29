@@ -14,15 +14,12 @@ onAuthChange(async (user) => {
         editProfileInitials();
       }
     } catch {
-      // Silently ignore: guest accounts or missing Firestore profiles
-      // are expected and don't need an error popup
       editProfileInitials();
     }
 
     return;
   }
 
-  // Small delay to avoid false-positive logout during history.back() navigation
   setTimeout(() => {
     const currentPage = window.location.pathname.split("/").pop();
     if (currentPage !== "logIn.html" && currentPage !== "signUp.html") {

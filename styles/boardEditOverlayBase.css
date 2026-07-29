@@ -196,7 +196,6 @@
 
 .edit-assignees {
     display: flex;
-    gap: -8px;
     margin-top: 12px;
     flex-wrap: wrap;
 }
@@ -219,7 +218,6 @@
     margin-left: 0;
 }
 
-/* Edit Subtasks Styles */
 .edit-subtask-input-area {
     position: relative;
     display: flex;
@@ -257,7 +255,6 @@
     overflow-y: auto;
 }
 
-/* Subtask label styles for edit mode */
 .subtask-label {
     display: flex;
     align-items: center;
@@ -384,9 +381,7 @@
     flex-shrink: 0;
 }
 
-/* Notification styles */
 
-/* Keep the edit overlay content inside the viewport on small screens */
 @media (max-width: 600px) {
     .edit-overlay-card {
         padding: 90px 20px 40px 20px;

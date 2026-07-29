@@ -134,6 +134,7 @@ export async function deleteUserProfile(uid) {
 }
 
 export function logout() {
+  localStorage.removeItem("currentUser");
   return auth.signOut();
 }
 

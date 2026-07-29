@@ -216,7 +216,6 @@
     border-style: dashed;
 }
 
-/* While a card is being dragged, every drop zone offers one card of extra space */
 body.drag-active .tasks-container {
     padding-bottom: 260px;
 }
@@ -365,7 +364,6 @@ body.drag-active .tasks-container {
 
 .task-assignees {
     display: flex;
-    gap: -8px;
     align-items: center;
     min-height: 32px;
 }

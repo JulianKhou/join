@@ -26,7 +26,6 @@
     animation: slideIn 0.3s ease-in-out;
 }
 
-/* Match Add Task Assigned-to styles in edit overlay */
 .multi-select {
     width: 100%;
     max-width: 440px;

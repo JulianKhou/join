@@ -276,7 +276,6 @@
         margin-bottom: 12px;
     }
 
-    /* Keep the whole task visible: only the contact list scrolls, capped at ~2 rows */
     .overlay-assignees{
         margin-bottom: 12px;
         max-height: 112px;
@@ -361,7 +360,6 @@
         padding: 12px 20px 16px 12px;
     }
 
-    /* Horizontal layout: extra drop space sits to the right instead of below */
     body.drag-active .tasks-container {
         padding-bottom: 16px;
         padding-right: 262px;

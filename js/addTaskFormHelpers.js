@@ -123,12 +123,7 @@ export function initPriorityButtons({ lowBtn, mediumBtn, urgentBtn, priorities, 
       e.preventDefault();
       e.stopPropagation();
 
-      if (button.classList.contains("clicked")) {
-        button.classList.remove("clicked");
-        toggle(button);
-        setPriority(null);
-        return;
-      }
+      if (button.classList.contains("clicked")) return;
 
       setPriority(value);
       removeClickedFromPriorityButtons();
