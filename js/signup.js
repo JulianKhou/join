@@ -129,6 +129,12 @@ function setupPasswordToggle(inputEl, iconImg) {
       iconImg.src = visibilityIcon;
     }
   });
+
+  iconImg.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    iconImg.click();
+  });
 }
 
 setupPasswordToggle(passwordInput, passwordIconImg);

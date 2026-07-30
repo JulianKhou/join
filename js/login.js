@@ -111,6 +111,12 @@ passwordIconImg?.addEventListener("click", () => {
   }
 });
 
+passwordIconImg?.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" && event.key !== " ") return;
+  event.preventDefault();
+  passwordIconImg.click();
+});
+
 loginBtn?.addEventListener("click", async (event) => {
   event.preventDefault();
 

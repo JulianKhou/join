@@ -59,7 +59,7 @@
       />
       <span class="header-title">Kanban Project Management Tool</span>
       <div class="headerRight">
-        <a href="./help.html"><div class="help"></div></a>
+        <a href="./help.html" aria-label="Help"><div class="help"></div></a>
         <button class="userProfileInitials" id="userProfileInitialsBtn">
           <div class="nameInitials" id="nameInitials"></div>
         </button>
@@ -73,7 +73,7 @@
 
         <form class="add-task-form" autocomplete="off" novalidate>
           <div class="task-column">
-            <label for="task-title">Title<span>*</span></label>
+            <label for="taskTitle">Title<span>*</span></label>
             <input
               class="task-input"
               type="text"
@@ -83,14 +83,14 @@
             />
             <p class="required-hint" id="taskTitleHint">*This field is required</p>
 
-            <label for="task-description">Description</label>
+            <label for="taskDescription">Description</label>
             <textarea
               class="task-input-description task-input"
               id="taskDescription"
               placeholder="Enter a Description" maxlength="500"
             ></textarea>
 
-            <label for="task-date">Due date<span>*</span></label>
+            <label for="taskDate">Due date<span>*</span></label>
             <input class="task-input" type="date" id="taskDate" />
 
             <p class="required-hint" id="taskDateHint">*This field is required</p>
@@ -122,7 +122,7 @@
               </button>
             </div>
             <div class="assigned-area" id="assignedArea">
-              <label for="assigned">Assigned to</label>
+              <label for="selectedBox">Assigned to</label>
 
               <div class="multi-select">
                 <input class="selected-box task-input" id="selectedBox" placeholder=" Select contacts to assign" maxlength="120" />
@@ -134,7 +134,7 @@
               </div>
               <div class="assignedIcons" id="assignedIcons"></div>
             </div>
-            <label for="category">Category<span>*</span></label>
+            <label for="categorySelect">Category<span>*</span></label>
             <div class="multi-select category-select">
               <input class="selected-box task-input" id="categorySelect" placeholder="Select task category" readonly />
               <span class="select-arrow" id="categoryArrow" aria-hidden="true"></span>

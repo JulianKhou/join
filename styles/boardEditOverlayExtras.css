@@ -26,14 +26,14 @@
     animation: slideIn 0.3s ease-in-out;
 }
 
-.multi-select {
+.edit-overlay-card .multi-select {
     width: 100%;
     max-width: 440px;
     position: relative;
     margin-top: 12px;
 }
 
-.select-arrow {
+.edit-overlay-card .select-arrow {
     position: absolute;
     top: 50%;
     right: 6px;
@@ -48,15 +48,15 @@
     transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
-.select-arrow:hover {
+.edit-overlay-card .select-arrow:hover {
     background-color: var(--gray-default);
 }
 
-.multi-select:has(.checkbox-list.active) .select-arrow {
+.edit-overlay-card .multi-select:has(.checkbox-list.active) .select-arrow {
     transform: translateY(-50%) rotate(180deg);
 }
 
-.selected-box {
+.edit-overlay-card .selected-box {
     padding: 10px 38px 10px 10px;
     border: 1px solid #d1d1d1;
     cursor: pointer;
@@ -66,7 +66,7 @@
     gap: 8px;
 }
 
-.checkbox-list {
+.edit-overlay-card .checkbox-list {
     display: none;
     border: 1px solid #aaa;
     background: white;
@@ -84,17 +84,17 @@
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.checkbox-list.active {
+.edit-overlay-card .checkbox-list.active {
     display: flex;
 }
 
-.checkbox-list label {
+.edit-overlay-card .checkbox-list label {
     display: flex;
     margin-bottom: 6px;
     width: 95%;
 }
 
-.checkbox-item {
+.edit-overlay-card .checkbox-item {
     font-family: "Inter", sans-serif;
     font-weight: 400;
     font-size: 16px;
@@ -109,28 +109,28 @@
     cursor: pointer;
 }
 
-.checkbox-item:hover {
+.edit-overlay-card .checkbox-item:hover {
     background-color: var(--lightGray-default);
 }
 
-.checkbox-item:has(.assignedToCheckbox:checked) {
+.edit-overlay-card .checkbox-item:has(.assignedToCheckbox:checked) {
     background-color: var(--mainColor-default);
     color: white;
 }
 
-.assignedToCheckbox {
+.edit-overlay-card .assignedToCheckbox {
     width: 20px;
     height: 20px;
     cursor: pointer;
 }
 
-.checkbox-item .assignedToCheckboxNameIcon {
+.edit-overlay-card .checkbox-item .assignedToCheckboxNameIcon {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.assignedIcons {
+.edit-overlay-card .assignedIcons {
     display: flex;
     margin-top: 8px;
     flex-wrap: wrap;
@@ -140,9 +140,7 @@
     max-height: 72px;
 }
 
-.assignedIcons .assignee-avatar {
+.edit-overlay-card .assignedIcons .assignee-avatar {
     margin-left: 0;
     flex-shrink: 0;
 }
-
-.mobile-nav {

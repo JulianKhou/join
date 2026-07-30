@@ -32,7 +32,7 @@ let priorityLowBtn;
 let selectBox;
 let checkboxList;
 let contactsList = [];
-const ASSIGNED_TO_PLACEHOLDER = "Select contacts to assign";
+const selectedContactIds = new Set();
 
 document.addEventListener("DOMContentLoaded", async () => {
     const dateInput = document.getElementById("taskDate");
@@ -186,6 +186,10 @@ function addContactsToAssignTask(contacts, filterString = "") {
     }
   });
 
+  assignedSelect.querySelectorAll(".assignedToCheckbox").forEach((cb) => {
+    cb.checked = selectedContactIds.has(cb.value);
+  });
+
   if (filteredContacts.length === 0) {
     assignedSelect.innerHTML =
       '<div class="no-results">No contacts found</div>';
@@ -219,30 +223,27 @@ function checkCheckboxChanges() {
 
   checkboxes.forEach((cb) => {
     cb.addEventListener("change", () => {
-      const selected = [...checkboxes]
-        .filter((cb) => cb.checked)
-        .map((cb) => returnContactById(cb.value, contactsList)?.name)
-        .filter(Boolean);
+      if (cb.checked) {
+        selectedContactIds.add(cb.value);
+      } else {
+        selectedContactIds.delete(cb.value);
+      }
 
-      selectBox.innerText = selected.length
-        ? selected.join(", ")
-        : ASSIGNED_TO_PLACEHOLDER;
-
-      updateAssignedIcons(selectedNamesIconContainer, checkboxes);
+      updateAssignedIcons(selectedNamesIconContainer);
     });
   });
 }
 
-function updateAssignedIcons(container, checkboxes) {
+function updateAssignedIcons(container) {
   if (!container) return;
 
   container.innerHTML = "";
 
-  const checked = [...checkboxes].filter((cb) => cb.checked);
+  const checked = [...selectedContactIds];
   const maxVisible = 3;
 
-  const renderIcon = (cb) => {
-    const contact = returnContactById(cb.value, contactsList);
+  const renderIcon = (id) => {
+    const contact = returnContactById(id, contactsList);
     if (!contact) return;
     const icon = iconTemplate(
       getInitials(contact.name),
@@ -264,6 +265,7 @@ function updateAssignedIcons(container, checkboxes) {
     badge.type = "button";
     badge.className = "profileIconContainer assignedToContainerChecked assigned-more-badge";
     badge.textContent = `+${remaining}`;
+    badge.setAttribute("aria-label", `Show all ${checked.length} assigned contacts`);
     badge.addEventListener("click", () => {
       container.innerHTML = "";
       checked.forEach(renderIcon);
@@ -273,12 +275,7 @@ function updateAssignedIcons(container, checkboxes) {
 }
 
 function getSelectedAssignedTo() {
-  if (!checkboxList) return [];
-  const checkboxes = checkboxList.querySelectorAll(".assignedToCheckbox");
-  const selectedIds = [...checkboxes]
-    .filter((cb) => cb.checked)
-    .map((cb) => cb.value);
-  return selectedIds;
+  return [...selectedContactIds];
 }
 
 const CATEGORY = Object.freeze({
@@ -386,9 +383,11 @@ function resetTaskFormState() {
   resetAddTaskForm({
     checkboxList,
     selectBox,
-    placeholder: ASSIGNED_TO_PLACEHOLDER,
     resetPriority: resetPrioritySelection,
   });
+  selectedContactIds.clear();
+  addContactsToAssignTask(contactsList);
+  checkCheckboxChanges();
 }
 
 

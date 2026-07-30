@@ -1,8 +1,8 @@
 import { createTask } from "./firebase.js";
 import { iconTemplate } from "../templates/profileTemplates.js";
 import { addAssignedToBarTask, addSubTask } from "../templates/addTaskTemplates.js";
-import { getInitials, returnContactById } from "./utility.js";
-import { showPopup } from "./feedback.js";
+import { getInitials, getStoredCurrentUser, returnContactById } from "./utility.js";
+import { showBoardToast, showPopup } from "./feedback.js";
 
 export function createBoardAddOverlayController({ getContactsList, appendNewTaskToBoard }) {
   let currentStatus = "toDo";
@@ -15,6 +15,9 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
   function initAddTaskOverlay() {
     const form = document.getElementById("addTaskFormOverlay");
     if (form) form.noValidate = true;
+
+    const dateInput = document.getElementById("overlayTaskDate");
+    if (dateInput) dateInput.min = new Date().toISOString().split("T")[0];
 
     applyOverlayContentLimits();
     initOverlayBlurValidation();
@@ -54,6 +57,7 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
   function openAddTaskOverlay(status) {
     currentStatus = status || "toDo";
     document.getElementById("addTaskOverlay")?.classList.add("active");
+    document.getElementById("overlayTaskTitle")?.focus();
   }
 
   function closeAddTaskOverlay() {
@@ -69,11 +73,20 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
     const checkboxList = document.getElementById("overlayCheckboxList");
     if (!checkboxList) return;
 
+    const currentUser = getStoredCurrentUser();
+    const sortedContacts = [...getContacts()].sort((a, b) => {
+      if (currentUser && a.id === currentUser.uid) return -1;
+      if (currentUser && b.id === currentUser.uid) return 1;
+      return (a.name || "").localeCompare(b.name || "");
+    });
+
     checkboxList.innerHTML = "";
-    getContacts().forEach((contact) => {
+    sortedContacts.forEach((contact) => {
       if (!contact?.id || !contact?.name) return;
+      const isCurrentUser = currentUser && contact.id === currentUser.uid;
+      const displayName = isCurrentUser ? `${contact.name} (You)` : contact.name;
       const icon = iconTemplate(getInitials(contact.name), contact.color, "assignedToCheckboxIcon");
-      checkboxList.insertAdjacentHTML("beforeend", addAssignedToBarTask(contact.name, contact.id, icon));
+      checkboxList.insertAdjacentHTML("beforeend", addAssignedToBarTask(displayName, contact.id, icon));
     });
 
     attachCheckboxChangeListeners();
@@ -143,6 +156,13 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
       toggleList();
     });
 
+    selectBox.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.stopPropagation();
+      toggleList();
+    });
+
     selectArrow?.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -153,6 +173,7 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
   function attachCheckboxChangeListeners() {
     const checkboxes = document.querySelectorAll("#overlayCheckboxList .assignedToCheckbox");
     const selectBox = document.getElementById("overlaySelectedBox");
+    const iconsContainer = document.getElementById("overlayAssignedIcons");
 
     checkboxes.forEach((checkbox) => {
       checkbox.addEventListener("change", () => {
@@ -162,8 +183,42 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
           .filter(Boolean);
 
         selectBox.innerText = selected.length ? selected.join(", ") : "Select contacts to assign";
+        updateOverlayAssignedIcons(iconsContainer, checkboxes);
       });
     });
+  }
+
+  function updateOverlayAssignedIcons(container, checkboxes) {
+    if (!container) return;
+    container.innerHTML = "";
+
+    const checked = Array.from(checkboxes).filter((checkbox) => checkbox.checked);
+    const maxVisible = 3;
+
+    const renderIcon = (checkbox) => {
+      const contact = returnContactById(checkbox.value, getContacts());
+      if (!contact) return;
+      container.insertAdjacentHTML(
+        "beforeend",
+        iconTemplate(getInitials(contact.name), contact.color, "assignedToContainerChecked"),
+      );
+    };
+
+    checked.slice(0, maxVisible).forEach(renderIcon);
+
+    const remaining = checked.length - maxVisible;
+    if (remaining > 0) {
+      const badge = document.createElement("button");
+      badge.type = "button";
+      badge.className = "profileIconContainer assignedToContainerChecked assigned-more-badge";
+      badge.textContent = `+${remaining}`;
+      badge.setAttribute("aria-label", `Show all ${checked.length} assigned contacts`);
+      badge.addEventListener("click", () => {
+        container.innerHTML = "";
+        checked.forEach(renderIcon);
+      });
+      container.appendChild(badge);
+    }
   }
 
   function initOverlaySubtasks() {
@@ -278,34 +333,32 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
     const categoryInput = document.getElementById("overlayCategory");
 
     titleInput?.addEventListener("blur", () => {
-      if (titleInput.value.trim()) {
-        titleInput.style.borderColor = "";
-        return;
-      }
-
-      titleInput.style.borderColor = "red";
-      showPopup("Please enter a task title.", "info");
+      const invalid = !titleInput.value.trim();
+      setOverlayBorder("overlayTaskTitle", invalid);
+      toggleOverlayHint("overlayTaskTitleHint", invalid);
     });
 
     dateInput?.addEventListener("blur", () => {
-      if (dateInput.value) {
-        dateInput.style.borderColor = "";
-        return;
-      }
-
-      dateInput.style.borderColor = "red";
-      showPopup("Please select a due date.", "info");
+      const invalid = !dateInput.value;
+      setOverlayBorder("overlayTaskDate", invalid);
+      toggleOverlayHint("overlayTaskDateHint", invalid);
     });
 
     categoryInput?.addEventListener("blur", () => {
-      if (categoryInput.value && categoryInput.value !== "Select task category") {
-        categoryInput.style.borderColor = "";
-        return;
-      }
-
-      categoryInput.style.borderColor = "red";
-      showPopup("Please select a category.", "info");
+      const invalid = !categoryInput.value || categoryInput.value === "Select task category";
+      setOverlayBorder("overlayCategory", invalid);
+      toggleOverlayHint("overlayCategoryHint", invalid);
     });
+  }
+
+  function setOverlayBorder(fieldId, invalid) {
+    const field = document.getElementById(fieldId);
+    if (field) field.style.borderColor = invalid ? "red" : "";
+  }
+
+  function toggleOverlayHint(hintId, show) {
+    const hint = document.getElementById(hintId);
+    if (hint) hint.classList.toggle("show", show);
   }
 
   function initOverlayFormSubmit() {
@@ -324,6 +377,7 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
         appendNewTaskToBoard(newTask);
         resetOverlayForm();
         closeAddTaskOverlay();
+        showBoardToast("Task added to board");
       } catch (error) {
         showPopup(error.message || "Task could not be created.");
       }
@@ -362,22 +416,19 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
   }
 
   function validateOverlayForm(taskData) {
-    if (!taskData.title.trim()) {
-      showPopup("Please enter a task title", "info");
-      return false;
-    }
+    const titleInvalid = !taskData.title.trim();
+    const dateInvalid = !taskData.dueDate;
+    const categoryInvalid = !taskData.category || taskData.category === "Select task category";
 
-    if (!taskData.dueDate) {
-      showPopup("Please select a due date", "info");
-      return false;
-    }
+    setOverlayBorder("overlayTaskTitle", titleInvalid);
+    setOverlayBorder("overlayTaskDate", dateInvalid);
+    setOverlayBorder("overlayCategory", categoryInvalid);
 
-    if (!taskData.category || taskData.category === "Select task category") {
-      showPopup("Please select a category", "info");
-      return false;
-    }
+    toggleOverlayHint("overlayTaskTitleHint", titleInvalid);
+    toggleOverlayHint("overlayTaskDateHint", dateInvalid);
+    toggleOverlayHint("overlayCategoryHint", categoryInvalid);
 
-    return true;
+    return !(titleInvalid || dateInvalid || categoryInvalid);
   }
 
   function resetOverlayForm() {
@@ -390,7 +441,11 @@ export function createBoardAddOverlayController({ getContactsList, appendNewTask
       checkbox.checked = false;
     });
     document.getElementById("overlayCheckboxList").style.display = "none";
+    const iconsContainer = document.getElementById("overlayAssignedIcons");
+    if (iconsContainer) iconsContainer.innerHTML = "";
     document.getElementById("subtasksListOverlay").innerHTML = "";
+    ["overlayTaskTitle", "overlayTaskDate", "overlayCategory"].forEach((fieldId) => setOverlayBorder(fieldId, false));
+    ["overlayTaskTitleHint", "overlayTaskDateHint", "overlayCategoryHint"].forEach((hintId) => toggleOverlayHint(hintId, false));
     document.querySelectorAll(".priority-button").forEach((button) => {
       button.classList.remove(
         "priority-button-urgent-active",

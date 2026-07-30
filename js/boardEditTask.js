@@ -19,6 +19,7 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
       detailCard.insertAdjacentHTML("beforeend", editTaskFormTemplate(task));
       initEditModeSubtasks(task);
       attachEditFormEventListeners(taskId);
+      overlay.querySelector(`#editTaskTitle-${taskId}`)?.focus();
     } catch (error) {
       showPopup(error.message || "Could not open the edit form.");
     }
@@ -106,14 +107,14 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
     if (!Array.isArray(task.subtasks) || task.subtasks.length === 0) return;
 
     task.subtasks.forEach((subtask) => {
-      subtasksList.insertAdjacentHTML("beforeend", createEditSubtaskElement(subtask.text));
+      subtasksList.insertAdjacentHTML("beforeend", createEditSubtaskElement(subtask.text, subtask.completed));
       addEditSubtaskEventListeners(subtasksList.lastElementChild);
     });
   }
 
-  function createEditSubtaskElement(subtaskText) {
+  function createEditSubtaskElement(subtaskText, completed = false) {
     return `
-      <div class="subtask-label">
+      <div class="subtask-label" data-completed="${completed ? "true" : "false"}">
         <div class="subtask-label-left">
           <div class="point"></div>
           <span>${escapeHtml(subtaskText)}</span>
@@ -359,9 +360,12 @@ export function createBoardEditTaskController({ overlay, getContactsList, refres
     const priority = activePriorityBtn?.dataset.priority || "Medium";
     const assignedTo = [...overlay.querySelectorAll(`#editCheckboxList-${taskId} .assignedToCheckbox:checked`)]
       .map((checkbox) => checkbox.value);
-    const subtasks = [...overlay.querySelectorAll(`#editSubtasksList-${taskId} .subtask-label span`)]
-      .filter((span) => span.textContent.trim())
-      .map((span) => ({ text: span.textContent.trim(), completed: false }));
+    const subtasks = [...overlay.querySelectorAll(`#editSubtasksList-${taskId} .subtask-label`)]
+      .map((label) => ({
+        text: label.querySelector("span")?.textContent.trim() || "",
+        completed: label.dataset.completed === "true",
+      }))
+      .filter((subtask) => subtask.text);
 
     return { title, description, dueDate, priority, category, assignedTo, subtasks };
   }

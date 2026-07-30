@@ -76,7 +76,6 @@ const profileMenu = document.getElementById("profileShowMore");
 if (profileBtn && profileMenu) {
   profileMenu.innerHTML = isSimpleProfilePage() ? profileTemplateSimple : profileTemplate;
 
-  const editProfileBtn = profileMenu.querySelector("#editProfileBtn");
   const logoutBtn = profileMenu.querySelector("#logoutBtn");
   const privacyBtn = profileMenu.querySelector("#privacySettingsBtn");
   const legalBtn = profileMenu.querySelector("#legalNoticeBtn");
@@ -103,17 +102,6 @@ if (profileBtn && profileMenu) {
   });
 
   document.addEventListener("click", () => {
-    profileMenu.classList.add("d-none");
-  });
-
-  editProfileBtn?.addEventListener("click", (event) => {
-    event.stopPropagation();
-
-    const editOverlay = document.getElementById("editProfileOverlay");
-    if (editOverlay) {
-      editOverlay.classList.remove("d-none");
-    }
-
     profileMenu.classList.add("d-none");
   });
 }

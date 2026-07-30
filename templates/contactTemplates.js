@@ -2,7 +2,7 @@ import { escapeHtml, sanitizeColor } from "../js/utility.js";
 
 export const addContactTemplate = `
 <div class="edit-contact-overlay add-contact-overlay">
-  <div class="edit-contact-container add-contact-container">
+  <div class="edit-contact-container add-contact-container" role="dialog" aria-modal="true" aria-label="Add contact">
     <div class="edit-contact-left">
       <img src="./assets/sideboardAssets/joinLogo.svg" class="logo" alt="Join logo">
       <h2 class="add-contact-title">Add contact</h2>
@@ -11,7 +11,7 @@ export const addContactTemplate = `
     </div>
 
     <div class="edit-contact-right">
-      <button class="close-btn" id="closeAddContactBtn" type="button">&times;</button>
+      <button class="close-btn" id="closeAddContactBtn" type="button" aria-label="Close">&times;</button>
       <div class="profile-circle profile-circle-add">
         <img src="./assets/LogIn&SignUp/person1.svg" class="icon-profile" alt="">
       </div>
@@ -123,7 +123,7 @@ export function editContactTemplate(name, email, phoneNumber, uuid, color, initi
 
   return `
 <div class="edit-contact-overlay">
-  <div class="edit-contact-container add-contact-container" data-contact-id="${safeUuid}">
+  <div class="edit-contact-container add-contact-container" data-contact-id="${safeUuid}" role="dialog" aria-modal="true" aria-label="Edit contact">
     <div class="edit-contact-left">
       <img src="./assets/sideboardAssets/joinLogo.svg" class="logo" alt="Join logo">
       <h2 class="add-contact-title">Edit contact</h2>
@@ -131,7 +131,7 @@ export function editContactTemplate(name, email, phoneNumber, uuid, color, initi
     </div>
 
     <div class="edit-contact-right">
-      <button class="close-btn" id="closeEditContactBtn" type="button">&times;</button>
+      <button class="close-btn" id="closeEditContactBtn" type="button" aria-label="Close">&times;</button>
       <div class="profile-circle" style="background-color: ${safeColor}">${safeInitials}</div>
 
       <form class="edit-form" novalidate>

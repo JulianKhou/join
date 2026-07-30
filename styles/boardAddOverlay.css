@@ -67,10 +67,6 @@
     transition: border-color 0.2s ease;
 }
 
-.form-input input[type="date"] {
-    color: green;
-}
-
 .form-input::placeholder,
 .form-textarea::placeholder {
     color: rgba(209, 209, 209, 1);
@@ -529,3 +525,28 @@
     height: 20px;
 }
 
+
+.required-hint {
+    font-size: 14px;
+    color: #f26262;
+    min-height: 18px;
+    line-height: 1.2;
+    visibility: hidden;
+}
+
+.required-hint.show {
+    visibility: visible;
+}
+
+.assigned-icons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.assigned-icons .assigned-more-badge {
+    background-color: var(--mainColor-default);
+    cursor: pointer;
+    padding: 0;
+}

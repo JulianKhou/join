@@ -81,6 +81,7 @@ function openAddContactOverlay() {
   const addContent = document.getElementById("addContact");
   addContent.insertAdjacentHTML("beforeend", addContactTemplate);
   addEventListenerToAddContactForm();
+  document.getElementById("AddContactNameInput")?.focus();
 }
 
 if (addContactBtn) {
@@ -301,6 +302,7 @@ function editContact(contact) {
 
   configureContactFormValidation(nameInput, emailInput, phoneInput);
   addEventListenerToEditContactForm(contact);
+  nameInput?.focus();
 }
 
 function addEventListenerToEditContactForm(contact) {
@@ -397,26 +399,36 @@ function closeEditContactOverlay() {
   if (overlay) overlay.remove();
 }
 
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  if (document.querySelector(".edit-contact-overlay:not(.add-contact-overlay)")) {
+    closeEditContactOverlay();
+    return;
+  }
+  if (document.querySelector(".add-contact-overlay")) {
+    closeAddContactOverlay();
+  }
+});
+
 export function getContactsArray() {
   return contacts;
 }
 
-const editProfileBtn = document.getElementById("editProfileBtn");
+document.getElementById("profileShowMore")?.addEventListener("click", async (event) => {
+  if (!event.target.closest("#editProfileBtn")) return;
+  document.getElementById("profileShowMore")?.classList.add("d-none");
 
-if (editProfileBtn) {
-  editProfileBtn.addEventListener("click", async () => {
-    const user = auth.currentUser;
-    if (!user) {
-      showPopup("No user logged in.");
-      return;
-    }
+  const user = auth.currentUser;
+  if (!user) {
+    showPopup("No user logged in.");
+    return;
+  }
 
-    try {
-      const contact = await getContact(user.uid);
-      editContact(contact);
-    } catch (error) {
-      showPopup(error.message || "Could not load your profile.");
-    }
-  });
-}
+  try {
+    const contact = await getContact(user.uid);
+    editContact(contact);
+  } catch (error) {
+    showPopup(error.message || "Could not load your profile.");
+  }
+});
 

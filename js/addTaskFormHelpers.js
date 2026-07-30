@@ -71,7 +71,7 @@ export function validateTaskForm({ getTitle, getDueDate, getCategory }) {
   return !(titleInvalid || dateInvalid || categoryInvalid);
 }
 
-export function resetAddTaskForm({ checkboxList, selectBox, placeholder, resetPriority }) {
+export function resetAddTaskForm({ checkboxList, selectBox, resetPriority }) {
   const titleInput = document.getElementById("taskTitle");
   const descriptionInput = document.getElementById("taskDescription");
   const dueDateInput = document.getElementById("taskDate");
@@ -85,7 +85,7 @@ export function resetAddTaskForm({ checkboxList, selectBox, placeholder, resetPr
   if (subtaskInput) subtaskInput.value = "";
   if (subtasksList) subtasksList.innerHTML = "";
   if (categorySelect) categorySelect.value = "";
-  if (selectBox) selectBox.innerText = placeholder;
+  if (selectBox) selectBox.value = "";
 
   const assignedIcons = document.getElementById("assignedIcons");
   if (assignedIcons) assignedIcons.innerHTML = "";

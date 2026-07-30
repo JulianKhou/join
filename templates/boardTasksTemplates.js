@@ -70,7 +70,7 @@ export function taskCardTemplate(task) {
   const safeTask = getSafeTask(task);
 
   return `
-    <div class="task-card grabbable" id="task-card-${safeTask.id}" data-task-id="${safeTask.id}" draggable="true">
+    <div class="task-card grabbable" id="task-card-${safeTask.id}" data-task-id="${safeTask.id}" draggable="true" tabindex="0" role="button">
       <div class="tasks-card-content">
         <div class="task-category ${safeTask.categoryClass}">${safeTask.category}</div>
         <div class="task-texts">
@@ -100,11 +100,11 @@ export function taskDetailTemplate(task) {
   const safeTask = getSafeTask(task);
 
   return `
-    <div class="overlay-detail-card" id="overlayDetailCard-${safeTask.id}">
+    <div class="overlay-detail-card" id="overlayDetailCard-${safeTask.id}" role="dialog" aria-modal="true" aria-label="Task details">
       <div class="overlay-detail-content">
         <div class="overlay-header">
           <div class="task-category-overlay card-detail-${safeTask.categoryClass}">${safeTask.category}</div>
-          <button class="overlay-close-btn" id="overlayCloseBtn" type="button">
+          <button class="overlay-close-btn" id="overlayCloseBtn" type="button" aria-label="Close">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M18 6L6 18M6 6L18 18" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -196,10 +196,12 @@ export function editTaskTemplate(task) {
 
 export function editTaskFormTemplate(task) {
   const safeTask = getSafeTask(task);
+  const todayISO = getTodayISO();
+  const dateMin = safeTask.dueDate && safeTask.dueDate < todayISO ? safeTask.dueDate : todayISO;
 
   return `
-    <div class="edit-overlay-card" id="editOverlayCard-${safeTask.id}">
-      <button class="edit-overlay-close-btn" id="editOverlayCloseBtn" type="button">
+    <div class="edit-overlay-card" id="editOverlayCard-${safeTask.id}" role="dialog" aria-modal="true" aria-label="Edit task">
+      <button class="edit-overlay-close-btn" id="editOverlayCloseBtn" type="button" aria-label="Close">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path d="M18 6L6 18M6 6L18 18" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
@@ -218,7 +220,7 @@ export function editTaskFormTemplate(task) {
 
         <div class="edit-form-group">
           <label for="editTaskDate-${safeTask.id}">Due date</label>
-          <input type="date" id="editTaskDate-${safeTask.id}" class="edit-form-input" value="${safeTask.dueDate}" min="${getTodayISO()}">
+          <input type="date" id="editTaskDate-${safeTask.id}" class="edit-form-input" value="${safeTask.dueDate}" min="${dateMin}">
         </div>
 
         <input type="hidden" id="editTaskCategory-${safeTask.id}" value="${safeTask.category}">
@@ -242,7 +244,7 @@ export function editTaskFormTemplate(task) {
         </div>
 
         <div class="assigned-area" id="assignedArea">
-          <label class="assigned-label" for="assigned">Assigned to</label>
+          <label class="assigned-label" for="editSelectedBox-${safeTask.id}">Assigned to</label>
           <div class="multi-select">
             <input class="selected-box task-input" id="editSelectedBox-${safeTask.id}" placeholder=" Select contacts to assign">
             <span class="select-arrow" id="editSelectedBoxArrow-${safeTask.id}" aria-hidden="true"></span>

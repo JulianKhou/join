@@ -21,6 +21,7 @@ import { createBoardAddOverlayController } from "./boardAddOverlay.js";
 
 const overlay = document.getElementById("taskDetailOverlay");
 let contactsList = [];
+let lastFocusedCard = null;
 
 const editTaskController = createBoardEditTaskController({
   overlay,
@@ -36,6 +37,8 @@ const addTaskOverlayController = createBoardAddOverlayController({
 
 document.addEventListener("DOMContentLoaded", async () => {
   initTaskCardClicks();
+  initTaskCardKeyboard();
+  initEscapeKeyClose();
   initOverlayClose();
   initSearch();
   addTaskOverlayController.initAddTaskOverlay();
@@ -86,11 +89,39 @@ function initTaskCardClicks() {
   });
 }
 
+function initTaskCardKeyboard() {
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const card = event.target.closest?.(".task-card");
+    if (!card || event.target !== card) return;
+    event.preventDefault();
+    handleTaskCardClick(event, card);
+  });
+}
+
+function initEscapeKeyClose() {
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const addOverlay = document.getElementById("addTaskOverlay");
+    if (addOverlay?.classList.contains("active")) {
+      addTaskOverlayController.closeAddTaskOverlay();
+      return;
+    }
+    if (!overlay?.classList.contains("active")) return;
+    if (overlay.querySelector(".edit-overlay-card")) {
+      editTaskController.closeEditOverlay();
+      return;
+    }
+    closeOverlayOnBtn();
+  });
+}
+
 async function handleTaskCardClick(event, card) {
   if (event.target.closest("button") || card.classList.contains("dragging")) return;
   const taskId = card.dataset.taskId || card.id.replace("task-card-", "");
   if (!taskId) return;
 
+  lastFocusedCard = card;
   try {
     const task = await getTask(taskId);
     showTaskDetail(task);
@@ -107,6 +138,7 @@ function showTaskDetail(task) {
   addEventListenersToSubtaskButtons(task.id);
   initAddEventListenersToTaskDetailButtons(task.id);
   overlay.querySelector("#overlayCloseBtn")?.addEventListener("click", closeOverlayOnBtn);
+  overlay.querySelector("#overlayCloseBtn")?.focus();
 }
 
 function initOverlayClose() {
@@ -153,6 +185,8 @@ function closeOverlayOnBtn() {
   overlay.classList.add("closing");
   setTimeout(() => {
     overlay.classList.remove("active", "closing");
+    if (lastFocusedCard?.isConnected) lastFocusedCard.focus();
+    lastFocusedCard = null;
   }, 200);
 }
 
